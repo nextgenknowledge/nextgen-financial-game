@@ -42,6 +42,7 @@ export function HUD() {
         <ArrivalBanner />
         <Compass />
         <WorldActivityHud />
+        <ResumeRun />
         <Toasts inline />
       </div>
       <div className="hud-region r-tr">
@@ -513,6 +514,24 @@ function WorldActivityHud() {
           {l}
         </div>
       ))}
+    </div>
+  );
+}
+
+/** An activity closed mid-play waits here, ready to pick up where it stopped. */
+function ResumeRun() {
+  const run = useUI((s) => s.run);
+  const panel = useUI((s) => s.panel);
+  if (!run || (panel?.type === 'activity' && panel.id === run.id)) return null;
+  return (
+    <div className="resume-run">
+      <button type="button" className="resume-go" onClick={() => (playSfx('pop'), useUI.getState().open({ type: 'activity', id: run.id }))} title="Pick up where you left off">
+        <span className="resume-tag">Paused</span>
+        <b>Resume {run.name}</b>
+      </button>
+      <button type="button" className="resume-x" onClick={() => (playSfx('click'), useUI.getState().setRun(null))} title="Quit this run" aria-label="Quit this run">
+        ✕
+      </button>
     </div>
   );
 }

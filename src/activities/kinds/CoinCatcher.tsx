@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
 import type { KindProps } from '../types';
+import { usePausedRef } from '../paused';
 import { makeRng } from '@/game/rng';
 import { playSfx } from '@/engine/audio';
 import { money } from '@/ui/format';
@@ -16,6 +17,7 @@ const VALUE: Record<Drop['kind'], number> = { p: 0.01, n: 0.05, d: 0.1, q: 0.25,
 /** Canvas arcade game: move the wallet with mouse/touch/arrow keys to catch money and dodge fees. */
 export default function CoinCatcher({ params, onFinish, seed }: KindProps<{ time: number; speed: number; fees?: boolean }>) {
   const ref = useRef<HTMLCanvasElement>(null);
+  const pausedRef = usePausedRef();
   const [hud, setHud] = useState({ total: 0, left: params.time });
   useEffect(() => {
     const c = ref.current!;
@@ -88,6 +90,11 @@ export default function CoinCatcher({ params, onFinish, seed }: KindProps<{ time
       g.restore();
     };
     const loop = (now: number) => {
+      if (pausedRef.current) {
+        last = now;
+        raf = requestAnimationFrame(loop);
+        return;
+      }
       const dt = Math.min(0.05, (now - last) / 1000);
       last = now;
       t += dt;

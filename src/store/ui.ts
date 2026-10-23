@@ -58,6 +58,9 @@ export interface UIStore {
   fps: number;
   /** Activity running in the 3D world (e.g. delivery), HUD shows its overlay. */
   worldActivity: { id: string; data?: unknown } | null;
+  /** An activity mid-play. It stays mounted (hidden) when closed so it can be resumed. */
+  run: { id: string; name: string } | null;
+  setRun: (r: UIStore['run']) => void;
   setScreen: (s: Screen) => void;
   setLoading: (l: Partial<UIStore['loading']>) => void;
   pushToast: (t: Omit<Toast, 'id'>) => void;
@@ -77,6 +80,9 @@ export interface UIStore {
 
 let nextId = 1;
 
+/** Starting a different activity abandons the paused one; reopening the same one resumes it. */
+const keepRun = (run: UIStore['run'], p: Panel) => (run && p.type === 'activity' && p.id !== run.id ? null : run);
+
 export const useUI = create<UIStore>((set, get) => ({
   screen: 'intro',
   loading: { active: false, progress: 0, text: '' },
@@ -88,7 +94,10 @@ export const useUI = create<UIStore>((set, get) => ({
   confetti: 0,
   fps: 60,
   worldActivity: null,
-  setScreen: (screen) => set({ screen }),
+  run: null,
+  setRun: (run) => set({ run }),
+  // Leaving the game drops any paused activity
+  setScreen: (screen) => set(screen === 'game' ? { screen } : { screen, run: null }),
   setLoading: (l) => set({ loading: { ...get().loading, ...l } }),
   pushToast: (t) => {
     const id = nextId++;
@@ -108,10 +117,10 @@ export const useUI = create<UIStore>((set, get) => ({
     head?.onDone?.();
   },
   clearNarwhal: () => set({ narwhal: [] }),
-  open: (p) => set({ panel: p, panelStack: [] }),
+  open: (p) => set({ panel: p, panelStack: [], run: keepRun(get().run, p) }),
   push: (p) => {
     const cur = get().panel;
-    set({ panel: p, panelStack: cur ? [...get().panelStack, cur] : get().panelStack });
+    set({ panel: p, panelStack: cur ? [...get().panelStack, cur] : get().panelStack, run: keepRun(get().run, p) });
   },
   close: () => {
     const stack = get().panelStack;

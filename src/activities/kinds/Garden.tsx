@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { KindProps } from '../types';
+import { usePausedRef } from '../paused';
 import { makeRng } from '@/game/rng';
 import { Button, ReadAloud } from '@/ui/common';
 import { money } from '@/ui/format';
@@ -92,6 +93,7 @@ export default function Garden({ params, onFinish, addReview, seed }: KindProps<
   const [year, setYear] = useState(0);
   const [answered, setAnswered] = useState(false);
   const pts = useRef(0);
+  const pausedRef = usePausedRef();
   const round = rounds[i];
   const plan = pick ?? round.question;
   const path = plan ? grow(plan) : [];
@@ -100,6 +102,7 @@ export default function Garden({ params, onFinish, addReview, seed }: KindProps<
     if (!plan || (adv && !answered)) return;
     setYear(0);
     const id = setInterval(() => {
+      if (pausedRef.current) return;
       setYear((y) => {
         if (y >= plan.years) {
           clearInterval(id);

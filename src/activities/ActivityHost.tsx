@@ -1,5 +1,5 @@
 'use client';
-import { Component, Suspense, useCallback, useMemo, useRef, useState, type ReactNode } from 'react';
+import { Component, Suspense, useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { useUI } from '@/store/ui';
 import { useGame, act } from '@/store/game';
 import { Button, Modal, ReadAloud, Stars, PixelMeter } from '@/ui/common';
@@ -17,6 +17,7 @@ import { useScene } from '@/store/scene';
 import { TOPIC_INFO } from '@/game/topics';
 import { LESSONS } from '@/game/progress/lessons';
 import { FinBucks } from '@/ui/FinBucks';
+import { ActivityPaused } from './paused';
 
 type Phase = 'intro' | 'play' | 'done';
 
@@ -43,8 +44,13 @@ class ActivityBoundary extends Component<{ children: ReactNode; onClose: () => v
   }
 }
 
-export function ActivityHost({ id }: { id: string }) {
+/**
+ * Runs one activity: intro, play, results. Closing it mid-play only tucks it away (`hidden`): it
+ * stays mounted with its timers paused, and reopening the same activity picks up where it left off.
+ */
+export function ActivityHost({ id, hidden = false }: { id: string; hidden?: boolean }) {
   const close = useUI((s) => s.close);
+  const setRun = useUI((s) => s.setRun);
   const w = useGame((s) => s.world!);
   const def = ACTIVITY_BY_ID.get(id);
   const [phase, setPhase] = useState<Phase>('intro');
@@ -66,12 +72,24 @@ export function ActivityHost({ id }: { id: string }) {
       playSfx(starsFor(def, r.score) >= 2 ? 'levelup' : 'star');
       setResult({ r, out: out! });
       setPhase('done');
+      useUI.getState().setRun(null);
     },
     [def],
   );
 
+  // Coming back to a paused run: bring the activity music back
+  const wasHidden = useRef(hidden);
+  useEffect(() => {
+    if (wasHidden.current && !hidden && phase === 'play') playMusic('activity');
+    wasHidden.current = hidden;
+  }, [hidden, phase]);
+
   const leave = () => {
     playMusic(interior ? 'interior' : CITIES[location].music);
+    if (phase === 'play' && def) {
+      // Keep the run alive; the HUD offers to resume it
+      useUI.getState().pushToast({ text: `${def.name} paused. Resume it any time.`, icon: '⏸', tone: 'info' });
+    } else setRun(null);
     close();
   };
 
@@ -105,12 +123,14 @@ export function ActivityHost({ id }: { id: string }) {
     finished.current = false;
     setSeed(randomSeed());
     setPhase('play');
+    setRun({ id: def.id, name: def.name });
     playMusic('activity');
   };
 
 
   return (
     <Modal
+      hidden={hidden}
       onClose={leave}
       title={`${def.icon} ${def.name}`}
       subtitle={def.topics.map((t) => TOPIC_INFO[t]?.name).filter(Boolean).join(' · ')}
@@ -180,11 +200,13 @@ export function ActivityHost({ id }: { id: string }) {
         </div>
       )}
       {phase === 'play' && Kind && (
-        <ActivityBoundary onClose={leave}>
+        <ActivityBoundary onClose={() => (setRun(null), close())}>
           <Suspense fallback={<p>Loading…</p>}>
-            <div className="activity-play">
-              <Kind key={seed} def={def} params={params} difficulty={w.difficulty} onFinish={onFinish} addReview={(r) => review.current.push(r)} seed={seed} />
-            </div>
+            <ActivityPaused.Provider value={hidden}>
+              <div className="activity-play">
+                <Kind key={seed} def={def} params={params} difficulty={w.difficulty} onFinish={onFinish} addReview={(r) => review.current.push(r)} seed={seed} />
+              </div>
+            </ActivityPaused.Provider>
           </Suspense>
         </ActivityBoundary>
       )}

@@ -11,8 +11,20 @@ import { SettingsModal } from '../SettingsModal';
 
 export function Panels() {
   const panel = useUI((s) => s.panel);
+  const run = useUI((s) => s.run);
+  // A paused activity stays mounted (hidden) so it can be resumed exactly where it was
+  const activity = panel?.type === 'activity' ? panel.id : null;
+  const live = run?.id ?? activity;
+  return (
+    <>
+      {live && <ActivityHost key={live} id={live} hidden={activity !== live} />}
+      {panel && panel.type !== 'activity' && <PanelFor panel={panel} />}
+    </>
+  );
+}
+
+function PanelFor({ panel }: { panel: NonNullable<ReturnType<typeof useUI.getState>['panel']> }) {
   const close = useUI((s) => s.close);
-  if (!panel) return null;
   switch (panel.type) {
     case 'pause':
       return <PausePanel />;
@@ -22,8 +34,6 @@ export function Panels() {
       return <MapPanel />;
     case 'phone':
       return <Phone app={panel.app} arg={panel.arg} />;
-    case 'activity':
-      return <ActivityHost key={panel.id} id={panel.id} />;
     case 'service':
       return <ServicePanel id={panel.id} arg={panel.arg} />;
     case 'shop':

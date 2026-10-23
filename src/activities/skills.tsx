@@ -2,6 +2,7 @@
 /** Skill mini-games used by jobs (and reused by other activities). Each calls onDone(score 0..100). */
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { makeRng } from '@/game/rng';
+import { useActivityPaused, usePausedRef } from './paused';
 import { Button } from '@/ui/common';
 import { CoinIcon } from './QuestionView';
 import { playSfx } from '@/engine/audio';
@@ -41,11 +42,12 @@ export function MakeChange({ entry, tier, seed, onDone, rounds = 5, timed = true
   const [time, setTime] = useState(timed ? (entry ? 120 : 75) : 0);
   const pts = useRef(0);
   const total = Math.round(given.reduce((s, k) => s + DENOMS.find((d) => d.k === k)!.v, 0) * 100) / 100;
+  const paused = useActivityPaused();
   useEffect(() => {
-    if (!timed) return;
+    if (!timed || paused) return;
     const id = setInterval(() => setTime((t) => Math.max(0, t - 1)), 1000);
     return () => clearInterval(id);
-  }, [timed]);
+  }, [timed, paused]);
   useEffect(() => {
     if (timed && time <= 0) onDone((pts.current / rounds) * 100);
   }, [time, timed, onDone, rounds]);
@@ -185,10 +187,12 @@ export function ShelfSort({ entry, seed, onDone }: SkillProps) {
   const [time, setTime] = useState(entry ? 60 : 40);
   const pts = useRef(0);
   const ended = useRef(false);
+  const paused = useActivityPaused();
   useEffect(() => {
+    if (paused) return;
     const id = setInterval(() => setTime((t) => t - 1), 1000);
     return () => clearInterval(id);
-  }, []);
+  }, [paused]);
   useEffect(() => {
     if (!ended.current && (time <= 0 || i >= items.length)) {
       ended.current = true;
@@ -358,10 +362,12 @@ export function BugHunt({ entry, tier, seed, onDone }: SkillProps) {
   const [time, setTime] = useState(entry ? 90 : 60 - tier * 5);
   const pts = useRef(0);
   const done = useRef(false);
+  const paused = useActivityPaused();
   useEffect(() => {
+    if (paused) return;
     const id = setInterval(() => setTime((t) => t - 1), 1000);
     return () => clearInterval(id);
-  }, []);
+  }, [paused]);
   useEffect(() => {
     if (time <= 0 && !done.current) {
       done.current = true;
@@ -422,10 +428,14 @@ export function Timing({ entry, tier, seed, onDone }: SkillProps) {
   const [fb, setFb] = useState<string | null>(null);
   const pts = useRef(0);
   const speed = (entry ? 0.55 : 0.8) + tier * 0.1;
+  const pausedRef = usePausedRef();
   useEffect(() => {
     let raf = 0;
     let t0 = performance.now();
+    let last = t0;
     const loop = (t: number) => {
+      if (pausedRef.current) t0 += t - last;
+      last = t;
       const p = ((t - t0) / 1000) * speed;
       setPos(Math.abs(((p % 2) + 2) % 2 - 1));
       raf = requestAnimationFrame(loop);

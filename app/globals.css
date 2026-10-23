@@ -1230,3 +1230,13 @@ button.item-card { cursor: pointer; }
 .question .choice-letter { font-family: var(--font-body); font-weight: 900; }
 
 .modal .btn.ghost, .modal .btn.ghost.small, .modal .btn.icon.ghost { box-shadow: none; border-color: transparent; }
+.modal-backdrop[hidden] { display: none !important; }
+
+/* Paused activity: resume pill */
+.resume-run { pointer-events: auto; display: flex; align-items: stretch; margin-top: 6px; border: 3px solid var(--px-ink, #14181f); box-shadow: 4px 4px 0 rgba(10, 14, 28, 0.85); background: var(--px-paper, #fff8e7); animation: popIn 0.2s; }
+.resume-go { display: flex; align-items: center; gap: 10px; padding: 7px 12px; border: 0; background: transparent; cursor: pointer; font: 800 0.95rem var(--font-body, Nunito), sans-serif; color: var(--px-ink, #14181f); }
+.resume-go:hover { background: #fff1c4; }
+.resume-tag { font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; background: var(--px-navy, #1d2b53); color: #fff; padding: 2px 6px; }
+.resume-go b::before { content: ''; display: inline-block; margin-right: 7px; border-left: 9px solid #1c7f80; border-top: 6px solid transparent; border-bottom: 6px solid transparent; vertical-align: -1px; }
+.resume-x { border: 0; border-left: 3px solid var(--px-ink, #14181f); background: transparent; padding: 0 10px; cursor: pointer; font-weight: 900; color: var(--px-ink, #14181f); }
+.resume-x:hover { background: #ffd9d2; }

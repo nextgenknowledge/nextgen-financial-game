@@ -87,8 +87,11 @@ export function Modal({
   className,
   closeLabel = '✕',
   accent,
+  hidden,
 }: {
   children: ReactNode;
+  /** Keep the dialog mounted but out of sight (and deaf to Escape). */
+  hidden?: boolean;
   onClose?: () => void;
   size?: 'wide' | 'full';
   title?: ReactNode;
@@ -100,7 +103,7 @@ export function Modal({
   accent?: 'navy' | 'teal' | 'gold' | 'terminal';
 }) {
   useEffect(() => {
-    if (!onClose) return;
+    if (!onClose || hidden) return;
     const h = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         e.stopPropagation();
@@ -109,10 +112,10 @@ export function Modal({
     };
     window.addEventListener('keydown', h, true);
     return () => window.removeEventListener('keydown', h, true);
-  }, [onClose]);
+  }, [onClose, hidden]);
   const [icon, text] = splitIcon(title);
   return (
-    <div className="modal-backdrop" onMouseDown={(e) => e.target === e.currentTarget && onClose?.()}>
+    <div className="modal-backdrop" hidden={hidden} onMouseDown={(e) => e.target === e.currentTarget && onClose?.()}>
       <div className={cls('modal', 'panel', size, className)} role="dialog" aria-modal="true">
         {(title || onClose) && (
           <div className={cls('modal-head', accent ?? 'navy')}>

@@ -6,6 +6,7 @@ import { Button, ReadAloud } from '@/ui/common';
 import { Calculator } from '@/ui/phone/apps/CalculatorApp';
 import { NarwhalPortrait } from '@/ui/hud/HUD';
 import { playSfx } from '@/engine/audio';
+import { useActivityPaused } from './paused';
 import { useSettings } from '@/store/settings';
 import { speak } from '@/ui/speech';
 import { TOPIC_INFO } from '@/game/topics';
@@ -110,16 +111,17 @@ export function QuestionView({
   const [calc, setCalc] = useState(false);
   const [left, setLeft] = useState(timer ?? 0);
   const readAloud = useSettings((s) => s.readAloud);
+  const paused = useActivityPaused();
 
   useEffect(() => {
     if (readAloud) speak(`${q.prompt} ${q.type === 'mc' || q.type === 'tf' ? q.choices.join('. ') : ''}`);
   }, [q, readAloud]);
 
   useEffect(() => {
-    if (!timer || done) return;
+    if (!timer || done || paused) return;
     const id = setInterval(() => setLeft((l) => Math.max(0, l - 0.1)), 100);
     return () => clearInterval(id);
-  }, [timer, done]);
+  }, [timer, done, paused]);
   useEffect(() => {
     if (timer && left <= 0 && !done) finish(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps

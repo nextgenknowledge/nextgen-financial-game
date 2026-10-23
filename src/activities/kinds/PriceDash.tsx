@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { useActivityPaused } from '../paused';
 import type { KindProps } from '../types';
 import { makeRng } from '@/game/rng';
 import { playSfx } from '@/engine/audio';
@@ -41,10 +42,12 @@ export default function PriceDash({ params, onFinish, seed }: KindProps<{ time: 
   const right = useRef(0);
   const wrong = useRef(0);
   const ended = useRef(false);
+  const paused = useActivityPaused();
   useEffect(() => {
+    if (paused) return;
     const id = setInterval(() => setLeft((l) => l - 1), 1000);
     return () => clearInterval(id);
-  }, []);
+  }, [paused]);
   useEffect(() => {
     if (left <= 0 && !ended.current) {
       ended.current = true;
