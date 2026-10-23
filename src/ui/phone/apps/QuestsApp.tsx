@@ -1,6 +1,6 @@
 'use client';
 import { useGame, act } from '@/store/game';
-import { QUEST_BY_ID } from '@/game/progress/quests';
+import { QUEST_BY_ID, QUESTS } from '@/game/progress/quests';
 import { challengeDef, claimChallenge } from '@/game/progress/challenges';
 import { seasonalProgress, claimSeasonal } from '@/game/progress/seasonal';
 import { Section, Empty } from '../../kit';
@@ -12,6 +12,36 @@ export function QuestsApp() {
   const season = seasonalProgress(w);
   return (
     <div>
+      <Section title="👑 Legendary quests">
+        <p className="small muted" style={{ marginTop: 0 }}>Long journeys with prizes you can't buy anywhere. They track themselves while you play.</p>
+        <div className="col" style={{ gap: 8 }}>
+          {QUESTS.filter((q) => q.epic && (!q.difficulty || q.difficulty === w.difficulty)).map((q) => {
+            const done = w.progress.quests.completed.includes(q.id);
+            const a = w.progress.quests.active.find((x) => x.id === q.id);
+            const stepIdx = done ? q.steps.length : a?.step ?? 0;
+            return (
+              <div key={q.id} className={`epic-card ${done ? 'done' : ''}`}>
+                <div className="row" style={{ gap: 10 }}>
+                  <span className="epic-icon">{q.icon}</span>
+                  <div className="col grow" style={{ gap: 2 }}>
+                    <b>{q.title}</b>
+                    <span className="tiny muted">Prize: {q.prize}</span>
+                  </div>
+                  <span className={`chip ${done ? 'good' : 'gold'}`}>{done ? 'Complete' : `${stepIdx}/${q.steps.length}`}</span>
+                </div>
+                <div className="epic-steps">
+                  {q.steps.map((s, i) => (
+                    <div key={s.id} className={`epic-step ${i < stepIdx ? 'past' : i === stepIdx ? 'now' : ''}`}>
+                      <span className="epic-dot">{i < stepIdx ? '✓' : i + 1}</span>
+                      <span className="small">{s.text}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </Section>
       {season && (
         <Section title={`${season.def.icon} Event: ${season.def.name}`}>
           <p className="small">{season.def.text}</p>
@@ -41,7 +71,7 @@ export function QuestsApp() {
         {w.progress.quests.active.length === 0 && <Empty icon="🌟">All quests done! Daily challenges keep coming.</Empty>}
         {w.progress.quests.active.map((a) => {
           const q = QUEST_BY_ID.get(a.id);
-          if (!q) return null;
+          if (!q || q.epic) return null;
           return (
             <div key={a.id} className="card flat" style={{ marginBottom: 6 }}>
               <b>

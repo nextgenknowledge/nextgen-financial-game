@@ -144,13 +144,32 @@
           "label": "My Retirement Account",
           "icon": "🏖️",
           "npc": "banker"
+        },
+        {
+          "label": "Portfolio Lab",
+          "icon": "🧪",
+          "activity": "portfolio-lab"
         }
       ],
       "interior": {
         "floor": "#c9ced8",
         "wall": "#f4f8fb",
         "theme": "office"
-      }
+      },
+      "entryStations": [
+        {
+          "activity": "retirement-tower",
+          "label": "Future You Simulator",
+          "icon": "👵",
+          "npc": "banker"
+        },
+        {
+          "service": "retirement",
+          "label": "My Retirement Account",
+          "icon": "🏖️",
+          "npc": "banker"
+        }
+      ]
     },
     {
       "id": "insurance-office",

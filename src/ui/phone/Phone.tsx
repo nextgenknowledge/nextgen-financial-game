@@ -65,20 +65,12 @@ export function Phone({ app, arg }: { app?: string; arg?: string }) {
 
   const def = APPS.find((a) => a.id === app);
   return (
-    <Modal onClose={close} size="wide" className="phone">
-      <div className="phone-top row between">
-        {app ? (
-          <button className="btn small" onClick={() => (playSfx('click'), open({ type: 'phone' }))}>
-            ◀ Home
-          </button>
-        ) : (
-          <span className="pixel">📱 FinPhone</span>
-        )}
-        <b className="pixel">{def ? `${def.icon} ${def.name}` : ''}</b>
-        <button className="btn icon small ghost" onClick={close} aria-label="Close">
-          ✕
+    <Modal onClose={close} size="wide" className="phone" title={def ? `${def.icon} ${def.name}` : '📱 FinPhone'} subtitle={def ? 'FinPhone' : 'Your money, accounts and progress'}>
+      {app && (
+        <button className="link-btn" style={{ alignSelf: 'flex-start', marginBottom: 6 }} onClick={() => (playSfx('click'), open({ type: 'phone' }))}>
+          ◀ All apps
         </button>
-      </div>
+      )}
       <div className="phone-screen">
         {!app && (
           <div className="app-grid">

@@ -48,4 +48,9 @@ export const KINDS: Record<string, K> = {
   insuranceSim: L(() => import('./kinds/InsuranceSim')),
   emergencySim: L(() => import('./kinds/EmergencySim')),
   loanCompare: L(() => import('./kinds/LoanCompare')),
+  // Advanced pro desks
+  valuation: L(() => import('./kinds/ValuationDesk')),
+  bonds: L(() => import('./kinds/BondDesk')),
+  portfolioLab: L(() => import('./kinds/PortfolioLab')),
+  capTable: L(() => import('./kinds/VentureRound')),
 };

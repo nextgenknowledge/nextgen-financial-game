@@ -151,13 +151,32 @@
           "label": "Stock Options Desk",
           "icon": "📜",
           "npc": "coder"
+        },
+        {
+          "label": "Venture Round",
+          "icon": "🚀",
+          "activity": "venture-round"
         }
       ],
       "interior": {
         "floor": "#c9ced8",
         "wall": "#f4f6fa",
         "theme": "office"
-      }
+      },
+      "entryStations": [
+        {
+          "activity": "salary-negotiation",
+          "label": "Salary Negotiation",
+          "icon": "🤝",
+          "npc": "agent"
+        },
+        {
+          "activity": "stock-options",
+          "label": "Stock Options Desk",
+          "icon": "📜",
+          "npc": "coder"
+        }
+      ]
     },
     {
       "id": "coding-cafe",

@@ -76,7 +76,10 @@ export function finishActivity(w: WorldState, fx: Fx, def: ActivityDef, result: 
     w.progress.stats.ticketsWon = (w.progress.stats.ticketsWon ?? 0) + tickets;
   }
   grantXp(w, fx, xp);
-  if (stars === 3) fx.push({ type: 'confetti' });
+  if (stars === 3) {
+    fx.push({ type: 'confetti' });
+    w.progress.stats.threeStarRuns = (w.progress.stats.threeStarRuns ?? 0) + 1;
+  }
   for (const [kk, v] of Object.entries(result.stats ?? {})) {
     if (kk.startsWith('best')) w.progress.stats[kk] = Math.max(w.progress.stats[kk] ?? 0, v);
     else w.progress.stats[kk] = (w.progress.stats[kk] ?? 0) + v;

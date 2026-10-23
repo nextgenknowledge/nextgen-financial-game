@@ -1,65 +1,336 @@
 {
   "activities": [
     {
-      "id": "grocery", "name": "Grocery Challenge", "kind": "grocery", "icon": "🛒", "building": "london-market", "city": "london",
-      "topics": ["shopping", "budgeting"],
+      "id": "grocery",
+      "name": "Grocery Challenge",
+      "kind": "grocery",
+      "icon": "🛒",
+      "building": "london-market",
+      "city": "london",
+      "topics": [
+        "shopping",
+        "budgeting"
+      ],
       "blurb": "Buy everything on the list without going over budget. Compare brands, sizes (unit prices) and coupons.",
       "entryBlurb": "Buy everything on your list and stay under budget! Pick the cheaper one when you can.",
-      "entry": { "unit": false, "coupons": false, "items": 5 }, "advanced": { "unit": true, "coupons": true, "items": 7 },
-      "stars": [40, 70, 90], "rewards": { "cash": [20, 35, 55], "xp": [30, 50, 70] }
+      "entry": {
+        "unit": false,
+        "coupons": false,
+        "items": 5
+      },
+      "advanced": {
+        "unit": true,
+        "coupons": true,
+        "items": 7
+      },
+      "stars": [
+        40,
+        70,
+        90
+      ],
+      "rewards": {
+        "cash": [
+          20,
+          35,
+          55
+        ],
+        "xp": [
+          30,
+          50,
+          70
+        ]
+      }
     },
     {
-      "id": "dept-store", "name": "Is It Really a Deal?", "kind": "deals", "icon": "🏷️", "building": "dept-store", "city": "london",
-      "topics": ["shopping"],
+      "id": "dept-store",
+      "name": "Is It Really a Deal?",
+      "kind": "deals",
+      "icon": "🏷️",
+      "building": "dept-store",
+      "city": "london",
+      "topics": [
+        "shopping"
+      ],
       "blurb": "Percent-off sales, stacked coupons, BOGO offers and fake 'original prices'. Find the true best deal.",
       "entryBlurb": "Which price is lower after the sale?",
-      "entry": { "rounds": 6 }, "advanced": { "rounds": 7 },
-      "stars": [45, 70, 90], "rewards": { "cash": [20, 35, 55], "xp": [30, 50, 70] }
+      "entry": {
+        "rounds": 6
+      },
+      "advanced": {
+        "rounds": 7
+      },
+      "stars": [
+        45,
+        70,
+        90
+      ],
+      "rewards": {
+        "cash": [
+          20,
+          35,
+          55
+        ],
+        "xp": [
+          30,
+          50,
+          70
+        ]
+      }
     },
     {
-      "id": "change-counter", "name": "Change Counter", "kind": "changeCounter", "icon": "🪙", "building": "corner-shop", "city": "london",
-      "topics": ["counting"],
+      "id": "change-counter",
+      "name": "Change Counter",
+      "kind": "changeCounter",
+      "icon": "🪙",
+      "building": "corner-shop",
+      "city": "london",
+      "topics": [
+        "counting"
+      ],
       "blurb": "Customers pay, you make change. Beat the clock, fewest coins earns a bonus.",
-      "entry": { "rounds": 6 }, "advanced": { "rounds": 8 },
-      "stars": [40, 70, 90], "rewards": { "cash": [15, 30, 45], "xp": [25, 40, 60] }
+      "entry": {
+        "rounds": 6
+      },
+      "advanced": {
+        "rounds": 8
+      },
+      "stars": [
+        40,
+        70,
+        90
+      ],
+      "rewards": {
+        "cash": [
+          15,
+          30,
+          45
+        ],
+        "xp": [
+          25,
+          40,
+          60
+        ]
+      }
     },
     {
-      "id": "currency-exchange", "name": "Exchange Booths", "kind": "fx", "icon": "💱", "building": "currency-exchange", "city": "london",
-      "topics": ["shopping", "economics"],
+      "id": "currency-exchange",
+      "name": "Exchange Booths",
+      "kind": "fx",
+      "icon": "💱",
+      "building": "currency-exchange",
+      "city": "london",
+      "topics": [
+        "shopping",
+        "economics"
+      ],
       "blurb": "Convert currencies and compare booths with different rates, flat fees and percentage commissions.",
       "entryBlurb": "Trade your dollars for pounds! How many pounds do you get?",
-      "entry": { "rounds": 5 }, "advanced": { "rounds": 6 },
-      "stars": [40, 70, 90], "rewards": { "cash": [20, 35, 55], "xp": [30, 50, 70] }
+      "entry": {
+        "rounds": 5
+      },
+      "advanced": {
+        "rounds": 6
+      },
+      "stars": [
+        40,
+        70,
+        90
+      ],
+      "rewards": {
+        "cash": [
+          20,
+          35,
+          55
+        ],
+        "xp": [
+          30,
+          50,
+          70
+        ]
+      }
     },
     {
-      "id": "rent-vs-buy", "name": "Rent or Buy?", "kind": "rentBuy", "icon": "🏠", "building": "rent-buy-office", "city": "london",
-      "topics": ["housing", "debt"],
+      "id": "rent-vs-buy",
+      "name": "Rent or Buy?",
+      "kind": "rentBuy",
+      "icon": "🏠",
+      "building": "rent-buy-office",
+      "city": "london",
+      "topics": [
+        "housing",
+        "debt"
+      ],
       "blurb": "For each family, simulate renting vs. buying over their time horizon, rent growth, mortgage, upkeep, taxes, appreciation and the investment return on the down payment.",
       "entryBlurb": "Help families decide: rent a home or buy one?",
-      "entry": { "rounds": 3 }, "advanced": { "rounds": 3 },
-      "stars": [40, 70, 90], "rewards": { "cash": [25, 40, 65], "xp": [40, 60, 85] }
+      "entry": {
+        "rounds": 3
+      },
+      "advanced": {
+        "rounds": 3
+      },
+      "stars": [
+        40,
+        70,
+        90
+      ],
+      "rewards": {
+        "cash": [
+          25,
+          40,
+          65
+        ],
+        "xp": [
+          40,
+          60,
+          85
+        ]
+      }
     },
     {
-      "id": "budget-planner", "name": "Budget Planner", "kind": "budgetPlanner", "icon": "📋", "building": "budget-hall", "city": "london",
-      "topics": ["budgeting"],
+      "id": "budget-planner",
+      "name": "Budget Planner",
+      "kind": "budgetPlanner",
+      "icon": "📋",
+      "building": "budget-hall",
+      "city": "london",
+      "topics": [
+        "budgeting"
+      ],
       "blurb": "Build a 50/30/20 budget from a real paycheck, then live through 6 months of surprise expenses.",
       "entryBlurb": "Make a money plan, then see what happens when surprises pop up!",
-      "entry": { "months": 4 }, "advanced": { "months": 6 },
-      "stars": [40, 70, 90], "rewards": { "cash": [25, 40, 60], "xp": [40, 60, 85] }
+      "entry": {
+        "months": 4
+      },
+      "advanced": {
+        "months": 6
+      },
+      "stars": [
+        40,
+        70,
+        90
+      ],
+      "rewards": {
+        "cash": [
+          25,
+          40,
+          60
+        ],
+        "xp": [
+          40,
+          60,
+          85
+        ]
+      }
     },
     {
-      "id": "jars", "name": "Save · Spend · Share", "kind": "allocate", "icon": "🫙", "building": "budget-hall", "city": "london",
-      "topics": ["budgeting", "saving", "giving"],
+      "id": "jars",
+      "name": "Save · Spend · Share",
+      "kind": "allocate",
+      "icon": "🫙",
+      "building": "budget-hall",
+      "city": "london",
+      "topics": [
+        "budgeting",
+        "saving",
+        "giving"
+      ],
       "blurb": "Split your earnings into three jars.",
-      "entry": { "scenario": "budget-entry" }, "advanced": { "scenario": "trip-advanced" },
-      "stars": [50, 75, 92], "rewards": { "cash": [15, 25, 40], "xp": [25, 40, 55] }
+      "entry": {
+        "scenario": "budget-entry"
+      },
+      "advanced": {
+        "scenario": "trip-advanced"
+      },
+      "stars": [
+        50,
+        75,
+        92
+      ],
+      "rewards": {
+        "cash": [
+          15,
+          25,
+          40
+        ],
+        "xp": [
+          25,
+          40,
+          55
+        ]
+      }
     },
     {
-      "id": "london-quiz", "name": "Market Quiz", "kind": "quiz", "icon": "🎤", "building": "london-market", "city": "london",
-      "topics": ["budgeting", "shopping"],
+      "id": "london-quiz",
+      "name": "Market Quiz",
+      "kind": "quiz",
+      "icon": "🎤",
+      "building": "london-market",
+      "city": "london",
+      "topics": [
+        "budgeting",
+        "shopping"
+      ],
       "blurb": "Questions about budgets, prices, deals and currencies.",
-      "entry": { "count": 8, "cities": ["london"] }, "advanced": { "count": 8, "cities": ["london"] },
-      "stars": [50, 75, 90], "rewards": { "cash": [20, 35, 55], "xp": [35, 55, 80] }
+      "entry": {
+        "count": 8,
+        "cities": [
+          "london"
+        ]
+      },
+      "advanced": {
+        "count": 8,
+        "cities": [
+          "london"
+        ]
+      },
+      "stars": [
+        50,
+        75,
+        90
+      ],
+      "rewards": {
+        "cash": [
+          20,
+          35,
+          55
+        ],
+        "xp": [
+          35,
+          55,
+          80
+        ]
+      }
+    },
+    {
+      "id": "bond-desk",
+      "name": "Bond Desk",
+      "kind": "bonds",
+      "icon": "📜",
+      "building": "currency-exchange",
+      "city": "london",
+      "topics": [
+        "investing",
+        "economics"
+      ],
+      "blurb": "Trade gilts and corporate bonds: price them, read premium vs discount, use duration to estimate moves, decode the yield curve and size up credit spreads.",
+      "advanced": {},
+      "stars": [
+        45,
+        70,
+        90
+      ],
+      "rewards": {
+        "cash": [
+          55,
+          100,
+          160
+        ],
+        "xp": [
+          70,
+          120,
+          180
+        ]
+      }
     }
   ]
 }

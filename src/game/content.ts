@@ -173,6 +173,12 @@ export interface QuestDef {
   onboarding?: boolean;
   requires?: { quest?: string; level?: number };
   city?: LocationId;
+  /** Legendary quest: long-running, starts on its own, never drives Narwhal's main guide. */
+  epic?: boolean;
+  /** Only offered at this difficulty. */
+  difficulty?: 'entry' | 'advanced';
+  /** What the prize is, in words, for the quest card. */
+  prize?: string;
 }
 
 export type { CityId };

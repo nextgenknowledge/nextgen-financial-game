@@ -20,7 +20,7 @@ import { startAmbience, stopAmbience } from '@/engine/ambience';
 import { advanceTime } from '@/game/sim/time';
 import { recordEvent } from '@/game/progress/events';
 import { refreshChallenges } from '@/game/progress/challenges';
-import { sayStep, currentStep } from '@/game/progress/quests';
+import { sayStep, currentStep, startEpics } from '@/game/progress/quests';
 import { capture, saveNow } from './startWorld';
 import { interact } from './interact';
 import { HUD } from './hud/HUD';
@@ -85,6 +85,7 @@ export default function GameView() {
     playMusic(CITIES[w.player.location].music);
     act((d, fx) => {
       refreshChallenges(d);
+      startEpics(d, fx);
       if (!d.progress.flags.introDone) {
         d.progress.flags.introDone = true;
         const cs = currentStep(d);

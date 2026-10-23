@@ -1,89 +1,464 @@
 {
   "activities": [
     {
-      "id": "job-center", "name": "Job Center", "kind": "job", "icon": "💼", "building": "sf-job-center", "city": "san-francisco",
-      "topics": ["earning"],
+      "id": "job-center",
+      "name": "Job Center",
+      "kind": "job",
+      "icon": "💼",
+      "building": "sf-job-center",
+      "city": "san-francisco",
+      "topics": [
+        "earning"
+      ],
       "blurb": "Choose a career, play its skill game and earn a real paycheck (with taxes in Advanced). Good shifts lead to promotions.",
       "entryBlurb": "Pick a job and do your best to earn money!",
-      "entry": { "board": "sf" }, "advanced": { "board": "sf" },
-      "stars": [40, 70, 90], "rewards": { "cash": [0, 0, 0], "xp": [30, 45, 65] }
+      "entry": {
+        "board": "sf"
+      },
+      "advanced": {
+        "board": "sf"
+      },
+      "stars": [
+        40,
+        70,
+        90
+      ],
+      "rewards": {
+        "cash": [
+          0,
+          0,
+          0
+        ],
+        "xp": [
+          30,
+          45,
+          65
+        ]
+      }
     },
     {
-      "id": "salary-negotiation", "name": "Salary Negotiation", "kind": "negotiation", "icon": "🤝", "building": "tech-campus", "city": "san-francisco",
-      "topics": ["earning"],
+      "id": "salary-negotiation",
+      "name": "Salary Negotiation",
+      "kind": "negotiation",
+      "icon": "🤝",
+      "building": "tech-campus",
+      "city": "san-francisco",
+      "topics": [
+        "earning"
+      ],
       "blurb": "You got a job offer! Research the market, know your walk-away number, and negotiate, without losing the offer.",
       "entryBlurb": "Practice asking for fair pay in a friendly way.",
-      "entry": { "mode": "entry" }, "advanced": { "mode": "advanced" },
-      "stars": [40, 70, 90], "rewards": { "cash": [30, 50, 80], "xp": [40, 60, 90] }
+      "entry": {
+        "mode": "entry"
+      },
+      "advanced": {
+        "mode": "advanced"
+      },
+      "stars": [
+        40,
+        70,
+        90
+      ],
+      "rewards": {
+        "cash": [
+          30,
+          50,
+          80
+        ],
+        "xp": [
+          40,
+          60,
+          90
+        ]
+      }
     },
     {
-      "id": "stock-options", "name": "Stock Options Desk", "kind": "options", "icon": "📜", "building": "tech-campus", "city": "san-francisco",
-      "topics": ["investing", "earning", "taxes"],
+      "id": "stock-options",
+      "name": "Stock Options Desk",
+      "kind": "options",
+      "icon": "📜",
+      "building": "tech-campus",
+      "city": "san-francisco",
+      "topics": [
+        "investing",
+        "earning",
+        "taxes"
+      ],
       "blurb": "Compare salary vs. stock options: strike price, vesting schedules, cliffs and what options are worth if the company does well, or doesn't.",
       "entryBlurb": "Learn what it means to own a tiny piece of the company you work for.",
-      "entry": { "kind": "quiz", "count": 6, "cities": ["san-francisco", "new-york"], "topics": ["investing", "earning"] },
-      "advanced": { "rounds": 4 },
-      "stars": [40, 70, 90], "rewards": { "cash": [30, 50, 80], "xp": [40, 60, 90] }
+      "entry": {
+        "kind": "quiz",
+        "count": 6,
+        "cities": [
+          "san-francisco",
+          "new-york"
+        ],
+        "topics": [
+          "investing",
+          "earning"
+        ]
+      },
+      "advanced": {
+        "rounds": 4
+      },
+      "stars": [
+        40,
+        70,
+        90
+      ],
+      "rewards": {
+        "cash": [
+          30,
+          50,
+          80
+        ],
+        "xp": [
+          40,
+          60,
+          90
+        ]
+      }
     },
     {
-      "id": "coding-cafe", "name": "Freelance Puzzles", "kind": "coding", "icon": "🤖", "building": "coding-cafe", "city": "san-francisco",
-      "topics": ["earning", "business"],
+      "id": "coding-cafe",
+      "name": "Freelance Puzzles",
+      "kind": "coding",
+      "icon": "🤖",
+      "building": "coding-cafe",
+      "city": "san-francisco",
+      "topics": [
+        "earning",
+        "business"
+      ],
       "blurb": "Program a delivery robot to collect coins. Fewer commands = more freelance pay.",
       "entryBlurb": "Give the robot directions to grab the coins!",
-      "entry": { "levels": 4, "loops": false }, "advanced": { "levels": 5, "loops": true },
-      "stars": [40, 70, 90], "rewards": { "cash": [25, 45, 70], "xp": [35, 55, 80] }
+      "entry": {
+        "levels": 4,
+        "loops": false
+      },
+      "advanced": {
+        "levels": 5,
+        "loops": true
+      },
+      "stars": [
+        40,
+        70,
+        90
+      ],
+      "rewards": {
+        "cash": [
+          25,
+          45,
+          70
+        ],
+        "xp": [
+          35,
+          55,
+          80
+        ]
+      }
     },
     {
-      "id": "needs-wants", "name": "Sorting Conveyor", "kind": "sort", "icon": "⚖️", "building": "sorting-center", "city": "san-francisco",
-      "topics": ["needs-wants"],
+      "id": "needs-wants",
+      "name": "Sorting Conveyor",
+      "kind": "sort",
+      "icon": "⚖️",
+      "building": "sorting-center",
+      "city": "san-francisco",
+      "topics": [
+        "needs-wants"
+      ],
       "blurb": "Sort each item: need, want, or does it depend on the situation?",
       "entryBlurb": "Is it a NEED or a WANT? Sort them all!",
-      "entry": { "set": "needs-wants" }, "advanced": { "set": "needs-wants-adv" },
-      "stars": [50, 75, 92], "rewards": { "cash": [15, 25, 40], "xp": [25, 40, 55] }
+      "entry": {
+        "set": "needs-wants"
+      },
+      "advanced": {
+        "set": "needs-wants-adv"
+      },
+      "stars": [
+        50,
+        75,
+        92
+      ],
+      "rewards": {
+        "cash": [
+          15,
+          25,
+          40
+        ],
+        "xp": [
+          25,
+          40,
+          55
+        ]
+      }
     },
     {
-      "id": "first-paycheck", "name": "My First Paycheck", "kind": "story", "icon": "💵", "building": "sorting-center", "city": "san-francisco",
-      "topics": ["earning", "budgeting"],
+      "id": "first-paycheck",
+      "name": "My First Paycheck",
+      "kind": "story",
+      "icon": "💵",
+      "building": "sorting-center",
+      "city": "san-francisco",
+      "topics": [
+        "earning",
+        "budgeting"
+      ],
       "blurb": "A story about planning your very first paycheck.",
-      "entry": { "story": "first-paycheck" }, "advanced": { "kind": "quiz", "count": 6, "cities": ["san-francisco"], "topics": ["earning", "taxes", "budgeting"] },
-      "stars": [50, 75, 92], "rewards": { "cash": [15, 25, 40], "xp": [25, 40, 55] }
+      "entry": {
+        "story": "first-paycheck"
+      },
+      "advanced": {
+        "kind": "quiz",
+        "count": 6,
+        "cities": [
+          "san-francisco"
+        ],
+        "topics": [
+          "earning",
+          "taxes",
+          "budgeting"
+        ]
+      },
+      "stars": [
+        50,
+        75,
+        92
+      ],
+      "rewards": {
+        "cash": [
+          15,
+          25,
+          40
+        ],
+        "xp": [
+          25,
+          40,
+          55
+        ]
+      }
     },
     {
-      "id": "cyber-lab", "name": "Scam Detector", "kind": "phishing", "icon": "🕵️", "building": "cyber-lab", "city": "san-francisco",
-      "topics": ["safety"],
+      "id": "cyber-lab",
+      "name": "Scam Detector",
+      "kind": "phishing",
+      "icon": "🕵️",
+      "building": "cyber-lab",
+      "city": "san-francisco",
+      "topics": [
+        "safety"
+      ],
       "blurb": "Emails, texts and websites: decide SAFE or SCAM and tap the red flags.",
       "entryBlurb": "Is this message safe or a trick? Find the clues!",
-      "entry": { "count": 6, "flags": false }, "advanced": { "count": 8, "flags": true },
-      "stars": [50, 75, 92], "rewards": { "cash": [20, 35, 55], "xp": [30, 50, 70] }
+      "entry": {
+        "count": 6,
+        "flags": false
+      },
+      "advanced": {
+        "count": 8,
+        "flags": true
+      },
+      "stars": [
+        50,
+        75,
+        92
+      ],
+      "rewards": {
+        "cash": [
+          20,
+          35,
+          55
+        ],
+        "xp": [
+          30,
+          50,
+          70
+        ]
+      }
     },
     {
-      "id": "password-lab", "name": "Password Strength Lab", "kind": "password", "icon": "🔐", "building": "cyber-lab", "city": "san-francisco",
-      "topics": ["safety"],
+      "id": "password-lab",
+      "name": "Password Strength Lab",
+      "kind": "password",
+      "icon": "🔐",
+      "building": "cyber-lab",
+      "city": "san-francisco",
+      "topics": [
+        "safety"
+      ],
       "blurb": "Rank passwords from weakest to strongest and learn why length beats complexity.",
-      "entry": { "rounds": 5 }, "advanced": { "rounds": 6 },
-      "stars": [50, 75, 92], "rewards": { "cash": [15, 25, 40], "xp": [25, 40, 55] }
+      "entry": {
+        "rounds": 5
+      },
+      "advanced": {
+        "rounds": 6
+      },
+      "stars": [
+        50,
+        75,
+        92
+      ],
+      "rewards": {
+        "cash": [
+          15,
+          25,
+          40
+        ],
+        "xp": [
+          25,
+          40,
+          55
+        ]
+      }
     },
     {
-      "id": "tax-return", "name": "File a Tax Return", "kind": "taxReturn", "icon": "🧾", "building": "tax-office", "city": "san-francisco",
-      "topics": ["taxes"],
+      "id": "tax-return",
+      "name": "File a Tax Return",
+      "kind": "taxReturn",
+      "icon": "🧾",
+      "building": "tax-office",
+      "city": "san-francisco",
+      "topics": [
+        "taxes"
+      ],
       "blurb": "Fill in an FC-1040: income, standard vs. itemized deduction, taxable income, bracket tax, credits, and refund or amount owed. Uses your real W-2 when you have one.",
       "entryBlurb": "A story about why everyone pays taxes.",
-      "entry": { "kind": "story", "story": "taxes-story" }, "advanced": { "useReal": true },
-      "stars": [40, 70, 90], "rewards": { "cash": [30, 50, 80], "xp": [45, 70, 100] }
+      "entry": {
+        "kind": "story",
+        "story": "taxes-story"
+      },
+      "advanced": {
+        "useReal": true
+      },
+      "stars": [
+        40,
+        70,
+        90
+      ],
+      "rewards": {
+        "cash": [
+          30,
+          50,
+          80
+        ],
+        "xp": [
+          45,
+          70,
+          100
+        ]
+      }
     },
     {
-      "id": "paycheck-decoder", "name": "Paycheck Decoder", "kind": "paycheckDecoder", "icon": "🔍", "building": "tax-office", "city": "san-francisco",
-      "topics": ["taxes", "earning"],
+      "id": "paycheck-decoder",
+      "name": "Paycheck Decoder",
+      "kind": "paycheckDecoder",
+      "icon": "🔍",
+      "building": "tax-office",
+      "city": "san-francisco",
+      "topics": [
+        "taxes",
+        "earning"
+      ],
       "blurb": "Read real-looking pay stubs: find gross, net, FICA and the effective tax rate, and spot the payroll mistake.",
-      "entry": { "rounds": 4 }, "advanced": { "rounds": 4 },
-      "stars": [40, 70, 90], "rewards": { "cash": [25, 40, 60], "xp": [35, 55, 80] }
+      "entry": {
+        "rounds": 4
+      },
+      "advanced": {
+        "rounds": 4
+      },
+      "stars": [
+        40,
+        70,
+        90
+      ],
+      "rewards": {
+        "cash": [
+          25,
+          40,
+          60
+        ],
+        "xp": [
+          35,
+          55,
+          80
+        ]
+      }
     },
     {
-      "id": "sf-quiz", "name": "Career Quiz", "kind": "quiz", "icon": "🎤", "building": "sf-job-center", "city": "san-francisco",
-      "topics": ["earning", "taxes", "safety", "needs-wants"],
+      "id": "sf-quiz",
+      "name": "Career Quiz",
+      "kind": "quiz",
+      "icon": "🎤",
+      "building": "sf-job-center",
+      "city": "san-francisco",
+      "topics": [
+        "earning",
+        "taxes",
+        "safety",
+        "needs-wants"
+      ],
       "blurb": "Questions about jobs, paychecks, taxes and staying safe online.",
-      "entry": { "count": 8, "cities": ["san-francisco"] }, "advanced": { "count": 8, "cities": ["san-francisco"] },
-      "stars": [50, 75, 90], "rewards": { "cash": [20, 35, 55], "xp": [35, 55, 80] }
+      "entry": {
+        "count": 8,
+        "cities": [
+          "san-francisco"
+        ]
+      },
+      "advanced": {
+        "count": 8,
+        "cities": [
+          "san-francisco"
+        ]
+      },
+      "stars": [
+        50,
+        75,
+        90
+      ],
+      "rewards": {
+        "cash": [
+          20,
+          35,
+          55
+        ],
+        "xp": [
+          35,
+          55,
+          80
+        ]
+      }
+    },
+    {
+      "id": "venture-round",
+      "name": "Venture Round",
+      "kind": "capTable",
+      "icon": "🚀",
+      "building": "tech-campus",
+      "city": "san-francisco",
+      "topics": [
+        "business",
+        "investing"
+      ],
+      "blurb": "Follow a startup from founding to exit: price the seed and Series A, track dilution on the cap table, and work out who gets paid what when it sells, liquidation preferences and all.",
+      "advanced": {},
+      "stars": [
+        45,
+        70,
+        90
+      ],
+      "rewards": {
+        "cash": [
+          55,
+          100,
+          160
+        ],
+        "xp": [
+          70,
+          120,
+          180
+        ]
+      }
     }
   ]
 }

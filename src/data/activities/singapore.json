@@ -1,58 +1,304 @@
 {
   "activities": [
     {
-      "id": "savings-garden", "name": "Plant a Money Tree", "kind": "garden", "icon": "🌱", "building": "savings-garden", "city": "singapore",
-      "topics": ["saving", "interest"],
+      "id": "savings-garden",
+      "name": "Plant a Money Tree",
+      "kind": "garden",
+      "icon": "🌱",
+      "building": "savings-garden",
+      "city": "singapore",
+      "topics": [
+        "saving",
+        "interest"
+      ],
       "blurb": "Plant a deposit, choose the rate, compounding and monthly additions, then fast-forward the years and watch the tree grow. Hit the target size!",
       "entryBlurb": "Plant money and watch your tree grow bigger every year!",
-      "entry": { "rounds": 3, "advanced": false }, "advanced": { "rounds": 3, "advanced": true },
-      "stars": [40, 70, 90], "rewards": { "cash": [20, 35, 55], "xp": [30, 50, 75] }
+      "entry": {
+        "rounds": 3,
+        "advanced": false
+      },
+      "advanced": {
+        "rounds": 3,
+        "advanced": true
+      },
+      "stars": [
+        40,
+        70,
+        90
+      ],
+      "rewards": {
+        "cash": [
+          20,
+          35,
+          55
+        ],
+        "xp": [
+          30,
+          50,
+          75
+        ]
+      }
     },
     {
-      "id": "retirement-tower", "name": "Future You Simulator", "kind": "retirementSim", "icon": "👵", "building": "retirement-tower", "city": "singapore",
-      "topics": ["retirement", "interest", "taxes"],
+      "id": "retirement-tower",
+      "name": "Future You Simulator",
+      "kind": "retirementSim",
+      "icon": "👵",
+      "building": "retirement-tower",
+      "city": "singapore",
+      "topics": [
+        "retirement",
+        "interest",
+        "taxes"
+      ],
       "blurb": "Plan saving from age 16 to 65 for three people. Compare starting early vs late, employer matches, and Roth vs. traditional, then answer the planner's questions.",
       "entryBlurb": "Two friends save money. One starts early, one starts late. Who has more when they're old?",
-      "entry": { "advanced": false }, "advanced": { "advanced": true },
-      "stars": [40, 70, 90], "rewards": { "cash": [25, 40, 65], "xp": [40, 60, 90] }
+      "entry": {
+        "advanced": false
+      },
+      "advanced": {
+        "advanced": true
+      },
+      "stars": [
+        40,
+        70,
+        90
+      ],
+      "rewards": {
+        "cash": [
+          25,
+          40,
+          65
+        ],
+        "xp": [
+          40,
+          60,
+          90
+        ]
+      }
     },
     {
-      "id": "insurance-sim", "name": "Insurance Year", "kind": "insuranceSim", "icon": "🎲", "building": "insurance-office", "city": "singapore",
-      "topics": ["insurance"],
+      "id": "insurance-sim",
+      "name": "Insurance Year",
+      "kind": "insuranceSim",
+      "icon": "🎲",
+      "building": "insurance-office",
+      "city": "singapore",
+      "topics": [
+        "insurance"
+      ],
       "blurb": "Pick a health, car and home plan (premium vs. deductible), then live through 12 months of random events. Was it worth it?",
       "entryBlurb": "Pick protection, then see what happens in a year full of surprises!",
-      "entry": { "advanced": false }, "advanced": { "advanced": true },
-      "stars": [40, 70, 90], "rewards": { "cash": [25, 40, 60], "xp": [35, 55, 80] }
+      "entry": {
+        "advanced": false
+      },
+      "advanced": {
+        "advanced": true
+      },
+      "stars": [
+        40,
+        70,
+        90
+      ],
+      "rewards": {
+        "cash": [
+          25,
+          40,
+          60
+        ],
+        "xp": [
+          35,
+          55,
+          80
+        ]
+      }
     },
     {
-      "id": "emergency-fund", "name": "Rainy Day Challenge", "kind": "emergencySim", "icon": "☔", "building": "emergency-center", "city": "singapore",
-      "topics": ["saving", "insurance", "debt"],
+      "id": "emergency-fund",
+      "name": "Rainy Day Challenge",
+      "kind": "emergencySim",
+      "icon": "☔",
+      "building": "emergency-center",
+      "city": "singapore",
+      "topics": [
+        "saving",
+        "insurance",
+        "debt"
+      ],
       "blurb": "Decide how much of each paycheck goes to your emergency fund, then face a year of surprises. Avoid high-interest debt!",
       "entryBlurb": "Fill your rainy-day jar, then see if it's ready for surprises!",
-      "entry": { "months": 6 }, "advanced": { "months": 12 },
-      "stars": [40, 70, 90], "rewards": { "cash": [20, 35, 55], "xp": [30, 50, 75] }
+      "entry": {
+        "months": 6
+      },
+      "advanced": {
+        "months": 12
+      },
+      "stars": [
+        40,
+        70,
+        90
+      ],
+      "rewards": {
+        "cash": [
+          20,
+          35,
+          55
+        ],
+        "xp": [
+          30,
+          50,
+          75
+        ]
+      }
     },
     {
-      "id": "borrowing-booth", "name": "Compare Loan Offers", "kind": "loanCompare", "icon": "📝", "building": "borrowing-booth", "city": "singapore",
-      "topics": ["debt", "interest", "credit"],
+      "id": "borrowing-booth",
+      "name": "Compare Loan Offers",
+      "kind": "loanCompare",
+      "icon": "📝",
+      "building": "borrowing-booth",
+      "city": "singapore",
+      "topics": [
+        "debt",
+        "interest",
+        "credit"
+      ],
       "blurb": "Three lenders, three offers. Compute monthly payments and total cost with fees, find the best deal, and see what extra payments do.",
       "entryBlurb": "Which loan costs less in the end?",
-      "entry": { "rounds": 4 }, "advanced": { "rounds": 4 },
-      "stars": [40, 70, 90], "rewards": { "cash": [25, 40, 60], "xp": [35, 55, 80] }
+      "entry": {
+        "rounds": 4
+      },
+      "advanced": {
+        "rounds": 4
+      },
+      "stars": [
+        40,
+        70,
+        90
+      ],
+      "rewards": {
+        "cash": [
+          25,
+          40,
+          60
+        ],
+        "xp": [
+          35,
+          55,
+          80
+        ]
+      }
     },
     {
-      "id": "charity-check", "name": "Real or Red Flag?", "kind": "sort", "icon": "🚩", "building": "giving-center", "city": "singapore",
-      "topics": ["giving", "safety"],
+      "id": "charity-check",
+      "name": "Real or Red Flag?",
+      "kind": "sort",
+      "icon": "🚩",
+      "building": "giving-center",
+      "city": "singapore",
+      "topics": [
+        "giving",
+        "safety"
+      ],
       "blurb": "Sort charity signs: legit, or a red flag?",
-      "entry": { "set": "charity-check" }, "advanced": { "set": "charity-check" },
-      "stars": [50, 75, 95], "rewards": { "cash": [15, 25, 40], "xp": [25, 40, 55] }
+      "entry": {
+        "set": "charity-check"
+      },
+      "advanced": {
+        "set": "charity-check"
+      },
+      "stars": [
+        50,
+        75,
+        95
+      ],
+      "rewards": {
+        "cash": [
+          15,
+          25,
+          40
+        ],
+        "xp": [
+          25,
+          40,
+          55
+        ]
+      }
     },
     {
-      "id": "sg-quiz", "name": "Long-Term Quiz", "kind": "quiz", "icon": "🎤", "building": "giving-center", "city": "singapore",
-      "topics": ["saving", "retirement", "insurance", "giving"],
+      "id": "sg-quiz",
+      "name": "Long-Term Quiz",
+      "kind": "quiz",
+      "icon": "🎤",
+      "building": "giving-center",
+      "city": "singapore",
+      "topics": [
+        "saving",
+        "retirement",
+        "insurance",
+        "giving"
+      ],
       "blurb": "Saving, compounding, retirement, insurance and giving.",
-      "entry": { "count": 8, "cities": ["singapore"] }, "advanced": { "count": 8, "cities": ["singapore"] },
-      "stars": [50, 75, 90], "rewards": { "cash": [20, 35, 55], "xp": [35, 55, 80] }
+      "entry": {
+        "count": 8,
+        "cities": [
+          "singapore"
+        ]
+      },
+      "advanced": {
+        "count": 8,
+        "cities": [
+          "singapore"
+        ]
+      },
+      "stars": [
+        50,
+        75,
+        90
+      ],
+      "rewards": {
+        "cash": [
+          20,
+          35,
+          55
+        ],
+        "xp": [
+          35,
+          55,
+          80
+        ]
+      }
+    },
+    {
+      "id": "portfolio-lab",
+      "name": "Portfolio Lab",
+      "kind": "portfolioLab",
+      "icon": "🧪",
+      "building": "retirement-tower",
+      "city": "singapore",
+      "topics": [
+        "investing",
+        "retirement"
+      ],
+      "blurb": "Use real portfolio maths: expected returns, volatility and correlation. Find the best Sharpe ratio, the lowest-risk mix and the cheapest route to a target return.",
+      "advanced": {},
+      "stars": [
+        50,
+        75,
+        92
+      ],
+      "rewards": {
+        "cash": [
+          60,
+          110,
+          170
+        ],
+        "xp": [
+          80,
+          130,
+          190
+        ]
+      }
     }
   ]
 }

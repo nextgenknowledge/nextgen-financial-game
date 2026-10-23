@@ -110,14 +110,19 @@ export function sayStep(w: WorldState, fx: Fx, step: QuestStep) {
   for (const text of lines ?? []) fx.push({ type: 'narwhal', text, mood: 'talking' });
 }
 
-export function startQuest(w: WorldState, fx: Fx, id: string) {
+export function startQuest(w: WorldState, fx: Fx, id: string, silent = false) {
   const q = QUEST_BY_ID.get(id);
   if (!q) return;
   if (w.progress.quests.completed.includes(id) || w.progress.quests.active.some((a) => a.id === id)) return;
   w.progress.quests.active.push({ id, step: 0, progress: 0 });
   // Skip straight past anything the player already did; otherwise introduce step 1.
   if (stateComplete(w, q.steps[0])) questsOnEvent(w, fx, { type: '__none' });
-  else sayStep(w, fx, q.steps[0]);
+  else if (!silent && !q.epic) sayStep(w, fx, q.steps[0]);
+}
+
+/** Legendary quests run alongside the story from the start (once per world, per difficulty). */
+export function startEpics(w: WorldState, fx: Fx) {
+  for (const q of QUESTS) if (q.epic && (!q.difficulty || q.difficulty === w.difficulty)) startQuest(w, fx, q.id, true);
 }
 
 export function unlockLocation(w: WorldState, fx: Fx, loc: LocationId) {
@@ -189,7 +194,8 @@ export function questsOnEvent(w: WorldState, fx: Fx, ev: GameEvent): boolean {
       // The next step only advances on a *new* event, unless it was already done earlier,
       // in which case we skip it without Narwhal announcing it.
       ev = { type: '__none' };
-      if (!stateComplete(w, q.steps[a.step])) sayStep(w, fx, q.steps[a.step]);
+      if (q.epic) fx.push({ type: 'toast', text: `${q.title}: milestone reached!`, icon: q.icon, tone: 'gold' });
+      else if (!stateComplete(w, q.steps[a.step])) sayStep(w, fx, q.steps[a.step]);
     }
   }
   return changed;
@@ -200,6 +206,7 @@ export function currentStep(w: WorldState): { quest: QuestDef; step: QuestStep; 
   const sorted = [...w.progress.quests.active].sort((a, b) => Number(!!QUEST_BY_ID.get(b.id)?.onboarding) - Number(!!QUEST_BY_ID.get(a.id)?.onboarding));
   for (const a of sorted) {
     const q = QUEST_BY_ID.get(a.id);
+    if (q?.epic) continue;
     if (q && q.steps[a.step]) return { quest: q, step: q.steps[a.step], index: a.step, progress: a.progress };
   }
   return null;

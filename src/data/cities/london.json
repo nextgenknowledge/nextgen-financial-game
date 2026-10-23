@@ -210,13 +210,26 @@
           "label": "Exchange Booths",
           "icon": "💱",
           "npc": "banker"
+        },
+        {
+          "label": "Bond Desk",
+          "icon": "📜",
+          "activity": "bond-desk"
         }
       ],
       "interior": {
         "floor": "#d9dde6",
         "wall": "#f4f8fb",
         "theme": "office"
-      }
+      },
+      "entryStations": [
+        {
+          "activity": "currency-exchange",
+          "label": "Exchange Booths",
+          "icon": "💱",
+          "npc": "banker"
+        }
+      ]
     },
     {
       "id": "rent-buy-office",

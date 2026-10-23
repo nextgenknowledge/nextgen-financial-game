@@ -141,6 +141,16 @@ function Hat({ id }: { id: string | null }) {
           <mesh geometry={rbox(0.56, 0.08, 0.56, 0.02)} material={mat(c2)} position={[0, 0.07, 0]} />
         </group>
       );
+    case 'gradcap':
+      // Mortarboard: skull cap, flat square board and a gold tassel
+      return (
+        <group position={[0, 0.66, 0]}>
+          <mesh geometry={rbox(0.66, 0.2, 0.66, 0.06)} material={mat(c)} />
+          <mesh geometry={rbox(0.98, 0.05, 0.98, 0.01)} material={mat(c)} position={[0, 0.13, 0]} rotation={[0, Math.PI / 4, 0]} />
+          <mesh geometry={rbox(0.08, 0.05, 0.08, 0.02)} material={mat(c2)} position={[0, 0.17, 0]} />
+          <mesh geometry={rbox(0.04, 0.32, 0.04, 0.01)} material={mat(c2)} position={[0.4, 0.0, 0.2]} />
+        </group>
+      );
     case 'crown':
       return (
         <group position={[0, 0.7, 0]}>

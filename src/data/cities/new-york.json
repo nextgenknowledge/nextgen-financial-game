@@ -145,13 +145,32 @@
           "label": "Asset or Liability?",
           "icon": "💎",
           "npc": "clerk"
+        },
+        {
+          "label": "Equity Research Desk",
+          "icon": "📊",
+          "activity": "valuation-desk"
         }
       ],
       "interior": {
         "floor": "#c9ced8",
         "wall": "#e8eef6",
         "theme": "office"
-      }
+      },
+      "entryStations": [
+        {
+          "service": "brokerage",
+          "label": "Trading Desk",
+          "icon": "💹",
+          "npc": "banker"
+        },
+        {
+          "activity": "asset-sort",
+          "label": "Asset or Liability?",
+          "icon": "💎",
+          "npc": "clerk"
+        }
+      ]
     },
     {
       "id": "ny-investment-club",

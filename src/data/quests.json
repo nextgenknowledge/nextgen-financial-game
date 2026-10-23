@@ -11,43 +11,94 @@
           "id": "walk",
           "text": "Walk around the plaza (WASD or arrow keys)",
           "entryText": "Walk around! Use W A S D or the arrow keys",
-          "goal": { "type": "move", "value": 15 },
-          "say": ["Hi there! I'm NextGen Narwhal, your money guide. Welcome to Fin City!", "Let's stretch those legs. Walk with W A S D or the arrow keys. Drag with your mouse to look around, or just click the ground to walk there."],
-          "entrySay": ["Hi! I'm NextGen Narwhal! Welcome to Fin City!", "Let's walk! Use W A S D or the arrow keys. You can also click the ground to walk there."]
+          "goal": {
+            "type": "move",
+            "value": 15
+          },
+          "say": [
+            "Hi there! I'm NextGen Narwhal, your money guide. Welcome to Fin City!",
+            "Let's stretch those legs. Walk with W A S D or the arrow keys. Drag with your mouse to look around, or just click the ground to walk there."
+          ],
+          "entrySay": [
+            "Hi! I'm NextGen Narwhal! Welcome to Fin City!",
+            "Let's walk! Use W A S D or the arrow keys. You can also click the ground to walk there."
+          ]
         },
         {
           "id": "jump",
           "text": "Jump with Space (hold Shift to sprint)",
-          "goal": { "type": "jump", "count": 1 },
-          "say": ["Nice moves! Now press Space to jump. Hold Shift to sprint."],
-          "entrySay": ["Great job! Press Space to jump. Hold Shift to run fast!"]
+          "goal": {
+            "type": "jump",
+            "count": 1
+          },
+          "say": [
+            "Nice moves! Now press Space to jump. Hold Shift to sprint."
+          ],
+          "entrySay": [
+            "Great job! Press Space to jump. Hold Shift to run fast!"
+          ]
         },
         {
           "id": "phone",
           "text": "Open your FinPhone (P key or the 📱 button)",
           "entryText": "Open your FinPhone! Tap the 📱 button",
-          "goal": { "type": "menu", "target": "phone" },
-          "say": ["See the top of your screen? That's your cash 💵 and your net worth 📈. Net worth is everything you own minus everything you owe.", "Your FinPhone holds your bank, goals, net worth and more. Press P or click the 📱 button."],
-          "entrySay": ["Look at the top of the screen! That's your money 💵.", "Now open your FinPhone! Press P or tap the 📱 button."]
+          "goal": {
+            "type": "menu",
+            "target": "phone"
+          },
+          "say": [
+            "See the top of your screen? That's your cash 💵 and your net worth 📈. Net worth is everything you own minus everything you owe.",
+            "Your FinPhone holds your bank, goals, net worth and more. Press P or click the 📱 button."
+          ],
+          "entrySay": [
+            "Look at the top of the screen! That's your money 💵.",
+            "Now open your FinPhone! Press P or tap the 📱 button."
+          ]
         },
         {
           "id": "enter-wc",
           "text": "Go into the Welcome Center",
-          "goal": { "type": "enter", "target": "welcome-center" },
-          "marker": { "location": "park", "pos": [0, -32], "label": "Welcome Center" },
-          "say": ["Follow me to the Welcome Center, just look for the golden beam of light! Press E at the door to go in."],
-          "entrySay": ["Follow me to the Welcome Center! Walk to the gold light and press E."]
+          "goal": {
+            "type": "enter",
+            "target": "welcome-center"
+          },
+          "marker": {
+            "location": "park",
+            "pos": [
+              0,
+              -32
+            ],
+            "label": "Welcome Center"
+          },
+          "say": [
+            "Follow me to the Welcome Center, just look for the golden beam of light! Press E at the door to go in."
+          ],
+          "entrySay": [
+            "Follow me to the Welcome Center! Walk to the gold light and press E."
+          ]
         },
         {
           "id": "first-quiz",
           "text": "Take the First Quiz at the counter",
-          "goal": { "type": "activity", "target": "first-quiz" },
-          "say": ["Walk up to the First Quiz counter and press E. Don't worry about mistakes, I'll explain every answer!"],
-          "entrySay": ["Walk to the First Quiz and press E. It's okay to make mistakes. I'll help!"]
+          "goal": {
+            "type": "activity",
+            "target": "first-quiz"
+          },
+          "say": [
+            "Walk up to the First Quiz counter and press E. Don't worry about mistakes, I'll explain every answer!"
+          ],
+          "entrySay": [
+            "Walk to the First Quiz and press E. It's okay to make mistakes. I'll help!"
+          ]
         }
       ],
-      "reward": { "cash": 25, "xp": 60 },
-      "next": ["q2-bank"]
+      "reward": {
+        "cash": 25,
+        "xp": 60
+      },
+      "next": [
+        "q2-bank"
+      ]
     },
     {
       "id": "q2-bank",
@@ -58,35 +109,75 @@
         {
           "id": "enter-bank",
           "text": "Visit Fin City Bank",
-          "goal": { "type": "enter", "target": "bank" },
-          "marker": { "location": "park", "pos": [-40, -30], "label": "Fin City Bank" },
-          "say": ["You earned some cash! Carrying cash is risky, it can get lost. Let's put it somewhere safe: Fin City Bank."],
-          "entrySay": ["You earned money! Let's keep it safe at the bank."]
+          "goal": {
+            "type": "enter",
+            "target": "bank"
+          },
+          "marker": {
+            "location": "park",
+            "pos": [
+              -40,
+              -30
+            ],
+            "label": "Fin City Bank"
+          },
+          "say": [
+            "You earned some cash! Carrying cash is risky, it can get lost. Let's put it somewhere safe: Fin City Bank."
+          ],
+          "entrySay": [
+            "You earned money! Let's keep it safe at the bank."
+          ]
         },
         {
           "id": "open-checking",
           "text": "Open a checking account at the Teller",
-          "goal": { "type": "event", "target": "openChecking" },
-          "say": ["A checking account is for everyday money: paychecks go in, purchases come out. Talk to the Teller to open one."],
-          "entrySay": ["A checking account is like a safe wallet at the bank. Talk to the Teller!"]
+          "goal": {
+            "type": "event",
+            "target": "openChecking"
+          },
+          "say": [
+            "A checking account is for everyday money: paychecks go in, purchases come out. Talk to the Teller to open one."
+          ],
+          "entrySay": [
+            "A checking account is like a safe wallet at the bank. Talk to the Teller!"
+          ]
         },
         {
           "id": "deposit",
           "text": "Deposit cash into checking (Teller or ATM)",
-          "goal": { "type": "event", "target": "deposit" },
-          "say": ["Now deposit your cash. Depositing means putting money into your account."],
-          "entrySay": ["Now put your cash in the bank. That's called a deposit!"]
+          "goal": {
+            "type": "event",
+            "target": "deposit"
+          },
+          "say": [
+            "Now deposit your cash. Depositing means putting money into your account."
+          ],
+          "entrySay": [
+            "Now put your cash in the bank. That's called a deposit!"
+          ]
         },
         {
           "id": "open-savings",
           "text": "Open a savings account",
-          "goal": { "type": "event", "target": "openSavings" },
-          "say": ["Savings accounts pay you interest, the bank pays YOU for keeping money there. Open one at the Teller."],
-          "entrySay": ["A savings account helps your money grow! The bank pays you a little extra. Open one!"]
+          "goal": {
+            "type": "event",
+            "target": "openSavings"
+          },
+          "say": [
+            "Savings accounts pay you interest, the bank pays YOU for keeping money there. Open one at the Teller."
+          ],
+          "entrySay": [
+            "A savings account helps your money grow! The bank pays you a little extra. Open one!"
+          ]
         }
       ],
-      "reward": { "cash": 20, "xp": 80 },
-      "next": ["q3-job"]
+      "reward": {
+        "cash": 20,
+        "xp": 80
+      },
+      "next": [
+        "q3-job"
+      ]
     },
     {
       "id": "q3-job",
@@ -97,14 +188,35 @@
         {
           "id": "odd-job",
           "text": "Do an odd job from the board by the fountain",
-          "goal": { "type": "activity", "target": "odd-jobs" },
-          "marker": { "location": "park", "pos": [-14, 14], "label": "Odd Jobs Board" },
-          "say": ["Most people earn money by working. The Odd Jobs board by the fountain has quick jobs, let's earn your first paycheck!"],
-          "entrySay": ["People earn money by working! Let's do a job from the board by the fountain."]
+          "goal": {
+            "type": "activity",
+            "target": "odd-jobs"
+          },
+          "marker": {
+            "location": "park",
+            "pos": [
+              -14,
+              14
+            ],
+            "label": "Odd Jobs Board"
+          },
+          "say": [
+            "Most people earn money by working. The Odd Jobs board by the fountain has quick jobs, let's earn your first paycheck!"
+          ],
+          "entrySay": [
+            "People earn money by working! Let's do a job from the board by the fountain."
+          ]
         }
       ],
-      "reward": { "xp": 80, "unlock": ["san-francisco"] },
-      "next": ["q4-sf"]
+      "reward": {
+        "xp": 80,
+        "unlock": [
+          "san-francisco"
+        ]
+      },
+      "next": [
+        "q4-sf"
+      ]
     },
     {
       "id": "q4-sf",
@@ -115,22 +227,58 @@
         {
           "id": "travel-sf",
           "text": "Take the portal to San Francisco (west grove)",
-          "goal": { "type": "travel", "target": "san-francisco" },
-          "marker": { "location": "park", "pos": [-100, 22], "label": "SF Portal" },
-          "say": ["I've opened your first portal! San Francisco is the city of jobs and technology. The portals are in the grove on the west side of the park."],
-          "entrySay": ["I opened a magic portal! It goes to San Francisco. Follow me!"]
+          "goal": {
+            "type": "travel",
+            "target": "san-francisco"
+          },
+          "marker": {
+            "location": "park",
+            "pos": [
+              -100,
+              22
+            ],
+            "label": "SF Portal"
+          },
+          "say": [
+            "I've opened your first portal! San Francisco is the city of jobs and technology. The portals are in the grove on the west side of the park."
+          ],
+          "entrySay": [
+            "I opened a magic portal! It goes to San Francisco. Follow me!"
+          ]
         },
         {
           "id": "job-center",
           "text": "Work a shift at the SF Job Center",
-          "goal": { "type": "activity", "target": "job-center" },
-          "marker": { "location": "san-francisco", "pos": [0, -10], "label": "Job Center" },
-          "say": ["Welcome to San Francisco! At the Job Center you can pick a real job. The better you do, the more you earn, and you can get promoted!"],
-          "entrySay": ["This is San Francisco! Let's find a job at the Job Center."]
+          "goal": {
+            "type": "activity",
+            "target": "job-center"
+          },
+          "marker": {
+            "location": "san-francisco",
+            "pos": [
+              0,
+              -10
+            ],
+            "label": "Job Center"
+          },
+          "say": [
+            "Welcome to San Francisco! At the Job Center you can pick a real job. The better you do, the more you earn, and you can get promoted!"
+          ],
+          "entrySay": [
+            "This is San Francisco! Let's find a job at the Job Center."
+          ]
         }
       ],
-      "reward": { "cash": 30, "xp": 100, "unlock": ["new-york"] },
-      "next": ["q5-invest"]
+      "reward": {
+        "cash": 30,
+        "xp": 100,
+        "unlock": [
+          "new-york"
+        ]
+      },
+      "next": [
+        "q5-invest"
+      ]
     },
     {
       "id": "q5-invest",
@@ -141,21 +289,46 @@
         {
           "id": "travel-ny",
           "text": "Travel to New York",
-          "goal": { "type": "travel", "target": "new-york" },
-          "say": ["New York's portal is open! New York is where people invest, buying small pieces of companies called shares."],
-          "entrySay": ["New York is open! There you can buy a tiny piece of a company. That's called a stock!"]
+          "goal": {
+            "type": "travel",
+            "target": "new-york"
+          },
+          "say": [
+            "New York's portal is open! New York is where people invest, buying small pieces of companies called shares."
+          ],
+          "entrySay": [
+            "New York is open! There you can buy a tiny piece of a company. That's called a stock!"
+          ]
         },
         {
           "id": "buy-share",
           "text": "Buy your first investment at the Brokerage",
-          "goal": { "type": "event", "target": "invest" },
-          "marker": { "location": "new-york", "pos": [0, 0], "label": "Brokerage" },
-          "say": ["Head to the Brokerage and buy something. Tip: an index fund like FCX owns a little of every company, instant diversification!"],
-          "entrySay": ["Go to the Brokerage and buy one share. FCX is a basket with a tiny piece of every company!"]
+          "goal": {
+            "type": "event",
+            "target": "invest"
+          },
+          "marker": {
+            "location": "new-york",
+            "pos": [
+              0,
+              0
+            ],
+            "label": "Brokerage"
+          },
+          "say": [
+            "Head to the Brokerage and buy something. Tip: an index fund like FCX owns a little of every company, instant diversification!"
+          ],
+          "entrySay": [
+            "Go to the Brokerage and buy one share. FCX is a basket with a tiny piece of every company!"
+          ]
         }
       ],
-      "reward": { "xp": 100 },
-      "next": ["q6-goal"]
+      "reward": {
+        "xp": 100
+      },
+      "next": [
+        "q6-goal"
+      ]
     },
     {
       "id": "q6-goal",
@@ -166,20 +339,39 @@
         {
           "id": "set-goal",
           "text": "Set a savings goal (FinPhone → Goals)",
-          "goal": { "type": "event", "target": "setGoal" },
-          "say": ["Saving is easier when you're saving FOR something. Open FinPhone → Goals and pick a goal, like a bike or a pet."],
-          "entrySay": ["What do you want to save for? A bike? A pet? Open your FinPhone and tap Goals!"]
+          "goal": {
+            "type": "event",
+            "target": "setGoal"
+          },
+          "say": [
+            "Saving is easier when you're saving FOR something. Open FinPhone → Goals and pick a goal, like a bike or a pet."
+          ],
+          "entrySay": [
+            "What do you want to save for? A bike? A pet? Open your FinPhone and tap Goals!"
+          ]
         },
         {
           "id": "fund-goal",
           "text": "Add money to your goal",
-          "goal": { "type": "event", "target": "fundGoal" },
-          "say": ["Now add some money to it. It moves into savings, where it earns interest while you wait."],
-          "entrySay": ["Now put some money in your goal. It will grow in savings!"]
+          "goal": {
+            "type": "event",
+            "target": "fundGoal"
+          },
+          "say": [
+            "Now add some money to it. It moves into savings, where it earns interest while you wait."
+          ],
+          "entrySay": [
+            "Now put some money in your goal. It will grow in savings!"
+          ]
         }
       ],
-      "reward": { "cash": 25, "xp": 80 },
-      "next": ["q7-buy"]
+      "reward": {
+        "cash": 25,
+        "xp": 80
+      },
+      "next": [
+        "q7-buy"
+      ]
     },
     {
       "id": "q7-buy",
@@ -190,13 +382,24 @@
         {
           "id": "buy-something",
           "text": "Buy something you like (Style Studio, Pet Shop, Furniture or Auto Dealer)",
-          "goal": { "type": "event", "target": "buy" },
-          "say": ["Money is for living too! Treat yourself to something, but first ask: is it a need or a want? Wants are okay when you plan for them."],
-          "entrySay": ["Let's buy something fun! Is it a NEED or a WANT? Wants are okay if you plan for them."]
+          "goal": {
+            "type": "event",
+            "target": "buy"
+          },
+          "say": [
+            "Money is for living too! Treat yourself to something, but first ask: is it a need or a want? Wants are okay when you plan for them."
+          ],
+          "entrySay": [
+            "Let's buy something fun! Is it a NEED or a WANT? Wants are okay if you plan for them."
+          ]
         }
       ],
-      "reward": { "xp": 60 },
-      "next": ["q8-networth"]
+      "reward": {
+        "xp": 60
+      },
+      "next": [
+        "q8-networth"
+      ]
     },
     {
       "id": "q8-networth",
@@ -207,13 +410,27 @@
         {
           "id": "open-networth",
           "text": "Open FinPhone → Net Worth",
-          "goal": { "type": "menu", "target": "networth" },
-          "say": ["Let's check your net worth. It adds up everything you own, cash, bank, investments, stuff, and subtracts what you owe."],
-          "entrySay": ["Let's see your net worth! It's all your stuff and money, minus what you owe."]
+          "goal": {
+            "type": "menu",
+            "target": "networth"
+          },
+          "say": [
+            "Let's check your net worth. It adds up everything you own, cash, bank, investments, stuff, and subtracts what you owe."
+          ],
+          "entrySay": [
+            "Let's see your net worth! It's all your stuff and money, minus what you owe."
+          ]
         }
       ],
-      "reward": { "xp": 60, "unlock": ["london"] },
-      "next": ["q9-london"]
+      "reward": {
+        "xp": 60,
+        "unlock": [
+          "london"
+        ]
+      },
+      "next": [
+        "q9-london"
+      ]
     },
     {
       "id": "q9-london",
@@ -224,20 +441,41 @@
         {
           "id": "travel-london",
           "text": "Travel to London",
-          "goal": { "type": "travel", "target": "london" },
-          "say": ["London is open! It's the city of budgets and smart shopping."],
-          "entrySay": ["London is open! It's where we learn to plan our money."]
+          "goal": {
+            "type": "travel",
+            "target": "london"
+          },
+          "say": [
+            "London is open! It's the city of budgets and smart shopping."
+          ],
+          "entrySay": [
+            "London is open! It's where we learn to plan our money."
+          ]
         },
         {
           "id": "budget",
           "text": "Make a budget at the Budget Planner",
-          "goal": { "type": "activity", "target": "budget-planner" },
-          "say": ["A budget is a plan for your money before you spend it. Try the Budget Planner!"],
-          "entrySay": ["A budget is a money plan! Try the Budget Planner."]
+          "goal": {
+            "type": "activity",
+            "target": "budget-planner"
+          },
+          "say": [
+            "A budget is a plan for your money before you spend it. Try the Budget Planner!"
+          ],
+          "entrySay": [
+            "A budget is a money plan! Try the Budget Planner."
+          ]
         }
       ],
-      "reward": { "xp": 100, "unlock": ["hong-kong"] },
-      "next": ["q10-hk"]
+      "reward": {
+        "xp": 100,
+        "unlock": [
+          "hong-kong"
+        ]
+      },
+      "next": [
+        "q10-hk"
+      ]
     },
     {
       "id": "q10-hk",
@@ -248,20 +486,41 @@
         {
           "id": "travel-hk",
           "text": "Travel to Hong Kong",
-          "goal": { "type": "travel", "target": "hong-kong" },
-          "say": ["Hong Kong is open, the city of business and trade!"],
-          "entrySay": ["Hong Kong is open! Let's run a business!"]
+          "goal": {
+            "type": "travel",
+            "target": "hong-kong"
+          },
+          "say": [
+            "Hong Kong is open, the city of business and trade!"
+          ],
+          "entrySay": [
+            "Hong Kong is open! Let's run a business!"
+          ]
         },
         {
           "id": "stall",
           "text": "Run the Night Market Stall",
-          "goal": { "type": "activity", "target": "night-market" },
-          "say": ["Run your own stall at the Night Market. Profit is what's left after you pay for supplies!"],
-          "entrySay": ["Run your own snack stall! Profit is the money left after you pay for supplies."]
+          "goal": {
+            "type": "activity",
+            "target": "night-market"
+          },
+          "say": [
+            "Run your own stall at the Night Market. Profit is what's left after you pay for supplies!"
+          ],
+          "entrySay": [
+            "Run your own snack stall! Profit is the money left after you pay for supplies."
+          ]
         }
       ],
-      "reward": { "xp": 120, "unlock": ["singapore"] },
-      "next": ["q11-sg"]
+      "reward": {
+        "xp": 120,
+        "unlock": [
+          "singapore"
+        ]
+      },
+      "next": [
+        "q11-sg"
+      ]
     },
     {
       "id": "q11-sg",
@@ -272,99 +531,594 @@
         {
           "id": "travel-sg",
           "text": "Travel to Singapore",
-          "goal": { "type": "travel", "target": "singapore" },
-          "say": ["Last portal! Singapore is about saving, protection and thinking long-term."],
-          "entrySay": ["The last portal! Singapore is all about saving for later."]
+          "goal": {
+            "type": "travel",
+            "target": "singapore"
+          },
+          "say": [
+            "Last portal! Singapore is about saving, protection and thinking long-term."
+          ],
+          "entrySay": [
+            "The last portal! Singapore is all about saving for later."
+          ]
         },
         {
           "id": "garden",
           "text": "Grow a money tree in the Savings Garden",
-          "goal": { "type": "activity", "target": "savings-garden" },
-          "say": ["Plant money in the Savings Garden and watch compound interest make it grow!"],
-          "entrySay": ["Plant money in the Savings Garden and watch it grow!"]
+          "goal": {
+            "type": "activity",
+            "target": "savings-garden"
+          },
+          "say": [
+            "Plant money in the Savings Garden and watch compound interest make it grow!"
+          ],
+          "entrySay": [
+            "Plant money in the Savings Garden and watch it grow!"
+          ]
         }
       ],
-      "reward": { "cash": 100, "xp": 200, "title": "Fin City Citizen" },
-      "next": ["side-explorer"]
+      "reward": {
+        "cash": 100,
+        "xp": 200,
+        "title": "Fin City Citizen"
+      },
+      "next": [
+        "side-explorer"
+      ]
     },
     {
       "id": "side-explorer",
       "title": "Fin City Explorer",
       "icon": "🧭",
       "steps": [
-        { "id": "visit-10", "text": "Visit 15 different buildings", "goal": { "type": "stat", "target": "buildingsVisited", "value": 15 }, "say": ["You've seen all five cities! Now explore, every building has games and challenges. Daily challenges are in your FinPhone too."] }
+        {
+          "id": "visit-10",
+          "text": "Visit 15 different buildings",
+          "goal": {
+            "type": "stat",
+            "target": "buildingsVisited",
+            "value": 15
+          },
+          "say": [
+            "You've seen all five cities! Now explore, every building has games and challenges. Daily challenges are in your FinPhone too."
+          ]
+        }
       ],
-      "reward": { "cash": 150, "xp": 200, "title": "Explorer" },
-      "next": ["side-saver"]
+      "reward": {
+        "cash": 150,
+        "xp": 200,
+        "title": "Explorer"
+      },
+      "next": [
+        "side-saver"
+      ]
     },
     {
       "id": "side-saver",
       "title": "Rainy Day Fund",
       "icon": "☔",
       "steps": [
-        { "id": "save-500", "text": "Have $500 in savings", "goal": { "type": "stat", "target": "savingsBalance", "value": 500 }, "say": ["Surprise bills happen. An emergency fund in savings keeps a surprise from becoming a problem. Let's build one!"] }
+        {
+          "id": "save-500",
+          "text": "Have $500 in savings",
+          "goal": {
+            "type": "stat",
+            "target": "savingsBalance",
+            "value": 500
+          },
+          "say": [
+            "Surprise bills happen. An emergency fund in savings keeps a surprise from becoming a problem. Let's build one!"
+          ]
+        }
       ],
-      "reward": { "cash": 50, "xp": 150 },
-      "next": ["side-investor"]
+      "reward": {
+        "cash": 50,
+        "xp": 150
+      },
+      "next": [
+        "side-investor"
+      ]
     },
     {
       "id": "side-investor",
       "title": "Basket Builder",
       "icon": "🧺",
       "steps": [
-        { "id": "own-3", "text": "Own 3 different investments", "goal": { "type": "stat", "target": "holdingsCount", "value": 3 }, "say": ["Diversify! Owning several different investments lowers your risk."] }
+        {
+          "id": "own-3",
+          "text": "Own 3 different investments",
+          "goal": {
+            "type": "stat",
+            "target": "holdingsCount",
+            "value": 3
+          },
+          "say": [
+            "Diversify! Owning several different investments lowers your risk."
+          ]
+        }
       ],
-      "reward": { "xp": 150 },
-      "next": ["side-networth"]
+      "reward": {
+        "xp": 150
+      },
+      "next": [
+        "side-networth"
+      ]
     },
     {
       "id": "side-networth",
       "title": "The 10K Club",
       "icon": "💎",
       "steps": [
-        { "id": "nw-10k", "text": "Reach a net worth of $10,000", "goal": { "type": "netWorth", "value": 10000 }, "say": ["Big goal time: grow your net worth to $10,000. Earn, save, invest, and be patient!"] }
+        {
+          "id": "nw-10k",
+          "text": "Reach a net worth of $10,000",
+          "goal": {
+            "type": "netWorth",
+            "value": 10000
+          },
+          "say": [
+            "Big goal time: grow your net worth to $10,000. Earn, save, invest, and be patient!"
+          ]
+        }
       ],
-      "reward": { "cash": 200, "xp": 400, "title": "10K Club" },
-      "next": ["side-homeowner"]
+      "reward": {
+        "cash": 200,
+        "xp": 400,
+        "title": "10K Club"
+      },
+      "next": [
+        "side-homeowner"
+      ]
     },
     {
       "id": "side-homeowner",
       "title": "A Place of My Own",
       "icon": "🏡",
       "steps": [
-        { "id": "own-property", "text": "Own a piece of land or a home", "goal": { "type": "stat", "target": "propertiesOwned", "value": 1 }, "say": ["Land and homes can grow in value and earn rent. Visit the Real Estate Office when you're ready."] }
+        {
+          "id": "own-property",
+          "text": "Own a piece of land or a home",
+          "goal": {
+            "type": "stat",
+            "target": "propertiesOwned",
+            "value": 1
+          },
+          "say": [
+            "Land and homes can grow in value and earn rent. Visit the Real Estate Office when you're ready."
+          ]
+        }
       ],
-      "reward": { "xp": 400, "title": "Homeowner" },
-      "next": ["side-tycoon"]
+      "reward": {
+        "xp": 400,
+        "title": "Homeowner"
+      },
+      "next": [
+        "side-tycoon"
+      ]
     },
     {
       "id": "side-tycoon",
       "title": "Business Tycoon",
       "icon": "🏢",
       "steps": [
-        { "id": "own-business", "text": "Own a business (Hong Kong Business Registry)", "goal": { "type": "stat", "target": "businessesOwned", "value": 1 }, "say": ["Businesses can earn money while you do other things, passive income! Start one at the Hong Kong Business Registry."] }
+        {
+          "id": "own-business",
+          "text": "Own a business (Hong Kong Business Registry)",
+          "goal": {
+            "type": "stat",
+            "target": "businessesOwned",
+            "value": 1
+          },
+          "say": [
+            "Businesses can earn money while you do other things, passive income! Start one at the Hong Kong Business Registry."
+          ]
+        }
       ],
-      "reward": { "xp": 400, "title": "Tycoon" },
-      "next": ["side-100k"]
+      "reward": {
+        "xp": 400,
+        "title": "Tycoon"
+      },
+      "next": [
+        "side-100k"
+      ]
     },
     {
       "id": "side-100k",
       "title": "Six Figures",
       "icon": "🚀",
       "steps": [
-        { "id": "nw-100k", "text": "Reach a net worth of $100,000", "goal": { "type": "netWorth", "value": 100000 }, "say": ["You're doing amazing. Next stop: a $100,000 net worth!"] }
+        {
+          "id": "nw-100k",
+          "text": "Reach a net worth of $100,000",
+          "goal": {
+            "type": "netWorth",
+            "value": 100000
+          },
+          "say": [
+            "You're doing amazing. Next stop: a $100,000 net worth!"
+          ]
+        }
       ],
-      "reward": { "cash": 1000, "xp": 1500, "title": "Money Master" },
-      "next": ["side-millionaire"]
+      "reward": {
+        "cash": 1000,
+        "xp": 1500,
+        "title": "Money Master"
+      },
+      "next": [
+        "side-millionaire"
+      ]
     },
     {
       "id": "side-millionaire",
       "title": "Fin City Millionaire",
       "icon": "👑",
       "steps": [
-        { "id": "nw-1m", "text": "Reach a net worth of $1,000,000", "goal": { "type": "netWorth", "value": 1000000 }, "say": ["The ultimate goal: one million dollars of net worth. Patience and compound growth will get you there!"] }
+        {
+          "id": "nw-1m",
+          "text": "Reach a net worth of $1,000,000",
+          "goal": {
+            "type": "netWorth",
+            "value": 1000000
+          },
+          "say": [
+            "The ultimate goal: one million dollars of net worth. Patience and compound growth will get you there!"
+          ]
+        }
       ],
-      "reward": { "xp": 5000, "title": "Millionaire", "item": "crown" }
+      "reward": {
+        "xp": 5000,
+        "title": "Millionaire",
+        "item": "crown"
+      }
+    },
+    {
+      "id": "epic-scholar",
+      "title": "The Scholar",
+      "icon": "🎓",
+      "epic": true,
+      "prize": "Scholar's Mortarboard (prize-only hat), the Scholar title and $500",
+      "steps": [
+        {
+          "id": "sch-3",
+          "text": "Finish 3 lessons in the Learn course",
+          "goal": {
+            "type": "stat",
+            "target": "lessonsRead",
+            "value": 3
+          },
+          "say": [],
+          "reward": {
+            "cash": 50,
+            "xp": 100
+          }
+        },
+        {
+          "id": "sch-8",
+          "text": "Finish 8 lessons",
+          "goal": {
+            "type": "stat",
+            "target": "lessonsRead",
+            "value": 8
+          },
+          "say": [],
+          "reward": {
+            "cash": 100,
+            "xp": 200
+          }
+        },
+        {
+          "id": "sch-16",
+          "text": "Finish 16 lessons",
+          "goal": {
+            "type": "stat",
+            "target": "lessonsRead",
+            "value": 16
+          },
+          "say": [],
+          "reward": {
+            "cash": 150,
+            "xp": 300
+          }
+        },
+        {
+          "id": "sch-24",
+          "text": "Finish all 24 lessons",
+          "goal": {
+            "type": "stat",
+            "target": "lessonsRead",
+            "value": 24
+          },
+          "say": []
+        }
+      ],
+      "reward": {
+        "cash": 500,
+        "xp": 1000,
+        "title": "Scholar",
+        "item": "scholar-cap"
+      }
+    },
+    {
+      "id": "epic-world",
+      "title": "Around the World",
+      "icon": "🌍",
+      "epic": true,
+      "prize": "Globetrotter Jacket (prize-only), the Globetrotter title and $750",
+      "steps": [
+        {
+          "id": "w-ny",
+          "text": "3 stars on Up or Down? in New York",
+          "goal": {
+            "type": "activity",
+            "target": "candle-predict",
+            "value": 3
+          },
+          "say": [],
+          "reward": {
+            "cash": 75,
+            "xp": 150
+          }
+        },
+        {
+          "id": "w-ldn",
+          "text": "3 stars on the Budget Planner in London",
+          "goal": {
+            "type": "activity",
+            "target": "budget-planner",
+            "value": 3
+          },
+          "say": [],
+          "reward": {
+            "cash": 75,
+            "xp": 150
+          }
+        },
+        {
+          "id": "w-hk",
+          "text": "3 stars at the Night Market in Hong Kong",
+          "goal": {
+            "type": "activity",
+            "target": "night-market",
+            "value": 3
+          },
+          "say": [],
+          "reward": {
+            "cash": 75,
+            "xp": 150
+          }
+        },
+        {
+          "id": "w-sf",
+          "text": "3 stars at the Job Center in San Francisco",
+          "goal": {
+            "type": "activity",
+            "target": "job-center",
+            "value": 3
+          },
+          "say": [],
+          "reward": {
+            "cash": 75,
+            "xp": 150
+          }
+        },
+        {
+          "id": "w-sg",
+          "text": "3 stars in the Savings Garden in Singapore",
+          "goal": {
+            "type": "activity",
+            "target": "savings-garden",
+            "value": 3
+          },
+          "say": []
+        }
+      ],
+      "reward": {
+        "cash": 750,
+        "xp": 1500,
+        "title": "Globetrotter",
+        "item": "globetrotter"
+      }
+    },
+    {
+      "id": "epic-wallstreet",
+      "title": "Wall Street Career",
+      "icon": "💼",
+      "epic": true,
+      "difficulty": "advanced",
+      "prize": "Managing Director Suit (prize-only), the Managing Director title and $2,000",
+      "steps": [
+        {
+          "id": "ws-intern",
+          "text": "Intern: 2 stars at the Equity Research Desk (New York)",
+          "goal": {
+            "type": "activity",
+            "target": "valuation-desk",
+            "value": 2
+          },
+          "say": [],
+          "reward": {
+            "cash": 100,
+            "xp": 200
+          }
+        },
+        {
+          "id": "ws-analyst",
+          "text": "Analyst: 2 stars at the Bond Desk (London)",
+          "goal": {
+            "type": "activity",
+            "target": "bond-desk",
+            "value": 2
+          },
+          "say": [],
+          "reward": {
+            "cash": 150,
+            "xp": 250
+          }
+        },
+        {
+          "id": "ws-associate",
+          "text": "Associate: 2 stars in the Portfolio Lab (Singapore)",
+          "goal": {
+            "type": "activity",
+            "target": "portfolio-lab",
+            "value": 2
+          },
+          "say": [],
+          "reward": {
+            "cash": 200,
+            "xp": 300
+          }
+        },
+        {
+          "id": "ws-vp",
+          "text": "Vice President: 3 stars on the Venture Round (San Francisco)",
+          "goal": {
+            "type": "activity",
+            "target": "venture-round",
+            "value": 3
+          },
+          "say": [],
+          "reward": {
+            "cash": 300,
+            "xp": 400
+          }
+        },
+        {
+          "id": "ws-md-desk",
+          "text": "3 stars at the Equity Research Desk",
+          "goal": {
+            "type": "activity",
+            "target": "valuation-desk",
+            "value": 3
+          },
+          "say": [],
+          "reward": {
+            "cash": 300,
+            "xp": 400
+          }
+        },
+        {
+          "id": "ws-md",
+          "text": "Managing Director: grow your net worth to $25,000",
+          "goal": {
+            "type": "netWorth",
+            "value": 25000
+          },
+          "say": []
+        }
+      ],
+      "reward": {
+        "cash": 2000,
+        "xp": 3000,
+        "title": "Managing Director",
+        "item": "md-suit"
+      }
+    },
+    {
+      "id": "epic-saver",
+      "title": "Money Machine",
+      "icon": "🐷",
+      "epic": true,
+      "prize": "FinBucks Medallion (prize-only), the Super Saver title and $400",
+      "steps": [
+        {
+          "id": "sv-250",
+          "text": "Build savings to $250",
+          "goal": {
+            "type": "stat",
+            "target": "savingsBalance",
+            "value": 250
+          },
+          "say": [],
+          "reward": {
+            "cash": 40,
+            "xp": 100
+          }
+        },
+        {
+          "id": "sv-1000",
+          "text": "Build savings to $1,000",
+          "goal": {
+            "type": "stat",
+            "target": "savingsBalance",
+            "value": 1000
+          },
+          "say": [],
+          "reward": {
+            "cash": 100,
+            "xp": 250
+          }
+        },
+        {
+          "id": "sv-5000",
+          "text": "Build savings to $5,000",
+          "goal": {
+            "type": "stat",
+            "target": "savingsBalance",
+            "value": 5000
+          },
+          "say": []
+        }
+      ],
+      "reward": {
+        "cash": 400,
+        "xp": 1200,
+        "title": "Super Saver",
+        "item": "fb-medallion"
+      }
+    },
+    {
+      "id": "epic-perfect",
+      "title": "Perfectionist",
+      "icon": "⭐",
+      "epic": true,
+      "prize": "Three-Star Kicks (prize-only), the Perfectionist title and $600",
+      "steps": [
+        {
+          "id": "pf-5",
+          "text": "Earn 3 stars 5 times",
+          "goal": {
+            "type": "stat",
+            "target": "threeStarRuns",
+            "value": 5
+          },
+          "say": [],
+          "reward": {
+            "cash": 60,
+            "xp": 150
+          }
+        },
+        {
+          "id": "pf-10",
+          "text": "Earn 3 stars 10 times",
+          "goal": {
+            "type": "stat",
+            "target": "threeStarRuns",
+            "value": 10
+          },
+          "say": [],
+          "reward": {
+            "cash": 100,
+            "xp": 250
+          }
+        },
+        {
+          "id": "pf-20",
+          "text": "Earn 3 stars 20 times",
+          "goal": {
+            "type": "stat",
+            "target": "threeStarRuns",
+            "value": 20
+          },
+          "say": []
+        }
+      ],
+      "reward": {
+        "cash": 600,
+        "xp": 1500,
+        "title": "Perfectionist",
+        "item": "three-star-kicks"
+      }
     }
   ]
 }

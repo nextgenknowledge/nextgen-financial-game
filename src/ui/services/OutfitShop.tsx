@@ -26,7 +26,8 @@ interface Item {
   blurb?: string;
   happiness: number;
 }
-const ITEMS = outfits.items as Item[];
+// Prize-only pieces come from Legendary quests and never appear on the shelves
+const ITEMS = (outfits.items as (Item & { prize?: boolean })[]).filter((i) => !i.prize);
 const TIERS = (outfits as unknown as { tiers: Record<string, { name: string; color: string }> }).tiers;
 const TIER_ORDER = ['basic', 'street', 'smart', 'business', 'legendary'];
 
