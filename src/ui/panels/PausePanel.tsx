@@ -121,6 +121,8 @@ export function PausePanel() {
                 w.finance.card = { ...w.finance.card, open: false, balance: 0 };
               }
             });
+            // A paused activity belongs to the old difficulty's building
+            useUI.getState().setRun(null);
             setDiff(null);
             pushToast({ text: `Difficulty: ${diff === 'entry' ? 'Entry' : 'Advanced'}`, icon: '🔁', tone: 'good' });
           }}

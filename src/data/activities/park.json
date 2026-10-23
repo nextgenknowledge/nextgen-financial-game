@@ -116,6 +116,70 @@
       "entry": { "board": "park" },
       "advanced": { "board": "park" },
       "stars": [40, 70, 90], "rewards": { "cash": [0, 0, 0], "xp": [25, 40, 55] }
+    },
+    {
+      "id": "order-book", "name": "Order Book Scalper", "kind": "orderBook", "icon": "📊", "building": "arcade", "city": "park",
+      "topics": ["investing", "economics"],
+      "blurb": "Trade a live limit order book for 75 seconds. Market orders pay the spread, limit orders wait in the queue. Read the order flow, respect the position limit and finish flat.",
+      "replaces": "coin-catcher",
+      "entry": null, "advanced": {},
+      "stars": [40, 65, 85], "rewards": { "cash": [60, 110, 180], "xp": [80, 130, 200] }
+    },
+    {
+      "id": "rapid-fire", "name": "Rapid-Fire Markets", "kind": "rapidFire", "icon": "🧮", "building": "arcade", "city": "park",
+      "topics": ["investing", "interest", "economics"],
+      "blurb": "Sixty seconds of trader mental maths: percentage moves, basis points, the rule of 72, yields, P/E and currency crosses. Streaks double your points.",
+      "replaces": "price-dash",
+      "entry": null, "advanced": {},
+      "stars": [40, 65, 85], "rewards": { "cash": [40, 75, 120], "xp": [60, 100, 150] }
+    },
+    {
+      "id": "market-memory", "name": "Market Memory", "kind": "memory", "icon": "🃏", "building": "arcade", "city": "park",
+      "topics": ["investing", "business"],
+      "blurb": "Match ratios and market terms to their definitions: P/E, Sharpe, beta, duration, EBITDA and more. Fewer misses, faster time, more points.",
+      "replaces": "money-memory",
+      "entry": null, "advanced": {"set": "markets", "pairs": 8},
+      "stars": [40, 65, 85], "rewards": { "cash": [40, 75, 120], "xp": [60, 100, 150] }
+    },
+    {
+      "id": "vet-practice", "name": "Run the Practice", "kind": "vetPractice", "icon": "📋", "building": "pet-shop", "city": "park",
+      "topics": ["business", "budgeting"],
+      "blurb": "Six months running a veterinary clinic: price check-ups and surgeries against demand, hire vets for capacity and decide whether to bill pet insurers directly. Profit is not the same as cash.",
+      "replaces": "pet-budget",
+      "entry": null, "advanced": {},
+      "stars": [45, 70, 90], "rewards": { "cash": [60, 110, 180], "xp": [80, 130, 200] }
+    },
+    {
+      "id": "placement-test", "name": "Placement Test", "kind": "placement", "icon": "📝", "building": "welcome-center", "city": "park",
+      "topics": ["budgeting", "banking", "credit", "investing", "taxes", "business"],
+      "blurb": "An adaptive test across every topic: right answers move you up a level, wrong ones down. Finish with your level in each topic and the lessons to start with.",
+      "replaces": "first-quiz",
+      "entry": null, "advanced": {},
+      "stars": [35, 60, 80], "rewards": { "cash": [40, 75, 120], "xp": [60, 100, 150] }
+    },
+    {
+      "id": "travel-desk", "name": "Global Travel Desk", "kind": "travelDesk", "icon": "🧳", "building": "map-travel", "city": "park",
+      "topics": ["budgeting", "banking", "insurance"],
+      "blurb": "Budget a semester abroad: convert currencies, compare card fees, dodge the dynamic currency conversion trap and price travel insurance by expected value.",
+      "replaces": "travel-budget",
+      "entry": null, "advanced": {},
+      "stars": [45, 70, 90], "rewards": { "cash": [40, 75, 120], "xp": [60, 100, 150] }
+    },
+    {
+      "id": "loan-officer", "name": "Loan Officer", "kind": "loanOfficer", "icon": "🔍", "building": "bank", "city": "park",
+      "topics": ["credit", "banking", "debt"],
+      "blurb": "Underwrite eight loan applications. Work out debt-to-income, weigh credit scores and collateral, then approve at prime, price for risk or decline. Scored on the expected profit of your loan book.",
+      "replaces": "bank-teller",
+      "entry": null, "advanced": {},
+      "stars": [45, 70, 90], "rewards": { "cash": [60, 110, 180], "xp": [80, 130, 200] }
+    },
+    {
+      "id": "city-budget", "name": "City Budget Office", "kind": "cityBudget", "icon": "🏛️", "building": "town-hall", "city": "park",
+      "topics": ["taxes", "economics", "budgeting"],
+      "blurb": "Balance a city budget through a normal year, a recession and a collapsed bridge. Set the property tax, fund services with diminishing returns and decide when a municipal bond makes sense.",
+      "replaces": "civics-sort",
+      "entry": null, "advanced": {},
+      "stars": [45, 70, 90], "rewards": { "cash": [60, 110, 180], "xp": [80, 130, 200] }
     }
   ]
 }

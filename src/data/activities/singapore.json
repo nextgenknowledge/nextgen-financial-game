@@ -299,6 +299,30 @@
           190
         ]
       }
+    },
+    {
+      "id": "sovereign-fund", "name": "Sovereign Wealth Fund", "kind": "sovereignFund", "icon": "🏦", "building": "savings-garden", "city": "singapore",
+      "topics": ["investing", "retirement", "economics"],
+      "blurb": "Invest a nation’s savings for 30 years. Choose the allocation and the yearly payout, run 300 simulated futures and meet the mandate: keep real value, protect the bad case, pay the country.",
+      "replaces": "savings-garden",
+      "entry": null, "advanced": {},
+      "stars": [45, 70, 90], "rewards": { "cash": [60, 110, 180], "xp": [80, 130, 200] }
+    },
+    {
+      "id": "stress-test", "name": "Personal Stress Test", "kind": "stressTest", "icon": "☔", "building": "emergency-center", "city": "singapore",
+      "topics": ["saving", "debt", "insurance"],
+      "blurb": "A job loss, a medical bill and a rate rise in one year. Choose what to cut and in which order to use savings, credit and investments. Get through without missed payments at the lowest long-run cost.",
+      "replaces": "emergency-fund",
+      "entry": null, "advanced": {},
+      "stars": [45, 70, 90], "rewards": { "cash": [60, 110, 180], "xp": [80, 130, 200] }
+    },
+    {
+      "id": "impact-desk", "name": "Impact Investing Desk", "kind": "impactDesk", "icon": "💝", "building": "giving-center", "city": "singapore",
+      "topics": ["giving", "taxes"],
+      "blurb": "Compare charities by cost per outcome, not overhead. Work out what a deduction is really worth, why giving shares beats giving cash, and how matching gifts and donor-advised funds stretch a budget.",
+      "replaces": "charity-check",
+      "entry": null, "advanced": {},
+      "stars": [45, 70, 90], "rewards": { "cash": [40, 75, 120], "xp": [60, 100, 150] }
     }
   ]
 }

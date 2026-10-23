@@ -31,6 +31,13 @@ export interface BuildingDef {
   /** Hidden in Entry mode (e.g. Tax Office), replaced by entryStations if given. */
   advancedOnly?: boolean;
   entryStations?: StationDef[];
+  /** Interior kind override (see BUILDING_INTERIOR in src/world/interiors/furnish.ts). */
+  interiorKind?: string;
+  /**
+   * Advanced identity: a grown-up business that replaces this building in Advanced worlds (same
+   * plot, new name, sign, facade and interior). Applied by applyDifficulty in src/world/cities.ts.
+   */
+  pro?: Partial<Pick<BuildingDef, 'name' | 'icon' | 'blurb' | 'style' | 'colors' | 'size' | 'interior' | 'interiorKind'>>;
 }
 
 export interface LandmarkDef {
@@ -102,6 +109,8 @@ export interface ActivityDef {
   /** Score thresholds for 1/2/3 stars (score is 0..100 unless stated). */
   stars?: [number, number, number];
   rewards: { cash: [number, number, number]; xp: [number, number, number] };
+  /** Advanced activity that stands in for this Entry one: quests and challenges accept either. */
+  replaces?: string;
   /** Arcade games cost a fee and pay tickets instead of cash. */
   fee?: number;
   tickets?: [number, number, number];
@@ -155,10 +164,13 @@ export interface QuestStep {
   id: string;
   text: string;
   entryText?: string;
+  /** Advanced wording, when the step points at a building that is different in Advanced. */
+  proText?: string;
   goal: { type: string; target?: string; count?: number; value?: number };
   /** Narwhal says these when the step starts. */
   say?: string[];
   entrySay?: string[];
+  proSay?: string[];
   marker?: { location: LocationId; pos: [number, number]; label?: string };
   reward?: { cash?: number; xp?: number };
 }

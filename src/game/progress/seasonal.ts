@@ -3,6 +3,7 @@ import type { WorldState } from '../types';
 import type { Fx } from '../effects';
 import type { GameEvent } from './events';
 import { grantXp } from './xp';
+import { sameActivity } from '../activities';
 
 export interface SeasonalDef {
   id: string;
@@ -10,8 +11,9 @@ export interface SeasonalDef {
   name: string;
   icon: string;
   text: string;
+  proText?: string;
   xpBoost: number;
-  challenge: { text: string; event: string; target?: string; topic?: string; city?: string; count: number; useValue?: boolean };
+  challenge: { text: string; proText?: string; event: string; target?: string; topic?: string; city?: string; count: number; useValue?: boolean };
   reward: { cash?: number; xp?: number; title?: string };
 }
 
@@ -37,7 +39,7 @@ export function seasonalOnEvent(w: WorldState, fx: Fx, ev: GameEvent, now = new 
   if (!s) return;
   const c = s.challenge;
   if (ev.type !== c.event) return;
-  if (c.target && ev.target !== c.target) return;
+  if (c.target && !sameActivity(ev.target, c.target)) return;
   if (c.topic && ev.topic !== c.topic) return;
   if (c.city && ev.city !== c.city) return;
   if (ev.type === 'answer' && !ev.correct) return;

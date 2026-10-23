@@ -12,7 +12,7 @@ import { PlayerController } from '@/engine/Player';
 import { OutdoorScene } from '@/world/OutdoorScene';
 import { InteriorScene } from '@/world/InteriorScene';
 import { NarwhalGuide, GoalBeacon, GuideTrail } from '@/world/Narwhal';
-import { CITIES, buildingById } from '@/world/cities';
+import { CITIES, applyDifficulty, buildingById } from '@/world/cities';
 import { rt } from '@/engine/runtime';
 import { onAction } from '@/engine/input';
 import { playMusic } from '@/engine/audio';
@@ -36,6 +36,8 @@ export default function GameView() {
   const location = useScene((s) => s.location);
   const interior = useScene((s) => s.interior);
   const difficulty = useGame((s) => s.world?.difficulty ?? 'entry');
+  // Buildings wear their Entry or Advanced identity; idempotent, and must run before the scene builds
+  applyDifficulty(difficulty);
 
   // Global key actions
   useEffect(() => {

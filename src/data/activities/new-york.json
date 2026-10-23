@@ -381,6 +381,22 @@
           200
         ]
       }
+    },
+    {
+      "id": "balance-sheet", "name": "Balance Sheet Builder", "kind": "balanceSheet", "icon": "📒", "building": "ny-brokerage", "city": "new-york",
+      "topics": ["business", "investing", "debt"],
+      "blurb": "Sort a company’s accounts into assets, liabilities and equity, check the sheet balances, then read it with the current ratio and debt-to-equity.",
+      "replaces": "asset-sort",
+      "entry": null, "advanced": {},
+      "stars": [45, 70, 90], "rewards": { "cash": [40, 75, 120], "xp": [60, 100, 150] }
+    },
+    {
+      "id": "short-desk", "name": "Short Seller's Desk", "kind": "shortDesk", "icon": "🔍", "building": "ny-theater", "city": "new-york",
+      "topics": ["investing", "business"],
+      "blurb": "Pick apart a hyped company: profits that never turn into cash, slow-paying customers, insiders selling. Then work out a short’s profit, its borrow fee and its unlimited risk.",
+      "replaces": "hype-check",
+      "entry": null, "advanced": {},
+      "stars": [45, 70, 90], "rewards": { "cash": [60, 110, 180], "xp": [80, 130, 200] }
     }
   ]
 }

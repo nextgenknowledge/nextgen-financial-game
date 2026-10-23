@@ -93,9 +93,9 @@
       "blurb": "Run your own snack stall: buy supplies, set prices, read the weather and beat the competition.",
       "stations": [
         {
-          "activity": "night-market",
-          "label": "Run the Stall",
-          "icon": "🥟",
+          "activity": "futures-pit",
+          "label": "Futures Hedging Pit",
+          "icon": "💹",
           "npc": "chef"
         },
         {
@@ -109,6 +109,38 @@
         "floor": "#8a3f2e",
         "wall": "#f4e6c8",
         "theme": "shop"
+      },
+      "entryStations": [
+        {
+          "activity": "night-market",
+          "label": "Run the Stall",
+          "icon": "🥟",
+          "npc": "chef"
+        },
+        {
+          "activity": "hk-quiz",
+          "label": "Business Quiz",
+          "icon": "🎤",
+          "npc": "host"
+        }
+      ],
+      "pro": {
+        "name": "Harbour Futures Exchange",
+        "icon": "📈",
+        "blurb": "Hong Kong’s futures exchange: hedgers and speculators trading oil, grain and the Hang Seng index.",
+        "style": "exchange",
+        "size": [
+          24,
+          16,
+          16
+        ],
+        "colors": {
+          "wall": "#e8e4da",
+          "roof": "#2f3a4a",
+          "trim": "#f4f1ea",
+          "accent": "#d0302a"
+        },
+        "interiorKind": "trading-floor"
       }
     },
     {
@@ -177,9 +209,9 @@
           "npc": "banker"
         },
         {
-          "activity": "cost-sort",
-          "label": "Fixed or Variable Cost?",
-          "icon": "📌",
+          "activity": "biz-structure",
+          "label": "Choose a Structure",
+          "icon": "📜",
           "npc": "clerk"
         }
       ],
@@ -187,7 +219,21 @@
         "floor": "#c9ced8",
         "wall": "#e8eef6",
         "theme": "office"
-      }
+      },
+      "entryStations": [
+        {
+          "service": "business",
+          "label": "Registry Office",
+          "icon": "🏢",
+          "npc": "banker"
+        },
+        {
+          "activity": "cost-sort",
+          "label": "Fixed or Variable Cost?",
+          "icon": "📌",
+          "npc": "clerk"
+        }
+      ]
     },
     {
       "id": "accounting-office",
@@ -255,8 +301,14 @@
       "blurb": "Deliver dim sum around the city on a scooter. Faster deliveries earn bigger tips, but fuel costs money!",
       "stations": [
         {
+          "activity": "supply-chain",
+          "label": "Supply Chain Desk",
+          "icon": "📦",
+          "npc": "trader"
+        },
+        {
           "activity": "dim-sum-delivery",
-          "label": "Delivery Orders",
+          "label": "Last-Mile Delivery Run",
           "icon": "🛵",
           "npc": "chef"
         }
@@ -265,6 +317,27 @@
         "floor": "#8a3f2e",
         "wall": "#f4d9c0",
         "theme": "shop"
+      },
+      "entryStations": [
+        {
+          "activity": "dim-sum-delivery",
+          "label": "Delivery Orders",
+          "icon": "🛵",
+          "npc": "chef"
+        }
+      ],
+      "pro": {
+        "name": "Harbour Logistics Hub",
+        "icon": "🚢",
+        "blurb": "Freight forwarders moving goods out of Hong Kong by sea, rail and air.",
+        "style": "warehouse",
+        "colors": {
+          "wall": "#c9ced8",
+          "roof": "#3a4a5a",
+          "trim": "#1e2840",
+          "accent": "#ffcf3f"
+        },
+        "interiorKind": "warehouse"
       }
     },
     {
@@ -291,9 +364,9 @@
       "blurb": "A story-based first business for young entrepreneurs, plus a profit puzzle.",
       "stations": [
         {
-          "activity": "lemonade-story",
-          "label": "My First Stand",
-          "icon": "🍋",
+          "activity": "franchise-deal",
+          "label": "Franchise & M&A Deal",
+          "icon": "🤝",
           "npc": "grocer"
         },
         {
@@ -307,6 +380,38 @@
         "floor": "#d9b98a",
         "wall": "#fbf3e6",
         "theme": "shop"
+      },
+      "entryStations": [
+        {
+          "activity": "lemonade-story",
+          "label": "My First Stand",
+          "icon": "🍋",
+          "npc": "grocer"
+        },
+        {
+          "activity": "profit-puzzle",
+          "label": "Profit Puzzles",
+          "icon": "🧮",
+          "npc": "teacher"
+        }
+      ],
+      "pro": {
+        "name": "Franchise & M&A Office",
+        "icon": "🤝",
+        "blurb": "Deal-makers buying franchises and whole companies. Read the numbers, set the price, walk away when it is too high.",
+        "style": "glass",
+        "size": [
+          22,
+          16,
+          34
+        ],
+        "colors": {
+          "wall": "#8fa6b4",
+          "roof": "#26303d",
+          "trim": "#ffffff",
+          "accent": "#ffcf3f"
+        },
+        "interiorKind": "club"
       }
     }
   ],

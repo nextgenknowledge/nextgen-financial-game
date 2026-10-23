@@ -15,7 +15,7 @@ export interface Layout {
 
 
 export function kindFor(b: BuildingDef): InteriorKind {
-  const id = BUILDING_INTERIOR[b.id];
+  const id = b.interiorKind ?? BUILDING_INTERIOR[b.id];
   if (id && KINDS[id]) return KINDS[id];
   const theme = b.interior?.theme ?? 'office';
   return KINDS[{ bank: 'bank-hall', exchange: 'trading-floor', library: 'library', civic: 'council', arcade: 'arcade', shop: 'grocery', boutique: 'boutique', pets: 'pets', showroom: 'showroom', travel: 'travel', welcome: 'atrium' }[theme] ?? 'open-office'];

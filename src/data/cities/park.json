@@ -175,8 +175,8 @@
       "blurb": "Start here! Take your first quiz and replay Narwhal's lessons.",
       "stations": [
         {
-          "activity": "first-quiz",
-          "label": "First Quiz",
+          "activity": "placement-test",
+          "label": "Orientation: Placement Test",
           "icon": "📝",
           "npc": "guide"
         },
@@ -197,7 +197,27 @@
         "floor": "#f3e3c3",
         "wall": "#e3f4f4",
         "theme": "welcome"
-      }
+      },
+      "entryStations": [
+        {
+          "activity": "first-quiz",
+          "label": "First Quiz",
+          "icon": "📝",
+          "npc": "guide"
+        },
+        {
+          "service": "learn",
+          "label": "Learn Menu",
+          "icon": "📚",
+          "npc": "teacher"
+        },
+        {
+          "activity": "park-quiz",
+          "label": "Fin City Quiz Show",
+          "icon": "🎤",
+          "npc": "host"
+        }
+      ]
     },
     {
       "id": "bank",
@@ -247,9 +267,9 @@
           "npc": "banker"
         },
         {
-          "activity": "bank-teller",
-          "label": "Teller Trainee Job",
-          "icon": "🧮",
+          "activity": "loan-officer",
+          "label": "Loan Officer Desk",
+          "icon": "🔍",
           "npc": "banker"
         }
       ],
@@ -257,7 +277,38 @@
         "floor": "#e8e1d0",
         "wall": "#dfe8f6",
         "theme": "bank"
-      }
+      },
+      "entryStations": [
+        {
+          "service": "bank",
+          "label": "Teller: Accounts",
+          "icon": "🏦",
+          "npc": "banker"
+        },
+        {
+          "service": "atm",
+          "label": "ATM",
+          "icon": "🏧"
+        },
+        {
+          "service": "cds",
+          "label": "CDs & Goals",
+          "icon": "🔒",
+          "npc": "banker"
+        },
+        {
+          "service": "loans",
+          "label": "Loans & Credit Card",
+          "icon": "💳",
+          "npc": "banker"
+        },
+        {
+          "activity": "bank-teller",
+          "label": "Teller Trainee Job",
+          "icon": "🧮",
+          "npc": "banker"
+        }
+      ]
     },
     {
       "id": "credit-bureau",
@@ -417,9 +468,9 @@
           "npc": "mayor"
         },
         {
-          "activity": "civics-sort",
-          "label": "What Do Taxes Pay For?",
-          "icon": "🧾",
+          "activity": "city-budget",
+          "label": "City Budget Office",
+          "icon": "🏛️",
           "npc": "clerk"
         },
         {
@@ -432,7 +483,26 @@
         "floor": "#e6dfcf",
         "wall": "#f4f1ea",
         "theme": "civic"
-      }
+      },
+      "entryStations": [
+        {
+          "service": "townhall",
+          "label": "Community Projects",
+          "icon": "🏗️",
+          "npc": "mayor"
+        },
+        {
+          "activity": "civics-sort",
+          "label": "What Do Taxes Pay For?",
+          "icon": "🧾",
+          "npc": "clerk"
+        },
+        {
+          "service": "hall-of-fame",
+          "label": "Hall of Fame",
+          "icon": "🏆"
+        }
+      ]
     },
     {
       "id": "arcade",
@@ -458,6 +528,34 @@
       "blurb": "Play money mini-games for $1 a game and win tickets for prizes.",
       "stations": [
         {
+          "activity": "order-book",
+          "label": "Order Book Scalper",
+          "icon": "📊"
+        },
+        {
+          "activity": "market-memory",
+          "label": "Market Memory",
+          "icon": "🃏"
+        },
+        {
+          "activity": "rapid-fire",
+          "label": "Rapid-Fire Markets",
+          "icon": "🧮"
+        },
+        {
+          "service": "arcade-prizes",
+          "label": "Prize Counter",
+          "icon": "🎟️",
+          "npc": "clerk"
+        }
+      ],
+      "interior": {
+        "floor": "#2a2f5c",
+        "wall": "#3a2f6c",
+        "theme": "arcade"
+      },
+      "entryStations": [
+        {
           "activity": "coin-catcher",
           "label": "Coin Catcher",
           "icon": "🪙"
@@ -479,10 +577,23 @@
           "npc": "clerk"
         }
       ],
-      "interior": {
-        "floor": "#2a2f5c",
-        "wall": "#3a2f6c",
-        "theme": "arcade"
+      "pro": {
+        "name": "Trading Simulator Lounge",
+        "icon": "💹",
+        "blurb": "A sim lounge with real order books and trader drills. Practise the speed and discipline of a trading desk.",
+        "style": "glass",
+        "size": [
+          16,
+          14,
+          16
+        ],
+        "colors": {
+          "wall": "#2a3442",
+          "roof": "#1b222c",
+          "trim": "#c9d3df",
+          "accent": "#22d38f"
+        },
+        "interiorKind": "trading-floor"
       }
     },
     {
@@ -557,9 +668,9 @@
           "npc": "vet"
         },
         {
-          "activity": "pet-budget",
-          "label": "Pet Care Budget",
-          "icon": "🦴",
+          "activity": "vet-practice",
+          "label": "Run the Practice",
+          "icon": "📋",
           "npc": "vet"
         }
       ],
@@ -567,6 +678,37 @@
         "floor": "#cfe6c0",
         "wall": "#f4fbf0",
         "theme": "pets"
+      },
+      "entryStations": [
+        {
+          "service": "shop:pets",
+          "label": "Adopt a Pet",
+          "icon": "🐾",
+          "npc": "vet"
+        },
+        {
+          "activity": "pet-budget",
+          "label": "Pet Care Budget",
+          "icon": "🦴",
+          "npc": "vet"
+        }
+      ],
+      "pro": {
+        "name": "Veterinary Clinic",
+        "icon": "🐾",
+        "blurb": "A busy animal hospital. Adopt a pet, or take over the books and run the practice.",
+        "style": "office",
+        "size": [
+          14,
+          12,
+          9
+        ],
+        "colors": {
+          "wall": "#eef2f3",
+          "roof": "#3d4a52",
+          "trim": "#2f8a8a",
+          "accent": "#2f8a8a"
+        }
       }
     },
     {
@@ -688,8 +830,8 @@
           "npc": "guide"
         },
         {
-          "activity": "travel-budget",
-          "label": "Trip Planner",
+          "activity": "travel-desk",
+          "label": "Global Travel Desk",
           "icon": "🧳",
           "npc": "guide"
         }
@@ -698,7 +840,21 @@
         "floor": "#cde7ea",
         "wall": "#f1fbfb",
         "theme": "travel"
-      }
+      },
+      "entryStations": [
+        {
+          "service": "map",
+          "label": "World Map",
+          "icon": "🗺️",
+          "npc": "guide"
+        },
+        {
+          "activity": "travel-budget",
+          "label": "Trip Planner",
+          "icon": "🧳",
+          "npc": "guide"
+        }
+      ]
     }
   ],
   "landmarks": [
@@ -868,7 +1024,11 @@
       "rot": 50
     }
   ],
-  "spawn": [0, 42, 180],
+  "spawn": [
+    0,
+    42,
+    180
+  ],
   "garage": [
     -72,
     10,

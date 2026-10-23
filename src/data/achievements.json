@@ -42,13 +42,15 @@
     { "id": "nw-10k", "name": "Five Figures", "desc": "Net worth of $10,000", "icon": "💶", "condition": { "netWorth": 10000 }, "xp": 200 },
     { "id": "nw-100k", "name": "Six Figures", "desc": "Net worth of $100,000", "icon": "💷", "condition": { "netWorth": 100000 }, "xp": 800 },
     { "id": "nw-1m", "name": "Millionaire", "desc": "Net worth of $1,000,000", "icon": "👑", "condition": { "netWorth": 1000000 }, "xp": 3000 },
-    { "id": "arcade-fan", "name": "Arcade Fan", "desc": "Win 500 arcade tickets", "icon": "🎟️", "condition": { "stat": "ticketsWon", "gte": 500 }, "xp": 100 },
+    { "id": "arcade-fan", "entryOnly": true, "name": "Arcade Fan", "desc": "Win 500 arcade tickets", "icon": "🎟️", "condition": { "stat": "ticketsWon", "gte": 500 }, "xp": 100 },
     { "id": "stylish", "name": "Stylish", "desc": "Own 5 outfit items", "icon": "👗", "condition": { "stat": "outfitsOwned", "gte": 5 }, "xp": 80 },
     { "id": "collector", "name": "Collector", "desc": "Own 5 collectibles or art pieces", "icon": "🖼️", "condition": { "stat": "collectiblesOwned", "gte": 5 }, "xp": 200 },
     { "id": "survivor", "name": "Rainy Day Hero", "desc": "Pay for a surprise expense without borrowing", "icon": "☔", "condition": { "stat": "eventsCovered", "gte": 1 }, "xp": 100 },
     { "id": "year-one", "name": "One Year In", "desc": "Play through 12 Fin City months", "icon": "📅", "condition": { "stat": "ev:month", "gte": 12 }, "xp": 250 },
     { "id": "challenger", "name": "Challenger", "desc": "Claim 20 daily or weekly challenges", "icon": "🏅", "condition": { "stat": "challengesClaimed", "gte": 20 }, "xp": 300 },
-    { "id": "entrepreneur", "name": "Night Market Pro", "desc": "Earn $500 profit in one Night Market game", "icon": "🏮", "condition": { "stat": "bestStallProfit", "gte": 500 }, "xp": 150 },
+    { "id": "entrepreneur", "entryOnly": true, "name": "Night Market Pro", "desc": "Earn $500 profit in one Night Market game", "icon": "🏮", "condition": { "stat": "bestStallProfit", "gte": 500 }, "xp": 150 },
+    { "id": "market-maker", "advanced": true, "name": "Market Maker", "desc": "Make $150 in one Order Book Scalper session", "icon": "📊", "condition": { "stat": "bestScalpPnl", "gte": 150 }, "xp": 100 },
+    { "id": "risk-manager", "advanced": true, "name": "Risk Manager", "desc": "Score 90% or more in the Futures Hedging Pit", "icon": "💹", "condition": { "stat": "bestHedgeScore", "gte": 90 }, "xp": 120 },
     { "id": "tower-top", "name": "Top of the Tower", "desc": "Clear floor 10 of the Wall Street Quiz Tower", "icon": "🗼", "condition": { "stat": "towerFloor", "gte": 10 }, "xp": 300 },
     { "id": "happy", "name": "Living Well", "desc": "Reach 95 happiness", "icon": "😊", "condition": { "stat": "bestHappiness", "gte": 95 }, "xp": 100 }
   ]

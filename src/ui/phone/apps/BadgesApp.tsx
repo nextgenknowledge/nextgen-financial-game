@@ -53,7 +53,7 @@ export function BadgesApp() {
       )}
       {tab === 'achievements' && (
         <div className="badge-grid">
-          {ACHIEVEMENTS.filter((a) => !a.advanced || w.difficulty === 'advanced').map((a) => {
+          {ACHIEVEMENTS.filter((a) => (!a.advanced || w.difficulty === 'advanced') && !(a.entryOnly && w.difficulty === 'advanced')).map((a) => {
             const got = !!w.progress.achievements[a.id];
             const p = achievementProgress(w, a);
             return (

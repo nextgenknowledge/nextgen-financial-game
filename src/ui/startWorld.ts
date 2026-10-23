@@ -9,12 +9,14 @@ import { stopSpeaking } from './speech';
 import { clearKeys } from '@/engine/input';
 import { updateHallOfFame } from '@/save/fame';
 import { loadSignFonts } from '@/world/signage';
+import { applyDifficulty } from '@/world/cities';
 
 export const capture: { fn: null | (() => string | null) } = { fn: null };
 
 export function startWorld(w: WorldState) {
   const ui = useUI.getState();
   loadSignFonts();
+  applyDifficulty(w.difficulty);
   ui.setLoading({ active: true, progress: 0.15, text: `Loading ${w.name}…`, kind: 'world', city: w.player.location, building: undefined });
   ui.closeAll();
   ui.clearNarwhal();

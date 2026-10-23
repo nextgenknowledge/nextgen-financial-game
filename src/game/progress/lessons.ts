@@ -20,9 +20,9 @@ export const LESSONS = data.lessons as LessonDef[];
 
 /** Activity reward multiplier from perks (e.g. Market Eye for Stock Exchange games). */
 export const PERK_ACTIVITY_BOOST: Record<string, { activities?: string[]; cities?: string[]; boost: number }> = {
-  'budget-boss': { activities: ['budget-planner', 'grocery', 'pet-budget', 'travel-budget'], boost: 0.1 },
-  'market-eye': { activities: ['candle-predict', 'newsroom', 'portfolio-challenge'], boost: 0.1 },
-  'safe-surfer': { activities: ['cyber-lab'], boost: 0.1 },
+  'budget-boss': { activities: ['budget-planner', 'grocery', 'pet-budget', 'travel-budget', 'client-plans', 'commodities', 'vet-practice', 'travel-desk'], boost: 0.1 },
+  'market-eye': { activities: ['candle-predict', 'newsroom', 'portfolio-challenge', 'order-book', 'algo-backtest', 'short-desk'], boost: 0.1 },
+  'safe-surfer': { activities: ['cyber-lab', 'fraud-ops'], boost: 0.1 },
   'biz-savvy': { cities: ['hong-kong'], boost: 0.1 },
 };
 

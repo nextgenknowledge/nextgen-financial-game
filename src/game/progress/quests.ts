@@ -1,5 +1,6 @@
 import questsData from '@/data/quests.json';
 import type { QuestDef, QuestStep } from '../content';
+import { PRO_TWIN, sameActivity } from '../activities';
 import type { LocationId, WorldState } from '../types';
 import type { Fx } from '../effects';
 import { grantXp } from './xp';
@@ -56,7 +57,7 @@ function stepProgress(w: WorldState, step: QuestStep, ev: GameEvent): number {
       return ev.type === 'talk' && (!g.target || ev.target === g.target) ? 1 : 0;
     case 'activity':
       if (ev.type !== 'activityComplete') return 0;
-      if (g.target && g.target !== '*' && ev.target !== g.target) return 0;
+      if (g.target && g.target !== '*' && !sameActivity(ev.target, g.target)) return 0;
       if (g.value && (ev.stars ?? 0) < g.value) return 0;
       return 1;
     case 'event':
@@ -95,7 +96,7 @@ function stateComplete(w: WorldState, step: QuestStep): boolean {
     case 'activity': {
       const stars = g.value ?? 0;
       if (!g.target || g.target === '*') return Object.values(w.progress.activities).some((a) => a.plays > 0 && a.stars >= stars);
-      const a = w.progress.activities[g.target];
+      const a = w.progress.activities[g.target] ?? w.progress.activities[PRO_TWIN.get(g.target) ?? ''];
       return !!a && a.plays > 0 && a.stars >= stars;
     }
     case 'event':
@@ -106,7 +107,7 @@ function stateComplete(w: WorldState, step: QuestStep): boolean {
 }
 
 export function sayStep(w: WorldState, fx: Fx, step: QuestStep) {
-  const lines = w.difficulty === 'entry' && step.entrySay ? step.entrySay : step.say;
+  const lines = w.difficulty === 'entry' ? step.entrySay ?? step.say : step.proSay ?? step.say;
   for (const text of lines ?? []) fx.push({ type: 'narwhal', text, mood: 'talking' });
 }
 

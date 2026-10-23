@@ -59,7 +59,7 @@ describe('content references', () => {
   it('every station points at a real activity or service', () => {
     for (const c of Object.values(CITIES))
       for (const b of c.buildings)
-        for (const s of b.stations as { activity?: string; service?: string; label: string }[]) {
+        for (const s of [...b.stations, ...(b.entryStations ?? [])] as { activity?: string; service?: string; label: string }[]) {
           if (s.activity) expect(ACTIVITY_BY_ID.has(s.activity), `${c.id}/${b.id}: activity ${s.activity}`).toBe(true);
           else if (s.service?.startsWith('shop:')) expect(SHOP_IDS.has(s.service.slice(5)), `${c.id}/${b.id}: ${s.service}`).toBe(true);
           else expect(SERVICE_IDS.has(s.service ?? ''), `${c.id}/${b.id}: service ${s.service}`).toBe(true);
@@ -67,8 +67,17 @@ describe('content references', () => {
   });
 
   it('every activity is reachable from some station', () => {
-    const used = new Set([...OUTDOOR, ...Object.values(CITIES).flatMap((c) => c.buildings.flatMap((b) => (b.stations as { activity?: string }[]).map((s) => s.activity)))]);
+    const used = new Set([...OUTDOOR, ...Object.values(CITIES).flatMap((c) => c.buildings.flatMap((b) => [...b.stations, ...(b.entryStations ?? [])].map((s) => s.activity)))]);
     for (const a of ACTIVITIES) expect(used.has(a.id), `${a.id} has no station`).toBe(true);
+  });
+
+  it('Advanced replacements stand in for real activities and are reachable in Advanced', () => {
+    const advanced = new Set(Object.values(CITIES).flatMap((c) => c.buildings.flatMap((b) => b.stations.map((s) => s.activity))));
+    for (const a of ACTIVITIES.filter((x) => x.replaces)) {
+      expect(ACTIVITY_BY_ID.has(a.replaces!), `${a.id} replaces ${a.replaces}`).toBe(true);
+      expect(advanced.has(a.id), `${a.id} is not on an Advanced station`).toBe(true);
+      expect(advanced.has(a.replaces), `${a.replaces} should only be in Entry once ${a.id} replaces it`).toBe(false);
+    }
   });
 
   it('quest goals target real buildings, cities and activities', () => {

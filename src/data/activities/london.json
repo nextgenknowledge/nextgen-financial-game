@@ -331,6 +331,38 @@
           180
         ]
       }
+    },
+    {
+      "id": "fx-dealing", "name": "FX Dealing Room", "kind": "fxDealing", "icon": "💱", "building": "corner-shop", "city": "london",
+      "topics": ["economics", "investing"],
+      "blurb": "Quote currency prices to clients: tight spreads win deals, wide spreads earn more. Hedge or carry the risk you take on, then find riskless profit in triangular arbitrage.",
+      "replaces": "change-counter",
+      "entry": null, "advanced": {},
+      "stars": [45, 70, 90], "rewards": { "cash": [60, 110, 180], "xp": [80, 130, 200] }
+    },
+    {
+      "id": "client-plans", "name": "Client Plans", "kind": "clientPlans", "icon": "💼", "building": "budget-hall", "city": "london",
+      "topics": ["investing", "retirement", "saving"],
+      "blurb": "Three clients, three goals: a house deposit in five years, retirement in twenty, and a retiree living on her portfolio. Build each a plan that meets their return, risk and cash needs.",
+      "replaces": "jars",
+      "entry": null, "advanced": {},
+      "stars": [45, 70, 90], "rewards": { "cash": [60, 110, 180], "xp": [80, 130, 200] }
+    },
+    {
+      "id": "commodities", "name": "Commodities & Inflation", "kind": "commodities", "icon": "🌱", "building": "london-market", "city": "london",
+      "topics": ["economics", "investing"],
+      "blurb": "Build an inflation rate from a price basket, read a supply shock through elasticity, tell contango from backwardation and turn nominal returns into real ones.",
+      "replaces": "grocery",
+      "entry": null, "advanced": {},
+      "stars": [45, 70, 90], "rewards": { "cash": [60, 110, 180], "xp": [80, 130, 200] }
+    },
+    {
+      "id": "retail-analyst", "name": "Retail Analyst Desk", "kind": "retailAnalyst", "icon": "🛍️", "building": "dept-store", "city": "london",
+      "topics": ["business", "investing"],
+      "blurb": "Compare two department-store chains: gross margin, inventory turnover, days of inventory and same-store sales. Then write the call.",
+      "replaces": "dept-store",
+      "entry": null, "advanced": {},
+      "stars": [45, 70, 90], "rewards": { "cash": [60, 110, 180], "xp": [80, 130, 200] }
     }
   ]
 }

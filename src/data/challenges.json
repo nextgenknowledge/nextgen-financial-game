@@ -15,7 +15,7 @@
     { "id": "d-library", "text": "Read a Library lesson", "icon": "📖", "event": { "type": "lesson" }, "count": 1, "reward": { "cash": 20, "xp": 40 } },
     { "id": "d-invest", "text": "Buy any investment", "icon": "📈", "event": { "type": "invest" }, "count": 1, "reward": { "cash": 25, "xp": 40 }, "requires": { "unlocked": "new-york" } },
     { "id": "d-walk", "text": "Walk 500 meters", "icon": "👟", "event": { "type": "move" }, "count": 500, "useValue": true, "reward": { "cash": 15, "xp": 25 } },
-    { "id": "d-arcade", "text": "Play a game at the Coin Arcade", "icon": "🕹️", "event": { "type": "activityComplete", "target": "coin-catcher" }, "count": 1, "reward": { "cash": 10, "xp": 25 }, "alt": ["money-memory", "price-dash"] },
+    { "id": "d-arcade", "text": "Play a game at the Coin Arcade", "proText": "Run a session in the Trading Simulator Lounge", "icon": "🕹️", "event": { "type": "activityComplete", "target": "coin-catcher" }, "count": 1, "reward": { "cash": 10, "xp": 25 }, "alt": ["money-memory", "price-dash"] },
     { "id": "d-donate", "text": "Donate to a cause or project", "icon": "💝", "event": { "type": "donate" }, "count": 1, "reward": { "xp": 60 } }
   ],
   "weekly": [

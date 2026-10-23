@@ -80,12 +80,16 @@
         {
           "id": "first-quiz",
           "text": "Take the First Quiz at the counter",
+          "proText": "Take the Placement Test at the Orientation desk",
           "goal": {
             "type": "activity",
             "target": "first-quiz"
           },
           "say": [
             "Walk up to the First Quiz counter and press E. Don't worry about mistakes, I'll explain every answer!"
+          ],
+          "proSay": [
+            "Walk up to the Orientation desk and press E. The placement test adapts to you and shows where to start."
           ],
           "entrySay": [
             "Walk to the First Quiz and press E. It's okay to make mistakes. I'll help!"
@@ -382,6 +386,7 @@
         {
           "id": "buy-something",
           "text": "Buy something you like (Style Studio, Pet Shop, Furniture or Auto Dealer)",
+          "proText": "Buy something you like (Style Studio, Veterinary Clinic, Furniture or Auto Dealer)",
           "goal": {
             "type": "event",
             "target": "buy"
@@ -500,12 +505,16 @@
         {
           "id": "stall",
           "text": "Run the Night Market Stall",
+          "proText": "Hedge a position in the Harbour Futures Exchange",
           "goal": {
             "type": "activity",
             "target": "night-market"
           },
           "say": [
             "Run your own stall at the Night Market. Profit is what's left after you pay for supplies!"
+          ],
+          "proSay": [
+            "Head to the Futures Pit. Hedgers use futures to lock in prices; size the hedge to the exposure and keep cash ready for margin calls."
           ],
           "entrySay": [
             "Run your own snack stall! Profit is the money left after you pay for supplies."
@@ -545,12 +554,16 @@
         {
           "id": "garden",
           "text": "Grow a money tree in the Savings Garden",
+          "proText": "Set the mandate at the Sovereign Wealth Fund",
           "goal": {
             "type": "activity",
             "target": "savings-garden"
           },
           "say": [
             "Plant money in the Savings Garden and watch compound interest make it grow!"
+          ],
+          "proSay": [
+            "The Sovereign Wealth Fund invests a nation's savings for decades. Compounding, diversification and a sustainable payout all matter."
           ],
           "entrySay": [
             "Plant money in the Savings Garden and watch it grow!"
@@ -876,6 +889,7 @@
         {
           "id": "w-hk",
           "text": "3 stars at the Night Market in Hong Kong",
+          "proText": "3 stars in the Harbour Futures Exchange",
           "goal": {
             "type": "activity",
             "target": "night-market",
@@ -904,6 +918,7 @@
         {
           "id": "w-sg",
           "text": "3 stars in the Savings Garden in Singapore",
+          "proText": "3 stars at the Sovereign Wealth Fund in Singapore",
           "goal": {
             "type": "activity",
             "target": "savings-garden",

@@ -1,5 +1,6 @@
 import data from '@/data/challenges.json';
 import type { LocationId, WorldState } from '../types';
+import { sameActivity, textFor } from '../activities';
 import type { Fx } from '../effects';
 import type { GameEvent } from './events';
 import { hashString, makeRng } from '../rng';
@@ -8,6 +9,7 @@ import { grantXp } from './xp';
 export interface ChallengeDef {
   id: string;
   text: string;
+  proText?: string;
   icon: string;
   event: { type: string; target?: string; correct?: boolean; minStars?: number; city?: string };
   count: number;
@@ -51,9 +53,9 @@ export function refreshChallenges(w: WorldState, now = new Date()) {
 
 function matches(c: ChallengeDef, ev: GameEvent): number {
   const e = c.event;
-  if (ev.type !== e.type && !(c.alt ?? []).includes(ev.type) && !(c.alt ?? []).includes(ev.target ?? '')) return 0;
+  if (ev.type !== e.type && !(c.alt ?? []).includes(ev.type) && !(c.alt ?? []).some((a) => sameActivity(ev.target, a))) return 0;
   if (ev.type === e.type) {
-    if (e.target && ev.target !== e.target && !(c.alt ?? []).includes(ev.target ?? '')) return 0;
+    if (e.target && !sameActivity(ev.target, e.target) && !(c.alt ?? []).some((a) => sameActivity(ev.target, a))) return 0;
     if (e.correct !== undefined && ev.correct !== e.correct) return 0;
     if (e.minStars && (ev.stars ?? 0) < e.minStars) return 0;
     if (e.city && ev.city !== e.city) return 0;
@@ -70,7 +72,7 @@ export function challengesOnEvent(w: WorldState, fx: Fx, ev: GameEvent) {
       if (!inc) continue;
       s.progress = Math.min(c.count, s.progress + inc);
       if (s.progress >= c.count) {
-        fx.push({ type: 'toast', text: `Challenge done: ${c.text}, claim it in FinPhone!`, icon: c.icon, tone: 'gold' });
+        fx.push({ type: 'toast', text: `Challenge done: ${textFor(c, w.difficulty)}, claim it in FinPhone!`, icon: c.icon, tone: 'gold' });
         fx.push({ type: 'sfx', name: 'star' });
       }
     }

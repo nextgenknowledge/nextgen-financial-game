@@ -459,6 +459,30 @@
           180
         ]
       }
+    },
+    {
+      "id": "fintech-lab", "name": "Fintech Product Lab", "kind": "fintechLab", "icon": "🚀", "building": "sorting-center", "city": "san-francisco",
+      "topics": ["business", "earning"],
+      "blurb": "Launch a budgeting app with $1.5M of seed money. Set the price, free trial and marketing budget, model 24 months and make the unit economics work before the cash runs out.",
+      "replaces": "needs-wants",
+      "entry": null, "advanced": {},
+      "stars": [45, 70, 90], "rewards": { "cash": [60, 110, 180], "xp": [80, 130, 200] }
+    },
+    {
+      "id": "algo-backtest", "name": "Algo Strategy Backtester", "kind": "algoBacktest", "icon": "🤖", "building": "coding-cafe", "city": "san-francisco",
+      "topics": ["investing"],
+      "blurb": "Build trend-following and mean-reversion trading rules, backtest them against buy-and-hold on Sharpe ratio and drawdown, then face the out-of-sample test.",
+      "replaces": "coding-cafe",
+      "entry": null, "advanced": {},
+      "stars": [45, 70, 90], "rewards": { "cash": [60, 110, 180], "xp": [80, 130, 200] }
+    },
+    {
+      "id": "fraud-ops", "name": "Fraud & Risk Ops", "kind": "fraudOps", "icon": "🕵️", "building": "cyber-lab", "city": "san-francisco",
+      "topics": ["safety", "banking"],
+      "blurb": "Approve or block a queue of card transactions from the risk signals. Missed fraud costs the full amount, false alarms cost customers. Read your precision, recall and total cost.",
+      "replaces": "password-lab",
+      "entry": null, "advanced": {},
+      "stars": [45, 70, 90], "rewards": { "cash": [60, 110, 180], "xp": [80, 130, 200] }
     }
   ]
 }

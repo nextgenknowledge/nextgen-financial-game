@@ -12,6 +12,7 @@
  * Points of interest use the game's own pixel icons on a pin.
  */
 import type { BuildingDef, CityDef } from '@/game/content';
+import { currentTrack } from '@/world/cities';
 import type { CityMapData } from '@/world/builders/sceneBuilder';
 import { footprint } from '@/world/builders/sceneBuilder';
 import { streetName } from '@/world/builders/cityKit';
@@ -133,7 +134,8 @@ const cache = new Map<string, { canvas: HTMLCanvasElement; size: number }>();
 
 /** Paints (and caches) the base pixel map for a city. Returns the canvas and its size in px. */
 export function baseMap(def: CityDef, data: CityMapData) {
-  const hit = cache.get(def.id);
+  const key = `${def.id}:${currentTrack()}`;
+  const hit = cache.get(key);
   if (hit) return hit;
   const st = STYLE[def.id] ?? STYLE.park;
   const H = data.half + MARGIN;
@@ -504,7 +506,7 @@ export function baseMap(def: CityDef, data: CityMapData) {
   g.fillRect(size - 7, 6, 1, size - 12);
 
   const out = { canvas: c, size };
-  cache.set(def.id, out);
+  cache.set(key, out);
   return out;
 }
 

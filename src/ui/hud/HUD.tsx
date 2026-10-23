@@ -1,5 +1,6 @@
 'use client';
 import { FinBucksCoin } from '../FinBucks';
+import { textFor } from '@/game/activities';
 import { LESSONS } from '@/game/progress/lessons';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useGame, act } from '@/store/game';
@@ -185,15 +186,15 @@ function QuestTracker() {
           className="quest-card"
           onClick={() => {
             playSfx('pop');
-            const lines = entry && cs.step.entrySay ? cs.step.entrySay : cs.step.say;
-            say(lines?.[lines.length - 1] ?? cs.step.text, 'talking');
+            const lines = entry ? cs.step.entrySay ?? cs.step.say : cs.step.proSay ?? cs.step.say;
+            say(lines?.[lines.length - 1] ?? textFor(cs.step, entry ? 'entry' : 'advanced'), 'talking');
           }}
           title="Click for a hint from Narwhal"
         >
           <div className="tiny muted bold">
             {cs.quest.icon} {cs.quest.title} · {cs.index + 1}/{cs.quest.steps.length}
           </div>
-          <div className="bold">{entry && cs.step.entryText ? cs.step.entryText : cs.step.text}</div>
+          <div className="bold">{textFor(cs.step, entry ? 'entry' : 'advanced')}</div>
           {cs.step.goal.type === 'move' && (
             <div className="mini-bar" style={{ marginTop: 4 }}>
               <div style={{ width: `${Math.min(100, (cs.progress / (cs.step.goal.value ?? 1)) * 100)}%` }} />

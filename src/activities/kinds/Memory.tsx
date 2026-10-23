@@ -34,6 +34,24 @@ const SETS: Record<string, [string, string][]> = {
     ['Index fund', 'Owns many companies at once'],
     ['Equity', 'Value you own after debts'],
   ],
+  markets: [
+    ['P/E ratio', 'Price ÷ earnings per share'],
+    ['Current ratio', 'Current assets ÷ current liabilities'],
+    ['Sharpe ratio', 'Excess return ÷ volatility'],
+    ['Beta', 'Sensitivity to the market'],
+    ['EBITDA', 'Profit before interest, tax, D&A'],
+    ['Dividend yield', 'Dividend ÷ share price'],
+    ['Duration', 'Bond price sensitivity to rates'],
+    ['Market cap', 'Share price × shares outstanding'],
+    ['Free cash flow', 'Operating cash flow − capex'],
+    ['Basis point', '0.01 percent'],
+    ['Spread', 'Ask price − bid price'],
+    ['Debt-to-equity', 'Total debt ÷ shareholders’ equity'],
+    ['ROE', 'Net income ÷ shareholders’ equity'],
+    ['Short interest', 'Shares sold short ÷ float'],
+    ['Yield curve', 'Yields across maturities'],
+    ['Liquidity', 'How easily it trades without moving price'],
+  ],
 };
 
 interface Card {

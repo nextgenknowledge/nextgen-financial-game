@@ -66,6 +66,37 @@
       "blurb": "Questions about business, trade and economics.",
       "entry": { "count": 8, "cities": ["hong-kong"] }, "advanced": { "count": 8, "cities": ["hong-kong"] },
       "stars": [50, 75, 90], "rewards": { "cash": [20, 35, 55], "xp": [35, 55, 80] }
+    },
+    {
+      "id": "futures-pit", "name": "Futures Hedging Pit", "kind": "futuresHedge", "icon": "💹", "building": "night-market", "city": "hong-kong",
+      "topics": ["investing", "business", "economics"],
+      "blurb": "Hedge an airline’s fuel bill, a farm’s harvest and a Hang Seng portfolio with futures. Pick the direction and the number of contracts, then survive daily settlement and margin calls.",
+      "replaces": "night-market",
+      "entry": null, "advanced": {},
+      "stars": [45, 70, 90], "rewards": { "cash": [60, 110, 180], "xp": [80, 130, 200] }
+    },
+    {
+      "id": "franchise-deal", "name": "Franchise & M&A Deal", "kind": "franchiseDeal", "icon": "🤝", "building": "trade-hall", "city": "hong-kong",
+      "topics": ["business", "investing"],
+      "blurb": "Work out a franchise’s profit and payback, then value a rival chain with an EBITDA multiple, bridge to equity value and set a disciplined top bid.",
+      "replaces": "lemonade-story",
+      "entry": null, "advanced": {},
+      "stars": [45, 70, 90], "rewards": { "cash": [60, 110, 180], "xp": [80, 130, 200] }
+    },
+    {
+      "id": "supply-chain", "name": "Supply Chain Desk", "kind": "supplyChain", "icon": "📦", "building": "dim-sum", "city": "hong-kong",
+      "topics": ["business", "economics"],
+      "blurb": "Ship six orders by ocean, rail or air. Balance freight costs against carrying costs and the risk of arriving late. Cheapest freight is not cheapest overall.",
+      "entry": null, "advanced": {},
+      "stars": [45, 70, 90], "rewards": { "cash": [60, 110, 180], "xp": [80, 130, 200] }
+    },
+    {
+      "id": "biz-structure", "name": "Choose a Business Structure", "kind": "bizStructure", "icon": "📜", "building": "business-registry", "city": "hong-kong",
+      "topics": ["business", "taxes"],
+      "blurb": "Sole proprietor, partnership, LLC or corporation? Work through personal liability, double taxation, pass-through income, venture funding and self-employment tax.",
+      "replaces": "cost-sort",
+      "entry": null, "advanced": {},
+      "stars": [45, 70, 90], "rewards": { "cash": [40, 75, 120], "xp": [60, 100, 150] }
     }
   ]
 }

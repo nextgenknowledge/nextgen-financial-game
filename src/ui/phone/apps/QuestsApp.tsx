@@ -5,6 +5,7 @@ import { challengeDef, claimChallenge } from '@/game/progress/challenges';
 import { seasonalProgress, claimSeasonal } from '@/game/progress/seasonal';
 import { Section, Empty } from '../../kit';
 import { Button, ProgressBar } from '../../common';
+import { textFor } from '@/game/activities';
 
 export function QuestsApp() {
   const w = useGame((s) => s.world!);
@@ -33,7 +34,7 @@ export function QuestsApp() {
                   {q.steps.map((s, i) => (
                     <div key={s.id} className={`epic-step ${i < stepIdx ? 'past' : i === stepIdx ? 'now' : ''}`}>
                       <span className="epic-dot">{i < stepIdx ? '✓' : i + 1}</span>
-                      <span className="small">{s.text}</span>
+                      <span className="small">{textFor(s, w.difficulty)}</span>
                     </div>
                   ))}
                 </div>
@@ -44,9 +45,9 @@ export function QuestsApp() {
       </Section>
       {season && (
         <Section title={`${season.def.icon} Event: ${season.def.name}`}>
-          <p className="small">{season.def.text}</p>
+          <p className="small">{textFor(season.def, w.difficulty)}</p>
           <div className="card tint-gold">
-            <b>{season.def.challenge.text}</b>
+            <b>{textFor(season.def.challenge, w.difficulty)}</b>
             <ProgressBar value={season.progress} max={season.def.challenge.count} color="var(--gold)" />
             <div className="row between" style={{ marginTop: 6 }}>
               <span className="small">
@@ -81,7 +82,7 @@ export function QuestsApp() {
                 {q.steps.map((s, i) => (
                   <li key={s.id} style={{ opacity: i < a.step ? 0.5 : 1, fontWeight: i === a.step ? 800 : 600 }}>
                     {i < a.step ? '✅ ' : i === a.step ? '👉 ' : ''}
-                    {entry && s.entryText ? s.entryText : s.text}
+                    {textFor(s, w.difficulty)}
                   </li>
                 ))}
               </ol>
@@ -118,7 +119,7 @@ function ChallengeList({ list }: { list: { id: string; progress: number; claimed
           <div key={c.id} className={`card ${done ? 'tint-green' : 'flat'}`}>
             <div className="row between">
               <b>
-                {d.icon} {d.text}
+                {d.icon} {textFor(d, useGame.getState().world?.difficulty ?? 'entry')}
               </b>
               <span className="small mono">
                 {Math.floor(c.progress)}/{d.count}

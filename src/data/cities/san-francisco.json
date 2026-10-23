@@ -202,8 +202,8 @@
       "blurb": "Solve logic puzzles for freelance pay.",
       "stations": [
         {
-          "activity": "coding-cafe",
-          "label": "Freelance Puzzles",
+          "activity": "algo-backtest",
+          "label": "Algo Backtester",
           "icon": "🤖",
           "npc": "coder"
         },
@@ -218,6 +218,25 @@
         "floor": "#8a6a4a",
         "wall": "#2a2f3d",
         "theme": "shop"
+      },
+      "entryStations": [
+        {
+          "activity": "coding-cafe",
+          "label": "Freelance Puzzles",
+          "icon": "🤖",
+          "npc": "coder"
+        },
+        {
+          "service": "shop:collectibles",
+          "label": "Gadget & Collectibles Shelf",
+          "icon": "🖼️",
+          "npc": "clerk"
+        }
+      ],
+      "pro": {
+        "name": "Quant Café",
+        "icon": "☕",
+        "blurb": "Coffee, whiteboards and backtests. Quants testing trading ideas against history."
       }
     },
     {
@@ -244,6 +263,19 @@
       "blurb": "Sort items on the conveyor: need, want, or does it depend?",
       "stations": [
         {
+          "activity": "fintech-lab",
+          "label": "Fintech Product Lab",
+          "icon": "🚀",
+          "npc": "grocer"
+        }
+      ],
+      "interior": {
+        "floor": "#c9b48a",
+        "wall": "#e8e1d0",
+        "theme": "shop"
+      },
+      "entryStations": [
+        {
           "activity": "needs-wants",
           "label": "Sorting Conveyor",
           "icon": "⚖️",
@@ -256,10 +288,23 @@
           "npc": "clerk"
         }
       ],
-      "interior": {
-        "floor": "#c9b48a",
-        "wall": "#e8e1d0",
-        "theme": "shop"
+      "pro": {
+        "name": "Fintech Product Lab",
+        "icon": "🚀",
+        "blurb": "A startup studio testing pricing, growth and unit economics for new money apps.",
+        "style": "glass",
+        "size": [
+          24,
+          18,
+          20
+        ],
+        "colors": {
+          "wall": "#a9bcc8",
+          "roof": "#2a2f3d",
+          "trim": "#ffffff",
+          "accent": "#e1653b"
+        },
+        "interiorKind": "tech-office"
       }
     },
     {
@@ -292,9 +337,9 @@
           "npc": "guard"
         },
         {
-          "activity": "password-lab",
-          "label": "Password Strength Lab",
-          "icon": "🔐",
+          "activity": "fraud-ops",
+          "label": "Fraud & Risk Ops",
+          "icon": "🕵️",
           "npc": "coder"
         }
       ],
@@ -302,7 +347,21 @@
         "floor": "#2a2f3d",
         "wall": "#3a4a6a",
         "theme": "arcade"
-      }
+      },
+      "entryStations": [
+        {
+          "activity": "cyber-lab",
+          "label": "Scam Detector",
+          "icon": "🕵️",
+          "npc": "guard"
+        },
+        {
+          "activity": "password-lab",
+          "label": "Password Strength Lab",
+          "icon": "🔐",
+          "npc": "coder"
+        }
+      ]
     },
     {
       "id": "tax-office",

@@ -283,7 +283,7 @@ function Tutorials() {
             size="small"
             onClick={() => {
               closeAll();
-              for (const s of q.steps) for (const line of (entry && s.entrySay) || s.say || []) say(line, 'talking');
+              for (const s of q.steps) for (const line of (entry ? s.entrySay : s.proSay) ?? s.say ?? []) say(line, 'talking');
             }}
           >
             ▶ Replay

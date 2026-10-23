@@ -4,7 +4,7 @@
  * people in it.
  */
 import { describe, expect, it } from 'vitest';
-import { CITIES } from '@/world/cities';
+import { applyDifficulty, CITIES } from '@/world/cities';
 import { VoxelBuilder } from '@/engine/voxel';
 import { makeRng } from '@/game/rng';
 import type { Kit } from '@/world/interiors/furnish';
@@ -37,6 +37,7 @@ describe('interiors', () => {
     for (const diff of ['entry', 'advanced'] as const) {
       const stations = diff === 'entry' && b.entryStations ? b.entryStations : b.stations;
       it(`${city}/${b.id} (${diff}) counters are reachable and the room has people`, () => {
+        applyDifficulty(diff);
         const kind = kindFor(b);
         const L = layoutFor(stations.length, kind);
         const k: Kit = {

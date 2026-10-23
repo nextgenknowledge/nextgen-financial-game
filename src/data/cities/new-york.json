@@ -141,9 +141,9 @@
           "npc": "banker"
         },
         {
-          "activity": "asset-sort",
-          "label": "Asset or Liability?",
-          "icon": "💎",
+          "activity": "balance-sheet",
+          "label": "Balance Sheet Builder",
+          "icon": "📒",
           "npc": "clerk"
         },
         {
@@ -316,9 +316,9 @@
           "npc": "host"
         },
         {
-          "activity": "hype-check",
-          "label": "Hype or Real?",
-          "icon": "🎢",
+          "activity": "short-desk",
+          "label": "Short Seller's Desk",
+          "icon": "🔍",
           "npc": "reporter"
         }
       ],
@@ -326,7 +326,21 @@
         "floor": "#6b2f3a",
         "wall": "#3a2f4a",
         "theme": "arcade"
-      }
+      },
+      "entryStations": [
+        {
+          "activity": "startup-pitch",
+          "label": "Pitch Night",
+          "icon": "🚀",
+          "npc": "host"
+        },
+        {
+          "activity": "hype-check",
+          "label": "Hype or Real?",
+          "icon": "🎢",
+          "npc": "reporter"
+        }
+      ]
     }
   ],
   "landmarks": [

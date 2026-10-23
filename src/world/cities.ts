@@ -1,5 +1,5 @@
-import type { CityDef } from '@/game/content';
-import type { LocationId } from '@/game/types';
+import type { BuildingDef, CityDef } from '@/game/content';
+import type { Difficulty, LocationId } from '@/game/types';
 import park from '@/data/cities/park.json';
 import newYork from '@/data/cities/new-york.json';
 import london from '@/data/cities/london.json';
@@ -31,4 +31,29 @@ export function buildingById(id: string) {
     if (b) return { building: b, city: c };
   }
   return null;
+}
+
+/* ───────── Advanced identities ───────── */
+
+const PRO_KEYS = ['name', 'icon', 'blurb', 'style', 'colors', 'size', 'interior', 'interiorKind'] as const;
+const ORIGINAL = new Map<BuildingDef, Partial<BuildingDef>>();
+let track: Difficulty = 'entry';
+
+/** Which difficulty the building data is currently dressed for. */
+export const currentTrack = () => track;
+
+/**
+ * Dresses every building for a difficulty. Advanced swaps in each building's `pro` identity (name,
+ * sign, facade, interior); Entry restores the original. Everything that reads CITIES (scene, signs,
+ * map, guide, interiors) then sees the right building.
+ */
+export function applyDifficulty(d: Difficulty) {
+  if (d === track) return;
+  track = d;
+  for (const c of Object.values(CITIES))
+    for (const b of c.buildings) {
+      if (!b.pro) continue;
+      if (!ORIGINAL.has(b)) ORIGINAL.set(b, Object.fromEntries(PRO_KEYS.map((k) => [k, b[k]])) as Partial<BuildingDef>);
+      Object.assign(b, d === 'advanced' ? { ...ORIGINAL.get(b), ...b.pro } : ORIGINAL.get(b));
+    }
 }

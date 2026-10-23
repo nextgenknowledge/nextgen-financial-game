@@ -92,9 +92,9 @@
       "blurb": "Plant money and watch compound interest grow a tree. Your real CDs grow here too!",
       "stations": [
         {
-          "activity": "savings-garden",
-          "label": "Plant a Money Tree",
-          "icon": "🌱",
+          "activity": "sovereign-fund",
+          "label": "Sovereign Fund Mandate",
+          "icon": "🏦",
           "npc": "gardener"
         },
         {
@@ -108,6 +108,38 @@
         "floor": "#8a6a4a",
         "wall": "#e6f0e0",
         "theme": "shop"
+      },
+      "entryStations": [
+        {
+          "activity": "savings-garden",
+          "label": "Plant a Money Tree",
+          "icon": "🌱",
+          "npc": "gardener"
+        },
+        {
+          "service": "cds",
+          "label": "Open a CD (Money Tree)",
+          "icon": "🔒",
+          "npc": "banker"
+        }
+      ],
+      "pro": {
+        "name": "Sovereign Wealth Fund",
+        "icon": "🏦",
+        "blurb": "The tower that invests a nation’s savings for the next generation.",
+        "style": "tower",
+        "size": [
+          26,
+          20,
+          40
+        ],
+        "colors": {
+          "wall": "#cfd8dc",
+          "roof": "#2f3a4a",
+          "trim": "#ffffff",
+          "accent": "#2ebaba"
+        },
+        "interiorKind": "club"
       }
     },
     {
@@ -237,8 +269,8 @@
       "blurb": "How big should your rainy-day fund be? Survive a year of surprises.",
       "stations": [
         {
-          "activity": "emergency-fund",
-          "label": "Rainy Day Challenge",
+          "activity": "stress-test",
+          "label": "Personal Stress Test",
           "icon": "☔",
           "npc": "teacher"
         }
@@ -247,6 +279,32 @@
         "floor": "#c9d6c0",
         "wall": "#f4fbf0",
         "theme": "civic"
+      },
+      "entryStations": [
+        {
+          "activity": "emergency-fund",
+          "label": "Rainy Day Challenge",
+          "icon": "☔",
+          "npc": "teacher"
+        }
+      ],
+      "pro": {
+        "name": "Risk & Resilience Center",
+        "icon": "🛡️",
+        "blurb": "Stress-test your own finances against the bad year everyone eventually has.",
+        "style": "office",
+        "size": [
+          18,
+          16,
+          14
+        ],
+        "colors": {
+          "wall": "#e6ece4",
+          "roof": "#2f3a4a",
+          "trim": "#1e2840",
+          "accent": "#2ebaba"
+        },
+        "interiorKind": "open-office"
       }
     },
     {
@@ -321,9 +379,9 @@
           "npc": "mayor"
         },
         {
-          "activity": "charity-check",
-          "label": "Real or Red Flag?",
-          "icon": "🚩",
+          "activity": "impact-desk",
+          "label": "Impact Investing Desk",
+          "icon": "💝",
           "npc": "reporter"
         },
         {
@@ -337,7 +395,27 @@
         "floor": "#e6d0c0",
         "wall": "#fff4f8",
         "theme": "civic"
-      }
+      },
+      "entryStations": [
+        {
+          "service": "giving",
+          "label": "Donate",
+          "icon": "💝",
+          "npc": "mayor"
+        },
+        {
+          "activity": "charity-check",
+          "label": "Real or Red Flag?",
+          "icon": "🚩",
+          "npc": "reporter"
+        },
+        {
+          "activity": "sg-quiz",
+          "label": "Long-Term Quiz",
+          "icon": "🎤",
+          "npc": "host"
+        }
+      ]
     }
   ],
   "landmarks": [

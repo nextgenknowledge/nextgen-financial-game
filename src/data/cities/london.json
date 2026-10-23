@@ -92,9 +92,9 @@
       "blurb": "Shop for a week of groceries on a budget. Unit prices and coupons matter!",
       "stations": [
         {
-          "activity": "grocery",
-          "label": "Grocery Challenge",
-          "icon": "🛒",
+          "activity": "commodities",
+          "label": "Commodities & Inflation",
+          "icon": "🌱",
           "npc": "grocer"
         },
         {
@@ -108,6 +108,38 @@
         "floor": "#c9b48a",
         "wall": "#f4ead6",
         "theme": "shop"
+      },
+      "entryStations": [
+        {
+          "activity": "grocery",
+          "label": "Grocery Challenge",
+          "icon": "🛒",
+          "npc": "grocer"
+        },
+        {
+          "activity": "london-quiz",
+          "label": "Market Quiz",
+          "icon": "🎤",
+          "npc": "host"
+        }
+      ],
+      "pro": {
+        "name": "Commodities Exchange",
+        "icon": "📈",
+        "blurb": "Where metals, oil and grain change hands, and where inflation starts.",
+        "style": "exchange",
+        "size": [
+          26,
+          18,
+          14
+        ],
+        "colors": {
+          "wall": "#d8cdb6",
+          "roof": "#2f5a5a",
+          "trim": "#f4f1ea",
+          "accent": "#c9a24a"
+        },
+        "interiorKind": "trading-floor"
       }
     },
     {
@@ -134,9 +166,9 @@
       "blurb": "Sales, coupons and 'deals'. Which ones are really good?",
       "stations": [
         {
-          "activity": "dept-store",
-          "label": "Is It Really a Deal?",
-          "icon": "🏷️",
+          "activity": "retail-analyst",
+          "label": "Retail Analyst Desk",
+          "icon": "🛍️",
           "npc": "stylist"
         }
       ],
@@ -144,7 +176,15 @@
         "floor": "#e8e1d0",
         "wall": "#fff8ee",
         "theme": "boutique"
-      }
+      },
+      "entryStations": [
+        {
+          "activity": "dept-store",
+          "label": "Is It Really a Deal?",
+          "icon": "🏷️",
+          "npc": "stylist"
+        }
+      ]
     },
     {
       "id": "corner-shop",
@@ -170,9 +210,9 @@
       "blurb": "Work the till: make change fast and right.",
       "stations": [
         {
-          "activity": "change-counter",
-          "label": "Change Counter",
-          "icon": "🪙",
+          "activity": "fx-dealing",
+          "label": "FX Dealing Desk",
+          "icon": "💱",
           "npc": "clerk"
         }
       ],
@@ -180,6 +220,32 @@
         "floor": "#a8774a",
         "wall": "#f4ead6",
         "theme": "shop"
+      },
+      "entryStations": [
+        {
+          "activity": "change-counter",
+          "label": "Change Counter",
+          "icon": "🪙",
+          "npc": "clerk"
+        }
+      ],
+      "pro": {
+        "name": "FX Dealing Room",
+        "icon": "💱",
+        "blurb": "A bank dealing room on the City’s busiest corner, quoting currencies to the world.",
+        "style": "office",
+        "size": [
+          16,
+          14,
+          18
+        ],
+        "colors": {
+          "wall": "#2f3a4a",
+          "roof": "#1e2840",
+          "trim": "#c9d3df",
+          "accent": "#ffcf3f"
+        },
+        "interiorKind": "open-office"
       }
     },
     {
@@ -304,9 +370,9 @@
           "npc": "teacher"
         },
         {
-          "activity": "jars",
-          "label": "Save · Spend · Share Jars",
-          "icon": "🫙",
+          "activity": "client-plans",
+          "label": "Client Plans",
+          "icon": "💼",
           "npc": "teacher"
         }
       ],
@@ -314,6 +380,26 @@
         "floor": "#e6dfcf",
         "wall": "#f4f1ea",
         "theme": "civic"
+      },
+      "entryStations": [
+        {
+          "activity": "budget-planner",
+          "label": "Budget Planner",
+          "icon": "📋",
+          "npc": "teacher"
+        },
+        {
+          "activity": "jars",
+          "label": "Save · Spend · Share Jars",
+          "icon": "🫙",
+          "npc": "teacher"
+        }
+      ],
+      "pro": {
+        "name": "Wealth Advisory",
+        "icon": "💼",
+        "blurb": "Private advisers building plans for real clients with real goals.",
+        "interiorKind": "lounge"
       }
     }
   ],

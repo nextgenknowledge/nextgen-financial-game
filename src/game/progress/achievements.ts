@@ -13,6 +13,8 @@ export interface AchievementDef {
   condition: { stat?: string; gte?: number; netWorth?: number; level?: number; topicCorrect?: string };
   xp: number;
   advanced?: boolean;
+  /** Only reachable in Entry (its Advanced building was replaced). */
+  entryOnly?: boolean;
 }
 
 export const ACHIEVEMENTS = data.achievements as AchievementDef[];
@@ -35,7 +37,7 @@ export function achievementProgress(w: WorldState, a: AchievementDef): { value: 
 export function checkAchievements(w: WorldState, fx: Fx) {
   for (const a of ACHIEVEMENTS) {
     if (w.progress.achievements[a.id]) continue;
-    if (a.advanced && w.difficulty === 'entry') continue;
+    if ((a.advanced && w.difficulty === 'entry') || (a.entryOnly && w.difficulty === 'advanced')) continue;
     const p = achievementProgress(w, a);
     if (p.value >= p.target) {
       w.progress.achievements[a.id] = Date.now();
