@@ -1,4 +1,6 @@
 'use client';
+import { FinBucksCoin } from '../FinBucks';
+import { LESSONS } from '@/game/progress/lessons';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useGame, act } from '@/store/game';
 import { useUI } from '@/store/ui';
@@ -81,9 +83,9 @@ function MoneyBar() {
   }, [f.cash, bank]);
   return (
     <div className="hud-money">
-      <button className={cls('pill', flash && `flash-${flash}`)} onClick={() => open({ type: 'phone', app: 'bank' })} title="Cash in your pocket">
-        <span className="pill-icon">💵</span>
-        <span className="pill-label">Cash</span>
+      <button className={cls('pill', 'fb-pill', flash && `flash-${flash}`)} onClick={() => open({ type: 'phone', app: 'bank' })} title="FinBucks in your pocket (1 FinBuck = $1)">
+        <span className="pill-icon fb"><FinBucksCoin size="1.5rem" /></span>
+        <span className="pill-label">FinBucks</span>
         <b className="mono">{money(f.cash)}</b>
       </button>
       {(f.hasChecking || f.hasSavings) && (
@@ -384,9 +386,24 @@ function MenuButtons() {
     { icon: '🎒', label: 'Bag', key: keys.inventory, onClick: () => open({ type: 'phone', app: 'bag' }) },
     { icon: '⏸️', label: 'Pause', key: keys.pause, onClick: () => open({ type: 'pause' }) },
   ];
+  const done = useGame((s) => s.world?.progress.lessons.length ?? 0);
   if (panel) return null;
+  const total = LESSONS.length;
   return (
     <div className="hud-menu">
+      {/* Learning is the point of the game: the Learn hub gets the top spot */}
+      <button className="menu-btn learn-btn" onClick={() => (playSfx('pop'), open({ type: 'learn' }))} title="Learn: lessons, tips and formulas (L)">
+        <span className="menu-icon">📚</span>
+        <span className="col" style={{ gap: 2, alignItems: 'flex-start' }}>
+          <span className="menu-label">Learn</span>
+          <span className="learn-progress">
+            <span style={{ width: `${(done / total) * 100}%` }} />
+          </span>
+        </span>
+        <span className="learn-count">
+          {done}/{total}
+        </span>
+      </button>
       {btns.map((b) => (
         <button key={b.label} className="menu-btn" onClick={() => (playSfx('pop'), b.onClick())} title={`${b.label} (${keyLabel(b.key)})`}>
           <span className="menu-icon">{b.icon}</span>

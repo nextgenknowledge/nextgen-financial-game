@@ -283,3 +283,10 @@ export function playMusic(themeId: string | null) {
     }
   }, 300);
 }
+
+/** The audio context and effects bus, for the ambience engine (null until audio is unlocked). */
+export function audioBus(): { ctx: AudioContext; out: GainNode } | null {
+  const c = ensure();
+  if (!c || !sfxGain) return null;
+  return { ctx: c, out: sfxGain };
+}

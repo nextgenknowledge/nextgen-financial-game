@@ -16,6 +16,7 @@ import { CITIES, buildingById } from '@/world/cities';
 import { rt } from '@/engine/runtime';
 import { onAction } from '@/engine/input';
 import { playMusic } from '@/engine/audio';
+import { startAmbience, stopAmbience } from '@/engine/ambience';
 import { advanceTime } from '@/game/sim/time';
 import { recordEvent } from '@/game/progress/events';
 import { refreshChallenges } from '@/game/progress/challenges';
@@ -90,6 +91,25 @@ export default function GameView() {
         if (cs) sayStep(d, fx, cs.step);
       }
     });
+  }, []);
+
+  // L opens the Learn hub
+  useEffect(() => {
+    const h = (e: KeyboardEvent) => {
+      if (e.key.toLowerCase() !== 'l' || e.repeat || (e.target as HTMLElement)?.tagName === 'INPUT') return;
+      const ui = useUI.getState();
+      if (ui.screen !== 'game' || ui.loading.active) return;
+      if (ui.panel?.type === 'learn') ui.close();
+      else if (!ui.panel) ui.open({ type: 'learn' });
+    };
+    window.addEventListener('keydown', h);
+    return () => window.removeEventListener('keydown', h);
+  }, []);
+
+  // City soundscape (runs while the game view is mounted)
+  useEffect(() => {
+    startAmbience();
+    return () => stopAmbience();
   }, []);
 
   // Autosave every 30 s and when the tab is hidden
@@ -182,9 +202,9 @@ function Systems({ pendingJump }: { pendingJump: React.RefObject<boolean> }) {
       const s = useSettings.getState();
       // Hidden or unfocused tabs are throttled by the browser, never judge performance there
       const throttled = document.hidden || !document.hasFocus();
-      if (s.autoQuality && s.quality !== 'low' && fps < 24 && !paused && !throttled) {
+      if (s.autoQuality && s.quality !== 'low' && fps < 27 && !paused && !throttled) {
         f.low++;
-        if (f.low >= 5) {
+        if (f.low >= 3) {
           s.set({ quality: s.quality === 'high' ? 'medium' : 'low' });
           useUI.getState().pushToast({ text: 'Lowered graphics quality to keep things smooth.', icon: '🖥️', tone: 'info' });
           f.low = 0;
@@ -201,6 +221,8 @@ function Systems({ pendingJump }: { pendingJump: React.RefObject<boolean> }) {
 function CaptureBinder() {
   const { gl, scene, camera } = useThree();
   useEffect(() => {
+    // Dev-only: renderer stats for automated performance checks
+    if (process.env.NODE_ENV !== 'production') (window as unknown as { __gl?: unknown }).__gl = { gl, scene, camera };
     capture.fn = () => {
       gl.render(scene, camera);
       const src = gl.domElement;

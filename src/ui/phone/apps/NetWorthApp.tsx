@@ -16,7 +16,7 @@ export function NetWorthApp() {
   const prev = w.progress.netWorth[w.progress.netWorth.length - 2];
   const change = last && prev ? last.total - prev.total : null;
   const assets = [
-    { label: 'Cash', value: b.cash, color: COLORS.cash, icon: '💵' },
+    { label: 'FinBucks (cash)', value: b.cash, color: COLORS.cash, icon: '💵' },
     { label: 'Checking', value: b.checking, color: COLORS.bank, icon: '🏦' },
     { label: 'Savings', value: b.savings, color: COLORS.bank, icon: '🐷' },
     { label: 'CDs', value: b.cds, color: COLORS.bank, icon: '🔒' },
@@ -70,7 +70,7 @@ export function NetWorthApp() {
         <div style={{ minWidth: 160 }} className="col center">
           <Pie
             slices={[
-              { label: 'Cash & bank', value: b.cash + b.checking + b.savings + b.cds, color: COLORS.bank },
+              { label: 'FinBucks & bank', value: b.cash + b.checking + b.savings + b.cds, color: COLORS.bank },
               { label: 'Investments', value: b.investments + b.retirement + b.startups, color: COLORS.investments },
               { label: 'Property & business', value: b.property + b.businesses, color: COLORS.property },
               { label: 'Stuff', value: b.vehicles + b.items, color: COLORS.other },
@@ -78,7 +78,7 @@ export function NetWorthApp() {
           />
           <div className="tiny">
             <div>
-              <span style={{ color: COLORS.bank }}>■</span> Cash & bank
+              <span style={{ color: COLORS.bank }}>■</span> FinBucks & bank
             </div>
             <div>
               <span style={{ color: COLORS.investments }}>■</span> Investments

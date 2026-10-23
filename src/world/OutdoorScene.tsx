@@ -51,7 +51,7 @@ export function OutdoorScene({ def, difficulty }: { def: CityDef; difficulty: Di
 
   useFrame(() => {
     updateNightMaterials(rt.dayLight);
-    worldUniforms.uGrime.value = 1;
+    worldUniforms.uGrime.value = quality === 'low' ? 0 : 1;
     // Gusty in storms, a light breeze otherwise
     worldUniforms.uWind.value = 1 + (rt.weather === 'rain' || rt.weather === 'snow' ? rt.weatherAmt * 1.6 : 0);
   });

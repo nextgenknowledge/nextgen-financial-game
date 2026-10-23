@@ -63,11 +63,6 @@ export function Quiz({ def, params, difficulty, onFinish, addReview, seed }: Kin
 
   return (
     <div className="quiz">
-      <div className="quiz-dots">
-        {questions.map((_, k) => (
-          <span key={k} className={k < i ? 'done' : k === i ? 'now' : ''} />
-        ))}
-      </div>
       <QuestionView key={`${seed}-${i}`} q={q} entry={entry} allowRetry={entry} timer={params.timer} index={i} total={questions.length} onAnswered={(o) => answered(o, q)} />
     </div>
   );

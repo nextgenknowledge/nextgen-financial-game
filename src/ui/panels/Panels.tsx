@@ -29,7 +29,7 @@ export function Panels() {
     case 'shop':
       return <ShopPanel id={panel.id} />;
     case 'learn':
-      return <LearnPanel topic={panel.topic} />;
+      return <LearnPanel topic={panel.topic} lessonId={panel.lesson} />;
     default:
       return null;
   }

@@ -30,7 +30,7 @@ export type Panel =
   | { type: 'settings' }
   | { type: 'monthSummary'; month: number }
   | { type: 'levelUp'; level: number }
-  | { type: 'learn'; topic?: string };
+  | { type: 'learn'; topic?: string; lesson?: string };
 
 export interface Prompt {
   id: string;

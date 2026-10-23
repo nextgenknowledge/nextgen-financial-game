@@ -13,7 +13,8 @@ import { isPaused } from '@/store/ui';
 import { makeRng } from '@/game/rng';
 import { DEFAULT_AVATAR } from '@/game/world';
 import { M, glowTexture } from './materials';
-import { Avatar, type AnimState } from './Avatar';
+import type { AnimState } from './Avatar';
+import { LitePerson } from './LitePerson';
 import type { Site } from './builders/streetscape';
 
 /* ───────── Building sites ───────── */
@@ -111,7 +112,7 @@ function Worker({ x, z, rot, i }: { x: number; z: number; rot: number; i: number
   const look = useMemo(() => ({ ...WORKER, skin: ['#e8b48f', '#a96e48', '#f2c39c', '#7d4f33'][i % 4] }), [i]);
   return (
     <group position={[x, 0.14, z]} rotation={[0, rot, 0]}>
-      <Avatar config={look} anim={anim} />
+      <LitePerson config={look} anim={anim} />
     </group>
   );
 }

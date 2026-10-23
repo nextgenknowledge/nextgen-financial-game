@@ -42,7 +42,7 @@ const TITLES: Record<string, string> = {
 
 export function ServicePanel({ id }: { id: string; arg?: string }) {
   const close = useUI((s) => s.close);
-  if (id === 'library') return <LearnPanel tab="lessons" />;
+  if (id === 'library') return <LearnPanel tab="course" />;
   return (
     <Modal onClose={close} title={TITLES[id] ?? id} size="wide">
       {id === 'bank' && <BankTeller />}

@@ -10,44 +10,125 @@ import { TOPIC_INFO } from '@/game/topics';
 import tips from '@/data/tips.json';
 import { playSfx } from '@/engine/audio';
 import { cls } from '../format';
+import { FinBucks } from '../FinBucks';
 
-type Tab = 'lessons' | 'tips' | 'tutorials' | 'formulas' | 'narwhal';
+type Tab = 'course' | 'tips' | 'tutorials' | 'formulas' | 'narwhal';
 
-export function LearnPanel({ topic, tab: initial }: { topic?: string; tab?: Tab }) {
+/** Lessons grouped into course units by topic, in course order. */
+function units(topic?: string) {
+  const out: { topic: string; lessons: LessonDef[] }[] = [];
+  for (const l of LESSONS) {
+    if (topic && l.topic !== topic) continue;
+    const u = out.find((x) => x.topic === l.topic);
+    if (u) u.lessons.push(l);
+    else out.push({ topic: l.topic, lessons: [l] });
+  }
+  return out;
+}
+
+export function LearnPanel({ topic, tab: initial, lessonId }: { topic?: string; tab?: Tab; lessonId?: string }) {
   const close = useUI((s) => s.close);
   const w = useGame((s) => s.world!);
-  const [tab, setTab] = useState<Tab>(initial ?? 'lessons');
-  const [lesson, setLesson] = useState<LessonDef | null>(null);
+  const [tab, setTab] = useState<Tab>(initial ?? 'course');
+  const [lesson, setLesson] = useState<LessonDef | null>(() => LESSONS.find((l) => l.id === lessonId) ?? null);
   const entry = w.difficulty === 'entry';
+  const done = w.progress.lessons;
+  const next = LESSONS.find((l) => !done.includes(l.id));
+  const pctDone = Math.round((done.length / LESSONS.length) * 100);
   return (
-    <Modal onClose={close} title="📚 Learn" size="wide">
+    <Modal
+      onClose={close}
+      title="📚 Learn"
+      subtitle={`Your money course · ${done.length} of ${LESSONS.length} lessons complete`}
+      size="wide"
+      accent="teal"
+      className={entry ? 'entry-mode learn-modal' : 'learn-modal'}
+    >
       {lesson ? (
-        <LessonReader lesson={lesson} onDone={() => setLesson(null)} />
+        <LessonReader lesson={lesson} onDone={() => setLesson(null)} onNext={(l) => setLesson(l)} />
       ) : (
         <>
+          <div className="learn-hero">
+            <div className="learn-ring">
+              <svg viewBox="0 0 100 100" width="96" height="96">
+                <circle cx="50" cy="50" r="42" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="9" />
+                <circle cx="50" cy="50" r="42" fill="none" stroke="#ffd25a" strokeWidth="9" strokeLinecap="round" strokeDasharray={`${(264 * pctDone) / 100} 264`} transform="rotate(-90 50 50)" />
+              </svg>
+              <b>{pctDone}%</b>
+            </div>
+            <div className="col grow" style={{ gap: 6, minWidth: 220 }}>
+              <span className="learn-kicker">{next ? 'Up next in your course' : 'Course complete'}</span>
+              <b className="learn-next-title">
+                {next ? (
+                  <>
+                    {next.icon} {next.title}
+                  </>
+                ) : (
+                  'You finished every lesson. Legend!'
+                )}
+              </b>
+              {next && (
+                <span className="small" style={{ opacity: 0.85 }}>
+                  {TOPIC_INFO[next.topic as keyof typeof TOPIC_INFO]?.name} · {next.slides.length + 1} steps · +{next.reward.xp} XP
+                  {next.reward.cash ? ` · +$${next.reward.cash} FinBucks` : ''}
+                  {next.perk ? ` · unlocks ${next.perk.name}` : ''}
+                </span>
+              )}
+            </div>
+            {next && (
+              <Button variant="gold" size="big" onClick={() => (playSfx('pop'), setLesson(next))}>
+                ▶ {done.length ? 'Continue' : 'Start learning'}
+              </Button>
+            )}
+          </div>
           <Tabs
             value={tab}
             onChange={setTab}
             tabs={[
-              { id: 'lessons', label: `📖 Lessons (${w.progress.lessons.length}/${LESSONS.length})` },
-              { id: 'tips', label: "🦄 Narwhal's Money Tips" },
-              { id: 'tutorials', label: '🔁 Replay tutorials' },
+              { id: 'course', label: '📖 Course' },
+              { id: 'tips', label: "💡 Narwhal's tips" },
               ...(entry ? [] : [{ id: 'formulas' as Tab, label: '📐 Formula sheet' }]),
+              { id: 'tutorials', label: '🔁 Tutorials' },
               { id: 'narwhal', label: '💙 Meet Narwhal' },
             ]}
           />
-          {tab === 'lessons' && (
-            <div className="lesson-grid">
-              {LESSONS.filter((l) => !topic || l.topic === topic).map((l) => {
-                const done = w.progress.lessons.includes(l.id);
+          {tab === 'course' && (
+            <div className="course">
+              {units(topic).map((u) => {
+                const info = TOPIC_INFO[u.topic as keyof typeof TOPIC_INFO];
+                const n = u.lessons.filter((l) => done.includes(l.id)).length;
                 return (
-                  <button key={l.id} className={cls('lesson-card', done && 'done')} onClick={() => (playSfx('pop'), setLesson(l))}>
-                    <span style={{ fontSize: '2rem' }}>{l.icon}</span>
-                    <b>{l.title}</b>
-                    <span className="tiny muted">{TOPIC_INFO[l.topic as keyof typeof TOPIC_INFO]?.name}</span>
-                    {l.perk && <span className="tiny chip gold">✨ {l.perk.name}</span>}
-                    {done && <span className="tiny good bold">✓ Done</span>}
-                  </button>
+                  <section key={u.topic} className="unit">
+                    <div className="unit-head">
+                      <span className="unit-icon">{info?.icon}</span>
+                      <div className="col grow" style={{ gap: 0 }}>
+                        <b>{info?.name}</b>
+                        <span className="tiny muted">{info?.blurb}</span>
+                      </div>
+                      <span className={cls('chip', n === u.lessons.length ? 'good' : undefined)}>
+                        {n}/{u.lessons.length}
+                      </span>
+                    </div>
+                    <div className="unit-lessons">
+                      {u.lessons.map((l) => {
+                        const isDone = done.includes(l.id);
+                        const isNext = next?.id === l.id;
+                        return (
+                          <button key={l.id} className={cls('lesson-row', isDone && 'done', isNext && 'next')} onClick={() => (playSfx('pop'), setLesson(l))}>
+                            <span className="lesson-node">{isDone ? '✓' : l.icon}</span>
+                            <span className="col grow" style={{ gap: 1, alignItems: 'flex-start' }}>
+                              <b>{l.title}</b>
+                              <span className="tiny muted">
+                                {l.slides.length + 1} steps · +{l.reward.xp} XP{l.reward.cash ? ` · +$${l.reward.cash}` : ''}
+                              </span>
+                            </span>
+                            {l.perk && <span className="chip gold tiny">✨ {l.perk.name}</span>}
+                            {isNext && <span className="chip teal tiny">Next</span>}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </section>
                 );
               })}
             </div>
@@ -70,7 +151,7 @@ export function LearnPanel({ topic, tab: initial }: { topic?: string; tab?: Tab 
           {tab === 'formulas' && <FormulaSheet />}
           {tab === 'narwhal' && (
             <div className="row wrap" style={{ gap: 16, alignItems: 'flex-start' }}>
-              <img src={NARWHAL_SHEET} alt="NextGen Narwhal character sheet" style={{ width: 'min(520px, 100%)', borderRadius: 14, border: '3px solid var(--ink)' }} />
+              <img src={NARWHAL_SHEET} alt="NextGen Narwhal character sheet" style={{ width: 'min(520px, 100%)', borderRadius: 14, border: '1px solid var(--border)' }} />
               <div className="col grow" style={{ minWidth: 220 }}>
                 <h3 style={{ margin: 0 }}>NextGen Narwhal</h3>
                 <p>The money guide of Fin City and the mascot of NextGen Knowledge. Confident, curious and a little bit skeptical of anything that sounds too good to be true.</p>
@@ -84,68 +165,105 @@ export function LearnPanel({ topic, tab: initial }: { topic?: string; tab?: Tab 
   );
 }
 
-function LessonReader({ lesson, onDone }: { lesson: LessonDef; onDone: () => void }) {
-  const entry = useGame((s) => s.world!.difficulty === 'entry');
+function LessonReader({ lesson, onDone, onNext }: { lesson: LessonDef; onDone: () => void; onNext: (l: LessonDef) => void }) {
+  const w = useGame((s) => s.world!);
+  const entry = w.difficulty === 'entry';
   const [i, setI] = useState(0);
   const [picked, setPicked] = useState<number | null>(null);
+  const [wasFirst] = useState(() => !w.progress.lessons.includes(lesson.id));
   const slides = lesson.slides;
   const atCheck = i >= slides.length;
+  const steps = slides.length + 1;
   const text = atCheck ? lesson.check.prompt : entry ? slides[i].entry : slides[i].advanced;
+  const ok = picked === lesson.check.answer;
+  const after = LESSONS[LESSONS.findIndex((l) => l.id === lesson.id) + 1];
+  const info = TOPIC_INFO[lesson.topic as keyof typeof TOPIC_INFO];
   return (
-    <div className="col" style={{ gap: 12 }}>
-      <div className="row between">
-        <h3 style={{ margin: 0 }}>
-          {lesson.icon} {lesson.title}
-        </h3>
-        <span className="small muted">
-          {Math.min(i + 1, slides.length + 1)}/{slides.length + 1}
+    <div className="lesson-reader">
+      <div className="row between wrap">
+        <button className="link-btn" onClick={onDone}>
+          ◀ Course
+        </button>
+        <span className="q-topic">
+          <span className="q-topic-icon">{info?.icon}</span>
+          {info?.name}
         </span>
       </div>
-      <div className="card lesson-slide">
-        <p style={{ fontSize: entry ? '1.35rem' : '1.15rem', fontWeight: 700, margin: 0 }}>{text}</p>
-        <ReadAloud text={text} />
+      <div className="q-progress-track lesson-track">
+        {Array.from({ length: steps }, (_, k) => (
+          <span key={k} className={k < i ? 'past' : k === i ? 'now' : ''} />
+        ))}
+      </div>
+      <div className="lesson-card2">
+        <div className="lesson-art">{lesson.icon}</div>
+        <div className="col grow" style={{ gap: 6 }}>
+          <span className="learn-kicker dark">{atCheck ? 'Check your understanding' : `${lesson.title} · ${i + 1} of ${slides.length}`}</span>
+          <p className="lesson-text">
+            {text} <ReadAloud text={text} />
+          </p>
+        </div>
       </div>
       {atCheck ? (
-        <>
-          <div className="col" style={{ gap: 8 }}>
+        <div className="question">
+          <div className={cls('choices', lesson.check.choices.length <= 2 && 'two')}>
             {lesson.check.choices.map((c, k) => (
-              <Button
+              <button
                 key={k}
-                size="big"
-                block
-                variant={picked === null ? undefined : k === lesson.check.answer ? 'green' : k === picked ? 'danger' : undefined}
+                className={cls('choice', picked !== null && k === lesson.check.answer && 'right', picked === k && k !== lesson.check.answer && 'wrong')}
                 disabled={picked !== null}
                 onClick={() => {
                   setPicked(k);
-                  const ok = k === lesson.check.answer;
-                  playSfx(ok ? 'correct' : 'wrong');
-                  act((w, fx) => completeLesson(w, fx, lesson.id, ok));
+                  const right = k === lesson.check.answer;
+                  playSfx(right ? 'correct' : 'wrong');
+                  act((d, fx) => completeLesson(d, fx, lesson.id, right));
                 }}
               >
+                <span className="choice-letter">{String.fromCharCode(65 + k)}</span>
                 {c}
-              </Button>
+              </button>
             ))}
           </div>
           {picked !== null && (
-            <div className={`card ${picked === lesson.check.answer ? 'tint-green' : 'tint-red'}`}>
-              <b>{picked === lesson.check.answer ? '✅ Correct!' : '💡 Not quite.'}</b> {lesson.check.explanation}
+            <div className={cls('q-feedback', ok ? 'ok' : 'no')}>
+              <div className="q-feedback-head">
+                <b className="q-verdict grow">{ok ? (wasFirst ? 'Lesson complete!' : 'Correct!') : 'Not quite'}</b>
+                {ok && wasFirst && (
+                  <span className="row wrap" style={{ gap: 6 }}>
+                    <span className="chip teal">+{lesson.reward.xp} XP</span>
+                    {lesson.reward.cash ? <FinBucks value={lesson.reward.cash} className="chip gold finbucks" /> : null}
+                    {lesson.perk && <span className="chip gold">✨ {lesson.perk.name}</span>}
+                  </span>
+                )}
+              </div>
+              <div className="q-why">
+                <span className="q-why-label">Why</span>
+                <span>{lesson.check.explanation}</span>
+              </div>
+              {ok && lesson.perk && wasFirst && (
+                <div className="q-why key">
+                  <span className="q-why-label">Perk</span>
+                  <span>
+                    <b>{lesson.perk.name}:</b> {lesson.perk.desc}
+                  </span>
+                </div>
+              )}
             </div>
           )}
-          <div className="row">
-            {picked !== null && picked !== lesson.check.answer && (
-              <Button onClick={() => (setPicked(null), setI(0))}>↺ Read it again</Button>
+          <div className="row" style={{ justifyContent: 'flex-end', marginTop: 4 }}>
+            {picked !== null && !ok && <Button onClick={() => (setPicked(null), setI(0))}>↺ Read it again</Button>}
+            {picked !== null && ok && after && (
+              <Button variant="primary" size="big" onClick={() => onNext(after)}>
+                Next lesson: {after.title} ▶
+              </Button>
             )}
-            <Button variant="primary" onClick={onDone}>
-              Back to lessons
-            </Button>
+            {picked !== null && <Button onClick={onDone}>Back to course</Button>}
           </div>
-        </>
+        </div>
       ) : (
-        <div className="row">
-          <Button onClick={onDone}>Back</Button>
-          {i > 0 && <Button onClick={() => setI(i - 1)}>◀ Previous</Button>}
-          <Button variant="primary" onClick={() => (playSfx('click'), setI(i + 1))}>
-            {i === slides.length - 1 ? 'Quiz time! ▶' : 'Next ▶'}
+        <div className="row" style={{ justifyContent: 'flex-end' }}>
+          {i > 0 && <Button onClick={() => setI(i - 1)}>◀ Back</Button>}
+          <Button variant="primary" size="big" onClick={() => (playSfx('click'), setI(i + 1))}>
+            {i === slides.length - 1 ? 'Check yourself ▶' : 'Continue ▶'}
           </Button>
         </div>
       )}

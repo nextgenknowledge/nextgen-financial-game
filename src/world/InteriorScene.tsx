@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useFrame, type ThreeEvent } from '@react-three/fiber';
 import * as THREE from 'three';
 import type { BuildingDef, StationDef } from '@/game/content';
@@ -10,6 +10,7 @@ import { useScene } from '@/store/scene';
 import { M } from './materials';
 import { rt } from '@/engine/runtime';
 import { Avatar, type AnimState } from './Avatar';
+import { LitePerson } from './LitePerson';
 import { useUI } from '@/store/ui';
 import { useSettings } from '@/store/settings';
 import npcs from '@/data/npcs.json';
@@ -57,12 +58,23 @@ function dressLook(rng: Rng, dress: Actor['dress']): AvatarConfig {
 
 function Person({ actor, look }: { actor: Actor; look: AvatarConfig }) {
   const g = useRef<THREE.Group>(null);
+  const quality = useSettings((s) => s.quality);
+  // Full detail only near the camera; everyone else uses the cheap merged model
+  const [near, setNear] = useState(false);
+  const lodTick = useRef(Math.random() * 0.5);
   const seated = actor.pose === 'sit' || actor.pose === 'type' || actor.pose === 'eat';
   const anim = useRef<AnimState>({ speed: 0, grounded: true, sitting: seated, busy: actor.pose === 'type' || actor.pose === 'eat' || actor.pose === 'busy' });
   const st = useRef({ seg: 0, t: Math.random(), wait: 0 });
-  useFrame((_, rawDt) => {
+  useFrame(({ camera }, rawDt) => {
     const dt = Math.min(rawDt, 0.05);
     const grp = g.current;
+    lodTick.current -= rawDt;
+    if (grp && lodTick.current <= 0) {
+      lodTick.current = 0.5;
+      const d = camera.position.distanceTo(grp.getWorldPosition(tmpV));
+      const want = quality !== 'low' && (near ? d < 11 : d < 9);
+      if (want !== near) setNear(want);
+    }
     if (!grp || !actor.path) return;
     const p = actor.path;
     const s = st.current;
@@ -93,10 +105,12 @@ function Person({ actor, look }: { actor: Actor; look: AvatarConfig }) {
   const back = seated ? 0.1 : 0;
   return (
     <group ref={g} position={[actor.x - Math.sin(actor.rot) * back, y, actor.z - Math.cos(actor.rot) * back]} rotation={[0, actor.rot, 0]}>
-      <Avatar config={look} anim={anim} />
+      {near ? <Avatar config={look} anim={anim} /> : <LitePerson config={look} anim={anim} />}
     </group>
   );
 }
+
+const tmpV = new THREE.Vector3();
 
 function People({ actors, seed }: { actors: Actor[]; seed: number }) {
   const quality = useSettings((s) => s.quality);

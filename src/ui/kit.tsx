@@ -212,11 +212,11 @@ export function Pie({ slices, size = 140 }: { slices: { label: string; value: nu
 
 export function Tabs<T extends string>({ tabs, value, onChange }: { tabs: { id: T; label: ReactNode }[]; value: T; onChange: (t: T) => void }) {
   return (
-    <div className="row wrap" style={{ gap: 6, marginBottom: 10 }}>
+    <div className="seg" role="tablist">
       {tabs.map((t) => (
-        <Button key={t.id} size="small" variant={value === t.id ? 'primary' : undefined} onClick={() => onChange(t.id)}>
+        <button key={t.id} type="button" role="tab" aria-selected={value === t.id} className={value === t.id ? 'seg-btn on' : 'seg-btn'} onClick={() => (playSfx('click'), onChange(t.id))}>
           {t.label}
-        </Button>
+        </button>
       ))}
     </div>
   );

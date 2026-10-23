@@ -71,20 +71,33 @@ export function ReadAloud({ text, small = true }: { text: string; small?: boolea
   );
 }
 
+/** Splits a leading icon character (e.g. "🗺️ City Map") off a title so it can sit in its own tile. */
+function splitIcon(title: ReactNode): [string | null, ReactNode] {
+  if (typeof title !== 'string') return [null, title];
+  const m = title.match(/^(\p{Extended_Pictographic}\uFE0F?(?:\u200D\p{Extended_Pictographic}\uFE0F?)*)\s+(.*)$/u);
+  return m ? [m[1], m[2]] : [null, title];
+}
+
 export function Modal({
   children,
   onClose,
   size,
   title,
+  subtitle,
   className,
   closeLabel = '✕',
+  accent,
 }: {
   children: ReactNode;
   onClose?: () => void;
   size?: 'wide' | 'full';
   title?: ReactNode;
+  /** A short line under the title. */
+  subtitle?: ReactNode;
   className?: string;
   closeLabel?: string;
+  /** Header colour theme. */
+  accent?: 'navy' | 'teal' | 'gold' | 'terminal';
 }) {
   useEffect(() => {
     if (!onClose) return;
@@ -97,20 +110,25 @@ export function Modal({
     window.addEventListener('keydown', h, true);
     return () => window.removeEventListener('keydown', h, true);
   }, [onClose]);
+  const [icon, text] = splitIcon(title);
   return (
     <div className="modal-backdrop" onMouseDown={(e) => e.target === e.currentTarget && onClose?.()}>
       <div className={cls('modal', 'panel', size, className)} role="dialog" aria-modal="true">
         {(title || onClose) && (
-          <div className="row between" style={{ marginBottom: '0.5rem' }}>
-            <h2 style={{ margin: 0 }}>{title}</h2>
+          <div className={cls('modal-head', accent ?? 'navy')}>
+            {icon && <span className="modal-icon">{icon}</span>}
+            <div className="modal-titles">
+              {title && <h2>{text}</h2>}
+              {subtitle && <div className="modal-sub">{subtitle}</div>}
+            </div>
             {onClose && (
-              <Button variant="ghost" className="icon" onClick={onClose} title="Close">
-                <span style={{ fontSize: '1.4rem' }}>{closeLabel}</span>
-              </Button>
+              <button type="button" className="modal-close" onClick={() => (playSfx('click'), onClose())} title="Close" aria-label="Close">
+                {closeLabel}
+              </button>
             )}
           </div>
         )}
-        {children}
+        <div className="modal-body">{children}</div>
       </div>
     </div>
   );

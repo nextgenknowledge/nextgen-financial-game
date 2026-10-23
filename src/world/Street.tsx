@@ -12,7 +12,8 @@ import { carGeometry, carPaintMat, carTrimMat, type AnyCarModel } from './cars';
 import type { ParkedCar, SignalHead } from './builders/streetscape';
 import { CAR_PAINTS } from './builders/streetscape';
 import { glowTexture } from './materials';
-import { Avatar, type AnimState } from './Avatar';
+import type { AnimState } from './Avatar';
+import { LitePerson } from './LitePerson';
 import { DEFAULT_AVATAR } from '@/game/world';
 import { hourOf } from '@/engine/Sky';
 import { getWorld } from '@/store/game';
@@ -172,7 +173,7 @@ function Delivery({ van, seed }: { van: ParkedCar; seed: number }) {
     <>
       <points ref={lights} geometry={geo} material={mat} frustumCulled={false} />
       <group ref={g}>
-        <Avatar config={DRIVER} anim={anim} />
+        <LitePerson config={DRIVER} anim={anim} />
         <mesh ref={box} position={[0, 1.1, 0.42]} castShadow>
           <boxGeometry args={[0.55, 0.42, 0.4]} />
           <meshLambertMaterial color="#b8895a" />

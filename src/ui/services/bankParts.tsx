@@ -21,6 +21,7 @@ import {
   payCard,
 } from '@/game/finance/accounts';
 import { monthLabel } from '@/game/world';
+import { FinBucksNote } from '../FinBucks';
 import { amortize } from '@/game/finance/loans';
 import { creditTier, TIER_LABEL } from '@/game/finance/credit';
 
@@ -29,8 +30,15 @@ export function AccountsSummary() {
   const w = useGame((s) => s.world!);
   const entry = w.difficulty === 'entry';
   return (
+    <>
+    <div className="row wrap" style={{ gap: 14, alignItems: 'center', marginBottom: 8 }}>
+      <FinBucksNote value={f.cash} label="FINBUCKS · IN YOUR POCKET" />
+      <p className="small muted" style={{ maxWidth: 300, margin: 0 }}>
+        FinBucks are Fin City&apos;s money: 1 FinBuck is worth $1. Cash in your pocket is easy to spend and easy to lose, so bank it to keep it safe and earn interest.
+      </p>
+    </div>
     <StatGrid>
-      <Stat icon="💵" label="Cash (pocket)" value={money(f.cash)} sub="Easy to spend, easy to lose" />
+      <Stat icon="💵" label="FinBucks (pocket)" value={money(f.cash)} sub="Easy to spend, easy to lose" />
       <Stat icon="🏦" label="Checking" value={f.hasChecking ? money(f.checking) : 'Not open'} sub="Everyday money" />
       <Stat
         icon="🐷"
@@ -41,6 +49,7 @@ export function AccountsSummary() {
       />
       {f.cds.length > 0 && <Stat icon="🔒" label="CDs" value={money(f.cds.reduce((s, c) => s + c.value, 0))} sub={`${f.cds.length} locked`} />}
     </StatGrid>
+    </>
   );
 }
 
@@ -82,8 +91,8 @@ export function TransferForm({ allowCash = true }: { allowCash?: boolean }) {
   const f = useGame((s) => s.world!.finance);
   const entry = useGame((s) => s.world!.difficulty === 'entry');
   const opts: { id: string; from: Acct; to: Acct; label: string; show: boolean }[] = [
-    { id: 'dep', from: 'cash', to: 'checking', label: '💵 → 🏦 Deposit cash', show: allowCash && f.hasChecking },
-    { id: 'wd', from: 'checking', to: 'cash', label: '🏦 → 💵 Withdraw cash', show: allowCash && f.hasChecking },
+    { id: 'dep', from: 'cash', to: 'checking', label: '💵 → 🏦 Deposit FinBucks', show: allowCash && f.hasChecking },
+    { id: 'wd', from: 'checking', to: 'cash', label: '🏦 → 💵 Withdraw FinBucks', show: allowCash && f.hasChecking },
     { id: 'save', from: 'checking', to: 'savings', label: '🏦 → 🐷 Move to savings', show: f.hasChecking && f.hasSavings },
     { id: 'cashsave', from: 'cash', to: 'savings', label: '💵 → 🐷 Deposit to savings', show: allowCash && f.hasSavings },
     { id: 'unsave', from: 'savings', to: 'checking', label: '🐷 → 🏦 Take from savings', show: f.hasChecking && f.hasSavings },

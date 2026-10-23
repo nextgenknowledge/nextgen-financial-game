@@ -97,6 +97,16 @@ function applyToDocument(s: Settings) {
   html.dataset.reducedMotion = String(s.reducedMotion);
 }
 
+function gpuName(): string {
+  try {
+    const gl = document.createElement('canvas').getContext('webgl');
+    const ext = gl?.getExtension('WEBGL_debug_renderer_info');
+    return (ext && gl?.getParameter(ext.UNMASKED_RENDERER_WEBGL)) || '';
+  } catch {
+    return '';
+  }
+}
+
 function detectDefaults(): Partial<Settings> {
   if (typeof window === 'undefined') return {};
   const out: Partial<Settings> = {};
@@ -104,6 +114,9 @@ function detectDefaults(): Partial<Settings> {
   const cores = navigator.hardwareConcurrency ?? 4;
   const mem = (navigator as Navigator & { deviceMemory?: number }).deviceMemory ?? 4;
   if (cores <= 4 || mem <= 4) out.quality = 'low';
+  // School Chromebooks and older laptops: integrated or mobile GPUs start on Low
+  const gpu = gpuName();
+  if (/swiftshader|llvmpipe|mali|adreno|powervr|intel\(r\) (hd|uhd) graphics [0-9]{3}\b|intel\(r\) hd graphics$|celeron|pentium/i.test(gpu)) out.quality = 'low';
   return out;
 }
 

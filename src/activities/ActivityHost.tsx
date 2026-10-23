@@ -15,6 +15,8 @@ import { randomSeed } from '@/game/rng';
 import { CITIES } from '@/world/cities';
 import { useScene } from '@/store/scene';
 import { TOPIC_INFO } from '@/game/topics';
+import { LESSONS } from '@/game/progress/lessons';
+import { FinBucks } from '@/ui/FinBucks';
 
 type Phase = 'intro' | 'play' | 'done';
 
@@ -87,6 +89,8 @@ export function ActivityHost({ id }: { id: string }) {
   const entry = w.difficulty === 'entry';
   const blurb = entry && def.entryBlurb ? def.entryBlurb : def.blurb;
   const rf = repeatFactor(w, def.id);
+  // A lesson on this activity's topic, preferring one the player hasn't finished
+  const lessonFor = LESSONS.filter((l) => def.topics.includes(l.topic as never)).sort((a, b) => Number(w.progress.lessons.includes(a.id)) - Number(w.progress.lessons.includes(b.id)))[0];
 
   const start = () => {
     if (def.fee) {
@@ -106,43 +110,69 @@ export function ActivityHost({ id }: { id: string }) {
 
 
   return (
-    <Modal onClose={leave} title={`${def.icon} ${def.name}`} size="full" className={entry ? 'entry-mode activity-modal' : 'activity-modal'}>
+    <Modal
+      onClose={leave}
+      title={`${def.icon} ${def.name}`}
+      subtitle={def.topics.map((t) => TOPIC_INFO[t]?.name).filter(Boolean).join(' · ')}
+      size="full"
+      accent={entry ? 'navy' : 'terminal'}
+      className={entry ? 'entry-mode activity-modal' : 'activity-modal adv'}
+    >
       {phase === 'intro' && (
         <div className="activity-intro">
-          <div className="row" style={{ gap: 16, alignItems: 'flex-start', flexWrap: 'wrap' }}>
-            <div className="dialog-portrait" style={{ width: 110, height: 110 }}>
-              <NarwhalPortrait mood="talking" size={104} />
+          <div className="ai-hero">
+            <div className="ai-art">
+              <span>{def.icon}</span>
             </div>
-            <div className="col grow" style={{ minWidth: 240 }}>
-              <p style={{ fontSize: entry ? '1.35rem' : '1.15rem', fontWeight: 800, margin: 0 }}>
-                {blurb} <ReadAloud text={blurb} />
-              </p>
+            <div className="col grow" style={{ gap: 10, minWidth: 260 }}>
               <div className="row wrap" style={{ gap: 6 }}>
+                <span className={`chip ${entry ? 'teal' : 'navy'}`}>{entry ? 'Entry' : 'Advanced'}</span>
                 {def.topics.map((t) => (
                   <span key={t} className="chip">
                     {TOPIC_INFO[t]?.icon} {TOPIC_INFO[t]?.name}
                   </span>
                 ))}
-                <span className={`chip ${entry ? 'teal' : 'navy'}`}>{entry ? 'Entry' : 'Advanced'}</span>
               </div>
-              <div className="row wrap" style={{ gap: 14 }}>
-                <span>
-                  Best: <Stars n={st?.stars ?? 0} /> {st ? `(${Math.round(st.best)}%)` : ''}
-                </span>
-                {def.tickets ? (
-                  <span className="small">
-                    Costs <b>{money(def.fee ?? 1)}</b> · wins up to 🎟️ {def.tickets[2]}
-                  </span>
-                ) : (
-                  <span className="small">
-                    Rewards up to <b>{money(def.rewards.cash[2] * (w.difficulty === 'advanced' ? 1.25 : 1) * rf * w.market.priceIndex, { cents: false })}</b> + {def.rewards.xp[2]} XP
-                    {rf < 1 && <span className="muted"> (reduced for repeat plays today)</span>}
-                  </span>
-                )}
+              <p className="ai-blurb">
+                {blurb} <ReadAloud text={blurb} />
+              </p>
+              <div className="row" style={{ gap: 10, alignItems: 'center' }}>
+                <div className="dialog-portrait" style={{ width: 54, height: 54 }}>
+                  <NarwhalPortrait mood="talking" size={50} />
+                </div>
+                <span className="small muted">{entry ? 'Take your time. I will explain every answer!' : 'Every answer comes with the reasoning, so you learn as you play.'}</span>
               </div>
             </div>
           </div>
-          <div className="row" style={{ justifyContent: 'center', marginTop: 24 }}>
+          <div className="ai-stats">
+            <div className="ai-stat">
+              <span className="ai-stat-label">Your best</span>
+              <span className="ai-stat-value">
+                <Stars n={st?.stars ?? 0} /> {st ? `${Math.round(st.best)}%` : 'Not played'}
+              </span>
+            </div>
+            <div className="ai-stat">
+              <span className="ai-stat-label">{def.tickets ? 'Costs' : 'Reward up to'}</span>
+              <span className="ai-stat-value">
+                {def.tickets ? (
+                  <FinBucks value={def.fee ?? 1} />
+                ) : (
+                  <FinBucks value={def.rewards.cash[2] * (w.difficulty === 'advanced' ? 1.25 : 1) * rf * w.market.priceIndex} cents={false} />
+                )}
+              </span>
+              {rf < 1 && <span className="tiny muted">Reduced for repeat plays today</span>}
+            </div>
+            <div className="ai-stat">
+              <span className="ai-stat-label">{def.tickets ? 'Wins up to' : 'Experience'}</span>
+              <span className="ai-stat-value">{def.tickets ? `🎟️ ${def.tickets[2]}` : `+${def.rewards.xp[2]} XP`}</span>
+            </div>
+          </div>
+          <div className="row wrap" style={{ justifyContent: 'center', marginTop: 18, gap: 12 }}>
+            {lessonFor && (
+              <Button size="big" onClick={() => useUI.getState().open({ type: 'learn', lesson: lessonFor.id })}>
+                📖 Brush up: {lessonFor.title}
+              </Button>
+            )}
             <Button variant="gold" size="huge" onClick={start}>
               ▶ {st ? 'Play again' : 'Start'}
             </Button>
@@ -164,9 +194,28 @@ export function ActivityHost({ id }: { id: string }) {
   );
 }
 
-function Results({ def, result, review, onAgain, onLeave }: { def: { name: string; tickets?: number[] }; result: { r: ActivityResult; out: RewardOutcome }; review: ReviewItem[]; onAgain: () => void; onLeave: () => void }) {
+function ScoreRing({ score, stars }: { score: number; stars: number }) {
+  const r = 46;
+  const c = 2 * Math.PI * r;
+  const col = stars >= 3 ? '#2fae55' : stars >= 2 ? '#17a2a3' : stars >= 1 ? '#f4b62a' : '#e1553f';
+  return (
+    <div className="score-ring">
+      <svg viewBox="0 0 110 110" width="128" height="128">
+        <circle cx="55" cy="55" r={r} fill="none" stroke="var(--surface-3)" strokeWidth="10" />
+        <circle cx="55" cy="55" r={r} fill="none" stroke={col} strokeWidth="10" strokeLinecap="round" strokeDasharray={`${(c * Math.max(0, Math.min(100, score))) / 100} ${c}`} transform="rotate(-90 55 55)" />
+      </svg>
+      <div className="score-ring-text">
+        <b>{Math.round(score)}%</b>
+        <span className="tiny muted">score</span>
+      </div>
+    </div>
+  );
+}
+
+function Results({ def, result, review, onAgain, onLeave }: { def: { name: string; tickets?: number[]; topics: string[] }; result: { r: ActivityResult; out: RewardOutcome }; review: ReviewItem[]; onAgain: () => void; onLeave: () => void }) {
   const { r, out } = result;
-  const entry = useGame((s) => s.world!.difficulty === 'entry');
+  const w = useGame((s) => s.world!);
+  const entry = w.difficulty === 'entry';
   const mood = out.stars >= 3 ? 'hyped' : out.stars >= 2 ? 'confident' : out.stars === 1 ? 'talking' : 'disappointed';
   const msg = useMemo(() => {
     if (out.stars >= 3) return entry ? 'WOW! Three stars! You are a money genius!' : 'Three stars, outstanding work!';
@@ -175,46 +224,76 @@ function Results({ def, result, review, onAgain, onLeave }: { def: { name: strin
     return entry ? "That was tricky! Let's look at the answers together and try again." : 'Tough one. Read the explanations, then give it another shot!';
   }, [out.stars, entry]);
   const wrong = review.filter((x) => !x.ok);
+  // Point to the lesson that covers what was missed
+  const lesson = wrong.length ? LESSONS.find((l) => def.topics.includes(l.topic)) : undefined;
   return (
     <div className="activity-results">
-      <div className="row" style={{ gap: 16, flexWrap: 'wrap', alignItems: 'center' }}>
-        <div className="dialog-portrait" style={{ width: 110, height: 110 }}>
-          <NarwhalPortrait mood={mood} size={104} />
-        </div>
-        <div className="col grow">
-          <Stars n={out.stars} size="2.6rem" />
-          <b style={{ fontSize: '1.3rem' }}>
+      <div className="ar-hero">
+        <ScoreRing score={r.score} stars={out.stars} />
+        <div className="col grow" style={{ gap: 8, minWidth: 240 }}>
+          <Stars n={out.stars} size="2.2rem" />
+          <b className="ar-msg">
             {msg} <ReadAloud text={msg} />
           </b>
           <div className="row wrap" style={{ gap: 8 }}>
-            <span className="chip">Score {Math.round(r.score)}%</span>
             {r.total !== undefined && (
               <span className="chip">
                 {r.correct}/{r.total} correct
               </span>
             )}
-            {out.newBest && <span className="chip gold">🏆 New best!</span>}
+            {out.newBest && <span className="chip gold">🏆 New best</span>}
             {r.earned !== undefined && r.earned !== 0 && <span className={`chip ${r.earned > 0 ? 'good' : 'bad'}`}>Earned {money(r.earned, { sign: true })}</span>}
-            {out.cash > 0 && <span className="chip good">+{money(out.cash)} reward</span>}
-            {out.tickets > 0 && <span className="chip gold">+🎟️ {out.tickets}</span>}
-            <span className="chip teal">+{out.xp} XP</span>
           </div>
-          {r.summary && <p className="small" style={{ margin: '6px 0 0' }}>{r.summary}</p>}
+          {r.summary && <p className="small" style={{ margin: 0 }}>{r.summary}</p>}
+        </div>
+        <div className="dialog-portrait" style={{ width: 96, height: 96 }}>
+          <NarwhalPortrait mood={mood} size={90} />
         </div>
       </div>
+      <div className="ar-rewards">
+        <div className="ar-reward">
+          <span className="ai-stat-label">FinBucks</span>
+          <FinBucks value={out.cash} sign />
+        </div>
+        <div className="ar-reward">
+          <span className="ai-stat-label">Experience</span>
+          <b>+{out.xp} XP</b>
+        </div>
+        {out.tickets > 0 && (
+          <div className="ar-reward">
+            <span className="ai-stat-label">Tickets</span>
+            <b>🎟️ +{out.tickets}</b>
+          </div>
+        )}
+      </div>
+      {lesson && (
+        <div className="card tint-blue row wrap" style={{ gap: 10, marginTop: 12 }}>
+          <span style={{ fontSize: '1.6rem' }}>{lesson.icon}</span>
+          <div className="col grow" style={{ gap: 2 }}>
+            <b>Learn it properly: {lesson.title}</b>
+            <span className="small muted">A two-minute lesson on what came up here. Finish it for XP and a perk.</span>
+          </div>
+          <Button variant="primary" onClick={() => useUI.getState().open({ type: 'learn', lesson: lesson.id })}>
+            📖 Open lesson
+          </Button>
+        </div>
+      )}
       {review.length > 0 && (
         <div className="col" style={{ gap: 8, marginTop: 14 }}>
-          <b>{wrong.length ? `Let's review (${wrong.length} to learn from)` : 'Review: all correct!'}</b>
+          <b>{wrong.length ? `Review: ${wrong.length} to learn from` : 'Review: all correct!'}</b>
           {[...wrong, ...review.filter((x) => x.ok)].slice(0, 12).map((it, i) => (
-            <div key={i} className={`card ${it.ok ? 'tint-green' : 'tint-red'} small`}>
-              <div className="bold">
-                {it.ok ? '✅' : '💡'} {it.q}
+            <details key={i} className={`review-item ${it.ok ? 'ok' : 'no'}`} open={!it.ok && i < 3}>
+              <summary>
+                <span className="review-mark">{it.ok ? '✓' : '!'}</span>
+                <span className="grow">{it.q}</span>
+              </summary>
+              <div className="review-body">
+                <div>
+                  Answer: <b>{it.answer}</b>
+                </div>
+                <div className="muted">{it.explanation}</div>
               </div>
-              <div>
-                Answer: <b>{it.answer}</b>
-              </div>
-              <div className="muted">{it.explanation}</div>
-            </div>
+            </details>
           ))}
         </div>
       )}

@@ -12,6 +12,7 @@ import { TOPIC_INFO } from '@/game/topics';
 import { cls } from '@/ui/format';
 import type { QuestionMedia } from '@/game/content';
 import { LineChart } from '@/ui/kit';
+import { LESSONS } from '@/game/progress/lessons';
 
 export interface AnswerOutcome {
   correct: boolean;
@@ -154,14 +155,33 @@ export function QuestionView({
   const topic = TOPIC_INFO[q.topic];
   const showCalc = !entry && (q.type === 'numeric' || q.computed);
   const correctText = useMemo(() => correctAnswerText(q), [q]);
+  // The big idea behind this topic, from its first lesson: every question doubles as a mini-lesson
+  const keyIdea = useMemo(() => {
+    const l = LESSONS.find((x) => x.topic === q.topic);
+    return l ? (entry ? l.slides[0].entry : l.slides[0].advanced) : null;
+  }, [q.topic, entry]);
 
   return (
     <div className={cls('question', entry && 'entry')}>
-      <div className="row between wrap">
-        <span className="chip">
-          {topic?.icon} {topic?.name}
-          {index !== undefined && total ? ` · ${index + 1}/${total}` : ''}
+      <div className="q-top">
+        <span className="q-topic">
+          <span className="q-topic-icon">{topic?.icon}</span>
+          {topic?.name}
         </span>
+        {index !== undefined && total ? (
+          <div className="q-progress" aria-label={`Question ${index + 1} of ${total}`}>
+            <span className="tiny bold muted">
+              {index + 1} / {total}
+            </span>
+            <div className="q-progress-track">
+              {Array.from({ length: total }, (_, k) => (
+                <span key={k} className={k < index ? 'past' : k === index ? 'now' : ''} />
+              ))}
+            </div>
+          </div>
+        ) : (
+          <span className="grow" />
+        )}
         <div className="row" style={{ gap: 6 }}>
           {timer ? (
             <div className="timer-bar" title="Time bonus">
@@ -174,18 +194,20 @@ export function QuestionView({
             </Button>
           )}
           {showCalc && !done && (
-            <Button size="small" variant={calc ? 'gold' : undefined} onClick={() => setCalc(!calc)}>
-              🧮
+            <Button size="small" variant={calc ? 'gold' : undefined} onClick={() => setCalc(!calc)} title="Calculator">
+              🧮 Calculator
             </Button>
           )}
         </div>
       </div>
-      <div className="q-prompt">
-        {q.icon && <span className="q-icon">{q.icon}</span>}
-        <span>{q.prompt}</span>
-        <ReadAloud text={`${q.prompt} ${q.type === 'mc' || q.type === 'tf' ? q.choices.join('. ') : ''}`} />
+      <div className="q-card">
+        <div className="q-prompt">
+          {q.icon && <span className="q-icon">{q.icon}</span>}
+          <span className="grow">{q.prompt}</span>
+          <ReadAloud text={`${q.prompt} ${q.type === 'mc' || q.type === 'tf' ? q.choices.join('. ') : ''}`} />
+        </div>
+        {q.media && <MediaView m={q.media} />}
       </div>
-      {q.media && <MediaView m={q.media} />}
       {hint && q.hint && !done && <div className="card tint-gold small">💡 {q.hint}</div>}
       {tries > 0 && !done && <div className="card tint-gold small">🦄 {entry ? 'Not quite, try again! I took away one wrong answer.' : 'Not quite. Check your work and try once more.'}</div>}
 
@@ -304,28 +326,35 @@ export function QuestionView({
       )}
 
       {done && (
-        <div className={cls('feedback card', done.correct ? 'tint-green' : 'tint-red')}>
-          <div className="row" style={{ alignItems: 'flex-start', gap: 10 }}>
-            <div className="dialog-portrait" style={{ width: 64, height: 64 }}>
-              <NarwhalPortrait mood={done.correct ? 'hyped' : 'talking'} size={60} />
+        <div className={cls('q-feedback', done.correct ? 'ok' : 'no')}>
+          <div className="q-feedback-head">
+            <div className="dialog-portrait" style={{ width: 56, height: 56 }}>
+              <NarwhalPortrait mood={done.correct ? 'hyped' : 'talking'} size={52} />
             </div>
-            <div className="col grow" style={{ gap: 4 }}>
-              <b style={{ fontSize: '1.15rem' }}>{done.correct ? (entry ? 'Yes! Great job!' : 'Correct!') : entry ? "Good try! Here's the answer:" : 'Not quite.'}</b>
+            <div className="col grow" style={{ gap: 2 }}>
+              <b className="q-verdict">{done.correct ? (entry ? 'Yes! Great job!' : 'Correct') : entry ? 'Good try!' : 'Not quite'}</b>
               {!done.correct && (
-                <div>
-                  The answer is <b>{correctText}</b>.
-                </div>
+                <span>
+                  The answer is <b>{correctText}</b>
+                </span>
               )}
-              <div className="small">
-                {q.explanation} <ReadAloud text={q.explanation} />
-              </div>
             </div>
-          </div>
-          <div className="row" style={{ justifyContent: 'flex-end' }}>
             <Button variant="primary" size="big" onClick={() => onAnswered(done)}>
               Next ▶
             </Button>
           </div>
+          <div className="q-why">
+            <span className="q-why-label">Why</span>
+            <span>
+              {q.explanation} <ReadAloud text={q.explanation} />
+            </span>
+          </div>
+          {keyIdea && (
+            <div className="q-why key">
+              <span className="q-why-label">Key idea</span>
+              <span>{keyIdea}</span>
+            </div>
+          )}
         </div>
       )}
     </div>

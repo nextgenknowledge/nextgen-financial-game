@@ -224,16 +224,20 @@ def _(i):
 
 @icon('coin')
 def _(i):
-    i.circle(7.5, 7.5, 6.6, 'y').ring(7.5, 7.5, 4.6, 'Y')
-    i.rect(7, 4, 8, 11, 'Y').rect(5, 5, 6, 5, 'w').px(4, 6, 'w')
+    # FinBucks coin: gold rim, inner ring, a bold F
+    i.circle(7.5, 7.5, 6.6, 'y').ring(7.5, 7.5, 5.0, 'Y')
+    i.rect(5, 4, 6, 11, 'Y').rect(5, 4, 10, 5, 'Y').rect(5, 7, 9, 8, 'Y')
+    i.px(3, 4, 'w').px(4, 3, 'w')
     return i
 
 
 @icon('cash')
 def _(i):
+    # FinBucks note: teal with a gold medallion holding an F, stacked over a second note
     i.rect(3, 2, 14, 9, 'G')
-    i.rect(1, 5, 12, 12, 'g').rect(2, 6, 11, 11, 'L').rect(3, 7, 10, 10, 'g')
-    i.circle(6.5, 8.5, 1.6, 'L').px(6, 8, 'G').px(7, 9, 'G')
+    i.rect(1, 5, 12, 12, 'c').rect(2, 6, 11, 11, 'l').rect(3, 7, 10, 10, 'c')
+    i.circle(6.5, 8.5, 2.2, 'y').rect(6, 7, 6, 10, 'Y').rect(6, 7, 7, 7, 'Y').rect(6, 8, 7, 8, 'Y')
+    i.px(10, 7, 'y').px(10, 10, 'y')
     return i
 
 

@@ -98,7 +98,7 @@ function segmentDist(px: number, pz: number, a: [number, number], b: [number, nu
 function buildGround(def: CityDef): THREE.BufferGeometry {
   const size = def.half * 2 + 420;
   // ~4 m cells so the ground can dip cleanly under harbours and rivers
-  const seg = Math.ceil(size / 4);
+  const seg = Math.ceil(size / 6);
   const g = new THREE.PlaneGeometry(size, size, seg, seg);
   g.rotateX(-Math.PI / 2);
   // Sink the ground under water so the water surface is visible (the seawall hides the step)

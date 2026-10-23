@@ -9,6 +9,7 @@ import type { SignSpec, } from './builders/buildings';
 import type { Rect } from './builders/sceneBuilder';
 import { rt } from '@/engine/runtime';
 import { useGame } from '@/store/game';
+import { useSettings } from '@/store/settings';
 import { kitFor, lampGeometry as cityLamp } from './builders/cityKit';
 
 /* ───────── Trees ───────── */
@@ -354,11 +355,9 @@ export function BoardSign({ w, h, mats, depth = 0.22 }: { w: number; h: number; 
       <mesh position={[0.035, -0.05, 0.02]} material={mats.shadow}>
         <planeGeometry args={[w, h]} />
       </mesh>
-      {[0.035, 0.055].map((z) => (
-        <mesh key={z} position={[0, 0, z]} material={mats.edge}>
-          <planeGeometry args={[w, h]} />
-        </mesh>
-      ))}
+      <mesh position={[0, 0, 0.045]} material={mats.edge}>
+        <planeGeometry args={[w, h]} />
+      </mesh>
       <mesh position={[-0.008, 0.008, 0.075]} material={mats.letters}>
         <planeGeometry args={[w, h]} />
       </mesh>
@@ -367,6 +366,20 @@ export function BoardSign({ w, h, mats, depth = 0.22 }: { w: number; h: number; 
 }
 
 export function Signs({ signs, city = 'park' }: { signs: SignSpec[]; city?: string }) {
+  const quality = useSettings((s) => s.quality);
+  const refs = useRef<(THREE.Group | null)[]>([]);
+  const tick = useRef(0);
+  // Signs far from the camera can't be read anyway: skip drawing them
+  useFrame(({ camera }, dt) => {
+    tick.current -= dt;
+    if (tick.current > 0) return;
+    tick.current = 0.4;
+    const lim = quality === 'low' ? 55 : quality === 'medium' ? 90 : 130;
+    signs.forEach((sg, i) => {
+      const g = refs.current[i];
+      if (g) g.visible = Math.hypot(camera.position.x - sg.x, camera.position.z - sg.z) < lim;
+    });
+  });
   const items = useMemo(
     () =>
       signs.map((s) => {
@@ -394,7 +407,7 @@ export function Signs({ signs, city = 'park' }: { signs: SignSpec[]; city?: stri
   return (
     <>
       {items.map(({ s, mat, kind, board, mats }, i) => (
-        <group key={i} position={[s.x, s.y, s.z]} rotation={[0, s.rotY, 0]}>
+        <group key={i} ref={(g) => void (refs.current[i] = g)} position={[s.x, s.y, s.z]} rotation={[0, s.rotY, 0]}>
           {board && mats ? (
             <BoardSign w={s.w} h={s.h} mats={mats} />
           ) : (
