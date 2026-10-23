@@ -1,0 +1,1051 @@
+{
+ "questions": [
+  {
+   "id": "sfa-01",
+   "city": "san-francisco",
+   "topic": "taxes",
+   "difficulty": "advanced",
+   "level": 2,
+   "type": "numeric",
+   "prompt": "Your gross pay is ${g}. How much Social Security (6.2%) is withheld?",
+   "vars": {
+    "g": {
+     "min": 800,
+     "max": 3200,
+     "step": 25
+    }
+   },
+   "answerExpr": "g*0.062",
+   "format": "money",
+   "explanation": "6.2% × ${g} = ${ANSWER}."
+  },
+  {
+   "id": "sfa-02",
+   "city": "san-francisco",
+   "topic": "taxes",
+   "difficulty": "advanced",
+   "level": 2,
+   "type": "numeric",
+   "prompt": "Total FICA is 7.65% of wages. On a ${g} paycheck, how much FICA is withheld?",
+   "vars": {
+    "g": {
+     "min": 900,
+     "max": 4000,
+     "step": 50
+    }
+   },
+   "answerExpr": "g*0.0765",
+   "format": "money",
+   "explanation": "7.65% × ${g} = ${ANSWER} (6.2% Social Security + 1.45% Medicare)."
+  },
+  {
+   "id": "sfa-03",
+   "city": "san-francisco",
+   "topic": "taxes",
+   "difficulty": "advanced",
+   "level": 3,
+   "type": "numeric",
+   "prompt": "Using Fin City brackets (10% to $11,925; 12% to $48,475; 22% to $103,350), what is the tax on taxable income of ${T}?",
+   "vars": {
+    "T": {
+     "min": 20000,
+     "max": 95000,
+     "step": 1000
+    }
+   },
+   "answerExpr": "tax(T)",
+   "format": "money",
+   "explanation": "Apply each rate to the dollars in its bracket: tax(${T}) = ${ANSWER}."
+  },
+  {
+   "id": "sfa-04",
+   "city": "san-francisco",
+   "topic": "taxes",
+   "difficulty": "advanced",
+   "level": 3,
+   "type": "numeric",
+   "prompt": "Your gross income is ${G} and you take the $15,000 standard deduction. What is your EFFECTIVE federal tax rate (%)? Round to 0.1.",
+   "vars": {
+    "G": {
+     "min": 30000,
+     "max": 110000,
+     "step": 5000
+    }
+   },
+   "answerExpr": "tax(G-15000)/G*100",
+   "format": "pct",
+   "toleranceAbs": 0.1,
+   "explanation": "Tax on ${G} − $15,000 is computed by brackets, then divided by ${G}: {ANSWER:pct}. Much lower than the top bracket!"
+  },
+  {
+   "id": "sfa-05",
+   "city": "san-francisco",
+   "topic": "taxes",
+   "difficulty": "advanced",
+   "level": 3,
+   "type": "mc",
+   "prompt": "Your taxable income rises from $48,000 to $49,000, crossing into the 22% bracket. What happens?",
+   "choices": [
+    "Only the dollars above $48,475 are taxed at 22%",
+    "All $49,000 is now taxed at 22%",
+    "Your take-home pay falls",
+    "You pay no tax on the raise"
+   ],
+   "answer": 0,
+   "explanation": "Progressive brackets apply higher rates only to the dollars inside each bracket. A raise never reduces take-home pay."
+  },
+  {
+   "id": "sfa-06",
+   "city": "san-francisco",
+   "topic": "taxes",
+   "difficulty": "advanced",
+   "level": 2,
+   "type": "mc",
+   "prompt": "Which form do you give your employer to set how much income tax is withheld?",
+   "choices": [
+    "W-4",
+    "W-2",
+    "1040",
+    "1099"
+   ],
+   "answer": 0,
+   "explanation": "The W-4 tells your employer how much to withhold. The W-2 reports what you earned and what was withheld."
+  },
+  {
+   "id": "sfa-07",
+   "city": "san-francisco",
+   "topic": "taxes",
+   "difficulty": "advanced",
+   "level": 2,
+   "type": "mc",
+   "prompt": "Freelancers usually receive which form instead of a W-2?",
+   "choices": [
+    "1099",
+    "W-4",
+    "I-9",
+    "FAFSA"
+   ],
+   "answer": 0,
+   "explanation": "Independent contractors get a 1099, and nothing is withheld, so they must set aside tax themselves."
+  },
+  {
+   "id": "sfa-08",
+   "city": "san-francisco",
+   "topic": "taxes",
+   "difficulty": "advanced",
+   "level": 4,
+   "type": "numeric",
+   "prompt": "Self-employed people pay both halves of FICA: 15.3%. On ${p} of freelance profit, how much self-employment tax is that?",
+   "vars": {
+    "p": {
+     "min": 2000,
+     "max": 15000,
+     "step": 500
+    }
+   },
+   "answerExpr": "p*0.153",
+   "format": "money",
+   "explanation": "15.3% × ${p} = ${ANSWER}. (Simplified, real rules adjust the base slightly.)"
+  },
+  {
+   "id": "sfa-09",
+   "city": "san-francisco",
+   "topic": "taxes",
+   "difficulty": "advanced",
+   "level": 3,
+   "type": "mc",
+   "prompt": "In the 22% bracket, which saves more tax: a $1,000 deduction or a $1,000 credit?",
+   "choices": [
+    "The credit (saves $1,000 vs. $220)",
+    "The deduction",
+    "They're equal",
+    "Neither saves anything"
+   ],
+   "answer": 0,
+   "explanation": "A deduction lowers taxable income (saving 22% × $1,000 = $220). A credit cuts tax dollar-for-dollar."
+  },
+  {
+   "id": "sfa-10",
+   "city": "san-francisco",
+   "topic": "taxes",
+   "difficulty": "advanced",
+   "level": 4,
+   "type": "numeric",
+   "prompt": "Wages ${W}, withholding ${H}. Standard deduction $15,000. Refund (positive) or amount owed (negative)?",
+   "vars": {
+    "W": {
+     "min": 25000,
+     "max": 70000,
+     "step": 1000
+    },
+    "H": {
+     "min": 1500,
+     "max": 8000,
+     "step": 100
+    }
+   },
+   "answerExpr": "H - tax(W-15000)",
+   "format": "money",
+   "toleranceAbs": 1,
+   "explanation": "Tax = brackets on ${W} − $15,000. Withheld − tax = ${ANSWER}."
+  },
+  {
+   "id": "sfa-11",
+   "city": "san-francisco",
+   "topic": "taxes",
+   "difficulty": "advanced",
+   "level": 3,
+   "type": "mc",
+   "prompt": "Itemized deductions total $11,000. The standard deduction is $15,000. What should you do?",
+   "choices": [
+    "Take the standard deduction",
+    "Itemize",
+    "Take both",
+    "Skip deductions"
+   ],
+   "answer": 0,
+   "explanation": "Take whichever is larger. $15,000 > $11,000, so standard wins."
+  },
+  {
+   "id": "sfa-12",
+   "city": "san-francisco",
+   "topic": "taxes",
+   "difficulty": "advanced",
+   "level": 4,
+   "type": "mc",
+   "prompt": "A traditional 401(k)-style contribution of $3,000 for someone in the 12% bracket lowers this year's income tax by about…",
+   "choices": [
+    "$360",
+    "$3,000",
+    "$12",
+    "$0"
+   ],
+   "answer": 0,
+   "explanation": "Pre-tax contributions reduce taxable income: 12% × $3,000 = $360."
+  },
+  {
+   "id": "sfa-13",
+   "city": "san-francisco",
+   "topic": "earning",
+   "difficulty": "advanced",
+   "level": 2,
+   "type": "numeric",
+   "prompt": "An annual salary of ${S} is paid every two weeks (26 paychecks). What is each gross paycheck?",
+   "vars": {
+    "S": {
+     "min": 42000,
+     "max": 120000,
+     "step": 1000
+    }
+   },
+   "answerExpr": "S/26",
+   "format": "money",
+   "explanation": "${S} ÷ 26 = ${ANSWER}."
+  },
+  {
+   "id": "sfa-14",
+   "city": "san-francisco",
+   "topic": "earning",
+   "difficulty": "advanced",
+   "level": 2,
+   "type": "numeric",
+   "prompt": "You earn ${r}/hour and work 40 hours a week, 52 weeks a year. What is the annual salary equivalent?",
+   "vars": {
+    "r": {
+     "min": 16,
+     "max": 45,
+     "step": 0.5
+    }
+   },
+   "answerExpr": "r*2080",
+   "format": "money",
+   "explanation": "${r} × 2,080 hours = ${ANSWER}."
+  },
+  {
+   "id": "sfa-15",
+   "city": "san-francisco",
+   "topic": "earning",
+   "difficulty": "advanced",
+   "level": 3,
+   "type": "numeric",
+   "prompt": "Overtime pays 1.5× after 40 hours. You earn ${r}/hr and work {h} hours this week. Gross pay?",
+   "vars": {
+    "r": {
+     "min": 16,
+     "max": 30
+    },
+    "h": {
+     "min": 42,
+     "max": 52
+    }
+   },
+   "answerExpr": "r*40 + r*1.5*(h-40)",
+   "format": "money",
+   "explanation": "40 × ${r} + ({h} − 40) × 1.5 × ${r} = ${ANSWER}."
+  },
+  {
+   "id": "sfa-16",
+   "city": "san-francisco",
+   "topic": "earning",
+   "difficulty": "advanced",
+   "level": 4,
+   "type": "numeric",
+   "prompt": "Negotiating your first salary up by ${d}, with 3% raises every year, adds how much over 40 years? (Sum of a growing series: d × ((1.03)^40 − 1)/0.03)",
+   "vars": {
+    "d": {
+     "choices": [
+      2000,
+      3000,
+      4000,
+      5000
+     ]
+    }
+   },
+   "answerExpr": "fvs(d, 0.03, 40)",
+   "tolerance": 0.004,
+   "format": "money",
+   "explanation": "${d} × ((1.03^40 − 1) / 0.03) = ${ANSWER}. Small raises early compound for a whole career."
+  },
+  {
+   "id": "sfa-17",
+   "city": "san-francisco",
+   "topic": "earning",
+   "difficulty": "advanced",
+   "level": 3,
+   "type": "mc",
+   "prompt": "In salary negotiation, what is a BATNA?",
+   "choices": [
+    "Your best alternative if this deal fails",
+    "A type of bonus",
+    "A tax form",
+    "The first offer"
+   ],
+   "answer": 0,
+   "explanation": "Best Alternative To a Negotiated Agreement, knowing it tells you when to walk away."
+  },
+  {
+   "id": "sfa-18",
+   "city": "san-francisco",
+   "topic": "earning",
+   "difficulty": "advanced",
+   "level": 4,
+   "type": "mc",
+   "prompt": "A job pays $60,000; another pays $56,000 but includes a 6% retirement match you'd use fully and $3,000/yr better health coverage. Which offers more total compensation?",
+   "choices": [
+    "The $56,000 offer (≈ $62,360)",
+    "The $60,000 offer",
+    "They're exactly equal",
+    "Can't compare benefits"
+   ],
+   "answer": 0,
+   "explanation": "$56,000 + 6% match ($3,360) + $3,000 benefits ≈ $62,360 > $60,000. Compare total compensation, not just salary."
+  },
+  {
+   "id": "sfa-19",
+   "city": "san-francisco",
+   "topic": "investing",
+   "difficulty": "advanced",
+   "level": 3,
+   "type": "numeric",
+   "prompt": "You have {n} vested options with a ${k} strike. Shares trade at ${p}. Intrinsic value (before tax)?",
+   "vars": {
+    "n": {
+     "choices": [
+      1000,
+      2500,
+      4000
+     ]
+    },
+    "k": {
+     "choices": [
+      4,
+      6,
+      8
+     ]
+    },
+    "p": {
+     "choices": [
+      10,
+      14,
+      20
+     ]
+    }
+   },
+   "answerExpr": "n*max(0,p-k)",
+   "format": "money",
+   "explanation": "{n} × (${p} − ${k}) = ${ANSWER}."
+  },
+  {
+   "id": "sfa-20",
+   "city": "san-francisco",
+   "topic": "investing",
+   "difficulty": "advanced",
+   "level": 3,
+   "type": "mc",
+   "prompt": "A 4-year vesting schedule with a 1-year cliff means if you leave after 10 months you get…",
+   "choices": [
+    "0% of your options",
+    "25%",
+    "10/48 of them",
+    "All of them"
+   ],
+   "answer": 0,
+   "explanation": "Nothing vests until the 1-year cliff. Leaving at 10 months forfeits the grant."
+  },
+  {
+   "id": "sfa-21",
+   "city": "san-francisco",
+   "topic": "safety",
+   "difficulty": "advanced",
+   "level": 2,
+   "type": "mc",
+   "prompt": "Which is the strongest protection if your password leaks?",
+   "choices": [
+    "Two-factor authentication (2FA)",
+    "Adding '!' to the end",
+    "Using your pet's name",
+    "Writing it on a sticky note"
+   ],
+   "answer": 0,
+   "explanation": "2FA requires a second proof (app code or key), so a stolen password alone isn't enough."
+  },
+  {
+   "id": "sfa-22",
+   "city": "san-francisco",
+   "topic": "safety",
+   "difficulty": "advanced",
+   "level": 3,
+   "type": "mc",
+   "prompt": "What does a credit freeze do?",
+   "choices": [
+    "Stops new credit from being opened in your name",
+    "Lowers your interest rates",
+    "Closes your bank account",
+    "Hides your salary"
+   ],
+   "answer": 0,
+   "explanation": "A freeze blocks lenders from pulling your report, preventing thieves from opening accounts. It's free and you can lift it when needed."
+  },
+  {
+   "id": "sfa-23",
+   "city": "san-francisco",
+   "topic": "safety",
+   "difficulty": "advanced",
+   "level": 3,
+   "type": "mc",
+   "prompt": "A 'job' offers $900/week to deposit checks and wire 80% to others. This is…",
+   "choices": [
+    "A fake-check / money-mule scam",
+    "A normal payroll job",
+    "A bank internship",
+    "A tax refund"
+   ],
+   "answer": 0,
+   "explanation": "The checks bounce days later; you owe the bank everything you wired, and may be helping launder money."
+  },
+  {
+   "id": "sfa-24",
+   "city": "san-francisco",
+   "topic": "safety",
+   "difficulty": "advanced",
+   "level": 2,
+   "type": "multi",
+   "prompt": "Which details are most valuable to identity thieves? (Select all)",
+   "choices": [
+    "Social Security number",
+    "Date of birth",
+    "Account passwords",
+    "Your favorite movie"
+   ],
+   "answer": [
+    0,
+    1,
+    2
+   ],
+   "explanation": "SSN, birthdate and passwords let thieves open accounts or take over yours."
+  },
+  {
+   "id": "sfa-25",
+   "city": "san-francisco",
+   "topic": "safety",
+   "difficulty": "advanced",
+   "level": 4,
+   "type": "mc",
+   "prompt": "You notice an unfamiliar $1 charge on your card. Why does it matter?",
+   "choices": [
+    "Scammers test stolen cards with tiny charges before big ones",
+    "It doesn't, it's only $1",
+    "It's interest",
+    "It's a refund"
+   ],
+   "answer": 0,
+   "explanation": "Small test charges often come before large fraud. Report it and get a new card."
+  },
+  {
+   "id": "sfa-26",
+   "city": "san-francisco",
+   "topic": "safety",
+   "difficulty": "advanced",
+   "level": 2,
+   "type": "mc",
+   "prompt": "Which website address is most likely the real Fin City Bank?",
+   "choices": [
+    "https://fincitybank.com",
+    "http://fincitybank.com.secure-login.co",
+    "https://fincity-bank-verify.net",
+    "http://fincitybank.support"
+   ],
+   "answer": 0,
+   "explanation": "The real domain is the part right before the first single slash. Look-alikes add words or change the ending."
+  },
+  {
+   "id": "sfa-27",
+   "city": "san-francisco",
+   "topic": "economics",
+   "difficulty": "advanced",
+   "level": 3,
+   "type": "numeric",
+   "prompt": "Your wage rises {w}% this year while inflation is {i}%. What is your approximate REAL wage change (%)?",
+   "vars": {
+    "w": {
+     "choices": [
+      2,
+      3,
+      4,
+      5
+     ]
+    },
+    "i": {
+     "choices": [
+      2,
+      3,
+      4,
+      5
+     ]
+    }
+   },
+   "answerExpr": "((1+w/100)/(1+i/100)-1)*100",
+   "format": "pct",
+   "toleranceAbs": 0.05,
+   "explanation": "(1 + {w}%)/(1 + {i}%) − 1 ≈ {ANSWER:pct}. If it's negative, your buying power fell even though your paycheck grew."
+  },
+  {
+   "id": "sfa-28",
+   "city": "san-francisco",
+   "topic": "economics",
+   "difficulty": "advanced",
+   "level": 4,
+   "type": "numeric",
+   "prompt": "A certificate program costs ${c} and raises your pay by ${r}/year. How many years to break even (ignoring interest)?",
+   "vars": {
+    "c": {
+     "min": 4000,
+     "max": 30000,
+     "step": 1000
+    },
+    "r": {
+     "min": 2000,
+     "max": 9000,
+     "step": 500
+    }
+   },
+   "answerExpr": "c/r",
+   "format": "num",
+   "tolerance": 0.01,
+   "unit": "years",
+   "explanation": "${c} ÷ ${r} per year = {ANSWER} years. Education is an investment in human capital."
+  },
+  {
+   "id": "sfa-29",
+   "city": "san-francisco",
+   "topic": "economics",
+   "difficulty": "advanced",
+   "level": 3,
+   "type": "mc",
+   "prompt": "Why do software engineers in a tech hub often earn more than the national average?",
+   "choices": [
+    "High demand and limited supply of those skills",
+    "Laws require it",
+    "Because rents are high only",
+    "They work fewer hours"
+   ],
+   "answer": 0,
+   "explanation": "Wages reflect supply and demand for skills (and local cost of living). Scarce, in-demand skills pay more."
+  },
+  {
+   "id": "sfa-30",
+   "city": "san-francisco",
+   "topic": "needs-wants",
+   "difficulty": "advanced",
+   "level": 2,
+   "type": "numeric",
+   "prompt": "A ${s}/month subscription you rarely use costs how much over 3 years?",
+   "vars": {
+    "s": {
+     "min": 8,
+     "max": 25
+    }
+   },
+   "answerExpr": "s*36",
+   "format": "money",
+   "explanation": "${s} × 36 months = ${ANSWER}."
+  },
+  {
+   "id": "sfa-31",
+   "city": "san-francisco",
+   "topic": "budgeting",
+   "difficulty": "advanced",
+   "level": 3,
+   "type": "numeric",
+   "prompt": "Net pay is ${n}/month. Rent ${r}, food ${f}, transport ${t}. What % of net pay is left?",
+   "vars": {
+    "n": {
+     "min": 2400,
+     "max": 4000,
+     "step": 100
+    },
+    "r": {
+     "min": 900,
+     "max": 1500,
+     "step": 50
+    },
+    "f": {
+     "min": 250,
+     "max": 450,
+     "step": 25
+    },
+    "t": {
+     "min": 80,
+     "max": 200,
+     "step": 10
+    }
+   },
+   "answerExpr": "(n-r-f-t)/n*100",
+   "format": "pct",
+   "toleranceAbs": 0.1,
+   "explanation": "(${n} − ${r} − ${f} − ${t}) ÷ ${n} = {ANSWER:pct}."
+  },
+  {
+   "id": "sfa-32",
+   "city": "san-francisco",
+   "topic": "budgeting",
+   "difficulty": "advanced",
+   "level": 3,
+   "type": "mc",
+   "prompt": "Rent should be no more than about 30% of gross income (a common guideline). Gross pay is $4,500/month. Which rent fits?",
+   "choices": [
+    "$1,300",
+    "$1,700",
+    "$2,100",
+    "$2,500"
+   ],
+   "answer": 0,
+   "explanation": "30% × $4,500 = $1,350. $1,300 fits."
+  },
+  {
+   "id": "sfa-33",
+   "city": "san-francisco",
+   "topic": "earning",
+   "difficulty": "advanced",
+   "level": 4,
+   "type": "numeric",
+   "prompt": "Rideshare driving pays ${g}/hour gross, but costs ${c}/hour in fuel and wear. You also set aside 15.3% of net profit for self-employment tax. True hourly earnings?",
+   "vars": {
+    "g": {
+     "min": 22,
+     "max": 34
+    },
+    "c": {
+     "min": 5,
+     "max": 10
+    }
+   },
+   "answerExpr": "(g-c)*(1-0.153)",
+   "format": "money",
+   "explanation": "(${g} − ${c}) × (1 − 0.153) = ${ANSWER}/hour. Gig work's real pay is lower than the headline."
+  },
+  {
+   "id": "sfa-34",
+   "city": "san-francisco",
+   "topic": "taxes",
+   "difficulty": "advanced",
+   "level": 5,
+   "type": "numeric",
+   "prompt": "Taxable income is ${T}. What is the marginal rate (%)? (10% to 11,925; 12% to 48,475; 22% to 103,350; 24% to 197,300)",
+   "vars": {
+    "T": {
+     "choices": [
+      9000,
+      30000,
+      60000,
+      120000,
+      150000
+     ]
+    }
+   },
+   "answerExpr": "marginal(T)",
+   "format": "pct",
+   "explanation": "The marginal rate is the rate on your last dollar of taxable income: {ANSWER:pct} for ${T}.",
+   "toleranceAbs": 0.01
+  },
+  {
+   "id": "sfa-35",
+   "city": "san-francisco",
+   "topic": "taxes",
+   "difficulty": "advanced",
+   "level": 1,
+   "type": "mc",
+   "prompt": "Gross pay minus taxes and deductions equals…",
+   "choices": [
+    "Net pay",
+    "Taxable income",
+    "Revenue",
+    "APR"
+   ],
+   "answer": 0,
+   "explanation": "Net pay is your take-home pay."
+  },
+  {
+   "id": "sfa-36",
+   "city": "san-francisco",
+   "topic": "taxes",
+   "difficulty": "advanced",
+   "level": 2,
+   "type": "mc",
+   "prompt": "Sales tax is called 'regressive' because…",
+   "choices": [
+    "Lower-income people pay a larger share of their income",
+    "It rises with income",
+    "Only businesses pay it",
+    "It's refunded every year"
+   ],
+   "answer": 0,
+   "explanation": "Everyone pays the same rate on purchases, but lower earners spend a bigger share of income, so it takes a bigger bite."
+  },
+  {
+   "id": "sfa-37",
+   "city": "san-francisco",
+   "topic": "taxes",
+   "difficulty": "advanced",
+   "level": 4,
+   "type": "numeric",
+   "prompt": "Federal withholding per biweekly paycheck is ${f}. Over 26 paychecks, total withheld?",
+   "vars": {
+    "f": {
+     "min": 80,
+     "max": 420,
+     "step": 5
+    }
+   },
+   "answerExpr": "f*26",
+   "format": "money",
+   "explanation": "${f} × 26 = ${ANSWER}."
+  },
+  {
+   "id": "sfa-38",
+   "city": "san-francisco",
+   "topic": "earning",
+   "difficulty": "advanced",
+   "level": 2,
+   "type": "mc",
+   "prompt": "A $2,000 signing bonus vs. a $2,000 higher salary: which is worth more over time?",
+   "choices": [
+    "The higher salary, it repeats every year and future raises build on it",
+    "The bonus",
+    "They're the same",
+    "Neither"
+   ],
+   "answer": 0,
+   "explanation": "A bonus is paid once. A salary increase repeats and compounds with raises."
+  },
+  {
+   "id": "sfa-39",
+   "city": "san-francisco",
+   "topic": "retirement",
+   "difficulty": "advanced",
+   "level": 3,
+   "type": "numeric",
+   "prompt": "Your employer matches 50% of contributions up to 6% of pay. You earn ${S} and contribute 6%. How much does the employer add per year?",
+   "vars": {
+    "S": {
+     "min": 40000,
+     "max": 100000,
+     "step": 2000
+    }
+   },
+   "answerExpr": "S*0.06*0.5",
+   "format": "money",
+   "explanation": "6% × ${S} × 50% = ${ANSWER}. That's an instant 50% return on your contribution."
+  },
+  {
+   "id": "sfa-40",
+   "city": "san-francisco",
+   "topic": "retirement",
+   "difficulty": "advanced",
+   "level": 3,
+   "type": "mc",
+   "prompt": "If your employer matches up to 6% and you contribute only 2%, you are…",
+   "choices": [
+    "Leaving free money on the table",
+    "Maximizing your benefit",
+    "Paying more tax",
+    "Breaking a rule"
+   ],
+   "answer": 0,
+   "explanation": "Contribute at least enough to get the full match, it's part of your pay."
+  },
+  {
+   "id": "sfa-41",
+   "city": "san-francisco",
+   "topic": "safety",
+   "difficulty": "advanced",
+   "level": 4,
+   "type": "mc",
+   "prompt": "An 'investment' promises guaranteed 30% monthly returns and pays early investors from new investors' money. This is a…",
+   "choices": [
+    "Ponzi scheme",
+    "Index fund",
+    "Bond",
+    "CD"
+   ],
+   "answer": 0,
+   "explanation": "Paying old investors with new investors' money collapses when new money slows. Guaranteed high returns are the red flag."
+  },
+  {
+   "id": "sfa-42",
+   "city": "san-francisco",
+   "topic": "safety",
+   "difficulty": "advanced",
+   "level": 1,
+   "type": "mc",
+   "prompt": "What does 'phishing' mean?",
+   "choices": [
+    "Fake messages that trick you into giving information",
+    "A fishing trip",
+    "Checking your credit report",
+    "A secure website"
+   ],
+   "answer": 0,
+   "explanation": "Phishing uses fake emails, texts or sites that look real to steal passwords and money."
+  },
+  {
+   "id": "sfa-43",
+   "city": "san-francisco",
+   "topic": "economics",
+   "difficulty": "advanced",
+   "level": 2,
+   "type": "mc",
+   "prompt": "The unemployment rate rises during a recession. What usually happens to wage growth?",
+   "choices": [
+    "It slows, because more people compete for jobs",
+    "It speeds up",
+    "It doesn't change",
+    "Wages double"
+   ],
+   "answer": 0,
+   "explanation": "More job seekers relative to openings reduces workers' bargaining power."
+  },
+  {
+   "id": "sfa-44",
+   "city": "san-francisco",
+   "topic": "earning",
+   "difficulty": "advanced",
+   "level": 5,
+   "type": "numeric",
+   "prompt": "Offer A: ${a} salary in a city where rent is ${ra}/month. Offer B: ${b} salary where rent is ${rb}/month. Which leaves more per year after rent? Enter the DIFFERENCE (A − B).",
+   "vars": {
+    "a": {
+     "choices": [
+      95000,
+      105000,
+      115000
+     ]
+    },
+    "b": {
+     "choices": [
+      72000,
+      80000,
+      88000
+     ]
+    },
+    "ra": {
+     "choices": [
+      2800,
+      3200,
+      3600
+     ]
+    },
+    "rb": {
+     "choices": [
+      1300,
+      1500,
+      1700
+     ]
+    }
+   },
+   "answerExpr": "(a-12*ra)-(b-12*rb)",
+   "format": "money",
+   "explanation": "(${a} − 12×${ra}) − (${b} − 12×${rb}) = ${ANSWER}. Cost of living matters (taxes would shrink the gap further)."
+  },
+  {
+   "id": "sfa-45",
+   "city": "san-francisco",
+   "topic": "needs-wants",
+   "difficulty": "advanced",
+   "level": 4,
+   "type": "mc",
+   "prompt": "Lifestyle creep means…",
+   "choices": [
+    "Spending rises whenever income rises",
+    "Saving more after each raise",
+    "Rent decreasing",
+    "Taxes falling"
+   ],
+   "answer": 0,
+   "explanation": "If spending grows with every raise, savings never improve. Bank part of each raise first."
+  },
+  {
+   "id": "sfa-46",
+   "city": "san-francisco",
+   "topic": "budgeting",
+   "difficulty": "advanced",
+   "level": 4,
+   "type": "numeric",
+   "prompt": "You get a ${r}/month raise and commit to saving half of it at 6% APR (monthly). How much after 5 years?",
+   "vars": {
+    "r": {
+     "choices": [
+      200,
+      300,
+      400,
+      500
+     ]
+    }
+   },
+   "answerExpr": "fvs(r/2, 0.005, 60)",
+   "tolerance": 0.004,
+   "format": "money",
+   "explanation": "Saving ${r} ÷ 2 per month for 60 months at 0.5%/month ≈ ${ANSWER}."
+  },
+  {
+   "id": "sfa-47",
+   "city": "san-francisco",
+   "topic": "taxes",
+   "difficulty": "advanced",
+   "level": 5,
+   "type": "mc",
+   "prompt": "Roth vs. traditional: which is generally better if you expect to be in a HIGHER bracket in retirement?",
+   "choices": [
+    "Roth, pay tax now at the lower rate",
+    "Traditional, deduct now",
+    "No difference",
+    "Neither allows growth"
+   ],
+   "answer": 0,
+   "explanation": "Roth contributions are taxed now; withdrawals later are tax-free. That wins if your future rate is higher."
+  },
+  {
+   "id": "sfa-48",
+   "city": "san-francisco",
+   "topic": "earning",
+   "difficulty": "advanced",
+   "level": 3,
+   "type": "numeric",
+   "prompt": "A ${b} raise is offered as a {p}% raise on your ${s} salary or a flat ${b}. What is the {p}% raise in dollars?",
+   "vars": {
+    "s": {
+     "choices": [
+      50000,
+      60000,
+      70000
+     ]
+    },
+    "p": {
+     "choices": [
+      3,
+      4,
+      5
+     ]
+    },
+    "b": {
+     "choices": [
+      2500
+     ]
+    }
+   },
+   "answerExpr": "s*p/100",
+   "format": "money",
+   "explanation": "{p}% × ${s} = ${ANSWER}."
+  },
+  {
+   "id": "sfa-49",
+   "city": "san-francisco",
+   "topic": "safety",
+   "difficulty": "advanced",
+   "level": 5,
+   "type": "mc",
+   "prompt": "Your data was in a breach. Best order of actions?",
+   "choices": [
+    "Change passwords (start with email), enable 2FA, freeze credit, monitor statements",
+    "Ignore it",
+    "Post about it publicly",
+    "Close all accounts immediately"
+   ],
+   "answer": 0,
+   "explanation": "Secure your email first (it resets everything else), add 2FA, freeze credit, and watch for fraud."
+  },
+  {
+   "id": "sfa-50",
+   "city": "san-francisco",
+   "topic": "economics",
+   "difficulty": "advanced",
+   "level": 5,
+   "type": "mc",
+   "prompt": "Automation replaces some routine tasks. Which response best protects your earning power?",
+   "choices": [
+    "Build skills that complement technology",
+    "Avoid all training",
+    "Rely on one employer forever",
+    "Stop working"
+   ],
+   "answer": 0,
+   "explanation": "Skills that work alongside technology (analysis, design, communication) stay in demand."
+  },
+  {
+   "id": "sfa-51",
+   "city": "san-francisco",
+   "topic": "taxes",
+   "difficulty": "advanced",
+   "level": 4,
+   "type": "numeric",
+   "prompt": "Fin City's city tax is 3% of gross wages. On annual wages of ${W}, how much city tax?",
+   "vars": {
+    "W": {
+     "min": 20000,
+     "max": 90000,
+     "step": 1000
+    }
+   },
+   "answerExpr": "W*0.03",
+   "format": "money",
+   "explanation": "3% × ${W} = ${ANSWER}."
+  },
+  {
+   "id": "sfa-52",
+   "city": "san-francisco",
+   "topic": "earning",
+   "difficulty": "advanced",
+   "level": 1,
+   "type": "mc",
+   "prompt": "Which counts as total compensation?",
+   "choices": [
+    "Salary + bonuses + retirement match + benefits",
+    "Salary only",
+    "Net pay only",
+    "Tips only"
+   ],
+   "answer": 0,
+   "explanation": "Compare jobs on total compensation, not just salary."
+  }
+ ]
+}

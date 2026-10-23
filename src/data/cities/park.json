@@ -1,0 +1,924 @@
+{
+  "id": "park",
+  "name": "Fin-City Park",
+  "tagline": "The heart of Fin City",
+  "theme": "Your home base: bank, shops, homes and portals to the world",
+  "music": "park",
+  "icon": "🌳",
+  "half": 125,
+  "ground": "#6f9c50",
+  "palette": {
+    "walls": [
+      "#e9e2d2",
+      "#d8cdb4",
+      "#c9b38a",
+      "#b07a5a",
+      "#e6dfcf"
+    ],
+    "roofs": [
+      "#3d4a52",
+      "#5f8a7a",
+      "#a8432f",
+      "#4a4f57"
+    ],
+    "trims": [
+      "#ffffff",
+      "#1e2840"
+    ],
+    "accents": [
+      "#ffcf3f",
+      "#2ebaba",
+      "#e1553f"
+    ]
+  },
+  "roads": {
+    "xs": [
+      -64,
+      64
+    ],
+    "zs": [
+      -64,
+      64
+    ],
+    "width": 9,
+    "color": "#5d6473"
+  },
+  "extraRoads": [
+    {
+      "from": [
+        64,
+        20
+      ],
+      "to": [
+        118,
+        20
+      ],
+      "width": 8
+    },
+    {
+      "from": [
+        -64,
+        0
+      ],
+      "to": [
+        -78,
+        0
+      ],
+      "width": 8
+    }
+  ],
+  "paths": [
+    {
+      "from": [
+        0,
+        -18
+      ],
+      "to": [
+        0,
+        -64
+      ],
+      "width": 5
+    },
+    {
+      "from": [
+        0,
+        18
+      ],
+      "to": [
+        0,
+        64
+      ],
+      "width": 5
+    },
+    {
+      "from": [
+        -18,
+        0
+      ],
+      "to": [
+        -64,
+        0
+      ],
+      "width": 5
+    },
+    {
+      "from": [
+        18,
+        0
+      ],
+      "to": [
+        64,
+        0
+      ],
+      "width": 5
+    },
+    {
+      "from": [
+        -78,
+        0
+      ],
+      "to": [
+        -96,
+        0
+      ],
+      "width": 6
+    }
+  ],
+  "plazas": [
+    {
+      "pos": [
+        0,
+        0
+      ],
+      "r": 18,
+      "color": "#e8dcc4"
+    },
+    {
+      "pos": [
+        -98,
+        0
+      ],
+      "r": 20,
+      "color": "#d9cdb4"
+    }
+  ],
+  "water": [
+    {
+      "x": -60,
+      "z": 98,
+      "w": 110,
+      "d": 44
+    }
+  ],
+  "buildings": [
+    {
+      "id": "welcome-center",
+      "name": "Welcome Center",
+      "icon": "👋",
+      "pos": [
+        0,
+        -44
+      ],
+      "size": [
+        22,
+        14,
+        9
+      ],
+      "door": "south",
+      "style": "welcome",
+      "colors": {
+        "wall": "#e9e2d2",
+        "roof": "#4a5560",
+        "trim": "#f4f1ea",
+        "accent": "#c9a24a"
+      },
+      "blurb": "Start here! Take your first quiz and replay Narwhal's lessons.",
+      "stations": [
+        {
+          "activity": "first-quiz",
+          "label": "First Quiz",
+          "icon": "📝",
+          "npc": "guide"
+        },
+        {
+          "service": "learn",
+          "label": "Learn Menu",
+          "icon": "📚",
+          "npc": "teacher"
+        },
+        {
+          "activity": "park-quiz",
+          "label": "Fin City Quiz Show",
+          "icon": "🎤",
+          "npc": "host"
+        }
+      ],
+      "interior": {
+        "floor": "#f3e3c3",
+        "wall": "#e3f4f4",
+        "theme": "welcome"
+      }
+    },
+    {
+      "id": "bank",
+      "name": "Fin City Bank",
+      "icon": "🏦",
+      "pos": [
+        -40,
+        -42
+      ],
+      "size": [
+        20,
+        16,
+        12
+      ],
+      "door": "south",
+      "style": "bank",
+      "colors": {
+        "wall": "#e6dfcf",
+        "roof": "#5f8a7a",
+        "trim": "#f4f1ea",
+        "accent": "#c9a24a"
+      },
+      "blurb": "Checking, savings, CDs, loans, credit cards and the ATM.",
+      "entryBlurb": "Keep your money safe and watch it grow!",
+      "stations": [
+        {
+          "service": "bank",
+          "label": "Teller: Accounts",
+          "icon": "🏦",
+          "npc": "banker"
+        },
+        {
+          "service": "atm",
+          "label": "ATM",
+          "icon": "🏧"
+        },
+        {
+          "service": "cds",
+          "label": "CDs & Goals",
+          "icon": "🔒",
+          "npc": "banker"
+        },
+        {
+          "service": "loans",
+          "label": "Loans & Credit Card",
+          "icon": "💳",
+          "npc": "banker"
+        },
+        {
+          "activity": "bank-teller",
+          "label": "Teller Trainee Job",
+          "icon": "🧮",
+          "npc": "banker"
+        }
+      ],
+      "interior": {
+        "floor": "#e8e1d0",
+        "wall": "#dfe8f6",
+        "theme": "bank"
+      }
+    },
+    {
+      "id": "credit-bureau",
+      "name": "Credit Bureau",
+      "icon": "📊",
+      "pos": [
+        40,
+        -42
+      ],
+      "size": [
+        16,
+        14,
+        10
+      ],
+      "door": "south",
+      "style": "office",
+      "colors": {
+        "wall": "#c9b38a",
+        "roof": "#3d4a52",
+        "trim": "#efe9dc",
+        "accent": "#2f5f9a"
+      },
+      "blurb": "See your credit score and what changes it.",
+      "entryBlurb": "Learn why borrowers need to be trustworthy.",
+      "stations": [
+        {
+          "service": "credit",
+          "label": "My Credit Report",
+          "icon": "📊",
+          "npc": "clerk"
+        },
+        {
+          "activity": "credit-sim",
+          "label": "Credit Score Simulator",
+          "icon": "🎚️",
+          "npc": "clerk"
+        }
+      ],
+      "interior": {
+        "floor": "#dfe3ee",
+        "wall": "#f1ecfb",
+        "theme": "office"
+      }
+    },
+    {
+      "id": "style-studio",
+      "name": "Style Studio",
+      "icon": "👕",
+      "pos": [
+        -42,
+        -8
+      ],
+      "size": [
+        14,
+        14,
+        8
+      ],
+      "door": "east",
+      "style": "boutique",
+      "colors": {
+        "wall": "#b9a77f",
+        "roof": "#3d4a52",
+        "trim": "#efe9dc",
+        "accent": "#6b1f24"
+      },
+      "blurb": "Change your look and buy outfits.",
+      "stations": [
+        {
+          "service": "style",
+          "label": "Mirror: Change Look",
+          "icon": "🪞",
+          "npc": "stylist"
+        },
+        {
+          "service": "shop:outfits",
+          "label": "Outfit Shop",
+          "icon": "🛍️",
+          "npc": "stylist"
+        }
+      ],
+      "interior": {
+        "floor": "#f6e2ea",
+        "wall": "#fff4f8",
+        "theme": "boutique"
+      }
+    },
+    {
+      "id": "library",
+      "name": "Library",
+      "icon": "📚",
+      "pos": [
+        -42,
+        18
+      ],
+      "size": [
+        16,
+        14,
+        10
+      ],
+      "door": "east",
+      "style": "library",
+      "colors": {
+        "wall": "#d8cdb4",
+        "roof": "#5f8a7a",
+        "trim": "#f4f1ea",
+        "accent": "#2f4a32"
+      },
+      "blurb": "Short lessons that unlock bonuses.",
+      "stations": [
+        {
+          "service": "library",
+          "label": "Lesson Shelf",
+          "icon": "📖",
+          "npc": "librarian"
+        },
+        {
+          "service": "learn",
+          "label": "Narwhal's Tips",
+          "icon": "🦄",
+          "npc": "librarian"
+        }
+      ],
+      "interior": {
+        "floor": "#c9a87a",
+        "wall": "#f4ead6",
+        "theme": "library"
+      }
+    },
+    {
+      "id": "town-hall",
+      "name": "Town Hall",
+      "icon": "🏛️",
+      "pos": [
+        42,
+        -8
+      ],
+      "size": [
+        18,
+        14,
+        12
+      ],
+      "door": "west",
+      "style": "civic",
+      "colors": {
+        "wall": "#e6dfcf",
+        "roof": "#3d4a52",
+        "trim": "#f4f1ea",
+        "accent": "#c9a24a"
+      },
+      "blurb": "Taxes, community projects and donations.",
+      "entryBlurb": "See how the town uses taxes to build parks and schools.",
+      "stations": [
+        {
+          "service": "townhall",
+          "label": "Community Projects",
+          "icon": "🏗️",
+          "npc": "mayor"
+        },
+        {
+          "activity": "civics-sort",
+          "label": "What Do Taxes Pay For?",
+          "icon": "🧾",
+          "npc": "clerk"
+        },
+        {
+          "service": "hall-of-fame",
+          "label": "Hall of Fame",
+          "icon": "🏆"
+        }
+      ],
+      "interior": {
+        "floor": "#e6dfcf",
+        "wall": "#f4f1ea",
+        "theme": "civic"
+      }
+    },
+    {
+      "id": "arcade",
+      "name": "Coin Arcade",
+      "icon": "🕹️",
+      "pos": [
+        42,
+        18
+      ],
+      "size": [
+        16,
+        14,
+        8
+      ],
+      "door": "west",
+      "style": "arcade",
+      "colors": {
+        "wall": "#2b2f3a",
+        "roof": "#1f2226",
+        "trim": "#c9a24a",
+        "accent": "#c93b8a"
+      },
+      "blurb": "Play money mini-games for $1 a game and win tickets for prizes.",
+      "stations": [
+        {
+          "activity": "coin-catcher",
+          "label": "Coin Catcher",
+          "icon": "🪙"
+        },
+        {
+          "activity": "money-memory",
+          "label": "Money Memory",
+          "icon": "🃏"
+        },
+        {
+          "activity": "price-dash",
+          "label": "Price Dash",
+          "icon": "🏃"
+        },
+        {
+          "service": "arcade-prizes",
+          "label": "Prize Counter",
+          "icon": "🎟️",
+          "npc": "clerk"
+        }
+      ],
+      "interior": {
+        "floor": "#2a2f5c",
+        "wall": "#3a2f6c",
+        "theme": "arcade"
+      }
+    },
+    {
+      "id": "furniture-store",
+      "name": "Furniture Store",
+      "icon": "🛋️",
+      "pos": [
+        -40,
+        44
+      ],
+      "size": [
+        18,
+        14,
+        8
+      ],
+      "door": "north",
+      "style": "shop",
+      "colors": {
+        "wall": "#9a5a40",
+        "roof": "#a8432f",
+        "trim": "#efe9dc",
+        "accent": "#2f4a32"
+      },
+      "blurb": "Sofas, lamps, plants and decor for your home.",
+      "stations": [
+        {
+          "service": "shop:furniture",
+          "label": "Furniture",
+          "icon": "🛋️",
+          "npc": "clerk"
+        },
+        {
+          "service": "shop:collectibles",
+          "label": "Collectibles & Art",
+          "icon": "🖼️",
+          "npc": "clerk"
+        }
+      ],
+      "interior": {
+        "floor": "#d9b98a",
+        "wall": "#fbf3e6",
+        "theme": "shop"
+      }
+    },
+    {
+      "id": "pet-shop",
+      "name": "Pet Shop",
+      "icon": "🐶",
+      "pos": [
+        40,
+        44
+      ],
+      "size": [
+        14,
+        12,
+        7
+      ],
+      "door": "north",
+      "style": "shop",
+      "colors": {
+        "wall": "#c9b38a",
+        "roof": "#a8432f",
+        "trim": "#efe9dc",
+        "accent": "#2f5f9a"
+      },
+      "blurb": "Adopt a pet. Pets make you happy, but they cost money every month!",
+      "stations": [
+        {
+          "service": "shop:pets",
+          "label": "Adopt a Pet",
+          "icon": "🐾",
+          "npc": "vet"
+        },
+        {
+          "activity": "pet-budget",
+          "label": "Pet Care Budget",
+          "icon": "🦴",
+          "npc": "vet"
+        }
+      ],
+      "interior": {
+        "floor": "#cfe6c0",
+        "wall": "#f4fbf0",
+        "theme": "pets"
+      }
+    },
+    {
+      "id": "auto-dealer",
+      "name": "Auto Dealer",
+      "icon": "🚗",
+      "pos": [
+        -90,
+        -42
+      ],
+      "size": [
+        22,
+        16,
+        8
+      ],
+      "door": "east",
+      "style": "showroom",
+      "colors": {
+        "wall": "#d9dde3",
+        "roof": "#4a4f57",
+        "trim": "#f4f6fa",
+        "accent": "#b3261e"
+      },
+      "blurb": "Bikes, scooters, cars, boats and even a seaplane. Pay cash, finance or lease.",
+      "stations": [
+        {
+          "service": "shop:vehicles",
+          "label": "Showroom",
+          "icon": "🚙",
+          "npc": "dealer"
+        },
+        {
+          "activity": "car-deal",
+          "label": "Buy, Borrow or Lease?",
+          "icon": "🧾",
+          "npc": "dealer"
+        },
+        {
+          "service": "garage",
+          "label": "My Garage",
+          "icon": "🔑"
+        }
+      ],
+      "interior": {
+        "floor": "#d6dbe3",
+        "wall": "#f3f6fa",
+        "theme": "showroom"
+      }
+    },
+    {
+      "id": "real-estate",
+      "name": "Real Estate Office",
+      "icon": "🏡",
+      "pos": [
+        90,
+        -12
+      ],
+      "size": [
+        16,
+        14,
+        9
+      ],
+      "door": "west",
+      "style": "office",
+      "colors": {
+        "wall": "#b07a5a",
+        "roof": "#3d4a52",
+        "trim": "#efe9dc",
+        "accent": "#2f5f9a"
+      },
+      "blurb": "Buy land, build a home, rent it out. Mortgages available.",
+      "stations": [
+        {
+          "service": "shop:property",
+          "label": "Land & Homes",
+          "icon": "🏡",
+          "npc": "agent"
+        },
+        {
+          "activity": "mortgage-math",
+          "label": "Mortgage Math",
+          "icon": "🧮",
+          "npc": "agent"
+        }
+      ],
+      "interior": {
+        "floor": "#e2cfb0",
+        "wall": "#fbf6ee",
+        "theme": "office"
+      }
+    },
+    {
+      "id": "map-travel",
+      "name": "Map & Travel",
+      "icon": "🗺️",
+      "pos": [
+        -84,
+        -24
+      ],
+      "size": [
+        12,
+        10,
+        7
+      ],
+      "door": "south",
+      "style": "kiosk",
+      "colors": {
+        "wall": "#e9e2d2",
+        "roof": "#2f5f9a",
+        "trim": "#f4f1ea",
+        "accent": "#c9a24a"
+      },
+      "blurb": "World map, portals and fast travel.",
+      "stations": [
+        {
+          "service": "map",
+          "label": "World Map",
+          "icon": "🗺️",
+          "npc": "guide"
+        },
+        {
+          "activity": "travel-budget",
+          "label": "Trip Planner",
+          "icon": "🧳",
+          "npc": "guide"
+        }
+      ],
+      "interior": {
+        "floor": "#cde7ea",
+        "wall": "#f1fbfb",
+        "theme": "travel"
+      }
+    }
+  ],
+  "landmarks": [
+    {
+      "type": "fountain",
+      "pos": [
+        0,
+        0
+      ],
+      "scale": 1
+    },
+    {
+      "type": "narwhal-statue",
+      "pos": [
+        0,
+        -9
+      ],
+      "rot": 180
+    },
+    {
+      "type": "hall-of-fame-board",
+      "pos": [
+        14,
+        14
+      ],
+      "rot": 225
+    },
+    {
+      "type": "job-board",
+      "pos": [
+        -14,
+        14
+      ],
+      "rot": 135,
+      "label": "Odd Jobs"
+    },
+    {
+      "type": "bandstand",
+      "pos": [
+        70,
+        -96
+      ]
+    },
+    {
+      "type": "playground",
+      "pos": [
+        96,
+        -90
+      ]
+    },
+    {
+      "type": "garden",
+      "pos": [
+        30,
+        -96
+      ]
+    },
+    {
+      "type": "ferris-wheel",
+      "pos": [
+        -30,
+        -98
+      ]
+    },
+    {
+      "type": "dock",
+      "pos": [
+        -30,
+        76
+      ],
+      "rot": 0
+    },
+    {
+      "type": "neighborhood",
+      "pos": [
+        96,
+        72
+      ]
+    },
+    {
+      "type": "bench",
+      "pos": [
+        10,
+        20
+      ],
+      "rot": 0
+    },
+    {
+      "type": "bench",
+      "pos": [
+        -10,
+        20
+      ],
+      "rot": 0
+    },
+    {
+      "type": "bench",
+      "pos": [
+        20,
+        -10
+      ],
+      "rot": 90
+    },
+    {
+      "type": "bench",
+      "pos": [
+        -20,
+        -10
+      ],
+      "rot": -90
+    },
+    {
+      "type": "food-cart",
+      "pos": [
+        22,
+        30
+      ],
+      "rot": 200
+    },
+    {
+      "type": "flowerbeds",
+      "pos": [
+        0,
+        0
+      ]
+    }
+  ],
+  "portals": [
+    {
+      "to": "san-francisco",
+      "pos": [
+        -100,
+        22
+      ],
+      "rot": 70
+    },
+    {
+      "to": "new-york",
+      "pos": [
+        -110,
+        8
+      ],
+      "rot": 85
+    },
+    {
+      "to": "london",
+      "pos": [
+        -110,
+        -8
+      ],
+      "rot": 95
+    },
+    {
+      "to": "hong-kong",
+      "pos": [
+        -104,
+        -20
+      ],
+      "rot": 110
+    },
+    {
+      "to": "singapore",
+      "pos": [
+        -92,
+        28
+      ],
+      "rot": 50
+    }
+  ],
+  "spawn": [0, 42, 180],
+  "garage": [
+    -72,
+    10,
+    90
+  ],
+  "dock": [
+    -30,
+    86,
+    180
+  ],
+  "filler": {
+    "seed": 1,
+    "density": 0,
+    "minH": 0,
+    "maxH": 0,
+    "style": "none"
+  },
+  "trees": {
+    "count": 170,
+    "seed": 4,
+    "kinds": [
+      "round",
+      "pine",
+      "blossom"
+    ]
+  },
+  "npcs": 22,
+  "traffic": 4,
+  "boats": 3,
+  "host": {
+    "name": "Mayor Penny",
+    "look": "mayor",
+    "pos": [
+      8,
+      -14
+    ],
+    "lines": [
+      "Welcome to Fin-City Park! The portals in the west grove lead to five world cities.",
+      "Donations at Town Hall build new things in the park. Check out the community projects!"
+    ],
+    "entryLines": [
+      "Hi! I'm Mayor Penny. This park is your home base!",
+      "If you help the town, we can build a playground together!"
+    ]
+  },
+  "decor": [
+    "flags",
+    "balloons"
+  ],
+  "weather": {
+    "rain": 0.2
+  }
+}

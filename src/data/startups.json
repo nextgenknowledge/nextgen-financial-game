@@ -1,0 +1,17 @@
+{
+  "$comment": "Startup Pitch Theater. quality 0..1 = how good the fundamentals are (paying customers, experienced team, real problem). odds = chance of [fail (0×), meh (0.5–1.5×), hit (3–15×)]. Even great startups usually fail sometimes!",
+  "startups": [
+    { "id": "petpal-ai", "name": "PetPal AI", "icon": "🐕", "pitch": "A collar that tells you how your dog is feeling.", "facts": ["2,000 paying customers already", "Founders built a pet app before", "Profitable on each collar sold"], "quality": 0.8, "odds": [0.45, 0.35, 0.2] },
+    { "id": "moonlemons", "name": "MoonLemons", "icon": "🍋", "pitch": "Lemonade… on the MOON. Pre-orders open now!", "facts": ["No customers yet", "No rocket", "Says it will be 'the biggest company ever'"], "quality": 0.05, "odds": [0.97, 0.03, 0.0] },
+    { "id": "greengrid", "name": "GreenGrid", "icon": "🔋", "pitch": "Batteries that store solar power for apartment buildings.", "facts": ["Signed 3 pilot contracts", "Engineer founders from Solaris Power", "Needs lots of money to build factories"], "quality": 0.65, "odds": [0.55, 0.3, 0.15] },
+    { "id": "snackbox", "name": "SnackBox Kids", "icon": "🍪", "pitch": "Healthy snack subscription for schools.", "facts": ["40 schools signed up", "Growing 10% a month", "Low profit per box"], "quality": 0.6, "odds": [0.5, 0.38, 0.12] },
+    { "id": "hypecoin", "name": "HypeCoin Exchange", "icon": "🪙", "pitch": "Our token can only go up. Influencers love it!", "facts": ["No product, just a token", "Founders anonymous", "Pays referral bonuses"], "quality": 0.02, "odds": [0.98, 0.02, 0.0] },
+    { "id": "tutorbot", "name": "TutorBot", "icon": "📚", "pitch": "Homework help that explains steps instead of giving answers.", "facts": ["50,000 free users", "Just started charging $5/month", "Two founders, both former teachers"], "quality": 0.7, "odds": [0.5, 0.32, 0.18] },
+    { "id": "quickfix", "name": "QuickFix Bikes", "icon": "🔧", "pitch": "Mobile bike-repair vans that come to you.", "facts": ["Already profitable in one city", "Slow, steady growth", "Easy for competitors to copy"], "quality": 0.55, "odds": [0.35, 0.55, 0.1] },
+    { "id": "dronedeli", "name": "DroneDeli", "icon": "🚁", "pitch": "Sandwiches delivered by drone in 10 minutes!", "facts": ["Cool demo video", "Not legal to fly in most cities yet", "Each delivery loses $4"], "quality": 0.2, "odds": [0.85, 0.12, 0.03] },
+    { "id": "farmfresh", "name": "FarmFresh Rows", "icon": "🥬", "pitch": "Vertical farms inside old warehouses.", "facts": ["Sells to 30 restaurants", "High electricity costs", "Experienced farming team"], "quality": 0.5, "odds": [0.55, 0.33, 0.12] },
+    { "id": "pixelforge", "name": "PixelForge", "icon": "🎮", "pitch": "A small studio making a cozy farming game.", "facts": ["Wishlisted by 200,000 players", "Game is 80% finished", "Small team, low costs"], "quality": 0.62, "odds": [0.45, 0.35, 0.2] },
+    { "id": "superjuice", "name": "SuperJuice 3000", "icon": "🧃", "pitch": "Juice that 'cures everything'. Doctors hate us!", "facts": ["Claims aren't backed by any studies", "Celebrity paid endorsements", "Lots of customer complaints"], "quality": 0.05, "odds": [0.95, 0.05, 0.0] },
+    { "id": "safeshare", "name": "SafeShare", "icon": "🛡️", "pitch": "Helps families spot online scams with a browser add-on.", "facts": ["Partnered with 2 banks", "Recurring revenue from subscriptions", "Founders from CloudKite security team"], "quality": 0.75, "odds": [0.4, 0.38, 0.22] }
+  ]
+}

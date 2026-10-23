@@ -1,0 +1,252 @@
+{
+  "$comment": "Library lessons. slides: entry = short sentence for ages 6-13, advanced = deeper explanation. check = one question to finish the lesson. perk = permanent bonus unlocked (see src/game/progress/lessons.ts).",
+  "lessons": [
+    {
+      "id": "what-is-money", "topic": "counting", "icon": "🪙", "title": "What Is Money?",
+      "slides": [
+        { "entry": "Money is something everyone agrees to trade for things we need and want.", "advanced": "Money is a medium of exchange, a unit of account and a store of value. It works because everyone trusts it." },
+        { "entry": "Long ago people traded things, like shells or salt. That's called bartering.", "advanced": "Before money, people bartered, but barter needs a 'double coincidence of wants': both sides must want what the other has." },
+        { "entry": "Today we use coins, bills, and cards. Cards move money in the bank.", "advanced": "Today most money is digital: numbers in bank accounts moved by cards, apps and transfers." }
+      ],
+      "check": { "prompt": "What is trading things without money called?", "choices": ["Bartering", "Banking", "Budgeting"], "answer": 0, "explanation": "Bartering means trading goods directly, like a sandwich for a toy." },
+      "reward": { "xp": 40, "cash": 10 }
+    },
+    {
+      "id": "needs-wants", "topic": "needs-wants", "icon": "⚖️", "title": "Needs vs. Wants",
+      "slides": [
+        { "entry": "Needs are things you must have to live: food, water, a home, clothes.", "advanced": "Needs are essential for health and safety. Wants improve life but aren't essential." },
+        { "entry": "Wants are fun extras: toys, games, candy.", "advanced": "Many purchases mix both: you need shoes, but designer shoes are partly a want." },
+        { "entry": "Pay for needs first. Then you can plan for some wants!", "advanced": "Budget needs first, then decide how much goes to wants vs. saving. Wants are fine when planned." }
+      ],
+      "check": { "prompt": "Which one is a NEED?", "choices": ["A new video game", "Healthy food", "A third pair of sneakers"], "answer": 1, "explanation": "Food keeps you healthy, so it's a need. The others are wants." },
+      "reward": { "xp": 40, "cash": 10 }
+    },
+    {
+      "id": "why-save", "topic": "saving", "icon": "🐷", "title": "Why Save?",
+      "slides": [
+        { "entry": "Saving means keeping some money for later instead of spending it now.", "advanced": "Saving trades consumption today for security and options tomorrow." },
+        { "entry": "Saving helps you buy bigger things, like a bike!", "advanced": "Goals make saving easier: name the goal, set a number, and a date." },
+        { "entry": "It also helps when surprises happen, like a broken phone.", "advanced": "An emergency fund of 3–6 months of expenses keeps surprises from becoming debt." }
+      ],
+      "check": { "prompt": "Why is an emergency fund helpful?", "choices": ["To buy surprise toys", "To pay for surprise problems without borrowing", "To pay taxes"], "answer": 1, "explanation": "An emergency fund lets you pay for surprises without going into debt." },
+      "perk": { "id": "saver-perk", "name": "Saver's Bonus", "desc": "+0.25% extra interest on savings, forever" },
+      "reward": { "xp": 60, "cash": 0 }
+    },
+    {
+      "id": "what-banks-do", "topic": "banking", "icon": "🏦", "title": "What Banks Do",
+      "slides": [
+        { "entry": "A bank keeps your money safe.", "advanced": "Banks keep deposits safe (insured up to a limit) and offer accounts, cards and loans." },
+        { "entry": "Banks lend some money to people who need to borrow, like for a house.", "advanced": "Banks lend out deposits and earn the spread: they charge borrowers more interest than they pay savers." },
+        { "entry": "Because of that, the bank pays YOU a little extra for saving. That's interest!", "advanced": "That's why savings rates are lower than loan rates, the difference is the bank's profit." }
+      ],
+      "check": { "prompt": "How do banks make money?", "choices": ["They print it", "They charge borrowers more interest than they pay savers", "They keep all money in a vault"], "answer": 1, "explanation": "Banks earn the 'spread' between loan interest and savings interest." },
+      "reward": { "xp": 50, "cash": 10 }
+    },
+    {
+      "id": "simple-interest", "topic": "interest", "icon": "📈", "title": "Interest Basics",
+      "slides": [
+        { "entry": "Interest is extra money. When you save, the bank pays you interest.", "advanced": "Simple interest: I = P × r × t (principal × rate × time)." },
+        { "entry": "When you borrow, YOU pay interest. So borrowing costs extra!", "advanced": "Borrowing $1,000 at 10% simple interest for 2 years costs $200 in interest." },
+        { "entry": "More money saved, and more time, means more interest.", "advanced": "Rates are usually yearly (APR). Always check the time period a rate refers to." }
+      ],
+      "check": { "prompt": "You save $100 and get 10% interest for one year. How much interest?", "choices": ["$1", "$10", "$110"], "answer": 1, "explanation": "10% of $100 is $10." },
+      "reward": { "xp": 50, "cash": 10 }
+    },
+    {
+      "id": "compound-interest", "topic": "interest", "icon": "❄️", "title": "The Snowball: Compound Interest",
+      "slides": [
+        { "entry": "With compound interest, your interest earns interest too!", "advanced": "A = P(1 + r/n)^(nt). Compounding more often (n) increases the result slightly." },
+        { "entry": "It's like a snowball rolling down a hill, getting bigger and bigger.", "advanced": "Time is the most powerful variable: it sits in the exponent." },
+        { "entry": "Start saving early and let time do the work!", "advanced": "Rule of 72: years to double ≈ 72 ÷ rate%. At 8%, money doubles in about 9 years." }
+      ],
+      "check": { "prompt": "Using the Rule of 72, money at 6% doubles in about…", "choices": ["6 years", "12 years", "72 years"], "answer": 1, "explanation": "72 ÷ 6 = 12 years." },
+      "reward": { "xp": 70, "cash": 15 }
+    },
+    {
+      "id": "budget-basics", "topic": "budgeting", "icon": "📋", "title": "Making a Budget",
+      "slides": [
+        { "entry": "A budget is a plan for your money before you spend it.", "advanced": "A budget assigns every dollar of income a job: needs, wants, savings, debt." },
+        { "entry": "Try 3 jars: Save, Spend, Share!", "advanced": "The 50/30/20 rule: 50% needs, 30% wants, 20% savings and extra debt payments." },
+        { "entry": "Check your plan. Did you stick to it?", "advanced": "Track actual spending vs. plan monthly and adjust. Surprise expenses are why you keep a buffer." }
+      ],
+      "check": { "prompt": "In 50/30/20, what is the 20% for?", "choices": ["Wants", "Needs", "Savings and paying off debt"], "answer": 2, "explanation": "20% goes to savings and extra debt payments." },
+      "perk": { "id": "budget-boss", "name": "Budget Boss", "desc": "+10% rewards from budgeting activities" },
+      "reward": { "xp": 60, "cash": 0 }
+    },
+    {
+      "id": "smart-shopping", "topic": "shopping", "icon": "🛒", "title": "Smart Shopping",
+      "slides": [
+        { "entry": "Compare prices before you buy. The same thing can cost less in another store!", "advanced": "Unit price = price ÷ quantity. Compare per ounce, per item, or per use." },
+        { "entry": "A sale is only a deal if you really needed it.", "advanced": "'Save 40%' on something you didn't need is still spending 60%." },
+        { "entry": "Wait a day before buying wants.", "advanced": "Watch for tricks: fake 'original' prices, countdown timers, add-ons." }
+      ],
+      "check": { "prompt": "Which is the better deal?", "choices": ["12 pencils for $3", "8 pencils for $2.40"], "answer": 0, "explanation": "$3 ÷ 12 = $0.25 each; $2.40 ÷ 8 = $0.30 each." },
+      "perk": { "id": "smart-shopper", "name": "Smart Shopper", "desc": "5% off at the Furniture Store" },
+      "reward": { "xp": 60, "cash": 0 }
+    },
+    {
+      "id": "earning", "topic": "earning", "icon": "💼", "title": "Earning Money",
+      "slides": [
+        { "entry": "Most people earn money by working at a job.", "advanced": "Income can be earned (wages), from a business, or passive (interest, dividends, rent)." },
+        { "entry": "Learning new skills can help you earn more.", "advanced": "Human capital, your skills and experience, is most people's biggest asset early in life." },
+        { "entry": "Doing a great job can get you a promotion!", "advanced": "Negotiating your starting salary compounds: future raises are often a % of it." }
+      ],
+      "check": { "prompt": "Which is passive income?", "choices": ["Wages from a shift", "Rent from a tenant", "Tips for a delivery"], "answer": 1, "explanation": "Rent comes in without working hours for it, passive income (though landlords still have work!)." },
+      "perk": { "id": "negotiator", "name": "Negotiator", "desc": "+5% pay on every job shift" },
+      "reward": { "xp": 60, "cash": 0 }
+    },
+    {
+      "id": "paychecks", "topic": "taxes", "icon": "🧾", "title": "Reading a Paycheck",
+      "slides": [
+        { "entry": "Some of your pay goes to taxes before you get it.", "advanced": "Gross pay − federal withholding − Social Security (6.2%) − Medicare (1.45%) − local tax − deductions = net pay." },
+        { "entry": "Taxes pay for roads, parks, schools and firefighters.", "advanced": "Withholding is an estimate; filing a return settles the difference as a refund or amount owed." },
+        { "entry": "The money you take home is called your net pay.", "advanced": "Pre-tax retirement contributions lower taxable income; Roth contributions don't, but grow tax-free." }
+      ],
+      "check": { "prompt": "Pay BEFORE taxes is called…", "choices": ["Net pay", "Gross pay", "Tip"], "answer": 1, "explanation": "Gross pay is before taxes; net pay is what you take home." },
+      "reward": { "xp": 60, "cash": 10 }
+    },
+    {
+      "id": "stocks", "topic": "investing", "icon": "💹", "title": "What Is a Stock?",
+      "slides": [
+        { "entry": "A stock is a tiny piece of a company.", "advanced": "A share is fractional ownership: a claim on a company's future profits." },
+        { "entry": "If the company does well, the piece can be worth more!", "advanced": "Prices move on expectations; good news can already be 'priced in'." },
+        { "entry": "But prices go up AND down. Think long term.", "advanced": "Volatility is the price of higher expected returns. Diversify and hold for years." }
+      ],
+      "check": { "prompt": "Owning a share of Byte Burger means you…", "choices": ["Work at Byte Burger", "Own a tiny piece of Byte Burger", "Get free burgers"], "answer": 1, "explanation": "Shareholders own a small part of the company." },
+      "reward": { "xp": 60, "cash": 10 }
+    },
+    {
+      "id": "diversify", "topic": "investing", "icon": "🧺", "title": "Don't Put All Your Eggs in One Basket",
+      "slides": [
+        { "entry": "If you own just one company and it has a bad year, you lose a lot.", "advanced": "Company-specific (idiosyncratic) risk can be diversified away; market risk can't." },
+        { "entry": "Owning many companies is safer.", "advanced": "An index fund owns hundreds of companies at very low cost." },
+        { "entry": "An index fund is a basket of many companies at once!", "advanced": "Low fees matter: a 1% fee can consume ~25% of your ending balance over 30 years." }
+      ],
+      "check": { "prompt": "What lowers risk the most?", "choices": ["Buying one hot stock", "Owning a diversified index fund", "Selling whenever prices dip"], "answer": 1, "explanation": "Diversification spreads risk over many companies." },
+      "perk": { "id": "market-eye", "name": "Market Eye", "desc": "+10% rewards in Stock Exchange games" },
+      "reward": { "xp": 70, "cash": 0 }
+    },
+    {
+      "id": "bonds", "topic": "investing", "icon": "📜", "title": "Bonds and Interest Rates",
+      "slides": [
+        { "entry": "A bond is an IOU. You lend money and get paid back with interest.", "advanced": "Bonds pay fixed coupons and return principal at maturity." },
+        { "entry": "Bonds are usually safer than stocks, but grow slower.", "advanced": "When rates rise, existing bond prices fall: ΔP/P ≈ −Duration × Δyield." },
+        { "entry": "Mixing stocks and bonds can make your money less bumpy.", "advanced": "Longer duration = more sensitivity to rate changes." }
+      ],
+      "check": { "prompt": "When interest rates go UP, existing bond prices usually go…", "choices": ["Up", "Down", "Nowhere"], "answer": 1, "explanation": "New bonds pay more, so old lower-paying bonds become less valuable." },
+      "reward": { "xp": 70, "cash": 10 }
+    },
+    {
+      "id": "credit-score", "topic": "credit", "icon": "💳", "title": "Credit Scores",
+      "slides": [
+        { "entry": "Paying back what you borrow on time shows you're trustworthy.", "advanced": "Scores range 300–850 and are built from payment history (35%), utilization (30%), length (15%), new credit (10%), mix (10%)." },
+        { "entry": "Trustworthy borrowers get better deals.", "advanced": "Better scores mean lower APRs, saving thousands on cars and homes." },
+        { "entry": "Always pay on time!", "advanced": "Keep utilization under 30%, avoid many applications, keep old accounts open." }
+      ],
+      "check": { "prompt": "What matters MOST in a credit score?", "choices": ["Payment history", "Credit mix", "How many cards you have"], "answer": 0, "explanation": "Payment history is about 35% of a typical score." },
+      "reward": { "xp": 70, "cash": 10 }
+    },
+    {
+      "id": "card-trap", "topic": "debt", "icon": "🪤", "title": "The Minimum Payment Trap",
+      "slides": [
+        { "entry": "A credit card is borrowed money. If you don't pay it all back, it grows!", "advanced": "Card APRs are often 20–30%. Interest is charged monthly on any balance you carry." },
+        { "entry": "Paying only a little each month can take years!", "advanced": "Paying the minimum on $3,000 at 25% APR takes 10+ years and costs thousands in interest." },
+        { "entry": "Pay it all every month and it costs nothing extra.", "advanced": "Pay the full statement balance and you pay zero interest, use the card as a tool, not a loan." }
+      ],
+      "check": { "prompt": "How do you avoid credit card interest?", "choices": ["Pay the minimum", "Pay the full balance every month", "Use two cards"], "answer": 1, "explanation": "Paying in full each month means no interest is charged." },
+      "reward": { "xp": 70, "cash": 10 }
+    },
+    {
+      "id": "loans", "topic": "debt", "icon": "📝", "title": "How Loans Work",
+      "slides": [
+        { "entry": "A loan is money you borrow and pay back a little each month.", "advanced": "Amortized loans have a fixed payment: PMT = P·i / (1 − (1+i)^−n)." },
+        { "entry": "You pay back more than you borrowed because of interest.", "advanced": "Early payments are mostly interest; later ones mostly principal." },
+        { "entry": "Paying extra helps you finish sooner!", "advanced": "Extra principal payments shorten the loan and cut total interest dramatically." }
+      ],
+      "check": { "prompt": "What does paying extra on a loan do?", "choices": ["Adds more interest", "Pays it off faster and saves interest", "Nothing"], "answer": 1, "explanation": "Extra payments reduce principal, so less interest builds up." },
+      "reward": { "xp": 60, "cash": 10 }
+    },
+    {
+      "id": "scams", "topic": "safety", "icon": "🛡️", "title": "Spotting Scams",
+      "slides": [
+        { "entry": "Scammers try to trick you into giving money or passwords.", "advanced": "Phishing messages impersonate trusted brands to steal credentials or payments." },
+        { "entry": "Watch out for 'Hurry!', 'You won!', or 'Send your password'.", "advanced": "Red flags: urgency, secrecy, strange links/domains, gift-card or crypto payments, too-good-to-be-true offers." },
+        { "entry": "If you're unsure, ask a grown-up you trust.", "advanced": "Verify independently: type the real website yourself or call the official number." }
+      ],
+      "check": { "prompt": "A text says 'Your prize expires in 5 minutes! Send your bank password.' What should you do?", "choices": ["Send it fast", "Ignore it and tell a trusted adult", "Reply asking for more prizes"], "answer": 1, "explanation": "Real companies never ask for passwords. Urgency is a scam trick." },
+      "perk": { "id": "safe-surfer", "name": "Safe Surfer", "desc": "+10% rewards in the Cyber Safety Lab" },
+      "reward": { "xp": 70, "cash": 0 }
+    },
+    {
+      "id": "insurance", "topic": "insurance", "icon": "☂️", "title": "How Insurance Works",
+      "slides": [
+        { "entry": "Insurance helps pay when something big and bad happens.", "advanced": "You pay a premium monthly; when a covered event happens, you pay the deductible and insurance covers the rest." },
+        { "entry": "You pay a little every month to be protected.", "advanced": "Higher deductible = lower premium. Choose one you could pay from an emergency fund." },
+        { "entry": "It's like friends sharing the cost of accidents.", "advanced": "Insurance pools risk: many pay small premiums so the few with big losses are covered." }
+      ],
+      "check": { "prompt": "The amount YOU pay before insurance helps is the…", "choices": ["Premium", "Deductible", "Dividend"], "answer": 1, "explanation": "The deductible is your share before coverage kicks in." },
+      "reward": { "xp": 60, "cash": 10 }
+    },
+    {
+      "id": "retirement", "topic": "retirement", "icon": "🏖️", "title": "Saving for Way, Way Later",
+      "slides": [
+        { "entry": "Grown-ups save money for when they stop working. That's retirement!", "advanced": "Retirement accounts get tax advantages: Traditional (tax break now) vs. Roth (tax-free later)." },
+        { "entry": "The earlier you start, the more time money has to grow.", "advanced": "$100/month from 16 to 65 at 7% ≈ $490,000; starting at 35 gives ≈ $120,000." },
+        { "entry": "Some jobs give you free money if you save!", "advanced": "Employer match is an instant 50–100% return. Contribute at least enough to get it all." }
+      ],
+      "check": { "prompt": "Who ends up with more: someone who starts saving at 16 or at 40 (same monthly amount)?", "choices": ["Starts at 16", "Starts at 40", "Same"], "answer": 0, "explanation": "More years of compounding makes a huge difference." },
+      "reward": { "xp": 70, "cash": 10 }
+    },
+    {
+      "id": "inflation", "topic": "economics", "icon": "🎈", "title": "Inflation",
+      "slides": [
+        { "entry": "Over time, prices slowly go up. That's inflation.", "advanced": "Inflation measures the rise in the general price level; it erodes purchasing power." },
+        { "entry": "A candy that costs $1 today might cost more later.", "advanced": "At 3% inflation, $100 buys only about $74 of today's goods in 10 years." },
+        { "entry": "Saving and investing helps your money keep up.", "advanced": "Real return = (1 + nominal) / (1 + inflation) − 1. Cash earning 0% loses value every year." }
+      ],
+      "check": { "prompt": "If prices go up 3% and your savings earn 1%, your buying power…", "choices": ["Goes up", "Goes down", "Stays the same"], "answer": 1, "explanation": "Your money grows slower than prices, so it buys less." },
+      "reward": { "xp": 60, "cash": 10 }
+    },
+    {
+      "id": "supply-demand", "topic": "economics", "icon": "⚖️", "title": "Supply and Demand",
+      "slides": [
+        { "entry": "When lots of people want something and there isn't much, the price goes up.", "advanced": "Prices settle where quantity supplied equals quantity demanded." },
+        { "entry": "When there's lots of it and few want it, the price goes down.", "advanced": "Elastic demand: a small price change causes a big change in quantity (e.g. one brand of soda)." },
+        { "entry": "That's why umbrellas cost more when it rains!", "advanced": "Inelastic demand: quantity barely changes with price (e.g. medicine, gasoline short-term)." }
+      ],
+      "check": { "prompt": "A new toy is super popular but stores have only a few. The price will probably…", "choices": ["Go up", "Go down", "Stay the same"], "answer": 0, "explanation": "High demand + low supply pushes prices up." },
+      "reward": { "xp": 60, "cash": 10 }
+    },
+    {
+      "id": "business-profit", "topic": "business", "icon": "🏢", "title": "Revenue, Costs and Profit",
+      "slides": [
+        { "entry": "Revenue is all the money a business takes in from selling.", "advanced": "Profit = revenue − costs. Costs are fixed (rent) or variable (ingredients per item)." },
+        { "entry": "Costs are what the business spends, like supplies.", "advanced": "Profit margin = profit ÷ revenue. Break-even units = fixed costs ÷ (price − variable cost)." },
+        { "entry": "Profit is what's left over!", "advanced": "Cash flow matters too: a profitable business can fail if money comes in after bills are due." }
+      ],
+      "check": { "prompt": "A lemonade stand sells $50 and spends $20 on supplies. Profit?", "choices": ["$70", "$30", "$20"], "answer": 1, "explanation": "$50 − $20 = $30 profit." },
+      "perk": { "id": "biz-savvy", "name": "Business Savvy", "desc": "+10% rewards in Hong Kong business games" },
+      "reward": { "xp": 70, "cash": 0 }
+    },
+    {
+      "id": "giving", "topic": "giving", "icon": "💝", "title": "Giving Wisely",
+      "slides": [
+        { "entry": "Giving helps people, animals and our planet.", "advanced": "Charitable giving can be money, time or skills. Plan it as part of your budget." },
+        { "entry": "Pick causes you care about.", "advanced": "Check a charity: clear mission, public reports, reasonable overhead, and a real address." },
+        { "entry": "Some 'charities' are fake. Ask a grown-up to check!", "advanced": "Pressure, prizes for donating, or 'cash only' are red flags for charity scams." }
+      ],
+      "check": { "prompt": "Which is a warning sign of a fake charity?", "choices": ["Publishes yearly reports", "'Donate in 3 minutes to WIN BIG!'", "Has a website and address"], "answer": 1, "explanation": "Pressure and prizes are classic scam signals." },
+      "reward": { "xp": 60, "cash": 10 }
+    },
+    {
+      "id": "renting-buying", "topic": "housing", "icon": "🏡", "title": "Renting vs. Buying a Home",
+      "slides": [
+        { "entry": "You can rent a home (pay each month) or buy one (own it).", "advanced": "Renting is flexible; buying builds equity but has big upfront costs and maintenance." },
+        { "entry": "Buying usually needs a big savings called a down payment.", "advanced": "A mortgage is a loan for a home, often 15–30 years. Total interest can exceed the price!" },
+        { "entry": "Owners fix things themselves; renters call the landlord.", "advanced": "Buying usually wins only if you stay long enough to recover closing and selling costs (~5+ years)." }
+      ],
+      "check": { "prompt": "The money you pay up front when buying a home is the…", "choices": ["Down payment", "Deductible", "Dividend"], "answer": 0, "explanation": "The down payment is paid up front; the rest is borrowed with a mortgage." },
+      "reward": { "xp": 70, "cash": 10 }
+    }
+  ]
+}

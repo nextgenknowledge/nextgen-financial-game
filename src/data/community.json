@@ -1,0 +1,18 @@
+{
+  "$comment": "Community projects funded by donations at Town Hall and the Giving Center. When funded, the landmark appears in Fin-City Park and everyone gets the bonus.",
+  "projects": [
+    { "id": "garden", "name": "Flower Garden", "landmark": "garden", "cost": 300, "icon": "🌷", "blurb": "Beds of flowers by the welcome center.", "bonus": "+2 happiness every month for everyone", "happiness": 2 },
+    { "id": "playground", "name": "Playground", "landmark": "playground", "cost": 800, "icon": "🛝", "blurb": "Slides and swings for the kids of Fin City.", "bonus": "+3 happiness every month", "happiness": 3 },
+    { "id": "bandstand", "name": "Bandstand", "landmark": "bandstand", "cost": 1500, "icon": "🎺", "blurb": "Live music on summer nights.", "bonus": "+5% XP from park activities", "xpBoost": 0.05 },
+    { "id": "ferris-wheel", "name": "Ferris Wheel", "landmark": "ferris-wheel", "cost": 4000, "icon": "🎡", "blurb": "See the whole park from the top!", "bonus": "+4 happiness every month and a new title", "happiness": 4, "title": "Park Hero" },
+    { "id": "library-wing", "name": "Library Wing", "landmark": null, "cost": 2500, "icon": "📚", "blurb": "More books for everyone.", "bonus": "+10% rewards from Library lessons", "lessonBoost": 0.1 },
+    { "id": "food-bank", "name": "Food Bank", "landmark": null, "cost": 1000, "icon": "🥫", "blurb": "Healthy food for families who need it.", "bonus": "Unlocks the 'Kind Heart' badge", "badge": "kind-heart" }
+  ],
+  "causes": [
+    { "id": "animal-shelter", "name": "Paws & Claws Animal Shelter", "icon": "🐾", "overhead": 0.12, "legit": true, "blurb": "Rescues and rehomes pets." },
+    { "id": "clean-ocean", "name": "Clean Ocean Crew", "icon": "🌊", "overhead": 0.18, "legit": true, "blurb": "Removes plastic from beaches." },
+    { "id": "school-supplies", "name": "Backpacks for Kids", "icon": "🎒", "overhead": 0.08, "legit": true, "blurb": "School supplies for students." },
+    { "id": "tree-fund", "name": "Fin City Tree Fund", "icon": "🌳", "overhead": 0.15, "legit": true, "blurb": "Plants trees in every city." },
+    { "id": "mega-prize", "name": "MEGA PRIZE Charity Raffle!!!", "icon": "💸", "overhead": 0.92, "legit": false, "blurb": "Donate now and WIN BIG! Only 3 minutes left!!! (No address, no reports.)" }
+  ]
+}

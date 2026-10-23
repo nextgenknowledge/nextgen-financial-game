@@ -1,0 +1,31 @@
+{
+  "$comment": "Random life events (about 1 in 3 months). cost [min,max] for expenses or gain [min,max] for windfalls, scaled by inflation. category matches an insurance category. requires: vehicle | pet | property | car | business | job. difficulty: entry | advanced (omit = both).",
+  "events": [
+    { "id": "bike-flat", "title": "Flat tire!", "text": "Your bike got a flat tire.", "category": "auto", "cost": [15, 30], "weight": 3, "requires": "vehicle", "tip": "Small surprises are why we keep an emergency fund." },
+    { "id": "car-repair", "title": "Car trouble", "text": "Your car needs new brakes.", "category": "auto", "cost": [350, 900], "weight": 3, "requires": "car", "tip": "Cars cost more than their price: fuel, insurance and repairs add up." },
+    { "id": "fender-bender", "title": "Fender bender", "text": "Someone backed into your car in a parking lot.", "category": "auto", "cost": [800, 2500], "weight": 2, "requires": "car", "tip": "This is exactly what vehicle insurance is for." },
+    { "id": "boat-engine", "title": "Boat engine trouble", "text": "Your boat's engine needs a rebuild.", "category": "auto", "cost": [1500, 4000], "weight": 2, "requires": "boat" },
+    { "id": "doctor", "title": "Doctor visit", "text": "You caught the flu and visited the doctor.", "category": "health", "cost": [80, 200], "weight": 4, "tip": "Health insurance turns big scary bills into smaller ones." },
+    { "id": "broken-arm", "title": "Broken arm!", "text": "You slipped at the skate park and broke your arm.", "category": "health", "cost": [1200, 4000], "weight": 1, "tip": "With good health insurance you'd only pay the deductible." },
+    { "id": "dentist", "title": "Dentist", "text": "A cavity needs a filling.", "category": "health", "cost": [120, 300], "weight": 3 },
+    { "id": "vet", "title": "Vet visit", "text": "Your pet ate something it shouldn't have!", "category": "pet", "cost": [150, 600], "weight": 3, "requires": "pet", "tip": "Pets need an emergency fund too." },
+    { "id": "pipe", "title": "Leaky pipe", "text": "A pipe burst in your home.", "category": "home", "cost": [500, 3000], "weight": 2, "requires": "property", "tip": "Owners pay for repairs; renters usually don't." },
+    { "id": "roof", "title": "Roof repair", "text": "A storm damaged your roof.", "category": "home", "cost": [2000, 8000], "weight": 1, "requires": "property" },
+    { "id": "phone-crack", "title": "Cracked phone", "text": "You dropped your phone and the screen cracked.", "category": "home", "cost": [90, 220], "weight": 3 },
+    { "id": "laptop", "title": "Laptop died", "text": "Your laptop stopped working right before a big project.", "category": "home", "cost": [300, 900], "weight": 2 },
+    { "id": "lost-wallet", "title": "Lost wallet", "text": "You lost some cash on the bus.", "category": "none", "cost": [5, 25], "weight": 2, "cashOnly": true, "tip": "Money in the bank is safer than cash in your pocket." },
+    { "id": "friend-bday", "title": "Birthday gift", "text": "Your best friend's birthday is coming, you bought a gift.", "category": "none", "cost": [20, 50], "weight": 3, "tip": "Gifts are planned spending. Budget for them!" },
+    { "id": "school-trip", "title": "School trip", "text": "Your class is going on a trip to the science museum.", "category": "none", "cost": [25, 60], "weight": 2, "difficulty": "entry" },
+    { "id": "rent-hike", "title": "Expenses went up", "text": "Prices for everyday things went up this month (inflation!).", "category": "none", "cost": [30, 120], "weight": 2, "tip": "Inflation slowly raises prices. Investing helps you keep up." },
+    { "id": "parking-ticket", "title": "Parking ticket", "text": "Oops, you parked in the wrong spot.", "category": "none", "cost": [40, 80], "weight": 2, "requires": "car" },
+    { "id": "biz-equipment", "title": "Business equipment broke", "text": "An important machine at your business broke.", "category": "none", "cost": [400, 2500], "weight": 2, "requires": "business", "tip": "Businesses need cash reserves for repairs too." },
+    { "id": "tax-surprise", "title": "Forgot a form", "text": "You forgot to report some side income and owe a little extra tax.", "category": "none", "cost": [50, 250], "weight": 1, "difficulty": "advanced" },
+    { "id": "gift-grandma", "title": "Gift from Grandma", "text": "Grandma sent you a birthday card with money inside!", "gain": [20, 60], "weight": 3 },
+    { "id": "bonus", "title": "Work bonus!", "text": "Your boss gave you a bonus for great work.", "gain": [100, 400], "weight": 2, "requires": "job" },
+    { "id": "found-coins", "title": "Found coins", "text": "You found coins in the couch cushions!", "gain": [2, 9], "weight": 3 },
+    { "id": "contest", "title": "You won a contest!", "text": "Your science project won second place.", "gain": [50, 150], "weight": 1 },
+    { "id": "tax-refund-surprise", "title": "Rebate", "text": "A store sent you a rebate check for something you bought.", "gain": [15, 60], "weight": 2 },
+    { "id": "sold-old-stuff", "title": "Garage sale", "text": "You sold old toys and books at a garage sale.", "gain": [30, 120], "weight": 2 },
+    { "id": "biz-boom", "title": "Viral review!", "text": "A famous food blogger loved your business. Extra customers this month!", "gain": [300, 1500], "weight": 2, "requires": "business" }
+  ]
+}

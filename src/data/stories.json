@@ -1,0 +1,88 @@
+{
+  "$comment": "Branching stories (kind 'story'). Each node: text, speaker, mood, choices [{text, next, points, feedback}]. A node with no choices ends the story. Score = points earned / maxPoints.",
+  "stories": {
+    "borrow-trust": {
+      "title": "Max and the Borrowed Bike",
+      "maxPoints": 30,
+      "start": "a",
+      "nodes": {
+        "a": { "speaker": "Max", "mood": "talking", "text": "Hi! My bike is broken and I need to get to soccer. Can I borrow yours today? I'll bring it back by dinner.", "choices": [
+          { "text": "Sure! Please bring it back by dinner.", "next": "b", "points": 10, "feedback": "Lending to a friend with a clear plan is kind and fair." },
+          { "text": "Only if you pay me $50.", "next": "b2", "points": 0, "feedback": "That's way too much for one afternoon! Fair deals matter." }
+        ] },
+        "b": { "speaker": "Narwhal", "mood": "talking", "text": "Max brought your bike back right on time, clean and safe! Next week Max asks to borrow it again.", "choices": [
+          { "text": "Yes! Max kept the promise last time.", "next": "c", "points": 10, "feedback": "Exactly! When people pay back on time, we trust them more. Banks work the same way with credit." },
+          { "text": "No, never again.", "next": "c", "points": 5, "feedback": "That's okay, but Max proved they're trustworthy. Trust grows when promises are kept." }
+        ] },
+        "b2": { "speaker": "Max", "mood": "disappointed", "text": "Fifty dollars?! That's more than a new tire costs. I'll ask someone else…", "choices": [
+          { "text": "Okay, okay, you can borrow it for free if you bring it back by dinner.", "next": "b", "points": 5, "feedback": "Being fair helps everyone." }
+        ] },
+        "c": { "speaker": "Narwhal", "mood": "confident", "text": "Here's the big idea: when grown-ups borrow from a bank and pay back ON TIME, the bank trusts them more and lends at a lower cost. That trust is called CREDIT. Which friend would a bank trust more?", "choices": [
+          { "text": "A friend who always pays back on time", "next": "end", "points": 10, "feedback": "Yes! Paying back on time builds good credit." },
+          { "text": "A friend who forgets to pay back", "next": "end", "points": 0, "feedback": "Forgetting to pay back hurts trust (and credit). On-time is the key!" }
+        ] },
+        "end": { "speaker": "Narwhal", "mood": "hyped", "text": "Great thinking! Borrowing is a promise. Keep your promises and people (and banks) will trust you." }
+      }
+    },
+    "lemonade-choice": {
+      "title": "The Lemonade Decision",
+      "maxPoints": 30,
+      "start": "a",
+      "nodes": {
+        "a": { "speaker": "Narwhal", "mood": "talking", "text": "You made $30 at your lemonade stand! What do you do first?", "choices": [
+          { "text": "Put some in my Save jar", "next": "b", "points": 10, "feedback": "Paying yourself first is a great habit!" },
+          { "text": "Spend it all on candy", "next": "b", "points": 0, "feedback": "Candy is fun, but then nothing is left for later." }
+        ] },
+        "b": { "speaker": "Narwhal", "mood": "talking", "text": "Your lemons cost $10. How much profit did you really make?", "choices": [
+          { "text": "$20", "next": "c", "points": 10, "feedback": "Right! $30 − $10 = $20 profit." },
+          { "text": "$30", "next": "c", "points": 0, "feedback": "Remember to subtract what you spent on lemons: $30 − $10 = $20." }
+        ] },
+        "c": { "speaker": "Narwhal", "mood": "talking", "text": "A friend says: give me your $20 and I'll give you $100 next week! What do you do?", "choices": [
+          { "text": "No thanks, that sounds too good to be true", "next": "end", "points": 10, "feedback": "Smart! Promises of huge, fast money are usually tricks." },
+          { "text": "Yes! Free money!", "next": "end", "points": 0, "feedback": "Careful! If it sounds too good to be true, it probably is." }
+        ] },
+        "end": { "speaker": "Narwhal", "mood": "hyped", "text": "Save some, know your profit, and watch out for tricks. You're a smart business owner!" }
+      }
+    },
+    "first-paycheck": {
+      "title": "Your First Paycheck",
+      "maxPoints": 30,
+      "start": "a",
+      "nodes": {
+        "a": { "speaker": "Narwhal", "mood": "talking", "text": "You got your first paycheck from the bakery: $80! Your favorite shoes are $75. What's your plan?", "choices": [
+          { "text": "Save part of it and buy the shoes in a few weeks", "next": "b", "points": 10, "feedback": "Planning big wants is smart." },
+          { "text": "Buy the shoes right now", "next": "b", "points": 4, "feedback": "Okay, but now there's only $5 left for anything else." }
+        ] },
+        "b": { "speaker": "Narwhal", "mood": "talking", "text": "Your little brother's birthday is next week. You'd like to get him a gift.", "choices": [
+          { "text": "Plan $10 for a gift from my paycheck", "next": "c", "points": 10, "feedback": "Sharing is part of a good budget!" },
+          { "text": "Borrow money for a gift", "next": "c", "points": 2, "feedback": "Borrowing for gifts can get tricky. Planning ahead works better." }
+        ] },
+        "c": { "speaker": "Narwhal", "mood": "talking", "text": "Your boss offers more hours next month. That means less free time but more money. What do you think?", "choices": [
+          { "text": "Take a few extra hours and save for my goal", "next": "end", "points": 10, "feedback": "Balancing time and money is a real trade-off. Nice!" },
+          { "text": "Work every free minute", "next": "end", "points": 6, "feedback": "Money matters, but so do rest and friends. Balance is key!" }
+        ] },
+        "end": { "speaker": "Narwhal", "mood": "hyped", "text": "You planned for wants, shared with family, and thought about time vs. money. That's real money wisdom!" }
+      }
+    },
+    "taxes-story": {
+      "title": "Why Do We Pay Taxes?",
+      "maxPoints": 30,
+      "start": "a",
+      "nodes": {
+        "a": { "speaker": "Mayor Penny", "mood": "talking", "text": "The town wants a new playground. Where should the money come from?", "choices": [
+          { "text": "Everyone chips in a little through taxes", "next": "b", "points": 10, "feedback": "Yes! Taxes let a whole town build things together." },
+          { "text": "One kid pays for all of it", "next": "b", "points": 0, "feedback": "That would be unfair and way too expensive for one person." }
+        ] },
+        "b": { "speaker": "Mayor Penny", "mood": "talking", "text": "Which of these is paid for with taxes?", "choices": [
+          { "text": "Firefighters", "next": "c", "points": 10, "feedback": "Right! Firefighters keep everyone safe." },
+          { "text": "My new video game", "next": "c", "points": 0, "feedback": "Families buy their own games. Taxes pay for things everyone shares." }
+        ] },
+        "c": { "speaker": "Mayor Penny", "mood": "talking", "text": "Your paycheck says 'Earned $100, Take home $90.' Where did $10 go?", "choices": [
+          { "text": "Taxes that help pay for roads, schools and parks", "next": "end", "points": 10, "feedback": "Exactly! That's why take-home pay is smaller." },
+          { "text": "It disappeared", "next": "end", "points": 0, "feedback": "It went to taxes, which pay for things we all use." }
+        ] },
+        "end": { "speaker": "Narwhal", "mood": "hyped", "text": "Taxes are how a community buys things together. Now you know where the money goes!" }
+      }
+    }
+  }
+}

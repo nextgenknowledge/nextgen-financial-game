@@ -1,0 +1,495 @@
+{
+  "id": "san-francisco",
+  "name": "San Francisco",
+  "tagline": "Earning, careers & technology",
+  "theme": "Find jobs, get promoted, negotiate pay, stay safe online and learn about taxes.",
+  "music": "san-francisco",
+  "icon": "🌉",
+  "half": 110,
+  "ground": "#c9c4b8",
+  "palette": {
+    "walls": [
+      "#f2e6d0",
+      "#e8d9c4",
+      "#d9e4ec",
+      "#f4e9d8",
+      "#cfd8de",
+      "#efd9c9",
+      "#e2e6e0"
+    ],
+    "roofs": [
+      "#6a5a5a",
+      "#a8432f",
+      "#5a6a8a"
+    ],
+    "trims": [
+      "#ffffff",
+      "#f4f1ea"
+    ],
+    "accents": [
+      "#e1653b",
+      "#2ebaba",
+      "#ffcf3f",
+      "#8a5cf6"
+    ]
+  },
+  "roads": {
+    "xs": [
+      -66,
+      -22,
+      22,
+      66
+    ],
+    "zs": [
+      -66,
+      -22,
+      22,
+      66
+    ],
+    "width": 10,
+    "color": "#585e6c"
+  },
+  "water": [
+    {
+      "x": 0,
+      "z": -122,
+      "w": 280,
+      "d": 36
+    }
+  ],
+  "plazas": [
+    {
+      "pos": [
+        0,
+        0
+      ],
+      "r": 12,
+      "color": "#e3d6b8"
+    }
+  ],
+  "buildings": [
+    {
+      "id": "sf-job-center",
+      "name": "Job Center",
+      "icon": "💼",
+      "pos": [
+        0,
+        -44
+      ],
+      "size": [
+        24,
+        18,
+        14
+      ],
+      "door": "south",
+      "style": "glass",
+      "colors": {
+        "wall": "#d9e6f0",
+        "roof": "#2ebaba",
+        "trim": "#ffffff",
+        "accent": "#e1653b"
+      },
+      "blurb": "Pick a job, play its skill game, get paid and get promoted.",
+      "stations": [
+        {
+          "activity": "job-center",
+          "label": "Job Board",
+          "icon": "💼",
+          "npc": "clerk"
+        },
+        {
+          "service": "retirement",
+          "label": "Benefits Desk (Retirement)",
+          "icon": "🏖️",
+          "npc": "banker"
+        },
+        {
+          "activity": "sf-quiz",
+          "label": "Career Quiz",
+          "icon": "🎤",
+          "npc": "host"
+        }
+      ],
+      "interior": {
+        "floor": "#dfe6ee",
+        "wall": "#f4f8fb",
+        "theme": "office"
+      }
+    },
+    {
+      "id": "tech-campus",
+      "name": "Tech Campus",
+      "icon": "🏢",
+      "pos": [
+        44,
+        -44
+      ],
+      "size": [
+        28,
+        22,
+        11
+      ],
+      "door": "south",
+      "style": "campus",
+      "colors": {
+        "wall": "#f4f6fa",
+        "roof": "#3a3f4a",
+        "trim": "#ffffff",
+        "accent": "#8a5cf6"
+      },
+      "blurb": "Negotiate a salary and learn how stock options really work.",
+      "entryBlurb": "Learn to ask for fair pay!",
+      "stations": [
+        {
+          "activity": "salary-negotiation",
+          "label": "Salary Negotiation",
+          "icon": "🤝",
+          "npc": "agent"
+        },
+        {
+          "activity": "stock-options",
+          "label": "Stock Options Desk",
+          "icon": "📜",
+          "npc": "coder"
+        }
+      ],
+      "interior": {
+        "floor": "#c9ced8",
+        "wall": "#f4f6fa",
+        "theme": "office"
+      }
+    },
+    {
+      "id": "coding-cafe",
+      "name": "Coding Café",
+      "icon": "☕",
+      "pos": [
+        -44,
+        0
+      ],
+      "size": [
+        18,
+        14,
+        8
+      ],
+      "door": "east",
+      "style": "cafe",
+      "colors": {
+        "wall": "#3a3f4a",
+        "roof": "#1e2840",
+        "trim": "#ffcf3f",
+        "accent": "#2ebaba"
+      },
+      "blurb": "Solve logic puzzles for freelance pay.",
+      "stations": [
+        {
+          "activity": "coding-cafe",
+          "label": "Freelance Puzzles",
+          "icon": "🤖",
+          "npc": "coder"
+        },
+        {
+          "service": "shop:collectibles",
+          "label": "Gadget & Collectibles Shelf",
+          "icon": "🖼️",
+          "npc": "clerk"
+        }
+      ],
+      "interior": {
+        "floor": "#8a6a4a",
+        "wall": "#2a2f3d",
+        "theme": "shop"
+      }
+    },
+    {
+      "id": "sorting-center",
+      "name": "Needs vs. Wants Sorting Center",
+      "icon": "⚖️",
+      "pos": [
+        44,
+        0
+      ],
+      "size": [
+        24,
+        18,
+        9
+      ],
+      "door": "west",
+      "style": "warehouse",
+      "colors": {
+        "wall": "#e8d6b0",
+        "roof": "#7a7f8f",
+        "trim": "#1e2840",
+        "accent": "#ffcf3f"
+      },
+      "blurb": "Sort items on the conveyor: need, want, or does it depend?",
+      "stations": [
+        {
+          "activity": "needs-wants",
+          "label": "Sorting Conveyor",
+          "icon": "⚖️",
+          "npc": "grocer"
+        },
+        {
+          "activity": "first-paycheck",
+          "label": "My First Paycheck",
+          "icon": "💵",
+          "npc": "clerk"
+        }
+      ],
+      "interior": {
+        "floor": "#c9b48a",
+        "wall": "#e8e1d0",
+        "theme": "shop"
+      }
+    },
+    {
+      "id": "cyber-lab",
+      "name": "Cyber Safety Lab",
+      "icon": "🛡️",
+      "pos": [
+        -44,
+        -44
+      ],
+      "size": [
+        20,
+        20,
+        9
+      ],
+      "door": "south",
+      "style": "dome",
+      "colors": {
+        "wall": "#d9dde6",
+        "roof": "#2f6bdb",
+        "trim": "#1e2840",
+        "accent": "#3cc45a"
+      },
+      "blurb": "Spot phishing, scams and identity-theft tricks before they get you.",
+      "stations": [
+        {
+          "activity": "cyber-lab",
+          "label": "Scam Detector",
+          "icon": "🕵️",
+          "npc": "guard"
+        },
+        {
+          "activity": "password-lab",
+          "label": "Password Strength Lab",
+          "icon": "🔐",
+          "npc": "coder"
+        }
+      ],
+      "interior": {
+        "floor": "#2a2f3d",
+        "wall": "#3a4a6a",
+        "theme": "arcade"
+      }
+    },
+    {
+      "id": "tax-office",
+      "name": "Tax Office",
+      "icon": "🧾",
+      "pos": [
+        0,
+        44
+      ],
+      "size": [
+        22,
+        16,
+        12
+      ],
+      "door": "north",
+      "style": "civic",
+      "colors": {
+        "wall": "#f4f1ea",
+        "roof": "#3a6b4a",
+        "trim": "#1e2840",
+        "accent": "#ffcf3f"
+      },
+      "blurb": "File your Fin City tax return (FC-1040) and learn brackets, deductions and credits.",
+      "entryBlurb": "Learn why we pay taxes and where the money goes.",
+      "stations": [
+        {
+          "activity": "tax-return",
+          "label": "File a Return",
+          "icon": "🧾",
+          "npc": "banker"
+        },
+        {
+          "activity": "paycheck-decoder",
+          "label": "Paycheck Decoder",
+          "icon": "🔍",
+          "npc": "clerk"
+        }
+      ],
+      "entryStations": [
+        {
+          "activity": "tax-return",
+          "label": "Why Taxes?",
+          "icon": "🏛️",
+          "npc": "mayor"
+        },
+        {
+          "activity": "civics-sort",
+          "label": "Taxes Pay For…",
+          "icon": "🧾",
+          "npc": "clerk"
+        }
+      ],
+      "interior": {
+        "floor": "#e6dfcf",
+        "wall": "#f4f1ea",
+        "theme": "civic"
+      }
+    }
+  ],
+  "landmarks": [
+    {
+      "type": "bridge",
+      "pos": [
+        -60,
+        -122
+      ],
+      "rot": 0,
+      "scale": 0.9,
+      "label": "golden"
+    },
+    {
+      "type": "pyramid-tower",
+      "pos": [
+        -88,
+        -88
+      ]
+    },
+    {
+      "type": "cable-car-track",
+      "pos": [
+        22,
+        0
+      ],
+      "rot": 0,
+      "scale": 1.6
+    },
+    {
+      "type": "cable-car",
+      "pos": [
+        22,
+        0
+      ],
+      "rot": 0,
+      "scale": 1.6
+    },
+    {
+      "type": "peak-hill",
+      "pos": [
+        92,
+        96
+      ],
+      "scale": 0.6
+    },
+    {
+      "type": "statue",
+      "pos": [
+        0,
+        0
+      ]
+    },
+    {
+      "type": "billboard",
+      "pos": [
+        88,
+        -40
+      ],
+      "rot": -90
+    },
+    {
+      "type": "food-cart",
+      "pos": [
+        10,
+        12
+      ],
+      "rot": 30
+    },
+    {
+      "type": "bench",
+      "pos": [
+        -8,
+        10
+      ],
+      "rot": 180
+    },
+    {
+      "type": "bench",
+      "pos": [
+        8,
+        -10
+      ],
+      "rot": 0
+    }
+  ],
+  "portals": [
+    {
+      "to": "park",
+      "pos": [
+        0,
+        92
+      ],
+      "rot": 180
+    }
+  ],
+  "spawn": [
+    0,
+    80,
+    180
+  ],
+  "garage": [
+    12,
+    78,
+    180
+  ],
+  "dock": [
+    -30,
+    -112,
+    90
+  ],
+  "filler": {
+    "seed": 11,
+    "density": 0.8,
+    "minH": 8,
+    "maxH": 34,
+    "style": "sf"
+  },
+  "trees": {
+    "count": 60,
+    "seed": 12,
+    "kinds": [
+      "round",
+      "palm",
+      "pine"
+    ]
+  },
+  "npcs": 34,
+  "traffic": 16,
+  "boats": 4,
+  "host": {
+    "name": "Rosa the Recruiter",
+    "look": "agent",
+    "pos": [
+      8,
+      74
+    ],
+    "lines": [
+      "Welcome to San Francisco! Most money starts with earning it. The Job Center is just north of here.",
+      "Ask for fair pay! Negotiating your first salary can add up to thousands over a career.",
+      "Never click links in surprise messages asking for passwords. The Cyber Safety Lab will train you."
+    ],
+    "entryLines": [
+      "Welcome to San Francisco! Let's find you a job!",
+      "Doing a great job can get you a promotion, and more pay!"
+    ]
+  },
+  "weather": {
+    "rain": 0.15,
+    "fog": 0.3
+  }
+}

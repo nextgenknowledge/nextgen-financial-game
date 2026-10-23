@@ -1,0 +1,17 @@
+{
+  "$comment": "Jobs. board: park (Odd Jobs) or sf (Job Center). skill = mini-game (change | order | shelf | sums | typing | bugs | timing). pay = gross pay per shift at title level 1; each promotion raises pay 15%. titles are earned every `promoteEvery` good shifts (2+ stars). match = employer retirement match (50% up to 6%).",
+  "jobs": [
+    { "id": "lemonade-helper", "board": "park", "name": "Lemonade Stand Helper", "icon": "🍋", "skill": "change", "pay": 12, "promoteEvery": 3, "titles": ["Helper", "Cashier", "Stand Manager"], "blurb": "Give customers the right change." },
+    { "id": "dog-walker", "board": "park", "name": "Dog Walker", "icon": "🐕", "skill": "timing", "pay": 14, "promoteEvery": 3, "titles": ["Walker", "Pack Leader", "Dog Whisperer"], "blurb": "Keep the leash steady, tap when the paw is in the green!" },
+    { "id": "garden-helper", "board": "park", "name": "Community Garden Helper", "icon": "🌻", "skill": "shelf", "pay": 13, "promoteEvery": 3, "titles": ["Helper", "Gardener", "Head Gardener"], "blurb": "Sort the harvest into the right baskets." },
+    { "id": "barista", "board": "sf", "name": "Café Barista", "icon": "☕", "skill": "order", "pay": 70, "promoteEvery": 4, "titles": ["Barista", "Shift Lead", "Café Manager"], "blurb": "Remember each order and make it right.", "match": true },
+    { "id": "cashier", "board": "sf", "name": "Grocery Cashier", "icon": "🛒", "skill": "change", "pay": 65, "promoteEvery": 4, "titles": ["Cashier", "Head Cashier", "Store Manager"], "blurb": "Fast, accurate change wins happy customers.", "match": true },
+    { "id": "stock-clerk", "board": "sf", "name": "Stock Clerk", "icon": "📦", "skill": "shelf", "pay": 68, "promoteEvery": 4, "titles": ["Clerk", "Inventory Lead", "Warehouse Supervisor"], "blurb": "Put every item on the right shelf.", "match": true },
+    { "id": "bookkeeper", "board": "sf", "name": "Bookkeeper", "icon": "📒", "skill": "sums", "pay": 110, "promoteEvery": 4, "titles": ["Junior Bookkeeper", "Accountant", "Controller"], "blurb": "Add up receipts quickly and correctly.", "match": true, "level": 3 },
+    { "id": "data-entry", "board": "sf", "name": "Data Entry Specialist", "icon": "⌨️", "skill": "typing", "pay": 85, "promoteEvery": 4, "titles": ["Specialist", "Senior Specialist", "Data Manager"], "blurb": "Type account numbers exactly right.", "match": true, "level": 2 },
+    { "id": "app-tester", "board": "sf", "name": "App Tester", "icon": "🐞", "skill": "bugs", "pay": 120, "promoteEvery": 4, "titles": ["QA Tester", "QA Engineer", "QA Lead"], "blurb": "Spot the bug in each screen.", "match": true, "level": 4 },
+    { "id": "delivery-rider", "board": "sf", "name": "Bike Courier", "icon": "🚴", "skill": "timing", "pay": 75, "promoteEvery": 4, "titles": ["Courier", "Senior Courier", "Dispatch Lead"], "blurb": "Time your turns through traffic.", "match": true },
+    { "id": "junior-dev", "board": "sf", "name": "Junior Developer", "icon": "💻", "skill": "bugs", "pay": 180, "promoteEvery": 5, "titles": ["Junior Developer", "Developer", "Senior Developer", "Tech Lead"], "blurb": "Find and fix bugs before release.", "match": true, "level": 8 },
+    { "id": "financial-analyst", "board": "sf", "name": "Financial Analyst", "icon": "📊", "skill": "sums", "pay": 210, "promoteEvery": 5, "titles": ["Analyst", "Senior Analyst", "Finance Manager", "CFO"], "blurb": "Fast, accurate math on financial reports.", "match": true, "level": 10 }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "$comment": "NPC looks used by building stations and city hosts. Fields match AvatarConfig; hat/top/accessory are outfit item ids from shop/outfits.json.",
+  "looks": {
+    "guide": { "skin": "#c98e64", "hair": "#1e1a18", "hairStyle": 4, "shirt": "#2ebaba", "pants": "#1e2840", "shoes": "#f4f6fa", "hat": "cap-teal", "top": null, "accessory": null },
+    "teacher": { "skin": "#f2c39c", "hair": "#6b4428", "hairStyle": 1, "shirt": "#8a5cf6", "pants": "#2f3e66", "shoes": "#6b4428", "hat": null, "top": null, "accessory": "glasses" },
+    "host": { "skin": "#a96e48", "hair": "#1e1a18", "hairStyle": 5, "shirt": "#ffcf3f", "pants": "#1e2840", "shoes": "#1e2840", "hat": null, "top": "vest", "accessory": null },
+    "banker": { "skin": "#e8b48f", "hair": "#3b2a20", "hairStyle": 0, "shirt": "#1e2840", "pants": "#1e2840", "shoes": "#1e2840", "hat": null, "top": "suit", "accessory": "glasses" },
+    "clerk": { "skin": "#ffdcc0", "hair": "#b07a3c", "hairStyle": 4, "shirt": "#2f6bdb", "pants": "#2f3e66", "shoes": "#1e2840", "hat": null, "top": null, "accessory": null },
+    "stylist": { "skin": "#7d4f33", "hair": "#f06aa8", "hairStyle": 2, "shirt": "#f06aa8", "pants": "#1e2840", "shoes": "#ffcf3f", "hat": null, "top": null, "accessory": "shades" },
+    "librarian": { "skin": "#f2c39c", "hair": "#e8e8ee", "hairStyle": 4, "shirt": "#3a6b4a", "pants": "#5a4a3a", "shoes": "#6b4428", "hat": null, "top": null, "accessory": "glasses" },
+    "mayor": { "skin": "#c98e64", "hair": "#e8e8ee", "hairStyle": 0, "shirt": "#1e2840", "pants": "#1e2840", "shoes": "#1e2840", "hat": "tophat", "top": "suit", "accessory": null },
+    "dealer": { "skin": "#e8b48f", "hair": "#1e1a18", "hairStyle": 3, "shirt": "#e1553f", "pants": "#1e2840", "shoes": "#f4f6fa", "hat": null, "top": null, "accessory": null },
+    "agent": { "skin": "#a96e48", "hair": "#3b2a20", "hairStyle": 1, "shirt": "#3cc45a", "pants": "#c9b48a", "shoes": "#6b4428", "hat": null, "top": "vest", "accessory": null },
+    "vet": { "skin": "#ffdcc0", "hair": "#d9653b", "hairStyle": 4, "shirt": "#f4f6fa", "pants": "#2ebaba", "shoes": "#f4f6fa", "hat": null, "top": null, "accessory": null },
+    "chef": { "skin": "#e8b48f", "hair": "#1e1a18", "hairStyle": 3, "shirt": "#f4f6fa", "pants": "#1e2840", "shoes": "#1e2840", "hat": null, "top": "apron", "accessory": null },
+    "trader": { "skin": "#f2c39c", "hair": "#3b2a20", "hairStyle": 0, "shirt": "#2f6bdb", "pants": "#1e2840", "shoes": "#1e2840", "hat": null, "top": "vest", "accessory": null },
+    "coder": { "skin": "#c98e64", "hair": "#2ebaba", "hairStyle": 5, "shirt": "#24397a", "pants": "#2f3e66", "shoes": "#f4f6fa", "hat": "headphones", "top": "hoodie-navy", "accessory": null },
+    "reporter": { "skin": "#7d4f33", "hair": "#1e1a18", "hairStyle": 1, "shirt": "#e1553f", "pants": "#1e2840", "shoes": "#1e2840", "hat": null, "top": null, "accessory": "glasses" },
+    "grocer": { "skin": "#f2c39c", "hair": "#6b4428", "hairStyle": 0, "shirt": "#3cc45a", "pants": "#5a4a3a", "shoes": "#6b4428", "hat": "cap-red", "top": "apron", "accessory": null },
+    "sailor": { "skin": "#e8b48f", "hair": "#e2b85e", "hairStyle": 0, "shirt": "#2f6bdb", "pants": "#f4f6fa", "shoes": "#1e2840", "hat": "beanie-gold", "top": "stripes", "accessory": null },
+    "gardener": { "skin": "#a96e48", "hair": "#1e1a18", "hairStyle": 2, "shirt": "#3cc45a", "pants": "#c9b48a", "shoes": "#6b4428", "hat": null, "top": "vest", "accessory": null },
+    "guard": { "skin": "#5a3826", "hair": "#1e1a18", "hairStyle": 3, "shirt": "#24397a", "pants": "#1e2840", "shoes": "#1e2840", "hat": "cap-teal", "top": null, "accessory": "shades" }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "$comment": "Optional monthly subscriptions (FinPhone → Bills). Wants that add happiness every month, and quietly add up.",
+  "items": [
+    { "id": "music", "name": "Music Streaming", "icon": "🎵", "monthly": 10, "happiness": 2 },
+    { "id": "video", "name": "Video Streaming", "icon": "🎬", "monthly": 15, "happiness": 2 },
+    { "id": "games", "name": "Game Pass", "icon": "🎮", "monthly": 12, "happiness": 2 },
+    { "id": "phone", "name": "Phone Plan", "icon": "📱", "monthly": 35, "happiness": 1, "need": true },
+    { "id": "gym", "name": "Gym Membership", "icon": "🏋️", "monthly": 30, "happiness": 2 },
+    { "id": "snack-box", "name": "Snack Box Delivery", "icon": "🍪", "monthly": 25, "happiness": 2 },
+    { "id": "cloud", "name": "Cloud Storage", "icon": "☁️", "monthly": 3, "happiness": 0 }
+  ]
+}

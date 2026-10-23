@@ -1,0 +1,224 @@
+'use client';
+import { Suspense, useEffect, useRef } from 'react';
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
+import * as THREE from 'three';
+import { useGame, act, getWorld } from '@/store/game';
+import { useScene } from '@/store/scene';
+import { useSettings } from '@/store/settings';
+import { isPaused, useUI } from '@/store/ui';
+import { SkyAndLights } from '@/engine/Sky';
+import { PostFX } from '@/engine/PostFX';
+import { PlayerController } from '@/engine/Player';
+import { OutdoorScene } from '@/world/OutdoorScene';
+import { InteriorScene } from '@/world/InteriorScene';
+import { NarwhalGuide, GoalBeacon, GuideTrail } from '@/world/Narwhal';
+import { CITIES, buildingById } from '@/world/cities';
+import { rt } from '@/engine/runtime';
+import { onAction } from '@/engine/input';
+import { playMusic } from '@/engine/audio';
+import { advanceTime } from '@/game/sim/time';
+import { recordEvent } from '@/game/progress/events';
+import { refreshChallenges } from '@/game/progress/challenges';
+import { sayStep, currentStep } from '@/game/progress/quests';
+import { capture, saveNow } from './startWorld';
+import { interact } from './interact';
+import { HUD } from './hud/HUD';
+import { Panels } from './panels/Panels';
+import { updateGoalMarker } from './goal';
+import { getOff } from '@/world/ParkedVehicles';
+import { WorldActivityRunner } from '@/activities/world/WorldActivityRunner';
+
+const DPR = { low: 0.75, medium: 1, high: Math.min(2, typeof window !== 'undefined' ? window.devicePixelRatio : 1) };
+
+export default function GameView() {
+  const quality = useSettings((s) => s.quality);
+  const location = useScene((s) => s.location);
+  const interior = useScene((s) => s.interior);
+  const difficulty = useGame((s) => s.world?.difficulty ?? 'entry');
+
+  // Global key actions
+  useEffect(() => {
+    return onAction((a) => {
+      const ui = useUI.getState();
+      if (ui.screen !== 'game' || ui.loading.active) return;
+      switch (a) {
+        case 'interact':
+          if (!ui.panel) interact(rt.nearTrigger);
+          break;
+        case 'map':
+          if (ui.panel?.type === 'map') ui.close();
+          else if (!ui.panel) ui.open({ type: 'map' });
+          break;
+        case 'inventory':
+          if (ui.panel?.type === 'phone' && ui.panel.app === 'bag') ui.close();
+          else if (!ui.panel) ui.open({ type: 'phone', app: 'bag' });
+          break;
+        case 'phone':
+          if (ui.panel?.type === 'phone') ui.close();
+          else if (!ui.panel) {
+            ui.open({ type: 'phone' });
+            act((d, fx) => recordEvent(d, fx, { type: 'menu', target: 'phone' }));
+          }
+          break;
+        case 'pause':
+          if (ui.panel) ui.close();
+          else ui.open({ type: 'pause' });
+          break;
+        case 'camera':
+          rt.camYaw = rt.playerRotY + Math.PI;
+          rt.camPitch = 0.42;
+          rt.camDist = 8;
+          break;
+        case 'jump':
+          if (!ui.panel && rt.grounded && !rt.vehicle) pendingJump.current = true;
+          break;
+      }
+    });
+  }, []);
+  const pendingJump = useRef(false);
+
+  // First-time intro and music
+  useEffect(() => {
+    const w = getWorld();
+    if (!w) return;
+    playMusic(CITIES[w.player.location].music);
+    act((d, fx) => {
+      refreshChallenges(d);
+      if (!d.progress.flags.introDone) {
+        d.progress.flags.introDone = true;
+        const cs = currentStep(d);
+        if (cs) sayStep(d, fx, cs.step);
+      }
+    });
+  }, []);
+
+  // Autosave every 30 s and when the tab is hidden
+  useEffect(() => {
+    const id = setInterval(() => saveNow(true), 30000);
+    const vis = () => document.visibilityState === 'hidden' && saveNow(false);
+    document.addEventListener('visibilitychange', vis);
+    window.addEventListener('beforeunload', vis);
+    return () => {
+      clearInterval(id);
+      document.removeEventListener('visibilitychange', vis);
+      window.removeEventListener('beforeunload', vis);
+    };
+  }, []);
+
+  const building = interior ? buildingById(interior)?.building : null;
+  const sceneKey = `${location}:${interior ?? ''}:${difficulty}`;
+
+  return (
+    <div className="game-view">
+      <Canvas
+        key={quality}
+        shadows={quality !== 'low'}
+        dpr={DPR[quality]}
+        camera={{ fov: 55, near: 0.1, far: 1200, position: [0, 6, 10] }}
+        gl={{ antialias: quality !== 'low', powerPreference: 'high-performance', preserveDrawingBuffer: false }}
+        onCreated={({ gl }) => {
+          gl.toneMapping = THREE.ACESFilmicToneMapping;
+          gl.toneMappingExposure = 1.05;
+        }}
+        style={{ position: 'fixed', inset: 0 }}
+      >
+        <Suspense fallback={null}>
+          <SkyAndLights interior={!!building} />
+          <group key={sceneKey}>
+            {building ? <InteriorScene building={building} difficulty={difficulty} /> : <OutdoorScene def={CITIES[location]} difficulty={difficulty} />}
+          </group>
+          <PlayerController />
+          <NarwhalGuide />
+          <GoalBeacon />
+          <GuideTrail />
+          <Systems pendingJump={pendingJump} />
+          <CaptureBinder />
+          <WorldActivityRunner />
+          {quality !== 'low' && <PostFX quality={quality} interior={!!building} />}
+        </Suspense>
+      </Canvas>
+      <HUD />
+      <Panels />
+    </div>
+  );
+}
+
+/** Runs game systems: time, market, walking stats, goal markers, performance. */
+function Systems({ pendingJump }: { pendingJump: React.RefObject<boolean> }) {
+  const acc = useRef(0);
+  const walked = useRef(0);
+  const last = useRef(new THREE.Vector3().copy(rt.player));
+  const frames = useRef({ n: 0, t: 0, low: 0 });
+  useFrame((_, dt) => {
+    const paused = isPaused();
+    // Walking distance for quests/achievements
+    const d = Math.hypot(rt.player.x - last.current.x, rt.player.z - last.current.z);
+    if (d < 5 && !rt.vehicle) walked.current += d;
+    last.current.copy(rt.player);
+
+    if (!paused) acc.current += dt;
+    if (acc.current >= 1) {
+      const secs = acc.current;
+      acc.current = 0;
+      const monthSeconds = useSettings.getState().monthMinutes * 60;
+      const walk = walked.current;
+      walked.current = 0;
+      const jump = pendingJump.current;
+      pendingJump.current = false;
+      act((w, fx) => {
+        advanceTime(w, fx, secs, monthSeconds);
+        if (walk > 0.2) recordEvent(w, fx, { type: 'move', value: walk });
+        if (jump) recordEvent(w, fx, { type: 'jump' });
+      });
+      updateGoalMarker();
+    }
+    // FPS meter & auto quality
+    const f = frames.current;
+    f.n++;
+    f.t += dt;
+    if (f.t >= 1) {
+      const fps = f.n / f.t;
+      useUI.setState({ fps: Math.round(fps) });
+      const s = useSettings.getState();
+      // Hidden or unfocused tabs are throttled by the browser, never judge performance there
+      const throttled = document.hidden || !document.hasFocus();
+      if (s.autoQuality && s.quality !== 'low' && fps < 24 && !paused && !throttled) {
+        f.low++;
+        if (f.low >= 5) {
+          s.set({ quality: s.quality === 'high' ? 'medium' : 'low' });
+          useUI.getState().pushToast({ text: 'Lowered graphics quality to keep things smooth.', icon: '🖥️', tone: 'info' });
+          f.low = 0;
+        }
+      } else f.low = 0;
+      f.n = 0;
+      f.t = 0;
+    }
+  });
+  return null;
+}
+
+/** Lets the save system grab a small thumbnail from the WebGL canvas. */
+function CaptureBinder() {
+  const { gl, scene, camera } = useThree();
+  useEffect(() => {
+    capture.fn = () => {
+      gl.render(scene, camera);
+      const src = gl.domElement;
+      const c = document.createElement('canvas');
+      c.width = 320;
+      c.height = 180;
+      const g = c.getContext('2d')!;
+      const ar = src.width / src.height;
+      const sw = ar > 16 / 9 ? src.height * (16 / 9) : src.width;
+      const sh = ar > 16 / 9 ? src.height : src.width / (16 / 9);
+      g.drawImage(src, (src.width - sw) / 2, (src.height - sh) / 2, sw, sh, 0, 0, 320, 180);
+      return c.toDataURL('image/jpeg', 0.72);
+    };
+    return () => {
+      capture.fn = null;
+    };
+  }, [gl, scene, camera]);
+  return null;
+}
+
+export { getOff };

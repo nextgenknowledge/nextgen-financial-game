@@ -1,0 +1,73 @@
+{
+  "$comment": "Budget allocation scenarios (kind 'allocate'). Each category has min (must spend at least, a 'need'), ideal range, and step. Score = needs covered + within budget + closeness to ideal + savings. surprises (Advanced) hit after you submit.",
+  "scenarios": {
+    "pet-entry": {
+      "title": "Biscuit the puppy's month",
+      "intro": "You have $60 for Biscuit this month. Needs first: food and vet care! Then pick some fun.",
+      "budget": 60,
+      "step": 5,
+      "categories": [
+        { "id": "food", "label": "Dog food", "icon": "🥣", "need": true, "min": 20, "ideal": [20, 25] },
+        { "id": "vet", "label": "Vet checkup savings", "icon": "🩺", "need": true, "min": 10, "ideal": [10, 15] },
+        { "id": "toys", "label": "Toys", "icon": "🧸", "ideal": [5, 10] },
+        { "id": "treats", "label": "Treats", "icon": "🦴", "ideal": [5, 10] },
+        { "id": "save", "label": "Save for next month", "icon": "🐷", "ideal": [5, 15] }
+      ]
+    },
+    "pet-advanced": {
+      "title": "Pet care on a teen budget",
+      "intro": "Your part-time job nets $420/month. Your dog costs real money. Plan the month: needs, a pet emergency fund, and some fun. Watch for surprises!",
+      "budget": 420,
+      "step": 10,
+      "categories": [
+        { "id": "phone", "label": "Phone plan (your share)", "icon": "📱", "need": true, "min": 40, "ideal": [40, 40] },
+        { "id": "petfood", "label": "Pet food", "icon": "🥣", "need": true, "min": 50, "ideal": [50, 60] },
+        { "id": "petins", "label": "Pet insurance / vet fund", "icon": "🩺", "need": true, "min": 30, "ideal": [30, 50] },
+        { "id": "transport", "label": "Bus pass", "icon": "🚌", "need": true, "min": 45, "ideal": [45, 45] },
+        { "id": "fun", "label": "Fun & going out", "icon": "🎉", "ideal": [60, 110] },
+        { "id": "petfun", "label": "Pet toys & grooming", "icon": "🛁", "ideal": [10, 30] },
+        { "id": "save", "label": "Savings", "icon": "🐷", "ideal": [80, 160] }
+      ],
+      "surprises": [{ "text": "Your dog ate a sock, vet visit $120!", "covers": ["petins", "save"], "cost": 120 }]
+    },
+    "trip-entry": {
+      "title": "Weekend trip to London",
+      "intro": "You have $200 for a trip. You need a train ticket and a place to sleep. Then choose food and fun!",
+      "budget": 200,
+      "step": 10,
+      "categories": [
+        { "id": "travel", "label": "Train ticket", "icon": "🚆", "need": true, "min": 60, "ideal": [60, 60] },
+        { "id": "hotel", "label": "Hostel", "icon": "🛏️", "need": true, "min": 50, "ideal": [50, 60] },
+        { "id": "food", "label": "Food", "icon": "🍽️", "need": true, "min": 30, "ideal": [30, 50] },
+        { "id": "fun", "label": "Big Wheel ride & museum", "icon": "🎡", "ideal": [20, 40] },
+        { "id": "souvenir", "label": "Souvenirs", "icon": "🧸", "ideal": [0, 20] }
+      ]
+    },
+    "trip-advanced": {
+      "title": "Spring-break trip to Singapore",
+      "intro": "Budget: $1,500 for 5 days. Flights are a fixed $780. Plan lodging, food, transit, activities and a buffer for surprises (currency fees, a lost charger…).",
+      "budget": 1500,
+      "step": 20,
+      "categories": [
+        { "id": "flight", "label": "Flight (booked)", "icon": "✈️", "need": true, "min": 780, "ideal": [780, 780] },
+        { "id": "hotel", "label": "Lodging (5 nights)", "icon": "🏨", "need": true, "min": 250, "ideal": [250, 350] },
+        { "id": "food", "label": "Food", "icon": "🍜", "need": true, "min": 120, "ideal": [120, 200] },
+        { "id": "transit", "label": "Transit card", "icon": "🚇", "need": true, "min": 40, "ideal": [40, 60] },
+        { "id": "fun", "label": "Gardens, zoo, tours", "icon": "🦁", "ideal": [60, 160] },
+        { "id": "buffer", "label": "Emergency buffer", "icon": "☔", "ideal": [60, 120] }
+      ],
+      "surprises": [{ "text": "Your phone charger broke and a taxi was needed after a storm: $70.", "covers": ["buffer"], "cost": 70 }]
+    },
+    "budget-entry": {
+      "title": "Save, Spend, Share",
+      "intro": "You earned $40! Split it between your jars. A good plan saves some, spends some and shares some.",
+      "budget": 40,
+      "step": 2,
+      "categories": [
+        { "id": "save", "label": "Save jar", "icon": "🐷", "min": 4, "ideal": [8, 16], "need": true },
+        { "id": "spend", "label": "Spend jar", "icon": "🛍️", "ideal": [12, 24] },
+        { "id": "share", "label": "Share jar", "icon": "💝", "min": 2, "ideal": [2, 8], "need": true }
+      ]
+    }
+  }
+}

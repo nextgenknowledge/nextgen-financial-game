@@ -1,0 +1,453 @@
+{
+  "id": "london",
+  "name": "London",
+  "tagline": "Budgeting & smart shopping",
+  "theme": "Plan budgets, shop smart, compare unit prices, exchange currency and decide whether to rent or buy.",
+  "music": "london",
+  "icon": "🎡",
+  "half": 110,
+  "ground": "#c2bfb6",
+  "palette": {
+    "walls": [
+      "#e9e2d2",
+      "#c9b38a",
+      "#b9a77f",
+      "#9a4a36",
+      "#d8cfbd",
+      "#a8956c",
+      "#f2ede2"
+    ],
+    "roofs": [
+      "#3d4a52",
+      "#4a3f3a",
+      "#3a3f4a"
+    ],
+    "trims": [
+      "#ffffff",
+      "#f4f1ea"
+    ],
+    "accents": [
+      "#d0302a",
+      "#1e2840",
+      "#2f5a5a",
+      "#ffcf3f"
+    ]
+  },
+  "roads": {
+    "xs": [
+      -66,
+      -22,
+      22,
+      66
+    ],
+    "zs": [
+      -66,
+      -22,
+      22,
+      66
+    ],
+    "width": 10,
+    "color": "#55595f"
+  },
+  "water": [
+    {
+      "x": 0,
+      "z": -120,
+      "w": 280,
+      "d": 34
+    }
+  ],
+  "plazas": [
+    {
+      "pos": [
+        0,
+        0
+      ],
+      "r": 12,
+      "color": "#d9d2c0"
+    }
+  ],
+  "buildings": [
+    {
+      "id": "london-market",
+      "name": "Covered Market",
+      "icon": "🥕",
+      "pos": [
+        0,
+        -44
+      ],
+      "size": [
+        26,
+        18,
+        10
+      ],
+      "door": "south",
+      "style": "market",
+      "colors": {
+        "wall": "#d8c39a",
+        "roof": "#2f5a5a",
+        "trim": "#1e2840",
+        "accent": "#3cc45a"
+      },
+      "blurb": "Shop for a week of groceries on a budget. Unit prices and coupons matter!",
+      "stations": [
+        {
+          "activity": "grocery",
+          "label": "Grocery Challenge",
+          "icon": "🛒",
+          "npc": "grocer"
+        },
+        {
+          "activity": "london-quiz",
+          "label": "Market Quiz",
+          "icon": "🎤",
+          "npc": "host"
+        }
+      ],
+      "interior": {
+        "floor": "#c9b48a",
+        "wall": "#f4ead6",
+        "theme": "shop"
+      }
+    },
+    {
+      "id": "dept-store",
+      "name": "Grand Department Store",
+      "icon": "🛍️",
+      "pos": [
+        44,
+        -44
+      ],
+      "size": [
+        26,
+        20,
+        18
+      ],
+      "door": "south",
+      "style": "shop",
+      "colors": {
+        "wall": "#f4f1ea",
+        "roof": "#3a3f4a",
+        "trim": "#1e2840",
+        "accent": "#d0302a"
+      },
+      "blurb": "Sales, coupons and 'deals'. Which ones are really good?",
+      "stations": [
+        {
+          "activity": "dept-store",
+          "label": "Is It Really a Deal?",
+          "icon": "🏷️",
+          "npc": "stylist"
+        }
+      ],
+      "interior": {
+        "floor": "#e8e1d0",
+        "wall": "#fff8ee",
+        "theme": "boutique"
+      }
+    },
+    {
+      "id": "corner-shop",
+      "name": "Corner Shop",
+      "icon": "🪙",
+      "pos": [
+        -44,
+        0
+      ],
+      "size": [
+        16,
+        14,
+        9
+      ],
+      "door": "east",
+      "style": "shop",
+      "colors": {
+        "wall": "#2f5a5a",
+        "roof": "#1e2840",
+        "trim": "#ffcf3f",
+        "accent": "#d0302a"
+      },
+      "blurb": "Work the till: make change fast and right.",
+      "stations": [
+        {
+          "activity": "change-counter",
+          "label": "Change Counter",
+          "icon": "🪙",
+          "npc": "clerk"
+        }
+      ],
+      "interior": {
+        "floor": "#a8774a",
+        "wall": "#f4ead6",
+        "theme": "shop"
+      }
+    },
+    {
+      "id": "currency-exchange",
+      "name": "Currency Exchange",
+      "icon": "💱",
+      "pos": [
+        44,
+        0
+      ],
+      "size": [
+        16,
+        14,
+        10
+      ],
+      "door": "west",
+      "style": "kiosk",
+      "colors": {
+        "wall": "#e8eef6",
+        "roof": "#1e2840",
+        "trim": "#ffffff",
+        "accent": "#ffcf3f"
+      },
+      "blurb": "Trade dollars for pounds, euros and yen, and spot the hidden fees.",
+      "stations": [
+        {
+          "activity": "currency-exchange",
+          "label": "Exchange Booths",
+          "icon": "💱",
+          "npc": "banker"
+        }
+      ],
+      "interior": {
+        "floor": "#d9dde6",
+        "wall": "#f4f8fb",
+        "theme": "office"
+      }
+    },
+    {
+      "id": "rent-buy-office",
+      "name": "Rent vs. Buy Office",
+      "icon": "🏠",
+      "pos": [
+        -44,
+        -44
+      ],
+      "size": [
+        22,
+        16,
+        12
+      ],
+      "door": "south",
+      "style": "office",
+      "colors": {
+        "wall": "#b8a07a",
+        "roof": "#3a3f4a",
+        "trim": "#ffffff",
+        "accent": "#2f6bdb"
+      },
+      "blurb": "Should you rent or buy? Simulate years of rent, mortgage, upkeep and home values.",
+      "stations": [
+        {
+          "activity": "rent-vs-buy",
+          "label": "Rent or Buy?",
+          "icon": "🏠",
+          "npc": "agent"
+        },
+        {
+          "service": "shop:property",
+          "label": "City Condos",
+          "icon": "🏙️",
+          "npc": "agent"
+        }
+      ],
+      "interior": {
+        "floor": "#c9a87a",
+        "wall": "#fbf3e6",
+        "theme": "office"
+      }
+    },
+    {
+      "id": "budget-hall",
+      "name": "Budget Planner Hall",
+      "icon": "📋",
+      "pos": [
+        0,
+        44
+      ],
+      "size": [
+        24,
+        16,
+        12
+      ],
+      "door": "north",
+      "style": "civic",
+      "colors": {
+        "wall": "#e2cfa6",
+        "roof": "#2f5a5a",
+        "trim": "#1e2840",
+        "accent": "#ffcf3f"
+      },
+      "blurb": "Build a 50/30/20 budget and see if it survives a year of surprises.",
+      "entryBlurb": "Split your money into Save, Spend and Share jars!",
+      "stations": [
+        {
+          "activity": "budget-planner",
+          "label": "Budget Planner",
+          "icon": "📋",
+          "npc": "teacher"
+        },
+        {
+          "activity": "jars",
+          "label": "Save · Spend · Share Jars",
+          "icon": "🫙",
+          "npc": "teacher"
+        }
+      ],
+      "interior": {
+        "floor": "#e6dfcf",
+        "wall": "#f4f1ea",
+        "theme": "civic"
+      }
+    }
+  ],
+  "landmarks": [
+    {
+      "type": "clock-tower",
+      "pos": [
+        -88,
+        -92
+      ]
+    },
+    {
+      "type": "big-wheel",
+      "pos": [
+        80,
+        -96
+      ],
+      "rot": 90
+    },
+    {
+      "type": "tower-bridge",
+      "pos": [
+        30,
+        -120
+      ],
+      "rot": 0,
+      "scale": 0.6
+    },
+    {
+      "type": "phone-box",
+      "pos": [
+        8,
+        14
+      ],
+      "rot": 180
+    },
+    {
+      "type": "phone-box",
+      "pos": [
+        -30,
+        27
+      ],
+      "rot": 0
+    },
+    {
+      "type": "double-decker",
+      "pos": [
+        -8,
+        27
+      ],
+      "rot": 90
+    },
+    {
+      "type": "statue",
+      "pos": [
+        0,
+        0
+      ]
+    },
+    {
+      "type": "bench",
+      "pos": [
+        -9,
+        -8
+      ],
+      "rot": 0
+    },
+    {
+      "type": "bench",
+      "pos": [
+        9,
+        8
+      ],
+      "rot": 180
+    },
+    {
+      "type": "dock",
+      "pos": [
+        -40,
+        -103
+      ],
+      "rot": 180
+    }
+  ],
+  "portals": [
+    {
+      "to": "park",
+      "pos": [
+        0,
+        92
+      ],
+      "rot": 180
+    }
+  ],
+  "spawn": [
+    0,
+    80,
+    180
+  ],
+  "garage": [
+    12,
+    78,
+    180
+  ],
+  "dock": [
+    -40,
+    -115,
+    180
+  ],
+  "filler": {
+    "seed": 31,
+    "density": 0.85,
+    "minH": 9,
+    "maxH": 30,
+    "style": "london"
+  },
+  "trees": {
+    "count": 60,
+    "seed": 32,
+    "kinds": [
+      "round",
+      "autumn",
+      "pine"
+    ]
+  },
+  "npcs": 36,
+  "traffic": 16,
+  "boats": 4,
+  "host": {
+    "name": "Mr. Pennyworth",
+    "look": "librarian",
+    "pos": [
+      8,
+      74
+    ],
+    "lines": [
+      "Welcome to London! Here we plan before we spend. A budget tells every pound where to go.",
+      "Check the price per item, not just the price tag. Bigger isn't always cheaper!",
+      "Exchange booths at airports often have the worst rates. Compare the total you get back."
+    ],
+    "entryLines": [
+      "Welcome to London! Let's learn to plan our money!",
+      "Compare prices before you buy. Smart shoppers save money!"
+    ]
+  },
+  "weather": {
+    "rain": 0.45,
+    "snow": 0.3
+  }
+}

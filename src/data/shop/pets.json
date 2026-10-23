@@ -1,0 +1,13 @@
+{
+  "$comment": "Pet Shop. adoption = one-time fee, monthly = food & care, happiness = monthly happiness boost while owned. Pets have no resale value (worth $0 in net worth), a deliberate lesson.",
+  "items": [
+    { "id": "goldfish", "name": "Goldfish", "icon": "🐠", "adoption": 15, "monthly": 3, "happiness": 2, "blurb": "Tiny, calm, cheap to care for." },
+    { "id": "hamster", "name": "Hamster", "icon": "🐹", "adoption": 30, "monthly": 8, "happiness": 3, "blurb": "Runs on its wheel all night." },
+    { "id": "cat", "name": "Cat", "icon": "🐱", "adoption": 90, "monthly": 35, "happiness": 5, "blurb": "Independent and cuddly (sometimes)." },
+    { "id": "dog", "name": "Dog", "icon": "🐶", "adoption": 150, "monthly": 60, "happiness": 7, "blurb": "Loyal best friend. Needs walks, food and vet visits." },
+    { "id": "parrot", "name": "Parrot", "icon": "🦜", "adoption": 400, "monthly": 30, "happiness": 6, "blurb": "Can live 50+ years, a long commitment!" },
+    { "id": "bunny", "name": "Bunny", "icon": "🐰", "adoption": 60, "monthly": 22, "happiness": 4, "blurb": "Loves carrots and hopping around." },
+    { "id": "turtle", "name": "Turtle", "icon": "🐢", "adoption": 45, "monthly": 10, "happiness": 3, "blurb": "Slow and steady, like good investing." },
+    { "id": "pony", "name": "Pony", "icon": "🐴", "adoption": 2500, "monthly": 400, "happiness": 12, "blurb": "Amazing, but stables and hay are expensive!", "unlockLevel": 10 }
+  ]
+}

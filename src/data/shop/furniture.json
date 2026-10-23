@@ -1,0 +1,39 @@
+{
+  "$comment": "Furniture Store (furniture & decor resell at 40%) and the Collectibles & Art counter (value changes monthly by a random walk with drift mu and volatility sigma, they can gain OR lose value). happiness = one-time boost when bought.",
+  "furniture": [
+    { "id": "beanbag", "name": "Bean Bag Chair", "icon": "🪑", "price": 45, "happiness": 4 },
+    { "id": "desk", "name": "Study Desk", "icon": "🗄️", "price": 120, "happiness": 3, "need": true },
+    { "id": "bed", "name": "Comfy Bed", "icon": "🛏️", "price": 300, "happiness": 6, "need": true },
+    { "id": "sofa", "name": "Big Sofa", "icon": "🛋️", "price": 650, "happiness": 8 },
+    { "id": "lamp", "name": "Lava Lamp", "icon": "💡", "price": 35, "happiness": 3 },
+    { "id": "plant", "name": "Potted Plant", "icon": "🪴", "price": 25, "happiness": 2 },
+    { "id": "bookshelf", "name": "Bookshelf", "icon": "📚", "price": 180, "happiness": 4 },
+    { "id": "tv", "name": "Huge TV", "icon": "📺", "price": 1200, "happiness": 10 },
+    { "id": "game-console", "name": "Game Console", "icon": "🎮", "price": 450, "happiness": 10 },
+    { "id": "aquarium", "name": "Aquarium", "icon": "🐟", "price": 260, "happiness": 6 },
+    { "id": "rug", "name": "Fluffy Rug", "icon": "🧶", "price": 90, "happiness": 3 },
+    { "id": "piano", "name": "Piano", "icon": "🎹", "price": 3200, "happiness": 12 },
+    { "id": "hot-tub", "name": "Hot Tub", "icon": "♨️", "price": 6500, "happiness": 14, "monthly": 40 },
+    { "id": "arcade-cab", "name": "Arcade Cabinet", "icon": "🕹️", "price": 1800, "happiness": 11 }
+  ],
+  "collectibles": [
+    { "id": "card-rookie", "name": "Rookie Trading Card", "icon": "🃏", "price": 40, "mu": 0.04, "sigma": 0.35, "kind": "collectible", "blurb": "Might be worth a lot someday… or not." },
+    { "id": "comic-1", "name": "Vintage Comic #1", "icon": "📕", "price": 300, "mu": 0.05, "sigma": 0.25, "kind": "collectible" },
+    { "id": "sneaker-ltd", "name": "Limited Sneakers", "icon": "👟", "price": 260, "mu": 0.02, "sigma": 0.3, "kind": "collectible", "blurb": "Hype can fade fast." },
+    { "id": "coin-gold", "name": "Gold Commemorative Coin", "icon": "🪙", "price": 900, "mu": 0.03, "sigma": 0.12, "kind": "collectible" },
+    { "id": "robot-toy", "name": "Retro Robot Toy", "icon": "🤖", "price": 150, "mu": 0.03, "sigma": 0.2, "kind": "collectible" },
+    { "id": "narwhal-plush", "name": "Signed Narwhal Plush", "icon": "🦄", "price": 75, "mu": 0.06, "sigma": 0.15, "kind": "collectible", "blurb": "Official NextGen Narwhal merch!" },
+    { "id": "art-pixel", "name": "Pixel Skyline Print", "icon": "🖼️", "price": 500, "mu": 0.04, "sigma": 0.18, "kind": "art" },
+    { "id": "art-sculpture", "name": "Blocky Sculpture", "icon": "🗿", "price": 2200, "mu": 0.05, "sigma": 0.2, "kind": "art" },
+    { "id": "art-painting", "name": "Harbor Sunset Painting", "icon": "🎨", "price": 6000, "mu": 0.05, "sigma": 0.15, "kind": "art", "unlockLevel": 8 },
+    { "id": "art-masterpiece", "name": "Modern Masterpiece", "icon": "🖌️", "price": 40000, "mu": 0.06, "sigma": 0.22, "kind": "art", "unlockLevel": 15 }
+  ],
+  "prizes": [
+    { "id": "prize-sticker", "name": "Narwhal Sticker", "icon": "🦄", "tickets": 30, "happiness": 2 },
+    { "id": "prize-yoyo", "name": "Glow Yo-Yo", "icon": "🪀", "tickets": 60, "happiness": 3 },
+    { "id": "prize-plush", "name": "Coin Plushie", "icon": "🪙", "tickets": 120, "happiness": 4 },
+    { "id": "prize-party-hat", "name": "Party Hat (outfit)", "icon": "🥳", "tickets": 150, "outfit": "party-hat" },
+    { "id": "prize-trophy", "name": "Arcade Trophy", "icon": "🏆", "tickets": 400, "happiness": 8 },
+    { "id": "prize-bow", "name": "Big Bow (outfit)", "icon": "🎀", "tickets": 200, "outfit": "bow" }
+  ]
+}

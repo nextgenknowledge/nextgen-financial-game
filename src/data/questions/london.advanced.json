@@ -1,0 +1,1326 @@
+{
+ "questions": [
+  {
+   "id": "lda-01",
+   "city": "london",
+   "topic": "shopping",
+   "difficulty": "advanced",
+   "level": 2,
+   "type": "numeric",
+   "prompt": "A {q}-oz box costs ${p}. What is the unit price per ounce?",
+   "vars": {
+    "q": {
+     "choices": [
+      12,
+      16,
+      18,
+      24,
+      32
+     ]
+    },
+    "p": {
+     "min": 2.49,
+     "max": 8.99,
+     "step": 0.5
+    }
+   },
+   "answerExpr": "p/q",
+   "format": "money",
+   "toleranceAbs": 0.006,
+   "explanation": "${p} ÷ {q} oz = ${ANSWER} per ounce."
+  },
+  {
+   "id": "lda-02",
+   "city": "london",
+   "topic": "shopping",
+   "difficulty": "advanced",
+   "level": 3,
+   "type": "mc",
+   "prompt": "Option A: {qa} oz for ${pa}. Option B: {qb} oz for ${pb}. What is the LOWER unit price, in cents per ounce?",
+   "vars": {
+    "qa": {
+     "choices": [
+      10,
+      12,
+      14
+     ]
+    },
+    "pa": {
+     "choices": [
+      2.99,
+      3.49,
+      3.99
+     ]
+    },
+    "qb": {
+     "choices": [
+      28,
+      32,
+      36
+     ]
+    },
+    "pb": {
+     "choices": [
+      6.49,
+      7.99,
+      9.49
+     ]
+    }
+   },
+   "choiceExprs": [
+    "min(pa/qa, pb/qb)*100",
+    "max(pa/qa, pb/qb)*100",
+    "(pa/qa+pb/qb)*50"
+   ],
+   "format": "num",
+   "explanation": "A: ${pa} ÷ {qa} oz; B: ${pb} ÷ {qb} oz. The lower one is {ANSWER} cents per ounce, that option is the better value.",
+   "hint": "Divide price by ounces for each."
+  },
+  {
+   "id": "lda-03",
+   "city": "london",
+   "topic": "shopping",
+   "difficulty": "advanced",
+   "level": 2,
+   "type": "numeric",
+   "prompt": "A ${p} jacket is {a}% off, then an extra {b}% off at checkout. Final price?",
+   "vars": {
+    "p": {
+     "min": 60,
+     "max": 180,
+     "step": 5
+    },
+    "a": {
+     "choices": [
+      20,
+      25,
+      30,
+      40
+     ]
+    },
+    "b": {
+     "choices": [
+      10,
+      15,
+      20
+     ]
+    }
+   },
+   "answerExpr": "p*(1-a/100)*(1-b/100)",
+   "format": "money",
+   "explanation": "${p} × (1 − {a}%) × (1 − {b}%) = ${ANSWER}. Stacked discounts multiply; they don't add."
+  },
+  {
+   "id": "lda-04",
+   "city": "london",
+   "topic": "shopping",
+   "difficulty": "advanced",
+   "level": 3,
+   "type": "numeric",
+   "prompt": "Stacked discounts of {a}% and {b}% equal what single discount (%)?",
+   "vars": {
+    "a": {
+     "choices": [
+      20,
+      25,
+      30
+     ]
+    },
+    "b": {
+     "choices": [
+      10,
+      20,
+      25
+     ]
+    }
+   },
+   "answerExpr": "(1-(1-a/100)*(1-b/100))*100",
+   "format": "pct",
+   "toleranceAbs": 0.05,
+   "explanation": "1 − (1 − {a}%)(1 − {b}%) = {ANSWER:pct}, less than {a} + {b}."
+  },
+  {
+   "id": "lda-05",
+   "city": "london",
+   "topic": "shopping",
+   "difficulty": "advanced",
+   "level": 3,
+   "type": "numeric",
+   "prompt": "Price ${p} with 6% sales tax and a ${c} coupon applied BEFORE tax. Total?",
+   "vars": {
+    "p": {
+     "min": 20,
+     "max": 120,
+     "step": 0.5
+    },
+    "c": {
+     "choices": [
+      2,
+      5,
+      10
+     ]
+    }
+   },
+   "answerExpr": "(p-c)*1.06",
+   "format": "money",
+   "explanation": "(${p} − ${c}) × 1.06 = ${ANSWER}."
+  },
+  {
+   "id": "lda-06",
+   "city": "london",
+   "topic": "shopping",
+   "difficulty": "advanced",
+   "level": 4,
+   "type": "mc",
+   "prompt": "An item 'originally $200, now $99!' sells for $105 everywhere else and was never actually sold at $200. The real discount is about…",
+   "choices": [
+    "6%",
+    "50%",
+    "100%",
+    "0%, it's more expensive"
+   ],
+   "answer": 0,
+   "explanation": "Compare to the real market price ($105): (105 − 99)/105 ≈ 6%. Inflated 'original' prices are a common trick."
+  },
+  {
+   "id": "lda-07",
+   "city": "london",
+   "topic": "shopping",
+   "difficulty": "advanced",
+   "level": 3,
+   "type": "numeric",
+   "prompt": "'Buy 2, get the 3rd free' on ${p} items. Effective discount per item if you buy 3 (%)?",
+   "vars": {
+    "p": {
+     "min": 6,
+     "max": 30
+    }
+   },
+   "answerExpr": "100/3",
+   "format": "pct",
+   "toleranceAbs": 0.1,
+   "explanation": "You pay for 2 of 3: each costs 2/3 of the price → {ANSWER:pct} off."
+  },
+  {
+   "id": "lda-08",
+   "city": "london",
+   "topic": "shopping",
+   "difficulty": "advanced",
+   "level": 4,
+   "type": "numeric",
+   "prompt": "A ${m}/month gym membership vs. ${d} per visit. How many visits per month make the membership cheaper? (Smallest whole number of visits)",
+   "vars": {
+    "m": {
+     "choices": [
+      30,
+      40,
+      45,
+      60
+     ]
+    },
+    "d": {
+     "choices": [
+      8,
+      10,
+      12
+     ]
+    }
+   },
+   "answerExpr": "floor(m/d)+1",
+   "format": "int",
+   "unit": "visits",
+   "explanation": "Break-even = ${m} ÷ ${d}; more than that and the membership wins: {ANSWER:int} visits."
+  },
+  {
+   "id": "lda-09",
+   "city": "london",
+   "topic": "budgeting",
+   "difficulty": "advanced",
+   "level": 2,
+   "type": "numeric",
+   "prompt": "Take-home pay ${N}. Using 50/30/20, how much for WANTS?",
+   "vars": {
+    "N": {
+     "min": 2000,
+     "max": 5000,
+     "step": 100
+    }
+   },
+   "answerExpr": "N*0.3",
+   "format": "money",
+   "explanation": "30% × ${N} = ${ANSWER}."
+  },
+  {
+   "id": "lda-10",
+   "city": "london",
+   "topic": "budgeting",
+   "difficulty": "advanced",
+   "level": 3,
+   "type": "numeric",
+   "prompt": "Net pay ${N}. Needs total ${e}. What percent of pay goes to needs?",
+   "vars": {
+    "N": {
+     "min": 2500,
+     "max": 4500,
+     "step": 100
+    },
+    "e": {
+     "min": 1200,
+     "max": 2600,
+     "step": 50
+    }
+   },
+   "answerExpr": "e/N*100",
+   "format": "pct",
+   "toleranceAbs": 0.1,
+   "explanation": "${e} ÷ ${N} = {ANSWER:pct}. Over 50% means wants or savings must shrink."
+  },
+  {
+   "id": "lda-11",
+   "city": "london",
+   "topic": "budgeting",
+   "difficulty": "advanced",
+   "level": 3,
+   "type": "mc",
+   "prompt": "Find the error: Income $3,000. Rent $1,200, food $400, transport $150, fun $600, savings $500, debt minimum $250. Total planned?",
+   "choices": [
+    "$3,100, over budget by $100",
+    "$3,000, balanced",
+    "$2,900, $100 unassigned",
+    "$2,850"
+   ],
+   "answer": 0,
+   "explanation": "1,200 + 400 + 150 + 600 + 500 + 250 = 3,100. The plan spends $100 more than income, cut fun or savings."
+  },
+  {
+   "id": "lda-12",
+   "city": "london",
+   "topic": "budgeting",
+   "difficulty": "advanced",
+   "level": 2,
+   "type": "mc",
+   "prompt": "A zero-based budget means…",
+   "choices": [
+    "Income minus planned spending and saving equals zero, every dollar has a job",
+    "You spend nothing",
+    "Your balance is zero",
+    "You have no income"
+   ],
+   "answer": 0,
+   "explanation": "Every dollar is assigned to something (including savings)."
+  },
+  {
+   "id": "lda-13",
+   "city": "london",
+   "topic": "budgeting",
+   "difficulty": "advanced",
+   "level": 4,
+   "type": "numeric",
+   "prompt": "Irregular expenses: car insurance ${a}/year, gifts ${b}/year, car registration ${c}/year. How much should you set aside per month?",
+   "vars": {
+    "a": {
+     "choices": [
+      900,
+      1200,
+      1500
+     ]
+    },
+    "b": {
+     "choices": [
+      300,
+      480,
+      600
+     ]
+    },
+    "c": {
+     "choices": [
+      120,
+      180,
+      240
+     ]
+    }
+   },
+   "answerExpr": "(a+b+c)/12",
+   "format": "money",
+   "explanation": "(${a} + ${b} + ${c}) ÷ 12 = ${ANSWER} per month, so annual bills don't wreck one month."
+  },
+  {
+   "id": "lda-14",
+   "city": "london",
+   "topic": "budgeting",
+   "difficulty": "advanced",
+   "level": 3,
+   "type": "numeric",
+   "prompt": "Your fixed costs are ${f}/month and your income ${i}/month. If you lose your job, how many months does a ${s} emergency fund last?",
+   "vars": {
+    "f": {
+     "min": 1500,
+     "max": 3000,
+     "step": 100
+    },
+    "i": {
+     "choices": [
+      3500
+     ]
+    },
+    "s": {
+     "choices": [
+      5000,
+      8000,
+      12000
+     ]
+    }
+   },
+   "answerExpr": "s/f",
+   "format": "num",
+   "tolerance": 0.01,
+   "unit": "months",
+   "explanation": "${s} ÷ ${f} = {ANSWER} months."
+  },
+  {
+   "id": "lda-15",
+   "city": "london",
+   "topic": "budgeting",
+   "difficulty": "advanced",
+   "level": 5,
+   "type": "numeric",
+   "prompt": "Saving {r}% of a ${N} monthly net pay, how many months to build a 3-month emergency fund if expenses are ${e}/month?",
+   "vars": {
+    "r": {
+     "choices": [
+      10,
+      15,
+      20
+     ]
+    },
+    "N": {
+     "choices": [
+      3000,
+      3600,
+      4200
+     ]
+    },
+    "e": {
+     "choices": [
+      2200,
+      2600,
+      3000
+     ]
+    }
+   },
+   "answerExpr": "ceil(3*e/(N*r/100))",
+   "format": "int",
+   "unit": "months",
+   "explanation": "Goal = 3 × ${e}; monthly saving = {r}% × ${N}; months = {ANSWER:int}."
+  },
+  {
+   "id": "lda-16",
+   "city": "london",
+   "topic": "economics",
+   "difficulty": "advanced",
+   "level": 2,
+   "type": "numeric",
+   "prompt": "$1 = £{r}. Convert ${d} to pounds.",
+   "vars": {
+    "r": {
+     "choices": [
+      0.76,
+      0.78,
+      0.79,
+      0.81
+     ]
+    },
+    "d": {
+     "choices": [
+      150,
+      250,
+      400,
+      600
+     ]
+    }
+   },
+   "answerExpr": "d*r",
+   "format": "num",
+   "tolerance": 0.002,
+   "explanation": "${d} × {r} = £{ANSWER}."
+  },
+  {
+   "id": "lda-17",
+   "city": "london",
+   "topic": "economics",
+   "difficulty": "advanced",
+   "level": 3,
+   "type": "numeric",
+   "prompt": "£1 = ${r}. A £{p} train ticket costs how many dollars?",
+   "vars": {
+    "r": {
+     "choices": [
+      1.24,
+      1.27,
+      1.3
+     ]
+    },
+    "p": {
+     "choices": [
+      45,
+      60,
+      85,
+      120
+     ]
+    }
+   },
+   "answerExpr": "p*r",
+   "format": "money",
+   "explanation": "£{p} × {r} = ${ANSWER}."
+  },
+  {
+   "id": "lda-18",
+   "city": "london",
+   "topic": "economics",
+   "difficulty": "advanced",
+   "level": 4,
+   "type": "numeric",
+   "prompt": "A booth charges a {c}% commission plus gives $1 = £{r}. How many pounds for ${d}?",
+   "vars": {
+    "c": {
+     "choices": [
+      2,
+      3,
+      4.5
+     ]
+    },
+    "r": {
+     "choices": [
+      0.77,
+      0.78,
+      0.79
+     ]
+    },
+    "d": {
+     "choices": [
+      200,
+      300,
+      500
+     ]
+    }
+   },
+   "answerExpr": "d*(1-c/100)*r",
+   "format": "num",
+   "tolerance": 0.002,
+   "explanation": "${d} × (1 − {c}%) × {r} = £{ANSWER}."
+  },
+  {
+   "id": "lda-19",
+   "city": "london",
+   "topic": "economics",
+   "difficulty": "advanced",
+   "level": 4,
+   "type": "mc",
+   "prompt": "The dollar strengthens against the pound (more pounds per dollar). For an American visiting London, things feel…",
+   "choices": [
+    "Cheaper",
+    "More expensive",
+    "Exactly the same",
+    "Free"
+   ],
+   "answer": 0,
+   "explanation": "Each dollar buys more pounds, so London prices cost fewer dollars."
+  },
+  {
+   "id": "lda-20",
+   "city": "london",
+   "topic": "economics",
+   "difficulty": "advanced",
+   "level": 5,
+   "type": "mc",
+   "prompt": "A weaker pound makes British goods cheaper abroad. Who benefits most?",
+   "choices": [
+    "British exporters",
+    "British tourists traveling overseas",
+    "Importers buying foreign goods",
+    "Nobody"
+   ],
+   "answer": 0,
+   "explanation": "Foreign buyers can afford more British goods, boosting exporters' sales."
+  },
+  {
+   "id": "lda-21",
+   "city": "london",
+   "topic": "economics",
+   "difficulty": "advanced",
+   "level": 3,
+   "type": "numeric",
+   "prompt": "Buy rate $1 = £{b}, sell-back rate £1 = ${s}. Change $500 to pounds and immediately back. Dollars you end with?",
+   "vars": {
+    "b": {
+     "choices": [
+      0.75,
+      0.76,
+      0.77
+     ]
+    },
+    "s": {
+     "choices": [
+      1.24,
+      1.25,
+      1.26
+     ]
+    }
+   },
+   "answerExpr": "500*b*s",
+   "format": "money",
+   "explanation": "$500 × {b} × {s} = ${ANSWER}. The difference from $500 is the booth's spread."
+  },
+  {
+   "id": "lda-22",
+   "city": "london",
+   "topic": "economics",
+   "difficulty": "advanced",
+   "level": 2,
+   "type": "mc",
+   "prompt": "Using a card abroad, you're asked 'Pay in USD or GBP?' Choosing your home currency (USD) often…",
+   "choices": [
+    "Adds a poor conversion rate set by the merchant (dynamic currency conversion)",
+    "Saves money",
+    "Is required by law",
+    "Is always free"
+   ],
+   "answer": 0,
+   "explanation": "Dynamic currency conversion usually uses a worse rate. Paying in the local currency is often cheaper."
+  },
+  {
+   "id": "lda-23",
+   "city": "london",
+   "topic": "housing",
+   "difficulty": "advanced",
+   "level": 2,
+   "type": "numeric",
+   "prompt": "Rent ${r}/month rises 3% per year. Rent in year 2?",
+   "vars": {
+    "r": {
+     "min": 1200,
+     "max": 2600,
+     "step": 50
+    }
+   },
+   "answerExpr": "r*1.03",
+   "format": "money",
+   "explanation": "${r} × 1.03 = ${ANSWER}."
+  },
+  {
+   "id": "lda-24",
+   "city": "london",
+   "topic": "housing",
+   "difficulty": "advanced",
+   "level": 3,
+   "type": "numeric",
+   "prompt": "Total rent paid over 5 years: ${r}/month, rising 3% each year.",
+   "vars": {
+    "r": {
+     "choices": [
+      1200,
+      1500,
+      1800,
+      2000
+     ]
+    }
+   },
+   "answerExpr": "12*r*((1.03)^5-1)/0.03",
+   "format": "money",
+   "tolerance": 0.002,
+   "explanation": "12 × ${r} × (1.03⁵ − 1)/0.03 = ${ANSWER}."
+  },
+  {
+   "id": "lda-25",
+   "city": "london",
+   "topic": "housing",
+   "difficulty": "advanced",
+   "level": 3,
+   "type": "numeric",
+   "prompt": "Buying a ${H} home: 3% closing costs to buy and 6% to sell later. Combined transaction costs?",
+   "vars": {
+    "H": {
+     "min": 250000,
+     "max": 600000,
+     "step": 10000
+    }
+   },
+   "answerExpr": "H*0.09",
+   "format": "money",
+   "explanation": "9% × ${H} = ${ANSWER} (ignoring price changes)."
+  },
+  {
+   "id": "lda-26",
+   "city": "london",
+   "topic": "housing",
+   "difficulty": "advanced",
+   "level": 4,
+   "type": "numeric",
+   "prompt": "Price-to-rent ratio = home price ÷ annual rent. A ${H} home rents for ${r}/month. Ratio?",
+   "vars": {
+    "H": {
+     "choices": [
+      300000,
+      450000,
+      600000
+     ]
+    },
+    "r": {
+     "choices": [
+      1500,
+      2000,
+      2500
+     ]
+    }
+   },
+   "answerExpr": "H/(12*r)",
+   "format": "num",
+   "tolerance": 0.01,
+   "explanation": "${H} ÷ (12 × ${r}) = {ANSWER}. Above ~20 often favors renting; below ~15 favors buying."
+  },
+  {
+   "id": "lda-27",
+   "city": "london",
+   "topic": "housing",
+   "difficulty": "advanced",
+   "level": 4,
+   "type": "mc",
+   "prompt": "Which costs does a homeowner pay that a renter usually doesn't?",
+   "choices": [
+    "Property tax, maintenance and homeowners insurance",
+    "Groceries",
+    "Phone bill",
+    "Transport"
+   ],
+   "answer": 0,
+   "explanation": "Owners pay these 'hidden' costs on top of the mortgage."
+  },
+  {
+   "id": "lda-28",
+   "city": "london",
+   "topic": "housing",
+   "difficulty": "advanced",
+   "level": 5,
+   "type": "mc",
+   "prompt": "Opportunity cost of a big down payment is…",
+   "choices": [
+    "The investment return you could have earned on that money",
+    "The mortgage interest",
+    "The home's price",
+    "Property tax"
+   ],
+   "answer": 0,
+   "explanation": "Money tied up in a down payment can't be invested elsewhere, that forgone return is a real cost of buying."
+  },
+  {
+   "id": "lda-29",
+   "city": "london",
+   "topic": "housing",
+   "difficulty": "advanced",
+   "level": 3,
+   "type": "numeric",
+   "prompt": "Annual maintenance is roughly 1% of home value. On a ${H} home, about how much per month?",
+   "vars": {
+    "H": {
+     "min": 200000,
+     "max": 700000,
+     "step": 25000
+    }
+   },
+   "answerExpr": "H*0.01/12",
+   "format": "money",
+   "explanation": "1% × ${H} ÷ 12 = ${ANSWER} per month."
+  },
+  {
+   "id": "lda-30",
+   "city": "london",
+   "topic": "housing",
+   "difficulty": "advanced",
+   "level": 4,
+   "type": "numeric",
+   "prompt": "Renter's insurance is ${r}/month. Homeowner's insurance on a similar home is ${h}/month. Annual difference?",
+   "vars": {
+    "r": {
+     "choices": [
+      12,
+      15,
+      20
+     ]
+    },
+    "h": {
+     "choices": [
+      90,
+      120,
+      160
+     ]
+    }
+   },
+   "answerExpr": "12*(h-r)",
+   "format": "money",
+   "explanation": "12 × (${h} − ${r}) = ${ANSWER}."
+  },
+  {
+   "id": "lda-31",
+   "city": "london",
+   "topic": "counting",
+   "difficulty": "advanced",
+   "level": 1,
+   "type": "numeric",
+   "prompt": "Bill ${b}; customer pays ${p}. Change due?",
+   "vars": {
+    "b": {
+     "min": 23.05,
+     "max": 48.95,
+     "step": 0.05
+    },
+    "p": {
+     "choices": [
+      50
+     ]
+    }
+   },
+   "answerExpr": "p-b",
+   "format": "money",
+   "explanation": "${p} − ${b} = ${ANSWER}."
+  },
+  {
+   "id": "lda-32",
+   "city": "london",
+   "topic": "counting",
+   "difficulty": "advanced",
+   "level": 2,
+   "type": "numeric",
+   "prompt": "Minimum number of coins & bills ($20, $10, $5, $1, 25¢, 10¢, 5¢, 1¢) to make ${c}?",
+   "vars": {
+    "c": {
+     "choices": [
+      3.41,
+      7.68,
+      13.99,
+      18.37
+     ]
+    }
+   },
+   "answerExpr": "coins(c)",
+   "format": "int",
+   "explanation": "Use the largest denomination first (greedy), {ANSWER:int} pieces."
+  },
+  {
+   "id": "lda-33",
+   "city": "london",
+   "topic": "counting",
+   "difficulty": "advanced",
+   "level": 3,
+   "type": "numeric",
+   "prompt": "Split a ${b} dinner bill evenly among {n} friends, adding an {t}% tip on the pre-tax total. Each pays?",
+   "vars": {
+    "b": {
+     "min": 60,
+     "max": 180,
+     "step": 0.5
+    },
+    "n": {
+     "choices": [
+      3,
+      4,
+      5,
+      6
+     ]
+    },
+    "t": {
+     "choices": [
+      15,
+      18,
+      20
+     ]
+    }
+   },
+   "answerExpr": "b*(1+t/100)/n",
+   "format": "money",
+   "explanation": "${b} × (1 + {t}%) ÷ {n} = ${ANSWER} each."
+  },
+  {
+   "id": "lda-34",
+   "city": "london",
+   "topic": "needs-wants",
+   "difficulty": "advanced",
+   "level": 2,
+   "type": "mc",
+   "prompt": "You have $300 left after needs. Concert ($150), emergency fund (currently $200), and new sneakers ($120). Best order of priorities?",
+   "choices": [
+    "Emergency fund first, then plan one want",
+    "Concert and sneakers now",
+    "Sneakers, then concert",
+    "Borrow for all three"
+   ],
+   "answer": 0,
+   "explanation": "With only $200 of cushion, building the emergency fund protects you; then choose a want that fits."
+  },
+  {
+   "id": "lda-35",
+   "city": "london",
+   "topic": "shopping",
+   "difficulty": "advanced",
+   "level": 4,
+   "type": "numeric",
+   "prompt": "Cash-back card: {c}% back on ${s} of monthly groceries. Yearly cash back?",
+   "vars": {
+    "c": {
+     "choices": [
+      1,
+      1.5,
+      2,
+      3
+     ]
+    },
+    "s": {
+     "choices": [
+      300,
+      450,
+      600
+     ]
+    }
+   },
+   "answerExpr": "12*s*c/100",
+   "format": "money",
+   "explanation": "12 × ${s} × {c}% = ${ANSWER}, only worth it if you pay the balance in full."
+  },
+  {
+   "id": "lda-36",
+   "city": "london",
+   "topic": "shopping",
+   "difficulty": "advanced",
+   "level": 5,
+   "type": "mc",
+   "prompt": "A 0%-interest 'buy now, pay later' plan for a $400 phone has a $35 late fee per missed payment. The biggest risk is…",
+   "choices": [
+    "Overspending and fees if you miss payments",
+    "Interest at 0%",
+    "Getting the phone",
+    "There's no risk"
+   ],
+   "answer": 0,
+   "explanation": "BNPL makes purchases feel smaller; missed payments add fees and can hurt credit."
+  },
+  {
+   "id": "lda-37",
+   "city": "london",
+   "topic": "shopping",
+   "difficulty": "advanced",
+   "level": 3,
+   "type": "numeric",
+   "prompt": "A ${p} laptop: extended warranty costs ${w}. If there's a {r}% chance you'd need a ${f} repair, what is the expected repair cost?",
+   "vars": {
+    "p": {
+     "choices": [
+      700,
+      900,
+      1200
+     ]
+    },
+    "w": {
+     "choices": [
+      120,
+      150,
+      200
+     ]
+    },
+    "r": {
+     "choices": [
+      5,
+      10,
+      15
+     ]
+    },
+    "f": {
+     "choices": [
+      250,
+      400
+     ]
+    }
+   },
+   "answerExpr": "f*r/100",
+   "format": "money",
+   "explanation": "{r}% × ${f} = ${ANSWER}. If that's well below the warranty price, the warranty is usually a bad deal."
+  },
+  {
+   "id": "lda-38",
+   "city": "london",
+   "topic": "budgeting",
+   "difficulty": "advanced",
+   "level": 4,
+   "type": "numeric",
+   "prompt": "Cutting a ${d}/day takeout habit to ${n}/day saves how much per year (365 days)?",
+   "vars": {
+    "d": {
+     "choices": [
+      12,
+      15,
+      18
+     ]
+    },
+    "n": {
+     "choices": [
+      5,
+      6,
+      8
+     ]
+    }
+   },
+   "answerExpr": "(d-n)*365",
+   "format": "money",
+   "explanation": "(${d} − ${n}) × 365 = ${ANSWER}."
+  },
+  {
+   "id": "lda-39",
+   "city": "london",
+   "topic": "economics",
+   "difficulty": "advanced",
+   "level": 3,
+   "type": "mc",
+   "prompt": "Price elasticity: if a 10% price increase drops quantity sold by 25%, demand is…",
+   "choices": [
+    "Elastic",
+    "Inelastic",
+    "Perfectly inelastic",
+    "Unchanged"
+   ],
+   "answer": 0,
+   "explanation": "% change in quantity (25%) > % change in price (10%) → elastic."
+  },
+  {
+   "id": "lda-40",
+   "city": "london",
+   "topic": "economics",
+   "difficulty": "advanced",
+   "level": 4,
+   "type": "numeric",
+   "prompt": "Price elasticity = %Δquantity ÷ %Δprice. Price rises {p}%, quantity falls {q}%. Elasticity (as a positive number)?",
+   "vars": {
+    "p": {
+     "choices": [
+      5,
+      10,
+      20
+     ]
+    },
+    "q": {
+     "choices": [
+      2,
+      8,
+      15,
+      30
+     ]
+    }
+   },
+   "answerExpr": "q/p",
+   "format": "num",
+   "tolerance": 0.01,
+   "explanation": "{q} ÷ {p} = {ANSWER}. Above 1 = elastic."
+  },
+  {
+   "id": "lda-41",
+   "city": "london",
+   "topic": "economics",
+   "difficulty": "advanced",
+   "level": 2,
+   "type": "mc",
+   "prompt": "Which good likely has the most INELASTIC demand?",
+   "choices": [
+    "Insulin",
+    "A specific brand of soda",
+    "Concert tickets",
+    "Designer sunglasses"
+   ],
+   "answer": 0,
+   "explanation": "People need medicine regardless of price; brands of soda are easily substituted."
+  },
+  {
+   "id": "lda-42",
+   "city": "london",
+   "topic": "budgeting",
+   "difficulty": "advanced",
+   "level": 5,
+   "type": "mc",
+   "prompt": "Your budget keeps failing because 'small' purchases add up. The best fix is…",
+   "choices": [
+    "Track every purchase for a month and set category limits",
+    "Stop budgeting",
+    "Use only credit cards",
+    "Ignore small purchases"
+   ],
+   "answer": 0,
+   "explanation": "Tracking reveals leaks; category limits make them visible before they grow."
+  },
+  {
+   "id": "lda-43",
+   "city": "london",
+   "topic": "shopping",
+   "difficulty": "advanced",
+   "level": 2,
+   "type": "numeric",
+   "prompt": "Unit price: {n} batteries for ${p}. Price per battery?",
+   "vars": {
+    "n": {
+     "choices": [
+      4,
+      8,
+      12,
+      24
+     ]
+    },
+    "p": {
+     "min": 4.99,
+     "max": 19.99,
+     "step": 1
+    }
+   },
+   "answerExpr": "p/n",
+   "format": "money",
+   "toleranceAbs": 0.006,
+   "explanation": "${p} ÷ {n} = ${ANSWER} each."
+  },
+  {
+   "id": "lda-44",
+   "city": "london",
+   "topic": "housing",
+   "difficulty": "advanced",
+   "level": 5,
+   "type": "numeric",
+   "prompt": "Equity after {y} years: home bought for ${H} grows {g}%/yr; mortgage balance remaining is ${B}. Equity?",
+   "vars": {
+    "H": {
+     "choices": [
+      300000,
+      400000
+     ]
+    },
+    "y": {
+     "choices": [
+      5,
+      10
+     ]
+    },
+    "g": {
+     "choices": [
+      2,
+      3,
+      4
+     ]
+    },
+    "B": {
+     "choices": [
+      200000,
+      250000,
+      280000
+     ]
+    }
+   },
+   "answerExpr": "H*(1+g/100)^y - B",
+   "format": "money",
+   "tolerance": 0.002,
+   "explanation": "Value = ${H} × (1 + {g}%)^{y}; minus ${B} owed = ${ANSWER}."
+  },
+  {
+   "id": "lda-45",
+   "city": "london",
+   "topic": "budgeting",
+   "difficulty": "advanced",
+   "level": 1,
+   "type": "mc",
+   "prompt": "Which is a VARIABLE expense?",
+   "choices": [
+    "Groceries",
+    "Rent",
+    "Car payment",
+    "Insurance premium"
+   ],
+   "answer": 0,
+   "explanation": "Variable expenses change month to month; fixed ones stay the same."
+  },
+  {
+   "id": "lda-46",
+   "city": "london",
+   "topic": "budgeting",
+   "difficulty": "advanced",
+   "level": 3,
+   "type": "mc",
+   "prompt": "Pay-yourself-first means…",
+   "choices": [
+    "Moving savings out right when you get paid, before spending",
+    "Buying yourself a treat first",
+    "Paying bills last",
+    "Never saving"
+   ],
+   "answer": 0,
+   "explanation": "Automatic saving at payday makes saving the default instead of the leftover."
+  },
+  {
+   "id": "lda-47",
+   "city": "london",
+   "topic": "shopping",
+   "difficulty": "advanced",
+   "level": 4,
+   "type": "numeric",
+   "prompt": "Membership warehouse: ${m}/year fee; it saves you {s}% on ${g}/month of groceries. Net yearly savings?",
+   "vars": {
+    "m": {
+     "choices": [
+      60,
+      65,
+      120
+     ]
+    },
+    "s": {
+     "choices": [
+      8,
+      12,
+      15
+     ]
+    },
+    "g": {
+     "choices": [
+      250,
+      400,
+      600
+     ]
+    }
+   },
+   "answerExpr": "12*g*s/100 - m",
+   "format": "money",
+   "explanation": "12 × ${g} × {s}% − ${m} = ${ANSWER}."
+  },
+  {
+   "id": "lda-48",
+   "city": "london",
+   "topic": "economics",
+   "difficulty": "advanced",
+   "level": 5,
+   "type": "numeric",
+   "prompt": "Inflation of {i}%/yr. How much will a ${p} basket of groceries cost in {y} years?",
+   "vars": {
+    "i": {
+     "choices": [
+      2,
+      3,
+      4,
+      6
+     ]
+    },
+    "p": {
+     "choices": [
+      100,
+      150,
+      200
+     ]
+    },
+    "y": {
+     "choices": [
+      3,
+      5,
+      10
+     ]
+    }
+   },
+   "answerExpr": "p*(1+i/100)^y",
+   "format": "money",
+   "tolerance": 0.002,
+   "explanation": "${p} × (1 + {i}%)^{y} = ${ANSWER}."
+  },
+  {
+   "id": "lda-49",
+   "city": "london",
+   "topic": "shopping",
+   "difficulty": "advanced",
+   "level": 3,
+   "type": "mc",
+   "prompt": "Which is the strongest reason to buy store brand over name brand?",
+   "choices": [
+    "Same ingredients and quality at a lower unit price",
+    "The packaging is plainer",
+    "It's always healthier",
+    "Name brands are illegal"
+   ],
+   "answer": 0,
+   "explanation": "Compare ingredients and unit price; store brands often match name brands for less."
+  },
+  {
+   "id": "lda-50",
+   "city": "london",
+   "topic": "budgeting",
+   "difficulty": "advanced",
+   "level": 2,
+   "type": "numeric",
+   "prompt": "Monthly net pay ${N}; you save ${s}. Savings rate (%)?",
+   "vars": {
+    "N": {
+     "min": 2200,
+     "max": 5200,
+     "step": 100
+    },
+    "s": {
+     "min": 150,
+     "max": 900,
+     "step": 25
+    }
+   },
+   "answerExpr": "s/N*100",
+   "format": "pct",
+   "toleranceAbs": 0.1,
+   "explanation": "${s} ÷ ${N} = {ANSWER:pct}."
+  },
+  {
+   "id": "lda-51",
+   "city": "london",
+   "topic": "housing",
+   "difficulty": "advanced",
+   "level": 2,
+   "type": "mc",
+   "prompt": "A security deposit on a rental is…",
+   "choices": [
+    "Money held by the landlord to cover damage, usually returned when you move out",
+    "Your first month's rent",
+    "A tax",
+    "A non-refundable fee always"
+   ],
+   "answer": 0,
+   "explanation": "Leave the place in good shape to get your deposit back."
+  },
+  {
+   "id": "lda-52",
+   "city": "london",
+   "topic": "shopping",
+   "difficulty": "advanced",
+   "level": 5,
+   "type": "numeric",
+   "prompt": "A ${p} item is marked up {m}% and then put on a {d}% sale. Final price?",
+   "vars": {
+    "p": {
+     "choices": [
+      40,
+      60,
+      80,
+      100
+     ]
+    },
+    "m": {
+     "choices": [
+      25,
+      40,
+      50
+     ]
+    },
+    "d": {
+     "choices": [
+      20,
+      25,
+      30
+     ]
+    }
+   },
+   "answerExpr": "p*(1+m/100)*(1-d/100)",
+   "format": "money",
+   "explanation": "${p} × (1 + {m}%) × (1 − {d}%) = ${ANSWER}, a 'sale' after a markup can still cost more than the original."
+  }
+ ]
+}

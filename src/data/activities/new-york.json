@@ -1,0 +1,71 @@
+{
+  "activities": [
+    {
+      "id": "candle-predict", "name": "Up or Down?", "kind": "candles", "icon": "🕯️", "building": "ny-exchange", "city": "new-york",
+      "topics": ["investing"],
+      "blurb": "Read the candlestick chart, trend, volume and moving averages, then predict the next move and size your bet. Real markets are far less predictable!",
+      "entryBlurb": "Look at the chart. Will the price go UP or DOWN next?",
+      "entry": { "rounds": 6, "advanced": false }, "advanced": { "rounds": 8, "advanced": true },
+      "stars": [40, 65, 85], "rewards": { "cash": [20, 35, 55], "xp": [30, 50, 70] }
+    },
+    {
+      "id": "market-quiz", "name": "Trading Floor Quiz", "kind": "quiz", "icon": "📊", "building": "ny-exchange", "city": "new-york",
+      "topics": ["investing", "economics"],
+      "blurb": "Stocks, bonds, funds, risk and return.",
+      "entry": { "count": 7, "cities": ["new-york"] }, "advanced": { "count": 8, "cities": ["new-york"] },
+      "stars": [50, 75, 90], "rewards": { "cash": [20, 35, 55], "xp": [35, 55, 80] }
+    },
+    {
+      "id": "asset-sort", "name": "Asset or Liability?", "kind": "sort", "icon": "💎", "building": "ny-brokerage", "city": "new-york",
+      "topics": ["investing", "debt"],
+      "blurb": "Sort each item: something you own, or something you owe?",
+      "entry": { "set": "asset-liability" }, "advanced": { "set": "asset-liability" },
+      "stars": [50, 75, 95], "rewards": { "cash": [15, 25, 40], "xp": [25, 40, 55] }
+    },
+    {
+      "id": "portfolio-challenge", "name": "Portfolio Challenge", "kind": "portfolio10y", "icon": "🧺", "building": "ny-investment-club", "city": "new-york",
+      "topics": ["investing", "economics"],
+      "blurb": "Split $10,000 across cash, bonds, an index fund and hot stocks. Simulate 10 years of markets and inflation. Did your REAL return beat inflation?",
+      "entryBlurb": "Pick a money basket and see how it grows in 10 years!",
+      "entry": { "mode": "baskets" }, "advanced": { "mode": "sliders", "rebalance": true },
+      "stars": [40, 65, 85], "rewards": { "cash": [25, 40, 65], "xp": [40, 60, 85] }
+    },
+    {
+      "id": "dca-lab", "name": "Dollar-Cost Averaging Lab", "kind": "dca", "icon": "📅", "building": "ny-investment-club", "city": "new-york",
+      "topics": ["investing"],
+      "blurb": "Invest a fixed amount every month through ups and downs, then compare with trying to time the market.",
+      "entry": { "months": 12 }, "advanced": { "months": 24 },
+      "stars": [40, 70, 90], "rewards": { "cash": [20, 35, 55], "xp": [35, 55, 75] }
+    },
+    {
+      "id": "quiz-tower", "name": "Wall Street Quiz Tower", "kind": "tower", "icon": "🗼", "building": "ny-quiz-tower", "city": "new-york",
+      "topics": ["investing", "interest", "economics"],
+      "blurb": "Ten floors, three questions each, harder as you climb. Get 2 of 3 to reach the next floor.",
+      "entry": { "floors": 8, "cities": ["new-york", "park"] }, "advanced": { "floors": 10, "cities": ["new-york", "park", "singapore"] },
+      "stars": [30, 60, 90], "rewards": { "cash": [30, 60, 100], "xp": [40, 80, 130] }
+    },
+    {
+      "id": "newsroom", "name": "Breaking News Desk", "kind": "newsroom", "icon": "📰", "building": "ny-newsroom", "city": "new-york",
+      "topics": ["investing", "economics"],
+      "blurb": "Read each headline: which company is affected, and does its stock go up, down, or barely move?",
+      "entryBlurb": "Good news or bad news for the company?",
+      "entry": { "rounds": 6, "magnitude": false }, "advanced": { "rounds": 8, "magnitude": true },
+      "stars": [45, 70, 90], "rewards": { "cash": [20, 35, 55], "xp": [30, 50, 70] }
+    },
+    {
+      "id": "startup-pitch", "name": "Pitch Night", "kind": "startups", "icon": "🚀", "building": "ny-theater", "city": "new-york",
+      "topics": ["investing", "business"],
+      "blurb": "Hear 4 startup pitches and invest your own real money. Results arrive in a few Fin City months, most startups fail, a few pay off big.",
+      "entryBlurb": "Listen to new business ideas and decide which ones to support with play money!",
+      "entry": { "pitches": 4, "real": false }, "advanced": { "pitches": 4, "real": true },
+      "stars": [40, 70, 90], "rewards": { "cash": [15, 25, 40], "xp": [35, 55, 80] }
+    },
+    {
+      "id": "hype-check", "name": "Hype or Real?", "kind": "sort", "icon": "🎢", "building": "ny-theater", "city": "new-york",
+      "topics": ["investing", "safety"],
+      "blurb": "Sort investment claims: reasonable, or get-rich-quick hype?",
+      "entry": { "set": "hype-real" }, "advanced": { "set": "hype-real" },
+      "stars": [50, 75, 95], "rewards": { "cash": [15, 25, 40], "xp": [25, 40, 55] }
+    }
+  ]
+}

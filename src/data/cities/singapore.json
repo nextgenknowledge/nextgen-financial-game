@@ -1,0 +1,458 @@
+{
+  "id": "singapore",
+  "name": "Singapore",
+  "tagline": "Saving, protection & the long term",
+  "theme": "Grow money trees, plan retirement, choose insurance, build an emergency fund, compare loans and give wisely.",
+  "music": "singapore",
+  "icon": "🦁",
+  "half": 110,
+  "ground": "#c6c4b8",
+  "palette": {
+    "walls": [
+      "#f4f6f2",
+      "#e8eef0",
+      "#f2ebdc",
+      "#dfe9e4",
+      "#eef2f6",
+      "#e9e0d0",
+      "#d9e6ec"
+    ],
+    "roofs": [
+      "#b5583c",
+      "#5a6a7a",
+      "#3a6b4a"
+    ],
+    "trims": [
+      "#ffffff",
+      "#e8e1d0"
+    ],
+    "accents": [
+      "#2ebaba",
+      "#3cc45a",
+      "#ffcf3f",
+      "#e1553f"
+    ]
+  },
+  "roads": {
+    "xs": [
+      -66,
+      -22,
+      22,
+      66
+    ],
+    "zs": [
+      -66,
+      -22,
+      22,
+      66
+    ],
+    "width": 10,
+    "color": "#52575f"
+  },
+  "water": [
+    {
+      "x": 0,
+      "z": -124,
+      "w": 280,
+      "d": 34
+    }
+  ],
+  "plazas": [
+    {
+      "pos": [
+        0,
+        0
+      ],
+      "r": 13,
+      "color": "#e3ddc8"
+    }
+  ],
+  "buildings": [
+    {
+      "id": "savings-garden",
+      "name": "Savings Garden",
+      "icon": "🌳",
+      "pos": [
+        -44,
+        -44
+      ],
+      "size": [
+        26,
+        20,
+        11
+      ],
+      "door": "south",
+      "style": "greenhouse",
+      "colors": {
+        "wall": "#f4f1ea",
+        "roof": "#3a6b4a",
+        "trim": "#2f5a5a",
+        "accent": "#3cc45a"
+      },
+      "blurb": "Plant money and watch compound interest grow a tree. Your real CDs grow here too!",
+      "stations": [
+        {
+          "activity": "savings-garden",
+          "label": "Plant a Money Tree",
+          "icon": "🌱",
+          "npc": "gardener"
+        },
+        {
+          "service": "cds",
+          "label": "Open a CD (Money Tree)",
+          "icon": "🔒",
+          "npc": "banker"
+        }
+      ],
+      "interior": {
+        "floor": "#8a6a4a",
+        "wall": "#e6f0e0",
+        "theme": "shop"
+      }
+    },
+    {
+      "id": "retirement-tower",
+      "name": "Retirement Tower",
+      "icon": "🏖️",
+      "pos": [
+        44,
+        -44
+      ],
+      "size": [
+        20,
+        20,
+        52
+      ],
+      "door": "south",
+      "style": "glass",
+      "colors": {
+        "wall": "#d9e6f0",
+        "roof": "#2f3a4a",
+        "trim": "#ffffff",
+        "accent": "#ffcf3f"
+      },
+      "blurb": "Simulate saving from 16 to 65: start early vs. late, employer match, Roth vs. traditional.",
+      "stations": [
+        {
+          "activity": "retirement-tower",
+          "label": "Future You Simulator",
+          "icon": "👵",
+          "npc": "banker"
+        },
+        {
+          "service": "retirement",
+          "label": "My Retirement Account",
+          "icon": "🏖️",
+          "npc": "banker"
+        }
+      ],
+      "interior": {
+        "floor": "#c9ced8",
+        "wall": "#f4f8fb",
+        "theme": "office"
+      }
+    },
+    {
+      "id": "insurance-office",
+      "name": "Insurance Office",
+      "icon": "☂️",
+      "pos": [
+        0,
+        -44
+      ],
+      "size": [
+        20,
+        16,
+        12
+      ],
+      "door": "south",
+      "style": "office",
+      "colors": {
+        "wall": "#f0e6d0",
+        "roof": "#2f5a5a",
+        "trim": "#1e2840",
+        "accent": "#2ebaba"
+      },
+      "blurb": "Choose a policy, then live through a year of random events. Premiums vs. deductibles!",
+      "stations": [
+        {
+          "activity": "insurance-sim",
+          "label": "Insurance Year",
+          "icon": "🎲",
+          "npc": "agent"
+        },
+        {
+          "service": "insurance",
+          "label": "Buy Real Insurance",
+          "icon": "☂️",
+          "npc": "agent"
+        }
+      ],
+      "interior": {
+        "floor": "#d9cdb4",
+        "wall": "#fbf6ee",
+        "theme": "office"
+      }
+    },
+    {
+      "id": "emergency-center",
+      "name": "Emergency Fund Center",
+      "icon": "☔",
+      "pos": [
+        -44,
+        0
+      ],
+      "size": [
+        18,
+        16,
+        10
+      ],
+      "door": "east",
+      "style": "civic",
+      "colors": {
+        "wall": "#e6f0e0",
+        "roof": "#3a6b4a",
+        "trim": "#1e2840",
+        "accent": "#ffcf3f"
+      },
+      "blurb": "How big should your rainy-day fund be? Survive a year of surprises.",
+      "stations": [
+        {
+          "activity": "emergency-fund",
+          "label": "Rainy Day Challenge",
+          "icon": "☔",
+          "npc": "teacher"
+        }
+      ],
+      "interior": {
+        "floor": "#c9d6c0",
+        "wall": "#f4fbf0",
+        "theme": "civic"
+      }
+    },
+    {
+      "id": "borrowing-booth",
+      "name": "Borrowing Booth",
+      "icon": "📝",
+      "pos": [
+        44,
+        0
+      ],
+      "size": [
+        16,
+        14,
+        9
+      ],
+      "door": "west",
+      "style": "kiosk",
+      "colors": {
+        "wall": "#f6e3d6",
+        "roof": "#d9653b",
+        "trim": "#1e2840",
+        "accent": "#ffcf3f"
+      },
+      "blurb": "Compare loan offers: APR, term, fees, monthly payment and total cost.",
+      "stations": [
+        {
+          "activity": "borrowing-booth",
+          "label": "Compare Loan Offers",
+          "icon": "📝",
+          "npc": "banker"
+        },
+        {
+          "service": "loans",
+          "label": "Real Loans",
+          "icon": "💳",
+          "npc": "banker"
+        }
+      ],
+      "interior": {
+        "floor": "#e2cfb0",
+        "wall": "#fbf6ee",
+        "theme": "office"
+      }
+    },
+    {
+      "id": "giving-center",
+      "name": "Charity & Giving Center",
+      "icon": "💝",
+      "pos": [
+        0,
+        44
+      ],
+      "size": [
+        22,
+        16,
+        11
+      ],
+      "door": "north",
+      "style": "civic",
+      "colors": {
+        "wall": "#fbe9c9",
+        "roof": "#e1553f",
+        "trim": "#1e2840",
+        "accent": "#f06aa8"
+      },
+      "blurb": "Give to causes, check if charities are legit, and fund community projects back in the park.",
+      "stations": [
+        {
+          "service": "giving",
+          "label": "Donate",
+          "icon": "💝",
+          "npc": "mayor"
+        },
+        {
+          "activity": "charity-check",
+          "label": "Real or Red Flag?",
+          "icon": "🚩",
+          "npc": "reporter"
+        },
+        {
+          "activity": "sg-quiz",
+          "label": "Long-Term Quiz",
+          "icon": "🎤",
+          "npc": "host"
+        }
+      ],
+      "interior": {
+        "floor": "#e6d0c0",
+        "wall": "#fff4f8",
+        "theme": "civic"
+      }
+    }
+  ],
+  "landmarks": [
+    {
+      "type": "marina-towers",
+      "pos": [
+        -48,
+        -96
+      ]
+    },
+    {
+      "type": "supertrees",
+      "pos": [
+        80,
+        -90
+      ]
+    },
+    {
+      "type": "lionfish-fountain",
+      "pos": [
+        36,
+        -103
+      ],
+      "rot": 180
+    },
+    {
+      "type": "hawker-center",
+      "pos": [
+        -88,
+        44
+      ]
+    },
+    {
+      "type": "big-wheel",
+      "pos": [
+        96,
+        88
+      ],
+      "rot": 0
+    },
+    {
+      "type": "statue",
+      "pos": [
+        0,
+        0
+      ]
+    },
+    {
+      "type": "bench",
+      "pos": [
+        -9,
+        9
+      ],
+      "rot": 180
+    },
+    {
+      "type": "bench",
+      "pos": [
+        9,
+        -9
+      ],
+      "rot": 0
+    },
+    {
+      "type": "dock",
+      "pos": [
+        0,
+        -104
+      ],
+      "rot": 180
+    }
+  ],
+  "portals": [
+    {
+      "to": "park",
+      "pos": [
+        0,
+        92
+      ],
+      "rot": 180
+    }
+  ],
+  "spawn": [
+    0,
+    80,
+    180
+  ],
+  "garage": [
+    12,
+    78,
+    180
+  ],
+  "dock": [
+    0,
+    -117,
+    180
+  ],
+  "filler": {
+    "seed": 51,
+    "density": 0.82,
+    "minH": 12,
+    "maxH": 50,
+    "style": "sg"
+  },
+  "trees": {
+    "count": 110,
+    "seed": 52,
+    "kinds": [
+      "palm",
+      "round",
+      "blossom"
+    ]
+  },
+  "npcs": 36,
+  "traffic": 14,
+  "boats": 4,
+  "host": {
+    "name": "Uncle Lim",
+    "look": "gardener",
+    "pos": [
+      8,
+      74
+    ],
+    "lines": [
+      "Welcome to Singapore, the garden city! Money planted early grows the tallest trees.",
+      "Insurance and an emergency fund turn big disasters into small bumps.",
+      "Retirement feels far away, but the earliest dollars do the most work."
+    ],
+    "entryLines": [
+      "Welcome to Singapore! Let's grow a money tree!",
+      "Saving a little now helps a LOT later."
+    ]
+  },
+  "weather": {
+    "rain": 0.4
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "$comment": "Daily (3 per real day) and weekly (3 per real week) challenges. event.type/target match recordEvent events; count = how many times. minStars applies to activityComplete. requires.unlocked = location that must be unlocked first.",
+  "daily": [
+    { "id": "d-quiz-10", "text": "Answer 10 questions correctly", "icon": "✅", "event": { "type": "answer", "correct": true }, "count": 10, "reward": { "cash": 40, "xp": 50 } },
+    { "id": "d-3-activities", "text": "Finish any 3 activities", "icon": "🎮", "event": { "type": "activityComplete" }, "count": 3, "reward": { "cash": 35, "xp": 45 } },
+    { "id": "d-3star", "text": "Earn 3 stars in any activity", "icon": "⭐", "event": { "type": "activityComplete", "minStars": 3 }, "count": 1, "reward": { "cash": 50, "xp": 60 } },
+    { "id": "d-deposit", "text": "Make a deposit into savings or a goal", "icon": "🐷", "event": { "type": "fundGoal" }, "count": 1, "reward": { "cash": 20, "xp": 30 }, "alt": ["depositSavings"] },
+    { "id": "d-job", "text": "Work 2 job shifts", "icon": "💼", "event": { "type": "job" }, "count": 2, "reward": { "cash": 40, "xp": 50 } },
+    { "id": "d-travel", "text": "Visit 2 different cities", "icon": "🌀", "event": { "type": "travel" }, "count": 2, "reward": { "cash": 25, "xp": 40 }, "requires": { "unlocked": "new-york" } },
+    { "id": "d-ny", "text": "Play an activity in New York", "icon": "🗽", "event": { "type": "activityComplete", "city": "new-york" }, "count": 1, "reward": { "cash": 30, "xp": 40 }, "requires": { "unlocked": "new-york" } },
+    { "id": "d-london", "text": "Play an activity in London", "icon": "🎡", "event": { "type": "activityComplete", "city": "london" }, "count": 1, "reward": { "cash": 30, "xp": 40 }, "requires": { "unlocked": "london" } },
+    { "id": "d-hk", "text": "Play an activity in Hong Kong", "icon": "🏮", "event": { "type": "activityComplete", "city": "hong-kong" }, "count": 1, "reward": { "cash": 30, "xp": 40 }, "requires": { "unlocked": "hong-kong" } },
+    { "id": "d-sg", "text": "Play an activity in Singapore", "icon": "🦁", "event": { "type": "activityComplete", "city": "singapore" }, "count": 1, "reward": { "cash": 30, "xp": 40 }, "requires": { "unlocked": "singapore" } },
+    { "id": "d-sf", "text": "Play an activity in San Francisco", "icon": "🌉", "event": { "type": "activityComplete", "city": "san-francisco" }, "count": 1, "reward": { "cash": 30, "xp": 40 }, "requires": { "unlocked": "san-francisco" } },
+    { "id": "d-library", "text": "Read a Library lesson", "icon": "📖", "event": { "type": "lesson" }, "count": 1, "reward": { "cash": 20, "xp": 40 } },
+    { "id": "d-invest", "text": "Buy any investment", "icon": "📈", "event": { "type": "invest" }, "count": 1, "reward": { "cash": 25, "xp": 40 }, "requires": { "unlocked": "new-york" } },
+    { "id": "d-walk", "text": "Walk 500 meters", "icon": "👟", "event": { "type": "move" }, "count": 500, "useValue": true, "reward": { "cash": 15, "xp": 25 } },
+    { "id": "d-arcade", "text": "Play a game at the Coin Arcade", "icon": "🕹️", "event": { "type": "activityComplete", "target": "coin-catcher" }, "count": 1, "reward": { "cash": 10, "xp": 25 }, "alt": ["money-memory", "price-dash"] },
+    { "id": "d-donate", "text": "Donate to a cause or project", "icon": "💝", "event": { "type": "donate" }, "count": 1, "reward": { "xp": 60 } }
+  ],
+  "weekly": [
+    { "id": "w-quiz-60", "text": "Answer 60 questions correctly", "icon": "🧠", "event": { "type": "answer", "correct": true }, "count": 60, "reward": { "cash": 200, "xp": 250 } },
+    { "id": "w-15-activities", "text": "Finish 15 activities", "icon": "🏆", "event": { "type": "activityComplete" }, "count": 15, "reward": { "cash": 180, "xp": 220 } },
+    { "id": "w-5-three", "text": "Earn 3 stars 5 times", "icon": "🌟", "event": { "type": "activityComplete", "minStars": 3 }, "count": 5, "reward": { "cash": 220, "xp": 260 } },
+    { "id": "w-shifts", "text": "Work 10 job shifts", "icon": "💼", "event": { "type": "job" }, "count": 10, "reward": { "cash": 200, "xp": 220 } },
+    { "id": "w-all-cities", "text": "Visit 5 cities", "icon": "🌍", "event": { "type": "travel" }, "count": 5, "reward": { "cash": 150, "xp": 200 }, "requires": { "unlocked": "singapore" } },
+    { "id": "w-months", "text": "Play through 3 Fin City months", "icon": "📅", "event": { "type": "month" }, "count": 3, "reward": { "cash": 150, "xp": 200 } },
+    { "id": "w-lessons", "text": "Read 3 Library lessons", "icon": "📚", "event": { "type": "lesson" }, "count": 3, "reward": { "cash": 100, "xp": 200 } }
+  ]
+}

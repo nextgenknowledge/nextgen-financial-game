@@ -1,0 +1,48 @@
+{
+  "$comment": "Insurance Office (Singapore). Each category has plans with a monthly premium and a deductible (you pay up to the deductible, insurance pays the rest). Life events with a matching category use it. coverage = fraction paid above the deductible.",
+  "categories": [
+    {
+      "id": "health",
+      "name": "Health Insurance",
+      "icon": "🩺",
+      "blurb": "Helps pay doctor and hospital bills.",
+      "plans": [
+        { "id": "health-basic", "name": "Basic", "premium": 45, "deductible": 2000, "coverage": 0.8 },
+        { "id": "health-plus", "name": "Plus", "premium": 110, "deductible": 500, "coverage": 0.9 },
+        { "id": "health-max", "name": "Max", "premium": 190, "deductible": 100, "coverage": 1.0 }
+      ]
+    },
+    {
+      "id": "auto",
+      "name": "Vehicle Insurance",
+      "icon": "🚗",
+      "blurb": "Covers repairs and accidents for cars, boats and planes.",
+      "requires": "vehicle",
+      "plans": [
+        { "id": "auto-basic", "name": "Basic", "premium": 35, "deductible": 1000, "coverage": 0.8 },
+        { "id": "auto-full", "name": "Full", "premium": 90, "deductible": 250, "coverage": 1.0 }
+      ]
+    },
+    {
+      "id": "home",
+      "name": "Home & Renters Insurance",
+      "icon": "🏠",
+      "blurb": "Covers damage and stolen stuff at home.",
+      "plans": [
+        { "id": "home-renters", "name": "Renters", "premium": 12, "deductible": 500, "coverage": 0.9 },
+        { "id": "home-owner", "name": "Homeowner", "premium": 85, "deductible": 1000, "coverage": 1.0, "requires": "property" }
+      ]
+    },
+    {
+      "id": "pet",
+      "name": "Pet Insurance",
+      "icon": "🐾",
+      "blurb": "Helps with vet bills.",
+      "requires": "pet",
+      "plans": [
+        { "id": "pet-basic", "name": "Basic", "premium": 15, "deductible": 250, "coverage": 0.8 },
+        { "id": "pet-plus", "name": "Plus", "premium": 32, "deductible": 50, "coverage": 0.9 }
+      ]
+    }
+  ]
+}

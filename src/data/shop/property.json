@@ -1,0 +1,32 @@
+{
+  "$comment": "Real Estate Office. Plots are land in the park neighborhood (pos is relative to the neighborhood landmark). Houses are built on plots you own. Condos are city apartments (no plot needed). appreciation = yearly value growth. upkeep = monthly maintenance; property tax (Advanced) is 1.1%/yr of value. rent = monthly rent if you rent it out. happiness applies while you live there.",
+  "plots": [
+    { "id": "plot-a1", "name": "Maple Lane · Lot 1", "price": 6000, "pos": [-12, -30] },
+    { "id": "plot-a2", "name": "Maple Lane · Lot 2", "price": 6200, "pos": [-12, -10] },
+    { "id": "plot-a3", "name": "Maple Lane · Lot 3", "price": 6500, "pos": [-12, 10] },
+    { "id": "plot-a4", "name": "Maple Lane · Lakeview Lot", "price": 9000, "pos": [-12, 30] },
+    { "id": "plot-b1", "name": "Oak Street · Lot 1", "price": 7000, "pos": [12, -30] },
+    { "id": "plot-b2", "name": "Oak Street · Lot 2", "price": 7200, "pos": [12, -10] },
+    { "id": "plot-b3", "name": "Oak Street · Corner Lot", "price": 8500, "pos": [12, 10] },
+    { "id": "plot-b4", "name": "Oak Street · Big Lot", "price": 12000, "pos": [12, 30] }
+  ],
+  "houses": [
+    { "id": "tiny-house", "name": "Tiny House", "icon": "🛖", "buildCost": 18000, "upkeep": 60, "rent": 650, "happiness": 10, "appreciation": 0.03, "blurb": "Small, cozy and cheap to keep." },
+    { "id": "cottage", "name": "Cozy Cottage", "icon": "🏠", "buildCost": 42000, "upkeep": 120, "rent": 1350, "happiness": 18, "appreciation": 0.035, "blurb": "Two bedrooms and a garden." },
+    { "id": "family-home", "name": "Family Home", "icon": "🏡", "buildCost": 95000, "upkeep": 240, "rent": 2400, "happiness": 26, "appreciation": 0.04, "blurb": "Room for everyone, plus a garage." },
+    { "id": "modern-villa", "name": "Modern Villa", "icon": "🏘️", "buildCost": 220000, "upkeep": 520, "rent": 4800, "happiness": 36, "appreciation": 0.04, "unlockLevel": 12, "blurb": "Glass walls, rooftop deck, big upkeep." }
+  ],
+  "condos": [
+    { "id": "sf-studio", "name": "San Francisco Studio", "icon": "🌉", "city": "san-francisco", "price": 85000, "upkeep": 260, "rent": 1900, "appreciation": 0.045, "happiness": 12, "blurb": "Tiny apartment, big rent." },
+    { "id": "london-flat", "name": "London Flat", "icon": "🎡", "city": "london", "price": 120000, "upkeep": 300, "rent": 2300, "appreciation": 0.035, "happiness": 14, "blurb": "Two-bed flat near the river." },
+    { "id": "ny-loft", "name": "New York Loft", "icon": "🗽", "city": "new-york", "price": 160000, "upkeep": 420, "rent": 3100, "appreciation": 0.04, "happiness": 16, "blurb": "Brick loft with tall windows." },
+    { "id": "hk-apartment", "name": "Hong Kong Harbor Apartment", "icon": "🌃", "city": "hong-kong", "price": 140000, "upkeep": 380, "rent": 2700, "appreciation": 0.03, "happiness": 14, "blurb": "Harbor views from the 30th floor." },
+    { "id": "sg-condo", "name": "Singapore Garden Condo", "icon": "🌴", "city": "singapore", "price": 130000, "upkeep": 340, "rent": 2500, "appreciation": 0.035, "happiness": 15, "blurb": "Pool, gardens, and a long-term investment." }
+  ],
+  "upgrades": [
+    { "id": "solar", "name": "Solar Panels", "icon": "☀️", "cost": 9000, "upkeepChange": -40, "valueAdd": 7000 },
+    { "id": "garden", "name": "Garden & Fence", "icon": "🌻", "cost": 2500, "rentAdd": 60, "valueAdd": 2000, "happiness": 4 },
+    { "id": "kitchen", "name": "New Kitchen", "icon": "🍳", "cost": 15000, "rentAdd": 180, "valueAdd": 11000, "happiness": 5 },
+    { "id": "pool", "name": "Swimming Pool", "icon": "🏊", "cost": 35000, "upkeepChange": 120, "rentAdd": 250, "valueAdd": 20000, "happiness": 10 }
+  ]
+}

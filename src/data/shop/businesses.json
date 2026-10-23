@@ -1,0 +1,12 @@
+{
+  "$comment": "Hong Kong Business Registry. cost = startup cost. revenue/expenses are monthly at level 1. Each level multiplies revenue by (1 + levelBoost) and costs upgradeCost × level. staff: each hire adds staffBoost revenue and costs wage/month. risk = month-to-month revenue swing (0.2 = ±20%). season = months (0-11) with +30% demand.",
+  "types": [
+    { "id": "lemonade", "name": "Lemonade Stand", "icon": "🍋", "cost": 250, "revenue": 90, "expenses": 35, "levelBoost": 0.35, "upgradeCost": 150, "staffBoost": 0.3, "wage": 40, "maxStaff": 2, "maxLevel": 5, "risk": 0.3, "season": [5, 6, 7], "blurb": "Classic first business. Sells best in summer." },
+    { "id": "food-cart", "name": "Dumpling Cart", "icon": "🥟", "cost": 1800, "revenue": 620, "expenses": 330, "levelBoost": 0.3, "upgradeCost": 800, "staffBoost": 0.25, "wage": 220, "maxStaff": 3, "maxLevel": 5, "risk": 0.2, "season": [11, 0, 1], "blurb": "Steady customers, especially in winter." },
+    { "id": "bike-repair", "name": "Bike Repair Shop", "icon": "🔧", "cost": 4500, "revenue": 1300, "expenses": 760, "levelBoost": 0.28, "upgradeCost": 1800, "staffBoost": 0.25, "wage": 420, "maxStaff": 3, "maxLevel": 5, "risk": 0.15, "season": [3, 4, 5], "blurb": "Spring is busy season." },
+    { "id": "bubble-tea", "name": "Bubble Tea Shop", "icon": "🧋", "cost": 12000, "revenue": 3800, "expenses": 2600, "levelBoost": 0.25, "upgradeCost": 5000, "staffBoost": 0.22, "wage": 1100, "maxStaff": 4, "maxLevel": 5, "risk": 0.22, "season": [5, 6, 7], "blurb": "Trendy and popular, but trends change." },
+    { "id": "game-cafe", "name": "Game Café", "icon": "🎲", "cost": 25000, "revenue": 7200, "expenses": 5100, "levelBoost": 0.25, "upgradeCost": 9000, "staffBoost": 0.2, "wage": 1500, "maxStaff": 4, "maxLevel": 5, "risk": 0.25, "season": [10, 11], "blurb": "Board games, snacks and tournaments." },
+    { "id": "app-studio", "name": "App Studio", "icon": "📱", "cost": 60000, "revenue": 15000, "expenses": 11500, "levelBoost": 0.35, "upgradeCost": 20000, "staffBoost": 0.3, "wage": 4500, "maxStaff": 5, "maxLevel": 5, "risk": 0.45, "season": [], "blurb": "High risk, high reward. Some months are huge, some are scary." },
+    { "id": "delivery-fleet", "name": "Delivery Fleet", "icon": "🚚", "cost": 90000, "revenue": 24000, "expenses": 19500, "levelBoost": 0.22, "upgradeCost": 30000, "staffBoost": 0.18, "wage": 3800, "maxStaff": 6, "maxLevel": 5, "risk": 0.15, "season": [10, 11], "blurb": "Big, steady, low margins. Needs lots of cash flow.", "unlockLevel": 12 }
+  ]
+}

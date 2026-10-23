@@ -1,0 +1,457 @@
+{
+  "id": "hong-kong",
+  "name": "Hong Kong",
+  "tagline": "Business & trade",
+  "theme": "Run a night-market stall, trade cargo across ports, start businesses, balance the books and race deliveries.",
+  "music": "hong-kong",
+  "icon": "🏮",
+  "half": 110,
+  "ground": "#bdb8ae",
+  "palette": {
+    "walls": [
+      "#d9e2e0",
+      "#e8dcd0",
+      "#c9cfd2",
+      "#b8c6c9",
+      "#e6d6dc",
+      "#d6dccf",
+      "#9fb0b8"
+    ],
+    "roofs": [
+      "#6a6f76",
+      "#3a3f4a",
+      "#5a5f66"
+    ],
+    "trims": [
+      "#ffffff",
+      "#e8e1d0"
+    ],
+    "accents": [
+      "#d0302a",
+      "#ffcf3f",
+      "#2ebaba",
+      "#f06aa8",
+      "#3cc45a"
+    ]
+  },
+  "roads": {
+    "xs": [
+      -66,
+      -22,
+      22,
+      66
+    ],
+    "zs": [
+      -66,
+      -22,
+      22,
+      66
+    ],
+    "width": 10,
+    "color": "#50555e"
+  },
+  "water": [
+    {
+      "x": 0,
+      "z": -122,
+      "w": 280,
+      "d": 36
+    }
+  ],
+  "plazas": [
+    {
+      "pos": [
+        0,
+        0
+      ],
+      "r": 14,
+      "color": "#c9b9a0"
+    }
+  ],
+  "buildings": [
+    {
+      "id": "night-market",
+      "name": "Temple Street Night Market",
+      "icon": "🏮",
+      "pos": [
+        0,
+        -44
+      ],
+      "size": [
+        24,
+        16,
+        8
+      ],
+      "door": "south",
+      "style": "pagoda",
+      "colors": {
+        "wall": "#f0e6d0",
+        "roof": "#2f5a5a",
+        "trim": "#1e2840",
+        "accent": "#ffcf3f"
+      },
+      "blurb": "Run your own snack stall: buy supplies, set prices, read the weather and beat the competition.",
+      "stations": [
+        {
+          "activity": "night-market",
+          "label": "Run the Stall",
+          "icon": "🥟",
+          "npc": "chef"
+        },
+        {
+          "activity": "hk-quiz",
+          "label": "Business Quiz",
+          "icon": "🎤",
+          "npc": "host"
+        }
+      ],
+      "interior": {
+        "floor": "#8a3f2e",
+        "wall": "#f4e6c8",
+        "theme": "shop"
+      }
+    },
+    {
+      "id": "harbor-trading",
+      "name": "Harbor Trading Company",
+      "icon": "🚢",
+      "pos": [
+        44,
+        -80
+      ],
+      "size": [
+        30,
+        16,
+        11
+      ],
+      "door": "south",
+      "style": "warehouse",
+      "colors": {
+        "wall": "#c9d6d9",
+        "roof": "#2f5a5a",
+        "trim": "#1e2840",
+        "accent": "#d0302a"
+      },
+      "blurb": "Buy cargo cheap in one port, ship it, and sell where it's in demand.",
+      "stations": [
+        {
+          "activity": "harbor-trading",
+          "label": "Trading Desk",
+          "icon": "📦",
+          "npc": "sailor"
+        }
+      ],
+      "interior": {
+        "floor": "#8a8f9c",
+        "wall": "#d9dde6",
+        "theme": "shop"
+      }
+    },
+    {
+      "id": "business-registry",
+      "name": "Business Registry Tower",
+      "icon": "🏢",
+      "pos": [
+        -44,
+        -44
+      ],
+      "size": [
+        20,
+        20,
+        46
+      ],
+      "door": "south",
+      "style": "glass",
+      "colors": {
+        "wall": "#9ab0b9",
+        "roof": "#2f3a4a",
+        "trim": "#ffffff",
+        "accent": "#ffcf3f"
+      },
+      "blurb": "Start real businesses that earn monthly profit (or losses!). Upgrade them, hire staff, or sell.",
+      "stations": [
+        {
+          "service": "business",
+          "label": "Registry Office",
+          "icon": "🏢",
+          "npc": "banker"
+        },
+        {
+          "activity": "cost-sort",
+          "label": "Fixed or Variable Cost?",
+          "icon": "📌",
+          "npc": "clerk"
+        }
+      ],
+      "interior": {
+        "floor": "#c9ced8",
+        "wall": "#e8eef6",
+        "theme": "office"
+      }
+    },
+    {
+      "id": "accounting-office",
+      "name": "Accounting Office",
+      "icon": "📒",
+      "pos": [
+        44,
+        0
+      ],
+      "size": [
+        20,
+        16,
+        16
+      ],
+      "door": "west",
+      "style": "office",
+      "colors": {
+        "wall": "#e6d0c0",
+        "roof": "#3a3f4a",
+        "trim": "#1e2840",
+        "accent": "#2ebaba"
+      },
+      "blurb": "Balance the books, find the errors, and read an income statement.",
+      "stations": [
+        {
+          "activity": "accounting",
+          "label": "Ledger Check",
+          "icon": "📒",
+          "npc": "banker"
+        },
+        {
+          "activity": "break-even",
+          "label": "Break-Even Lab",
+          "icon": "⚖️",
+          "npc": "teacher"
+        }
+      ],
+      "interior": {
+        "floor": "#c9b48a",
+        "wall": "#f4ead6",
+        "theme": "office"
+      }
+    },
+    {
+      "id": "dim-sum",
+      "name": "Golden Dragon Dim Sum",
+      "icon": "🥟",
+      "pos": [
+        -44,
+        0
+      ],
+      "size": [
+        18,
+        14,
+        10
+      ],
+      "door": "east",
+      "style": "restaurant",
+      "colors": {
+        "wall": "#d0302a",
+        "roof": "#2f5a5a",
+        "trim": "#ffcf3f",
+        "accent": "#ffcf3f"
+      },
+      "blurb": "Deliver dim sum around the city on a scooter. Faster deliveries earn bigger tips, but fuel costs money!",
+      "stations": [
+        {
+          "activity": "dim-sum-delivery",
+          "label": "Delivery Orders",
+          "icon": "🛵",
+          "npc": "chef"
+        }
+      ],
+      "interior": {
+        "floor": "#8a3f2e",
+        "wall": "#f4d9c0",
+        "theme": "shop"
+      }
+    },
+    {
+      "id": "trade-hall",
+      "name": "Lemonade Lane Business Hall",
+      "icon": "🍋",
+      "pos": [
+        0,
+        44
+      ],
+      "size": [
+        22,
+        16,
+        10
+      ],
+      "door": "north",
+      "style": "market",
+      "colors": {
+        "wall": "#f0e6d0",
+        "roof": "#d0302a",
+        "trim": "#1e2840",
+        "accent": "#ffcf3f"
+      },
+      "blurb": "A story-based first business for young entrepreneurs, plus a profit puzzle.",
+      "stations": [
+        {
+          "activity": "lemonade-story",
+          "label": "My First Stand",
+          "icon": "🍋",
+          "npc": "grocer"
+        },
+        {
+          "activity": "profit-puzzle",
+          "label": "Profit Puzzles",
+          "icon": "🧮",
+          "npc": "teacher"
+        }
+      ],
+      "interior": {
+        "floor": "#d9b98a",
+        "wall": "#fbf3e6",
+        "theme": "shop"
+      }
+    }
+  ],
+  "landmarks": [
+    {
+      "type": "triangle-tower",
+      "pos": [
+        -88,
+        -88
+      ]
+    },
+    {
+      "type": "gate",
+      "pos": [
+        0,
+        27
+      ],
+      "rot": 0
+    },
+    {
+      "type": "lantern-street",
+      "pos": [
+        0,
+        -22
+      ],
+      "rot": 0
+    },
+    {
+      "type": "lantern-street",
+      "pos": [
+        -22,
+        0
+      ],
+      "rot": 90
+    },
+    {
+      "type": "peak-hill",
+      "pos": [
+        80,
+        104
+      ],
+      "scale": 0.7
+    },
+    {
+      "type": "billboard",
+      "pos": [
+        88,
+        30
+      ],
+      "rot": -90
+    },
+    {
+      "type": "billboard",
+      "pos": [
+        -88,
+        40
+      ],
+      "rot": 90
+    },
+    {
+      "type": "food-cart",
+      "pos": [
+        10,
+        -6
+      ],
+      "rot": 0
+    },
+    {
+      "type": "food-cart",
+      "pos": [
+        -10,
+        8
+      ],
+      "rot": 180
+    },
+    {
+      "type": "dock",
+      "pos": [
+        10,
+        -103
+      ],
+      "rot": 180
+    }
+  ],
+  "portals": [
+    {
+      "to": "park",
+      "pos": [
+        0,
+        92
+      ],
+      "rot": 180
+    }
+  ],
+  "spawn": [
+    0,
+    80,
+    180
+  ],
+  "garage": [
+    12,
+    78,
+    180
+  ],
+  "dock": [
+    10,
+    -115,
+    180
+  ],
+  "filler": {
+    "seed": 41,
+    "density": 0.95,
+    "minH": 14,
+    "maxH": 60,
+    "style": "hk"
+  },
+  "trees": {
+    "count": 40,
+    "seed": 42,
+    "kinds": [
+      "round",
+      "palm"
+    ]
+  },
+  "npcs": 48,
+  "traffic": 18,
+  "boats": 6,
+  "host": {
+    "name": "Auntie Mei",
+    "look": "chef",
+    "pos": [
+      8,
+      74
+    ],
+    "lines": [
+      "Welcome to Hong Kong! Business is about one thing: revenue bigger than costs.",
+      "Profit isn't what you sell, it's what's left after you pay for everything.",
+      "A business can make sales and still run out of cash. Watch your cash flow!"
+    ],
+    "entryLines": [
+      "Welcome to Hong Kong! Let's start a business!",
+      "Profit is the money left after you pay for your supplies."
+    ]
+  },
+  "weather": {
+    "rain": 0.35
+  }
+}

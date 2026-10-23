@@ -1,0 +1,581 @@
+{
+ "$comment": "Sorting games: drag or tap each item into the right bin. Each item: text, icon, bin (index), why. Used by kind 'sort' (params.set).",
+ "sets": {
+  "taxes-pay-for": {
+   "title": "Who pays for it?",
+   "bins": [
+    {
+     "label": "Taxes pay for it",
+     "icon": "🏛️"
+    },
+    {
+     "label": "Families pay for it",
+     "icon": "👪"
+    }
+   ],
+   "items": [
+    {
+     "text": "Public school",
+     "icon": "🏫",
+     "bin": 0,
+     "why": "Public schools are paid for with taxes so every kid can learn."
+    },
+    {
+     "text": "Fire trucks",
+     "icon": "🚒",
+     "bin": 0,
+     "why": "Firefighters and their trucks are paid for by taxes."
+    },
+    {
+     "text": "Your video games",
+     "icon": "🎮",
+     "bin": 1,
+     "why": "Families buy their own games."
+    },
+    {
+     "text": "Park playground",
+     "icon": "🛝",
+     "bin": 0,
+     "why": "Parks are public, paid for by taxes."
+    },
+    {
+     "text": "Pizza for dinner",
+     "icon": "🍕",
+     "bin": 1,
+     "why": "Families pay for their own food."
+    },
+    {
+     "text": "Roads and bridges",
+     "icon": "🌉",
+     "bin": 0,
+     "why": "Roads are built and fixed with tax money."
+    },
+    {
+     "text": "Your bike",
+     "icon": "🚲",
+     "bin": 1,
+     "why": "A bike you own is bought by your family."
+    },
+    {
+     "text": "Public library books",
+     "icon": "📚",
+     "bin": 0,
+     "why": "Libraries are paid for with taxes, free to borrow!"
+    },
+    {
+     "text": "A family's car",
+     "icon": "🚗",
+     "bin": 1,
+     "why": "Families buy their own cars."
+    },
+    {
+     "text": "Police officers",
+     "icon": "👮",
+     "bin": 0,
+     "why": "Police are paid by taxes to keep everyone safe."
+    },
+    {
+     "text": "Birthday presents",
+     "icon": "🎁",
+     "bin": 1,
+     "why": "Gifts are bought by families and friends."
+    },
+    {
+     "text": "Streetlights",
+     "icon": "💡",
+     "bin": 0,
+     "why": "Streetlights are public and paid for by taxes."
+    }
+   ]
+  },
+  "tax-types": {
+   "title": "Name that tax",
+   "bins": [
+    {
+     "label": "Income tax",
+     "icon": "💼"
+    },
+    {
+     "label": "Payroll (FICA)",
+     "icon": "🧓"
+    },
+    {
+     "label": "Sales tax",
+     "icon": "🛒"
+    },
+    {
+     "label": "Property tax",
+     "icon": "🏠"
+    }
+   ],
+   "items": [
+    {
+     "text": "6% added at the register when you buy shoes",
+     "bin": 2,
+     "why": "Sales tax is charged on purchases."
+    },
+    {
+     "text": "6.2% of wages for Social Security",
+     "bin": 1,
+     "why": "Social Security is a payroll tax (part of FICA)."
+    },
+    {
+     "text": "1.1% of your home's value each year",
+     "bin": 3,
+     "why": "Property tax is based on what real estate is worth."
+    },
+    {
+     "text": "Progressive brackets from 10% to 37%",
+     "bin": 0,
+     "why": "Federal income tax uses progressive brackets."
+    },
+    {
+     "text": "1.45% Medicare deduction on your paystub",
+     "bin": 1,
+     "why": "Medicare is the other half of FICA payroll tax."
+    },
+    {
+     "text": "Funds local schools based on house values",
+     "bin": 3,
+     "why": "Property taxes are the main funding for many local schools."
+    },
+    {
+     "text": "Settled each spring when you file a return",
+     "bin": 0,
+     "why": "You file an income tax return to settle withholding vs. what you owe."
+    },
+    {
+     "text": "Takes a bigger share of income from low earners who spend most of what they make",
+     "bin": 2,
+     "why": "Sales tax is regressive: lower-income households spend a larger share of income, so they pay a larger share in sales tax."
+    },
+    {
+     "text": "Withheld based on your W-4",
+     "bin": 0,
+     "why": "Your W-4 tells your employer how much income tax to withhold."
+    },
+    {
+     "text": "Charged on a new car purchase at the dealer",
+     "bin": 2,
+     "why": "Sales tax applies to car purchases too."
+    }
+   ]
+  },
+  "needs-wants": {
+   "title": "Need or want?",
+   "bins": [
+    {
+     "label": "Need",
+     "icon": "🏠"
+    },
+    {
+     "label": "Want",
+     "icon": "🎈"
+    }
+   ],
+   "items": [
+    {
+     "text": "Healthy food",
+     "icon": "🥦",
+     "bin": 0,
+     "why": "You need food to live and grow."
+    },
+    {
+     "text": "Candy bar",
+     "icon": "🍫",
+     "bin": 1,
+     "why": "Candy is a treat, a want."
+    },
+    {
+     "text": "Winter coat",
+     "icon": "🧥",
+     "bin": 0,
+     "why": "A coat keeps you safe when it's cold."
+    },
+    {
+     "text": "Toy race car",
+     "icon": "🏎️",
+     "bin": 1,
+     "why": "Toys are fun wants."
+    },
+    {
+     "text": "A place to live",
+     "icon": "🏠",
+     "bin": 0,
+     "why": "Everyone needs a safe home."
+    },
+    {
+     "text": "Video game",
+     "icon": "🎮",
+     "bin": 1,
+     "why": "Games are fun, but not needed to live."
+    },
+    {
+     "text": "Toothbrush",
+     "icon": "🪥",
+     "bin": 0,
+     "why": "Keeping teeth healthy is a need."
+    },
+    {
+     "text": "Glitter stickers",
+     "icon": "✨",
+     "bin": 1,
+     "why": "Stickers are a want."
+    },
+    {
+     "text": "Clean water",
+     "icon": "💧",
+     "bin": 0,
+     "why": "Water is one of the most important needs."
+    },
+    {
+     "text": "Movie tickets",
+     "icon": "🎬",
+     "bin": 1,
+     "why": "Movies are fun extras, wants."
+    },
+    {
+     "text": "Doctor checkup",
+     "icon": "🩺",
+     "bin": 0,
+     "why": "Staying healthy is a need."
+    },
+    {
+     "text": "Fancy sneakers",
+     "icon": "👟",
+     "bin": 1,
+     "why": "Shoes are a need, but fancy ones are a want."
+    }
+   ]
+  },
+  "needs-wants-adv": {
+   "title": "Need, want, or it depends?",
+   "bins": [
+    {
+     "label": "Need",
+     "icon": "🏠"
+    },
+    {
+     "label": "Want",
+     "icon": "🎈"
+    },
+    {
+     "label": "Depends on the situation",
+     "icon": "🤔"
+    }
+   ],
+   "items": [
+    {
+     "text": "Rent for a basic apartment",
+     "bin": 0,
+     "why": "Shelter is a core need."
+    },
+    {
+     "text": "Premium streaming bundle",
+     "bin": 1,
+     "why": "Entertainment subscriptions are wants."
+    },
+    {
+     "text": "A car",
+     "bin": 2,
+     "why": "A need if there's no transit to your job; a want if you live by a subway line."
+    },
+    {
+     "text": "A laptop",
+     "bin": 2,
+     "why": "A need for remote school or work; otherwise often a want."
+    },
+    {
+     "text": "Health insurance",
+     "bin": 0,
+     "why": "Protects against catastrophic costs, treat it as a need."
+    },
+    {
+     "text": "Latest flagship phone (replacing a working one)",
+     "bin": 1,
+     "why": "Upgrading a working phone is a want."
+    },
+    {
+     "text": "Groceries",
+     "bin": 0,
+     "why": "Food is a need, though the brand you choose can include 'want' spending."
+    },
+    {
+     "text": "Eating at restaurants 5× a week",
+     "bin": 1,
+     "why": "Food is a need, but restaurant meals are mostly a want."
+    },
+    {
+     "text": "Gym membership",
+     "bin": 2,
+     "why": "Could be a health need with free alternatives available, usually a want."
+    },
+    {
+     "text": "Minimum payment on your loan",
+     "bin": 0,
+     "why": "Required debt payments are needs: missing them has serious consequences."
+    },
+    {
+     "text": "Concert tickets",
+     "bin": 1,
+     "why": "Fun, worth budgeting for, but a want."
+    },
+    {
+     "text": "Work uniform",
+     "bin": 0,
+     "why": "Required for your job, so it's a need."
+    },
+    {
+     "text": "Phone plan",
+     "bin": 2,
+     "why": "A basic plan is a modern need for many jobs; unlimited premium data is a want."
+    },
+    {
+     "text": "Designer handbag",
+     "bin": 1,
+     "why": "A clear want."
+    }
+   ]
+  },
+  "asset-liability": {
+   "title": "Asset or liability?",
+   "bins": [
+    {
+     "label": "Asset (you own it)",
+     "icon": "💎"
+    },
+    {
+     "label": "Liability (you owe it)",
+     "icon": "📝"
+    }
+   ],
+   "items": [
+    {
+     "text": "Savings account",
+     "bin": 0,
+     "why": "Money you own."
+    },
+    {
+     "text": "Credit card balance",
+     "bin": 1,
+     "why": "Money you owe the card company."
+    },
+    {
+     "text": "Shares of an index fund",
+     "bin": 0,
+     "why": "Investments you own."
+    },
+    {
+     "text": "Car loan",
+     "bin": 1,
+     "why": "A debt you must repay."
+    },
+    {
+     "text": "Your house's value",
+     "bin": 0,
+     "why": "Property you own is an asset."
+    },
+    {
+     "text": "Mortgage",
+     "bin": 1,
+     "why": "The home loan is a liability."
+    },
+    {
+     "text": "Unpaid tax bill",
+     "bin": 1,
+     "why": "Money owed to the government."
+    },
+    {
+     "text": "Business you own",
+     "bin": 0,
+     "why": "A business has value you could sell."
+    },
+    {
+     "text": "Student loan",
+     "bin": 1,
+     "why": "A debt to repay."
+    },
+    {
+     "text": "Retirement account",
+     "bin": 0,
+     "why": "Savings you own (even if you can't touch it yet)."
+    }
+   ]
+  },
+  "charity-check": {
+   "title": "Real charity or red flag?",
+   "bins": [
+    {
+     "label": "Looks legit",
+     "icon": "✅"
+    },
+    {
+     "label": "Red flag!",
+     "icon": "🚩"
+    }
+   ],
+   "items": [
+    {
+     "text": "Publishes a yearly report showing where money goes",
+     "bin": 0,
+     "why": "Transparency is a good sign."
+    },
+    {
+     "text": "'Donate in the next 3 minutes to WIN a car!'",
+     "bin": 1,
+     "why": "Pressure and prizes are scam tactics."
+    },
+    {
+     "text": "Only accepts gift cards",
+     "bin": 1,
+     "why": "Gift-card-only payment is a classic scam signal."
+    },
+    {
+     "text": "Has a real address and phone number",
+     "bin": 0,
+     "why": "Real organizations can be contacted."
+    },
+    {
+     "text": "Name sounds almost exactly like a famous charity",
+     "bin": 1,
+     "why": "Copycat names trick people."
+    },
+    {
+     "text": "Lets you choose a specific program to support",
+     "bin": 0,
+     "why": "Clear programs are a good sign."
+    },
+    {
+     "text": "Calls you and won't let you hang up to think",
+     "bin": 1,
+     "why": "Real charities let you take your time."
+    },
+    {
+     "text": "Spends most donations on the cause, not overhead",
+     "bin": 0,
+     "why": "Low overhead means more help for the cause."
+    }
+   ]
+  },
+  "fixed-variable": {
+   "title": "Fixed or variable cost?",
+   "bins": [
+    {
+     "label": "Fixed (same every month)",
+     "icon": "📌"
+    },
+    {
+     "label": "Variable (changes with sales)",
+     "icon": "📈"
+    }
+   ],
+   "items": [
+    {
+     "text": "Stall rent",
+     "bin": 0,
+     "why": "Rent is the same no matter how many you sell."
+    },
+    {
+     "text": "Flour for each dumpling",
+     "bin": 1,
+     "why": "Ingredients rise with every item made."
+    },
+    {
+     "text": "Business license fee",
+     "bin": 0,
+     "why": "A set fee."
+    },
+    {
+     "text": "Paper cups",
+     "bin": 1,
+     "why": "One per drink sold."
+    },
+    {
+     "text": "Insurance premium",
+     "bin": 0,
+     "why": "Paid monthly regardless of sales."
+    },
+    {
+     "text": "Delivery fuel",
+     "bin": 1,
+     "why": "More deliveries, more fuel."
+    },
+    {
+     "text": "Credit card processing fees (% of each sale)",
+     "bin": 1,
+     "why": "A percentage of each sale."
+    },
+    {
+     "text": "Manager's salary",
+     "bin": 0,
+     "why": "A set salary doesn't change with sales."
+    }
+   ]
+  },
+  "hype-real": {
+   "title": "Reasonable or hype?",
+   "bins": [
+    {
+     "label": "Reasonable",
+     "icon": "✅"
+    },
+    {
+     "label": "Get-rich-quick hype",
+     "icon": "🎢"
+    }
+   ],
+   "items": [
+    {
+     "text": "An index fund has averaged about 7% a year over decades, with some down years",
+     "bin": 0,
+     "why": "Long-term averages with honest risk disclosure are reasonable."
+    },
+    {
+     "text": "'Guaranteed 50% returns every month!'",
+     "bin": 1,
+     "why": "Nothing legitimate guarantees huge returns."
+    },
+    {
+     "text": "'Everyone on TikTok is buying, don't miss out!'",
+     "bin": 1,
+     "why": "Fear of missing out (FOMO) is hype, not analysis."
+    },
+    {
+     "text": "Bonds pay less than stocks on average but are steadier",
+     "bin": 0,
+     "why": "Lower risk, lower expected return, a fair trade-off."
+    },
+    {
+     "text": "'This coin will 100× by Friday, my cousin said so'",
+     "bin": 1,
+     "why": "Rumors and precise wild predictions are red flags."
+    },
+    {
+     "text": "Investing a bit every month for many years",
+     "bin": 0,
+     "why": "Dollar-cost averaging over time is a sound habit."
+    },
+    {
+     "text": "'Act now, only 3 spots left in this secret fund!'",
+     "bin": 1,
+     "why": "Scarcity pressure and secrecy are classic scam tactics."
+    },
+    {
+     "text": "Spreading money across many companies to lower risk",
+     "bin": 0,
+     "why": "Diversification is basic, reasonable investing."
+    },
+    {
+     "text": "'Borrow money to buy more, prices only go up!'",
+     "bin": 1,
+     "why": "Prices don't only go up. Borrowing to invest magnifies losses."
+    },
+    {
+     "text": "A company's earnings grew, so its stock rose over several years",
+     "bin": 0,
+     "why": "Prices following real profits over time is reasonable."
+    }
+   ]
+  }
+ }
+}

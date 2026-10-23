@@ -1,0 +1,465 @@
+{
+  "id": "new-york",
+  "name": "New York",
+  "tagline": "Investing & markets",
+  "theme": "Read charts, trade fictional companies, beat inflation, climb the Quiz Tower and back startups.",
+  "music": "new-york",
+  "icon": "🗽",
+  "half": 110,
+  "ground": "#c4bfb4",
+  "palette": {
+    "walls": [
+      "#c9b48f",
+      "#b07a5a",
+      "#8a5a44",
+      "#d8cdb4",
+      "#9aa4b1",
+      "#a8684a",
+      "#6e7a86"
+    ],
+    "roofs": [
+      "#3a3f4a",
+      "#4a4440",
+      "#2f3a4a"
+    ],
+    "trims": [
+      "#f4f1ea",
+      "#d9cdb4"
+    ],
+    "accents": [
+      "#ffcf3f",
+      "#e1553f",
+      "#2f6bdb",
+      "#3cc45a"
+    ]
+  },
+  "roads": {
+    "xs": [
+      -66,
+      -22,
+      22,
+      66
+    ],
+    "zs": [
+      -66,
+      -22,
+      22,
+      66
+    ],
+    "width": 10,
+    "color": "#4f5562"
+  },
+  "water": [
+    {
+      "x": 128,
+      "z": 0,
+      "w": 48,
+      "d": 280
+    }
+  ],
+  "plazas": [
+    {
+      "pos": [
+        0,
+        0
+      ],
+      "r": 13,
+      "color": "#d8cfbd"
+    }
+  ],
+  "buildings": [
+    {
+      "id": "ny-exchange",
+      "name": "Fin City Stock Exchange",
+      "icon": "📈",
+      "pos": [
+        0,
+        -44
+      ],
+      "size": [
+        26,
+        18,
+        16
+      ],
+      "door": "south",
+      "style": "exchange",
+      "colors": {
+        "wall": "#f1ece0",
+        "roof": "#3a3f4a",
+        "trim": "#1e2840",
+        "accent": "#ffcf3f"
+      },
+      "blurb": "Read candlestick charts and predict: up or down?",
+      "stations": [
+        {
+          "activity": "candle-predict",
+          "label": "Up or Down?",
+          "icon": "🕯️",
+          "npc": "trader"
+        },
+        {
+          "activity": "market-quiz",
+          "label": "Trading Floor Quiz",
+          "icon": "📊",
+          "npc": "trader"
+        }
+      ],
+      "interior": {
+        "floor": "#d9cdb4",
+        "wall": "#f1ece0",
+        "theme": "exchange"
+      }
+    },
+    {
+      "id": "ny-brokerage",
+      "name": "Brokerage",
+      "icon": "💹",
+      "pos": [
+        44,
+        -44
+      ],
+      "size": [
+        20,
+        18,
+        38
+      ],
+      "door": "south",
+      "style": "glass",
+      "colors": {
+        "wall": "#5d7fa6",
+        "roof": "#2f3a4a",
+        "trim": "#ffffff",
+        "accent": "#2ebaba"
+      },
+      "blurb": "Buy and sell stocks, index funds and bonds in a live market driven by the news.",
+      "entryBlurb": "Buy tiny pieces of companies!",
+      "stations": [
+        {
+          "service": "brokerage",
+          "label": "Trading Desk",
+          "icon": "💹",
+          "npc": "banker"
+        },
+        {
+          "activity": "asset-sort",
+          "label": "Asset or Liability?",
+          "icon": "💎",
+          "npc": "clerk"
+        }
+      ],
+      "interior": {
+        "floor": "#c9ced8",
+        "wall": "#e8eef6",
+        "theme": "office"
+      }
+    },
+    {
+      "id": "ny-investment-club",
+      "name": "Investment Club",
+      "icon": "🏛️",
+      "pos": [
+        -44,
+        -44
+      ],
+      "size": [
+        20,
+        16,
+        12
+      ],
+      "door": "south",
+      "style": "library",
+      "colors": {
+        "wall": "#b5654a",
+        "roof": "#3a3f4a",
+        "trim": "#f4f1ea",
+        "accent": "#2f6bdb"
+      },
+      "blurb": "The Portfolio Challenge: can your mix of investments beat inflation over 10 years?",
+      "stations": [
+        {
+          "activity": "portfolio-challenge",
+          "label": "Portfolio Challenge",
+          "icon": "🧺",
+          "npc": "banker"
+        },
+        {
+          "activity": "dca-lab",
+          "label": "Dollar-Cost Averaging Lab",
+          "icon": "📅",
+          "npc": "teacher"
+        }
+      ],
+      "interior": {
+        "floor": "#8a5a34",
+        "wall": "#e8d7b9",
+        "theme": "library"
+      }
+    },
+    {
+      "id": "ny-quiz-tower",
+      "name": "Wall Street Quiz Tower",
+      "icon": "🗼",
+      "pos": [
+        44,
+        0
+      ],
+      "size": [
+        18,
+        18,
+        64
+      ],
+      "door": "west",
+      "style": "tower",
+      "colors": {
+        "wall": "#9aa4b1",
+        "roof": "#2f3a4a",
+        "trim": "#ffffff",
+        "accent": "#ffcf3f"
+      },
+      "blurb": "Every floor gets harder. How high can you climb?",
+      "stations": [
+        {
+          "activity": "quiz-tower",
+          "label": "Elevator to Floor 1",
+          "icon": "🛗",
+          "npc": "host"
+        }
+      ],
+      "interior": {
+        "floor": "#3a3f4a",
+        "wall": "#d9dde6",
+        "theme": "office"
+      }
+    },
+    {
+      "id": "ny-newsroom",
+      "name": "Newsroom",
+      "icon": "📰",
+      "pos": [
+        -44,
+        0
+      ],
+      "size": [
+        20,
+        16,
+        14
+      ],
+      "door": "east",
+      "style": "office",
+      "colors": {
+        "wall": "#d8c39a",
+        "roof": "#3a3f4a",
+        "trim": "#1e2840",
+        "accent": "#e1553f"
+      },
+      "blurb": "Read headlines and predict how the market reacts.",
+      "stations": [
+        {
+          "activity": "newsroom",
+          "label": "Breaking News Desk",
+          "icon": "📰",
+          "npc": "reporter"
+        }
+      ],
+      "interior": {
+        "floor": "#c9b48a",
+        "wall": "#f4ead6",
+        "theme": "office"
+      }
+    },
+    {
+      "id": "ny-theater",
+      "name": "Startup Pitch Theater",
+      "icon": "🎭",
+      "pos": [
+        0,
+        44
+      ],
+      "size": [
+        24,
+        18,
+        14
+      ],
+      "door": "north",
+      "style": "theater",
+      "colors": {
+        "wall": "#8a5a44",
+        "roof": "#2f3a4a",
+        "trim": "#ffcf3f",
+        "accent": "#e1553f"
+      },
+      "blurb": "Founders pitch their startups. Invest real money, most fail, a few soar.",
+      "stations": [
+        {
+          "activity": "startup-pitch",
+          "label": "Pitch Night",
+          "icon": "🚀",
+          "npc": "host"
+        },
+        {
+          "activity": "hype-check",
+          "label": "Hype or Real?",
+          "icon": "🎢",
+          "npc": "reporter"
+        }
+      ],
+      "interior": {
+        "floor": "#6b2f3a",
+        "wall": "#3a2f4a",
+        "theme": "arcade"
+      }
+    }
+  ],
+  "landmarks": [
+    {
+      "type": "liberty-torch",
+      "pos": [
+        128,
+        -70
+      ]
+    },
+    {
+      "type": "deco-spire",
+      "pos": [
+        -88,
+        -88
+      ]
+    },
+    {
+      "type": "bull-bear",
+      "pos": [
+        0,
+        -16
+      ]
+    },
+    {
+      "type": "billboard",
+      "pos": [
+        40,
+        40
+      ],
+      "rot": 0
+    },
+    {
+      "type": "billboard",
+      "pos": [
+        50,
+        52
+      ],
+      "rot": -90
+    },
+    {
+      "type": "billboard",
+      "pos": [
+        36,
+        54
+      ],
+      "rot": 90
+    },
+    {
+      "type": "bridge",
+      "pos": [
+        128,
+        50
+      ],
+      "rot": 90,
+      "scale": 0.55
+    },
+    {
+      "type": "food-cart",
+      "pos": [
+        12,
+        8
+      ],
+      "rot": 90
+    },
+    {
+      "type": "bench",
+      "pos": [
+        -9,
+        6
+      ],
+      "rot": 90
+    },
+    {
+      "type": "bench",
+      "pos": [
+        9,
+        -6
+      ],
+      "rot": -90
+    },
+    {
+      "type": "dock",
+      "pos": [
+        104,
+        30
+      ],
+      "rot": 90
+    }
+  ],
+  "portals": [
+    {
+      "to": "park",
+      "pos": [
+        0,
+        92
+      ],
+      "rot": 180
+    }
+  ],
+  "spawn": [
+    0,
+    80,
+    180
+  ],
+  "garage": [
+    12,
+    78,
+    180
+  ],
+  "dock": [
+    116,
+    30,
+    90
+  ],
+  "filler": {
+    "seed": 21,
+    "density": 0.92,
+    "minH": 12,
+    "maxH": 58,
+    "style": "ny"
+  },
+  "trees": {
+    "count": 50,
+    "seed": 22,
+    "kinds": [
+      "round",
+      "autumn"
+    ]
+  },
+  "npcs": 44,
+  "traffic": 22,
+  "boats": 4,
+  "host": {
+    "name": "Ms. Ledger",
+    "look": "trader",
+    "pos": [
+      8,
+      74
+    ],
+    "lines": [
+      "Welcome to New York, the money capital! The Brokerage is where you can buy real (fictional) shares.",
+      "Prices bounce around every day. Owning lots of companies through an index fund smooths the ride.",
+      "If someone promises guaranteed huge returns, walk away. That's not investing, that's a trap."
+    ],
+    "entryLines": [
+      "Welcome to New York! Here you can buy tiny pieces of companies called stocks.",
+      "Stock prices go up AND down. Be patient!"
+    ]
+  },
+  "weather": {
+    "rain": 0.2,
+    "snow": 0.6
+  }
+}

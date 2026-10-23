@@ -1,0 +1,121 @@
+{
+  "$comment": "Activities in Fin-City Park. kind = component in src/activities/registry.tsx. entry/advanced = parameters per difficulty (a 'kind' inside overrides the component). stars = score thresholds for 1/2/3 stars. rewards are per star count. Arcade games charge `fee` and pay `tickets`.",
+  "activities": [
+    {
+      "id": "first-quiz", "name": "First Quiz", "kind": "quiz", "icon": "📝", "building": "welcome-center", "city": "park",
+      "topics": ["counting", "needs-wants", "saving", "banking"],
+      "blurb": "Five warm-up questions about money. Narwhal explains every answer.",
+      "entryBlurb": "Five easy money questions! I'll help you with every one.",
+      "entry": { "count": 5, "cities": ["park"], "maxLevel": 2 },
+      "advanced": { "count": 6, "cities": ["park"], "maxLevel": 2 },
+      "stars": [40, 70, 95], "rewards": { "cash": [15, 25, 40], "xp": [30, 45, 60] }
+    },
+    {
+      "id": "park-quiz", "name": "Fin City Quiz Show", "kind": "quiz", "icon": "🎤", "building": "welcome-center", "city": "park",
+      "topics": ["saving", "banking", "budgeting", "earning", "interest"],
+      "blurb": "Eight questions from every corner of Fin City, game-show style with a timer bonus.",
+      "entryBlurb": "A game show! Answer quickly for bonus points!",
+      "entry": { "count": 8, "cities": ["park", "london", "san-francisco", "singapore"], "timer": 30, "mode": "show" },
+      "advanced": { "count": 8, "cities": ["park", "new-york", "london", "hong-kong", "san-francisco", "singapore"], "timer": 45, "mode": "show" },
+      "stars": [50, 75, 90], "rewards": { "cash": [20, 35, 55], "xp": [35, 55, 80] }
+    },
+    {
+      "id": "bank-teller", "name": "Teller Trainee", "kind": "teller", "icon": "🧮", "building": "bank", "city": "park",
+      "topics": ["counting", "banking"],
+      "blurb": "Work the teller window: count customers' deposits and keep account records straight.",
+      "entryBlurb": "Count the coins and bills customers bring to the bank!",
+      "entry": { "rounds": 6, "mode": "count" },
+      "advanced": { "rounds": 5, "mode": "reconcile" },
+      "stars": [40, 70, 90], "rewards": { "cash": [20, 35, 50], "xp": [30, 45, 65] }
+    },
+    {
+      "id": "credit-sim", "name": "Credit Score Simulator", "kind": "creditSim", "icon": "🎚️", "building": "credit-bureau", "city": "park",
+      "topics": ["credit", "debt"],
+      "blurb": "Make 24 months of credit decisions and watch a credit score rise or fall. Reach 740+ with the lowest cost.",
+      "entryBlurb": "A story about borrowing and being trustworthy.",
+      "entry": { "kind": "story", "story": "borrow-trust" },
+      "advanced": { "months": 24, "target": 740 },
+      "stars": [40, 70, 90], "rewards": { "cash": [25, 40, 60], "xp": [40, 60, 90] }
+    },
+    {
+      "id": "civics-sort", "name": "What Do Taxes Pay For?", "kind": "sort", "icon": "🧾", "building": "town-hall", "city": "park",
+      "topics": ["taxes", "economics"],
+      "blurb": "Sort things into what taxes pay for and what families pay for themselves.",
+      "entry": { "set": "taxes-pay-for" },
+      "advanced": { "set": "tax-types" },
+      "stars": [50, 75, 95], "rewards": { "cash": [15, 25, 40], "xp": [25, 40, 55] }
+    },
+    {
+      "id": "coin-catcher", "name": "Coin Catcher", "kind": "coinCatcher", "icon": "🪙", "building": "arcade", "city": "park",
+      "topics": ["counting", "saving"],
+      "blurb": "Catch falling coins and bills, dodge the sneaky fees! $1 per game.",
+      "entryBlurb": "Catch the falling money! Watch out for the red bills!",
+      "entry": { "time": 40, "speed": 1 },
+      "advanced": { "time": 40, "speed": 1.35, "fees": true },
+      "fee": 1, "tickets": [8, 16, 30],
+      "stars": [30, 60, 85], "rewards": { "cash": [0, 0, 0], "xp": [15, 25, 35] }
+    },
+    {
+      "id": "money-memory", "name": "Money Memory", "kind": "memory", "icon": "🃏", "building": "arcade", "city": "park",
+      "topics": ["counting", "banking"],
+      "blurb": "Flip cards to match money words with their meanings. $1 per game.",
+      "entryBlurb": "Find the matching coin pairs! $1 per game.",
+      "entry": { "set": "coins", "pairs": 6 },
+      "advanced": { "set": "terms", "pairs": 8 },
+      "fee": 1, "tickets": [8, 16, 30],
+      "stars": [30, 60, 85], "rewards": { "cash": [0, 0, 0], "xp": [15, 25, 35] }
+    },
+    {
+      "id": "price-dash", "name": "Price Dash", "kind": "priceDash", "icon": "🏃", "building": "arcade", "city": "park",
+      "topics": ["shopping"],
+      "blurb": "Two price tags, one second to pick the better deal. How many can you get? $1 per game.",
+      "entryBlurb": "Tap the cheaper one, fast! $1 per game.",
+      "entry": { "time": 45, "unit": false },
+      "advanced": { "time": 45, "unit": true },
+      "fee": 1, "tickets": [8, 16, 30],
+      "stars": [30, 60, 85], "rewards": { "cash": [0, 0, 0], "xp": [15, 25, 35] }
+    },
+    {
+      "id": "pet-budget", "name": "Pet Care Budget", "kind": "allocate", "icon": "🦴", "building": "pet-shop", "city": "park",
+      "topics": ["budgeting", "needs-wants"],
+      "blurb": "Plan a month of pet care: needs first, then the fun extras, without going over budget.",
+      "entry": { "scenario": "pet-entry" },
+      "advanced": { "scenario": "pet-advanced" },
+      "stars": [50, 75, 92], "rewards": { "cash": [15, 25, 40], "xp": [25, 40, 55] }
+    },
+    {
+      "id": "car-deal", "name": "Buy, Borrow or Lease?", "kind": "carDeal", "icon": "🧾", "building": "auto-dealer", "city": "park",
+      "topics": ["debt", "needs-wants", "interest"],
+      "blurb": "Compare the true cost of buying with cash, an auto loan, or a lease, and pick the best deal for each driver.",
+      "entryBlurb": "Which ride is the best deal? Look at the price AND the cost every month.",
+      "entry": { "rounds": 4 },
+      "advanced": { "rounds": 4 },
+      "stars": [40, 70, 90], "rewards": { "cash": [25, 40, 60], "xp": [35, 55, 80] }
+    },
+    {
+      "id": "mortgage-math", "name": "Mortgage Math", "kind": "quiz", "icon": "🧮", "building": "real-estate", "city": "park",
+      "topics": ["housing", "debt", "interest"],
+      "blurb": "Down payments, monthly payments and total interest on a home loan. Calculator allowed!",
+      "entryBlurb": "Questions about renting and buying a home.",
+      "entry": { "count": 6, "topics": ["housing", "saving"], "cities": ["park", "london", "singapore"] },
+      "advanced": { "count": 6, "topics": ["housing", "debt"], "cities": ["park", "london", "singapore"], "minLevel": 2 },
+      "stars": [40, 70, 90], "rewards": { "cash": [25, 40, 60], "xp": [35, 55, 80] }
+    },
+    {
+      "id": "travel-budget", "name": "Trip Planner", "kind": "allocate", "icon": "🧳", "building": "map-travel", "city": "park",
+      "topics": ["budgeting", "shopping"],
+      "blurb": "Plan a trip to a world city on a budget: travel, hotel, food and fun.",
+      "entry": { "scenario": "trip-entry" },
+      "advanced": { "scenario": "trip-advanced" },
+      "stars": [50, 75, 92], "rewards": { "cash": [15, 25, 40], "xp": [25, 40, 55] }
+    },
+    {
+      "id": "odd-jobs", "name": "Odd Jobs Board", "kind": "job", "icon": "📌", "building": "park", "city": "park",
+      "topics": ["earning"],
+      "blurb": "Quick jobs around the park. Do a good job, get paid!",
+      "entry": { "board": "park" },
+      "advanced": { "board": "park" },
+      "stars": [40, 70, 90], "rewards": { "cash": [0, 0, 0], "xp": [25, 40, 55] }
+    }
+  ]
+}

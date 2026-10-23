@@ -1,0 +1,71 @@
+{
+  "activities": [
+    {
+      "id": "night-market", "name": "Night Market Stall", "kind": "nightMarket", "icon": "🥟", "building": "night-market", "city": "hong-kong",
+      "topics": ["business", "economics"],
+      "blurb": "Five nights running a dumpling stall: buy supplies, set prices, read the weather forecast and competitors, and buy upgrades. Profit = revenue − costs.",
+      "entryBlurb": "Run a snack stall for 4 nights! Make enough snacks, pick a good price, and earn a profit.",
+      "entry": { "nights": 4, "advanced": false }, "advanced": { "nights": 5, "advanced": true },
+      "stars": [35, 65, 85], "rewards": { "cash": [25, 45, 70], "xp": [40, 60, 90] }
+    },
+    {
+      "id": "harbor-trading", "name": "Harbor Trading", "kind": "trading", "icon": "📦", "building": "harbor-trading", "city": "hong-kong",
+      "topics": ["economics", "business"],
+      "blurb": "Buy tea, electronics, spices and silk where they're cheap, ship them, and sell where demand is high. Selling a lot drops the price!",
+      "entryBlurb": "Buy low, sell high! Move cargo between ports to make money.",
+      "entry": { "turns": 6, "advanced": false }, "advanced": { "turns": 8, "advanced": true },
+      "stars": [35, 65, 85], "rewards": { "cash": [25, 45, 70], "xp": [40, 60, 90] }
+    },
+    {
+      "id": "cost-sort", "name": "Fixed or Variable Cost?", "kind": "sort", "icon": "📌", "building": "business-registry", "city": "hong-kong",
+      "topics": ["business"],
+      "blurb": "Sort business costs into fixed and variable.",
+      "entry": { "set": "fixed-variable" }, "advanced": { "set": "fixed-variable" },
+      "stars": [50, 75, 95], "rewards": { "cash": [15, 25, 40], "xp": [25, 40, 55] }
+    },
+    {
+      "id": "accounting", "name": "Ledger Check", "kind": "accounting", "icon": "📒", "building": "accounting-office", "city": "hong-kong",
+      "topics": ["business"],
+      "blurb": "Find the error in each ledger, then build an income statement and check that the balance sheet balances.",
+      "entryBlurb": "Add up the receipts and find the mistake!",
+      "entry": { "rounds": 4, "advanced": false }, "advanced": { "rounds": 4, "advanced": true },
+      "stars": [40, 70, 90], "rewards": { "cash": [25, 40, 60], "xp": [35, 55, 80] }
+    },
+    {
+      "id": "break-even", "name": "Break-Even Lab", "kind": "breakEven", "icon": "⚖️", "building": "accounting-office", "city": "hong-kong",
+      "topics": ["business"],
+      "blurb": "Fixed costs, variable costs and price: how many must you sell to break even? Profit margins and what-ifs.",
+      "entry": { "rounds": 3 }, "advanced": { "rounds": 4 },
+      "stars": [40, 70, 90], "rewards": { "cash": [25, 40, 60], "xp": [35, 55, 80] }
+    },
+    {
+      "id": "dim-sum-delivery", "name": "Dim Sum Delivery", "kind": "delivery", "icon": "🛵", "building": "dim-sum", "city": "hong-kong",
+      "topics": ["business", "earning"],
+      "blurb": "Ride a scooter through Hong Kong delivering orders. Faster = bigger tips. Every meter costs fuel, plan your route!",
+      "entryBlurb": "Ride the scooter and deliver food fast for tips!",
+      "entry": { "orders": 3, "time": 150, "fuel": 0.02 }, "advanced": { "orders": 4, "time": 150, "fuel": 0.04 },
+      "stars": [35, 65, 85], "rewards": { "cash": [0, 0, 0], "xp": [40, 60, 90] }
+    },
+    {
+      "id": "lemonade-story", "name": "My First Stand", "kind": "story", "icon": "🍋", "building": "trade-hall", "city": "hong-kong",
+      "topics": ["business", "saving"],
+      "blurb": "A choose-your-path story about your first lemonade stand.",
+      "entry": { "story": "lemonade-choice" }, "advanced": { "kind": "quiz", "count": 7, "cities": ["hong-kong"], "topics": ["business"] },
+      "stars": [50, 75, 92], "rewards": { "cash": [15, 25, 40], "xp": [25, 40, 55] }
+    },
+    {
+      "id": "profit-puzzle", "name": "Profit Puzzles", "kind": "quiz", "icon": "🧮", "building": "trade-hall", "city": "hong-kong",
+      "topics": ["business"],
+      "blurb": "Revenue, costs, profit and margins.",
+      "entry": { "count": 6, "cities": ["hong-kong"], "topics": ["business"] }, "advanced": { "count": 7, "cities": ["hong-kong"], "topics": ["business"], "minLevel": 2 },
+      "stars": [50, 75, 90], "rewards": { "cash": [20, 35, 55], "xp": [35, 55, 80] }
+    },
+    {
+      "id": "hk-quiz", "name": "Business Quiz", "kind": "quiz", "icon": "🎤", "building": "night-market", "city": "hong-kong",
+      "topics": ["business", "economics"],
+      "blurb": "Questions about business, trade and economics.",
+      "entry": { "count": 8, "cities": ["hong-kong"] }, "advanced": { "count": 8, "cities": ["hong-kong"] },
+      "stars": [50, 75, 90], "rewards": { "cash": [20, 35, 55], "xp": [35, 55, 80] }
+    }
+  ]
+}
