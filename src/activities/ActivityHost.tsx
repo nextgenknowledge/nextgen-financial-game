@@ -2,7 +2,7 @@
 import { Component, Suspense, useCallback, useMemo, useRef, useState, type ReactNode } from 'react';
 import { useUI } from '@/store/ui';
 import { useGame, act } from '@/store/game';
-import { Button, Modal, ReadAloud, Stars } from '@/ui/common';
+import { Button, Modal, ReadAloud, Stars, PixelMeter } from '@/ui/common';
 import { ACTIVITY_BY_ID } from '@/game/activities';
 import { finishActivity, starsFor, repeatFactor, type ActivityResult, type RewardOutcome } from '@/game/progress/activities';
 import { spend } from '@/game/finance/accounts';
@@ -195,21 +195,7 @@ export function ActivityHost({ id }: { id: string }) {
 }
 
 function ScoreRing({ score, stars }: { score: number; stars: number }) {
-  const r = 46;
-  const c = 2 * Math.PI * r;
-  const col = stars >= 3 ? '#2fae55' : stars >= 2 ? '#17a2a3' : stars >= 1 ? '#f4b62a' : '#e1553f';
-  return (
-    <div className="score-ring">
-      <svg viewBox="0 0 110 110" width="128" height="128">
-        <circle cx="55" cy="55" r={r} fill="none" stroke="var(--surface-3)" strokeWidth="10" />
-        <circle cx="55" cy="55" r={r} fill="none" stroke={col} strokeWidth="10" strokeLinecap="round" strokeDasharray={`${(c * Math.max(0, Math.min(100, score))) / 100} ${c}`} transform="rotate(-90 55 55)" />
-      </svg>
-      <div className="score-ring-text">
-        <b>{Math.round(score)}%</b>
-        <span className="tiny muted">score</span>
-      </div>
-    </div>
-  );
+  return <PixelMeter pct={score} label="score" tone={stars >= 3 ? 'green' : stars >= 2 ? 'teal' : stars >= 1 ? 'gold' : 'red'} />;
 }
 
 function Results({ def, result, review, onAgain, onLeave }: { def: { name: string; tickets?: number[]; topics: string[] }; result: { r: ActivityResult; out: RewardOutcome }; review: ReviewItem[]; onAgain: () => void; onLeave: () => void }) {

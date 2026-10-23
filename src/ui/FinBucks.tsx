@@ -3,23 +3,15 @@
  * FinBucks: Fin City's currency (1 FinBuck = $1, so lessons still talk in dollars). A gold coin
  * with a bold F and a wave, a teal banknote with guilloché engraving and an F medallion.
  */
-import { useId } from 'react';
 import { money } from './format';
 
 /** The FinBucks coin mark. */
 export function FinBucksCoin({ size = '1.25em', className }: { size?: string | number; className?: string }) {
-  const id = useId().replace(/:/g, '');
   return (
     <svg viewBox="0 0 32 32" width={size} height={size} className={className ?? 'finbucks-coin'} aria-hidden="true">
-      <defs>
-        <radialGradient id={`g${id}`} cx="35%" cy="30%" r="75%">
-          <stop offset="0" stopColor="#fff1b0" />
-          <stop offset="0.45" stopColor="#f6c63c" />
-          <stop offset="1" stopColor="#c98a12" />
-        </radialGradient>
-      </defs>
-      <circle cx="16" cy="16" r="15" fill="#8a5a08" />
-      <circle cx="16" cy="16" r="13.6" fill={`url(#g${id})`} />
+      <circle cx="16" cy="16" r="15" fill="#14181f" />
+      <circle cx="16" cy="16" r="13" fill="#f2c94c" />
+      <path d="M7 12a10 10 0 0 1 6-6" fill="none" stroke="#fff3c4" strokeWidth="2" strokeLinecap="square" />
       <circle cx="16" cy="16" r="10.6" fill="none" stroke="#a8730d" strokeWidth="1.2" strokeDasharray="1.4 1.2" />
       {/* Bold F with a wave through it */}
       <path d="M12 9.5h9v3h-5.6v2.2h4.6v3h-4.6V23H12z" fill="#7a4e05" />
@@ -40,19 +32,11 @@ export function FinBucks({ value, sign, cents = true, className }: { value: numb
 
 /** A FinBucks banknote showing a balance (wallet cards, bank app, payday). */
 export function FinBucksNote({ value, label = 'FINBUCKS' }: { value: number; label?: string }) {
-  const id = useId().replace(/:/g, '');
   const lines = Array.from({ length: 14 }, (_, i) => i);
   return (
     <div className="fb-note" role="img" aria-label={`${money(value)} in FinBucks`}>
       <svg viewBox="0 0 225 100" preserveAspectRatio="none" aria-hidden="true">
-        <defs>
-          <linearGradient id={`n${id}`} x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0" stopColor="#0f6e70" />
-            <stop offset="0.55" stopColor="#139a9b" />
-            <stop offset="1" stopColor="#0b4f61" />
-          </linearGradient>
-        </defs>
-        <rect width="225" height="100" fill={`url(#n${id})`} />
+        <rect width="225" height="100" fill="#1c7f80" />
         {/* Guilloché: interlaced sine bands like engraved security printing */}
         {lines.map((i) => (
           <path key={i} d={`M0 ${12 + i * 6} ${Array.from({ length: 12 }, (_, k) => `Q ${k * 20 + 10} ${12 + i * 6 + (k % 2 ? 7 : -7)} ${(k + 1) * 20} ${12 + i * 6}`).join(' ')}`} fill="none" stroke="#bff3ee" strokeOpacity="0.12" strokeWidth="0.7" />

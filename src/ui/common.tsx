@@ -261,3 +261,19 @@ export function ProgressBar({ value, max = 1, color = 'var(--teal)', height = 14
     </div>
   );
 }
+
+/** Chunky pixel meter: a big percentage over a row of square blocks. */
+export function PixelMeter({ pct, label, blocks = 10, tone = 'gold' }: { pct: number; label?: string; blocks?: number; tone?: 'gold' | 'teal' | 'green' | 'red' }) {
+  const on = Math.round((Math.max(0, Math.min(100, pct)) / 100) * blocks);
+  return (
+    <div className={cls('pixel-meter', tone)}>
+      <b>{Math.round(pct)}%</b>
+      {label && <span className="pixel-meter-label">{label}</span>}
+      <div className="pixel-meter-blocks">
+        {Array.from({ length: blocks }, (_, i) => (
+          <span key={i} className={i < on ? 'on' : ''} />
+        ))}
+      </div>
+    </div>
+  );
+}

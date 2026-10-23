@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useUI } from '@/store/ui';
 import { useGame, act } from '@/store/game';
 import { recordEvent } from '@/game/progress/events';
-import { Modal } from '../common';
+import { hourOf } from '@/engine/Sky';
 import { playSfx } from '@/engine/audio';
 import { BankApp } from './apps/BankApp';
 import { GoalsApp } from './apps/GoalsApp';
@@ -64,13 +64,46 @@ export function Phone({ app, arg }: { app?: string; arg?: string }) {
   };
 
   const def = APPS.find((a) => a.id === app);
+  const t = useGame((s) => s.world!.time.t);
+  const h = hourOf(t);
+  const clock = `${Math.floor(h) % 12 || 12}:${String(Math.floor((h % 1) * 60)).padStart(2, '0')}`;
+  // Escape closes the phone (it isn't a modal, so it handles this itself)
+  useEffect(() => {
+    const k = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        e.stopPropagation();
+        close();
+      }
+    };
+    window.addEventListener('keydown', k, true);
+    return () => window.removeEventListener('keydown', k, true);
+  }, [close]);
   return (
-    <Modal onClose={close} size="wide" className="phone" title={def ? `${def.icon} ${def.name}` : '📱 FinPhone'} subtitle={def ? 'FinPhone' : 'Your money, accounts and progress'}>
-      {app && (
-        <button className="link-btn" style={{ alignSelf: 'flex-start', marginBottom: 6 }} onClick={() => (playSfx('click'), open({ type: 'phone' }))}>
-          ◀ All apps
-        </button>
-      )}
+    <div className="finphone-dock">
+      <div className="modal finphone" role="dialog" aria-label="FinPhone">
+        <div className="fp-top">
+          <span className="fp-speaker" />
+        </div>
+        <div className="fp-status">
+          <span>{clock}</span>
+          <span>FinPhone</span>
+          <span className="fp-battery" aria-hidden="true">
+            <span />
+          </span>
+        </div>
+        <div className="fp-bar">
+          {app ? (
+            <button className="fp-back" onClick={() => (playSfx('click'), open({ type: 'phone' }))} aria-label="All apps">
+              ◀
+            </button>
+          ) : (
+            <span className="fp-back placeholder" />
+          )}
+          <b className="fp-title">{def ? `${def.icon} ${def.name}` : 'Home'}</b>
+          <button className="fp-close" onClick={() => (playSfx('click'), close())} aria-label="Close FinPhone">
+            ✕
+          </button>
+        </div>
       <div className="phone-screen">
         {!app && (
           <div className="app-grid">
@@ -98,6 +131,8 @@ export function Phone({ app, arg }: { app?: string; arg?: string }) {
         {app === 'news' && <NewsApp />}
         {app === 'calc' && <CalculatorApp />}
       </div>
-    </Modal>
+        <button className="fp-home" onClick={() => (playSfx('click'), app ? open({ type: 'phone' }) : close())} aria-label={app ? 'Home' : 'Close FinPhone'} />
+      </div>
+    </div>
   );
 }

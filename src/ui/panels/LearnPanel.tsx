@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { useUI } from '@/store/ui';
 import { useGame, act } from '@/store/game';
-import { Button, Modal, ReadAloud, NARWHAL_SHEET } from '../common';
+import { Button, Modal, ReadAloud, NARWHAL_SHEET, PixelMeter } from '../common';
 import { Tabs, Section } from '../kit';
 import { LESSONS, completeLesson, type LessonDef } from '@/game/progress/lessons';
 import { QUESTS } from '@/game/progress/quests';
@@ -49,13 +49,7 @@ export function LearnPanel({ topic, tab: initial, lessonId }: { topic?: string; 
       ) : (
         <>
           <div className="learn-hero">
-            <div className="learn-ring">
-              <svg viewBox="0 0 100 100" width="96" height="96">
-                <circle cx="50" cy="50" r="42" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="9" />
-                <circle cx="50" cy="50" r="42" fill="none" stroke="#ffd25a" strokeWidth="9" strokeLinecap="round" strokeDasharray={`${(264 * pctDone) / 100} 264`} transform="rotate(-90 50 50)" />
-              </svg>
-              <b>{pctDone}%</b>
-            </div>
+            <PixelMeter pct={pctDone} label="course" />
             <div className="col grow" style={{ gap: 6, minWidth: 220 }}>
               <span className="learn-kicker">{next ? 'Up next in your course' : 'Course complete'}</span>
               <b className="learn-next-title">
