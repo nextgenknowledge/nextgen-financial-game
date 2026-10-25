@@ -25,6 +25,8 @@ import { useRide, getOff } from '@/world/ParkedVehicles';
 import { Minimap } from './Minimap';
 import { playSfx } from '@/engine/audio';
 import { Toasts } from '../Toasts';
+import { NARWHAL_ART, narwhalFace } from '../narwhalArt';
+import tips from '@/data/tips.json';
 
 export function HUD() {
   const world = useGame((s) => s.world);
@@ -57,7 +59,7 @@ export function HUD() {
         {!panel && !talking && <KeyHints />}
         <FpsCounter />
       </div>
-      <div className="hud-region r-dlg">
+      <div className="hud-region r-bl">
         <NarwhalDialog />
       </div>
       <TouchControls />
@@ -272,11 +274,19 @@ export function NarwhalPortrait({ mood, size = 96 }: { mood: Mood; size?: number
   return <canvas ref={ref} width={size * 2} height={size * 2} style={{ width: size, height: size }} aria-label={`NextGen Narwhal looking ${mood}`} />;
 }
 
+/*
+ * NextGen Narwhal, always in the bottom left. When Narwhal has something to say, a speech
+ * bubble pops up next to them (typewriter text, read-aloud, choices). Click Narwhal any time
+ * for a hint about the current quest, or a money tip.
+ */
 function NarwhalDialog() {
   const line = useUI((s) => s.narwhal[0]);
   const count = useUI((s) => s.narwhal.length);
   const next = useUI((s) => s.nextNarwhal);
   const clear = useUI((s) => s.clearNarwhal);
+  const say = useUI((s) => s.sayNarwhal);
+  const panel = useUI((s) => s.panel);
+  const w = useGame((s) => s.world!);
   const readAloud = useSettings((s) => s.readAloud);
   const [shown, setShown] = useState('');
   const reduced = useSettings((s) => s.reducedMotion);
@@ -309,19 +319,40 @@ function NarwhalDialog() {
     window.addEventListener('keydown', h);
     return () => window.removeEventListener('keydown', h);
   }, [line, shown, next]);
-  if (!line) return null;
-  const speaker = line.text.match(/^([A-Z][\w .']+): “/);
+
+  // Hide behind full-screen panels.
+  if (panel && !line) return null;
+
+  const hint = () => {
+    playSfx('pop');
+    if (line) {
+      stopSpeaking();
+      return clear();
+    }
+    const entry = w.difficulty === 'entry';
+    const cs = currentStep(w);
+    if (cs) {
+      const lines = entry ? cs.step.entrySay ?? cs.step.say : cs.step.proSay ?? cs.step.say;
+      say(lines?.[lines.length - 1] ?? textFor(cs.step, entry ? 'entry' : 'advanced'), 'talking');
+    } else {
+      const t = tips.tips[Math.floor(Math.random() * tips.tips.length)];
+      say(t.text, 'confident');
+    }
+  };
+
+  const speaker = line?.text.match(/^([A-Z][\w .']+): “/);
   return (
-    <div className="hud-dialog" role="dialog" aria-live="polite">
-      <div className="dialog-portrait">
-        <NarwhalPortrait mood={line.mood} />
-      </div>
-      <div className="dialog-body">
-        <div className="row between">
-          <b className="pixel" style={{ color: 'var(--teal-dark)' }}>
-            {speaker ? speaker[1] : 'NextGen Narwhal'}
-          </b>
-          <div className="row" style={{ gap: 4 }}>
+    <div className={cls('narwhal-guide', line && 'speaking')}>
+      <button type="button" className="narwhal-guide-body" onClick={hint} title={line ? 'Close' : 'Ask Narwhal for a hint'} aria-label={line ? 'Close Narwhal' : 'Ask Narwhal for a hint'}>
+        <img key={line?.id ?? 'idle'} src={NARWHAL_ART} alt="NextGen Narwhal" draggable={false} />
+        {!line && <span className="narwhal-guide-ping">?</span>}
+      </button>
+      {line && (
+        <div className="narwhal-bubble hud-dialog" role="dialog" aria-live="polite" key={line.id}>
+          <div className="narwhal-bubble-head">
+            <img src={narwhalFace(line.mood)} alt="" />
+            <span>{speaker ? speaker[1] : 'NextGen Narwhal'}</span>
+            <span className="grow" />
             <button className="btn icon small ghost" title="Read aloud" onClick={() => speak(line.text)}>
               🔊
             </button>
@@ -331,41 +362,41 @@ function NarwhalDialog() {
               </button>
             )}
           </div>
-        </div>
-        <p className="dialog-text">{shown}</p>
-        {line.choices ? (
-          <div className="row wrap">
-            {line.choices.map((c) => (
+          <p className="dialog-text">{shown}</p>
+          {line.choices ? (
+            <div className="row wrap">
+              {line.choices.map((c) => (
+                <button
+                  key={c.label}
+                  className="btn small primary"
+                  onClick={() => {
+                    next();
+                    c.onPick();
+                  }}
+                >
+                  {c.label}
+                </button>
+              ))}
+            </div>
+          ) : (
+            <div className="row" style={{ justifyContent: 'flex-end' }}>
               <button
-                key={c.label}
                 className="btn small primary"
                 onClick={() => {
-                  next();
-                  c.onPick();
+                  playSfx('click');
+                  if (shown.length < line.text.length) setShown(line.text);
+                  else {
+                    stopSpeaking();
+                    next();
+                  }
                 }}
               >
-                {c.label}
+                {count > 1 ? `Next ▶ (${count - 1})` : 'Got it! ✓'}
               </button>
-            ))}
-          </div>
-        ) : (
-          <div className="row" style={{ justifyContent: 'flex-end' }}>
-            <button
-              className="btn small primary"
-              onClick={() => {
-                playSfx('click');
-                if (shown.length < line.text.length) setShown(line.text);
-                else {
-                  stopSpeaking();
-                  next();
-                }
-              }}
-            >
-              {count > 1 ? `Next ▶ (${count - 1})` : 'Got it! ✓'}
-            </button>
-          </div>
-        )}
-      </div>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

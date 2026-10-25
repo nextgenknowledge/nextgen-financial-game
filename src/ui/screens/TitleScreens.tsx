@@ -1,35 +1,19 @@
 'use client';
 import { useEffect, useMemo, useState } from 'react';
 import { useUI } from '@/store/ui';
-import { playMusic, unlockAudio } from '@/engine/audio';
+import { playMusic, playSfx, unlockAudio } from '@/engine/audio';
 import { Button, FIN_LOGO, ORG_LOGO, NARWHAL_SHEET } from '../common';
 import { SettingsModal } from '../SettingsModal';
-import { makeRng } from '@/game/rng';
+import { listWorlds, loadWorld, saveWorld } from '@/save/db';
+import type { WorldMeta } from '@/save/format';
+import { createWorld } from '@/game/world';
+import { startWorld } from '../startWorld';
+import { CityBackdrop } from './CityBackdrop';
+import { NewGameFlow } from './NewGame';
 
+/** The animated pixel city behind every start screen. */
 export function SkyBackdrop() {
-  const els = useMemo(() => {
-    const r = makeRng(7);
-    return {
-      stars: Array.from({ length: 60 }, () => ({ x: r.range(0, 100), y: r.range(0, 60), d: r.range(0, 3) })),
-      clouds: Array.from({ length: 6 }, () => ({ y: r.range(5, 55), w: r.range(80, 220), dur: r.range(40, 90), delay: -r.range(0, 90) })),
-      skyline: Array.from({ length: 28 }, () => r.range(25, 100)),
-    };
-  }, []);
-  return (
-    <div className="sky-bg" aria-hidden>
-      {els.stars.map((s, i) => (
-        <div key={i} className="star" style={{ left: `${s.x}%`, top: `${s.y}%`, animationDelay: `${s.d}s` }} />
-      ))}
-      {els.clouds.map((c, i) => (
-        <div key={i} className="cloud" style={{ top: `${c.y}%`, width: c.w, animationDuration: `${c.dur}s`, animationDelay: `${c.delay}s` }} />
-      ))}
-      <div className="skyline">
-        {els.skyline.map((h, i) => (
-          <div key={i} style={{ height: `${h}%` }} />
-        ))}
-      </div>
-    </div>
-  );
+  return <CityBackdrop />;
 }
 
 /** "NextGen Knowledge presents" with the org logo, then the title. Click to skip. */
@@ -50,9 +34,16 @@ export function IntroScreen() {
   );
 }
 
+type MenuItem = { label: string; hint?: string; color: 'yellow' | 'blue' | 'cyan' | 'lime' | 'navy'; action: () => void };
+
 export function TitleScreen() {
   const setScreen = useUI((s) => s.setScreen);
+  const pushToast = useUI((s) => s.pushToast);
   const [settings, setSettings] = useState(false);
+  const [newGame, setNewGame] = useState(false);
+  const [worlds, setWorlds] = useState<WorldMeta[]>([]);
+  const [selected, setSelected] = useState(0);
+
   useEffect(() => {
     // Browsers only allow audio after a gesture; start music on the first click.
     const start = () => {
@@ -66,38 +57,115 @@ export function TitleScreen() {
       window.removeEventListener('keydown', start);
     };
   }, []);
+
+  useEffect(() => {
+    listWorlds()
+      .then(setWorlds)
+      .catch(() => setWorlds([]));
+  }, []);
+
+  const last = worlds[0] ?? null;
+  const menu = useMemo(() => {
+    const items: MenuItem[] = [];
+    if (last) {
+      items.push({
+        label: 'Continue',
+        hint: last.name,
+        color: 'lime',
+        action: async () => {
+          const w = await loadWorld(last.id).catch(() => null);
+          if (w) startWorld(w);
+          else pushToast({ text: "Couldn't open that game.", tone: 'bad' });
+        },
+      });
+    }
+    items.push({ label: 'New Game', color: 'yellow', action: () => setNewGame(true) });
+    items.push({ label: 'Load Saved Game', hint: worlds.length ? `${worlds.length} saved` : undefined, color: 'blue', action: () => setScreen('worlds') });
+    items.push({ label: 'Settings', color: 'cyan', action: () => setSettings(true) });
+    items.push({ label: 'Credits', color: 'navy', action: () => setScreen('credits') });
+    return items;
+  }, [last, worlds.length, setScreen, pushToast]);
+
+  const index = Math.min(selected, menu.length - 1);
+  const overlay = settings || newGame;
+
+  // Arrow keys (or W/S) move, Enter picks.
+  useEffect(() => {
+    if (overlay) return;
+    const h = (e: KeyboardEvent) => {
+      if (e.target instanceof HTMLInputElement) return;
+      if (e.key === 'ArrowDown' || e.key === 's' || e.key === 'S') {
+        e.preventDefault();
+        playSfx('click');
+        setSelected((i) => (Math.min(i, menu.length - 1) + 1) % menu.length);
+      } else if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W') {
+        e.preventDefault();
+        playSfx('click');
+        setSelected((i) => (Math.min(i, menu.length - 1) - 1 + menu.length) % menu.length);
+      } else if (e.key === 'Enter' && !(e.target instanceof HTMLButtonElement)) {
+        e.preventDefault();
+        playSfx('pop');
+        menu[index]?.action();
+      }
+    };
+    window.addEventListener('keydown', h);
+    return () => window.removeEventListener('keydown', h);
+  }, [overlay, menu, index]);
+
   return (
-    <div className="screen">
+    <div className="screen start-screen">
       <SkyBackdrop />
-      <div className="title-wrap">
-        <div className="pixel" style={{ letterSpacing: '0.3em', color: '#cfe0ff', fontSize: '0.95rem' }}>
-          NEXTGEN KNOWLEDGE PRESENTS
-        </div>
-        <img className="title-logo" src={FIN_LOGO} alt="Fin City" />
-        <div className="title-buttons">
-          <Button
-            variant="gold"
-            size="huge"
-            onClick={() => {
-              unlockAudio();
-              playMusic('title');
-              setScreen('worlds');
-            }}
-          >
-            ▶ Play
-          </Button>
-          <Button size="big" onClick={() => setSettings(true)}>
-            ⚙️ Settings
-          </Button>
-          <Button size="big" onClick={() => setScreen('credits')}>
-            ⭐ Credits
-          </Button>
-        </div>
-      </div>
+      <section className="st-content">
+        <div className="st-presents">NextGen Knowledge presents</div>
+        <h1 className="st-logo-wrap">
+          <img className="st-logo" src={FIN_LOGO} alt="Fin City" draggable={false} />
+        </h1>
+        <p className="st-tagline">Travel the world and master money on the way.</p>
+
+        {!newGame && (
+          <div className="st-menu st-panel-in" role="menu">
+            {menu.map((item, i) => (
+              <button
+                key={item.label}
+                type="button"
+                role="menuitem"
+                className={`st-menu-btn ${item.color} ${i === index ? 'on' : ''}`}
+                onMouseEnter={() => setSelected(i)}
+                onFocus={() => setSelected(i)}
+                onClick={() => {
+                  playSfx('pop');
+                  unlockAudio();
+                  item.action();
+                }}
+              >
+                <span className="st-arrow" aria-hidden>
+                  ▶
+                </span>
+                <span className="st-menu-text">
+                  <span>{item.label}</span>
+                  {item.hint && <span className="st-hint">{item.hint}</span>}
+                </span>
+              </button>
+            ))}
+          </div>
+        )}
+
+        <div className="st-words">Earn · Save · Invest · Explore</div>
+      </section>
       <div className="title-foot">
         <img src={ORG_LOGO} alt="" />
         <span>A NextGen Knowledge game · Everything stays on this device</span>
       </div>
+      {newGame && (
+        <NewGameFlow
+          onCancel={() => setNewGame(false)}
+          onCreate={async (opts) => {
+            const w = createWorld(opts);
+            await saveWorld(w, null).catch(() => {});
+            startWorld(w);
+          }}
+        />
+      )}
       {settings && <SettingsModal onClose={() => setSettings(false)} />}
     </div>
   );

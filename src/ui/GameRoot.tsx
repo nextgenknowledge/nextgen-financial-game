@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import { useUI } from '@/store/ui';
 import { useSettings } from '@/store/settings';
 import { setEffectHandler } from '@/store/game';
@@ -12,7 +12,6 @@ import { Toasts } from './Toasts';
 import { LoadingScreen } from './loading/LoadingScreen';
 import { ORG_LOGO } from './common';
 import GameView from './GameView';
-import tips from '@/data/tips.json';
 import { Confetti } from './Confetti';
 
 export default function GameRoot() {
@@ -51,8 +50,7 @@ export default function GameRoot() {
 
 function LoadingOverlay() {
   const loading = useUI((s) => s.loading);
-  const tip = useMemo(() => tips.tips[Math.floor(Math.random() * tips.tips.length)], [loading.active]);
   if (!loading.active) return null;
-  return <LoadingScreen loading={loading} tip={tip.text} />;
+  return <LoadingScreen loading={loading} />;
 }
 

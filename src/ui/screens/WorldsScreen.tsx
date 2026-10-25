@@ -13,13 +13,12 @@ import {
   saveWorld,
 } from '@/save/db';
 import { exportFileName, type WorldMeta } from '@/save/format';
-import { createWorld, DEFAULT_AVATAR, monthLabel } from '@/game/world';
+import { createWorld, monthLabel } from '@/game/world';
 import type { AvatarConfig, Difficulty } from '@/game/types';
-import { Button, Confirm, Modal, Prompt, FIN_LOGO } from '../common';
+import { Button, Confirm, Prompt } from '../common';
 import { money, timeAgo } from '../format';
 import { SkyBackdrop } from './TitleScreens';
-import { AvatarPreview } from '../AvatarPreview';
-import outfits from '@/data/shop/outfits.json';
+import { NewGameFlow } from './NewGame';
 import { startWorld } from '../startWorld';
 import { playSfx } from '@/engine/audio';
 
@@ -67,18 +66,18 @@ export function WorldsScreen() {
   };
 
   return (
-    <div className="screen" style={{ alignItems: 'flex-start' }}>
+    <div className="screen start-screen worlds-start" style={{ alignItems: 'flex-start' }}>
       <SkyBackdrop />
-      <div className="screen-inner" style={{ position: 'relative' }}>
+      <div className="screen-inner st-panel st-panel-in" style={{ position: 'relative' }}>
         <div className="row between wrap" style={{ marginBottom: '1rem' }}>
-          <h1 className="screen-title">
-            <img src={FIN_LOGO} alt="" /> Your Worlds
-          </h1>
+          <h1 className="st-heading">Load Saved Game</h1>
           <div className="row">
             <Button onClick={() => fileRef.current?.click()} title="Import a world file">
               📥 Import
             </Button>
-            <Button onClick={() => setScreen('title')}>← Back</Button>
+            <button type="button" className="st-small" onClick={() => setScreen('title')}>
+              ◀ Back
+            </button>
           </div>
           <input
             ref={fileRef}
@@ -230,9 +229,7 @@ export function WorldsScreen() {
   );
 }
 
-const FUN_NAMES = ['Coin Cove', 'Piggy Bank Bay', 'Dollar Dunes', 'Savings Springs', 'Budget Bluffs', 'Penny Peaks', 'Interest Isle'];
-const FUN_NICKS = ['CoinCaptain', 'PennyPilot', 'SavvySaver', 'BudgetBoss', 'StockStar', 'NickelNinja', 'DimeDiver'];
-
+/** Creating a world from the worlds screen uses the same steps as the title screen. */
 export function CreateWorldModal({
   onClose,
   onCreate,
@@ -240,104 +237,7 @@ export function CreateWorldModal({
   onClose: () => void;
   onCreate: (o: { name: string; nickname: string; difficulty: Difficulty; avatar: AvatarConfig }) => void;
 }) {
-  const [name, setName] = useState(() => FUN_NAMES[Math.floor(Math.random() * FUN_NAMES.length)]);
-  const [nickname, setNickname] = useState(() => FUN_NICKS[Math.floor(Math.random() * FUN_NICKS.length)] + Math.floor(Math.random() * 90 + 10));
-  const [difficulty, setDifficulty] = useState<Difficulty>('entry');
-  const [avatar, setAvatar] = useState<AvatarConfig>({ ...DEFAULT_AVATAR });
-  const [step, setStep] = useState(0);
-  const C = outfits.colors;
-  const patch = (p: Partial<AvatarConfig>) => setAvatar((a) => ({ ...a, ...p }));
-
-  return (
-    <Modal onClose={onClose} title={step === 0 ? 'Create a world' : 'Make your character'} size="wide">
-      {step === 0 ? (
-        <div className="col" style={{ gap: '1rem' }}>
-          <div className="row wrap" style={{ gap: '1rem', alignItems: 'flex-start' }}>
-            <label className="field grow" style={{ minWidth: 220 }}>
-              World name
-              <input className="input" value={name} maxLength={40} onChange={(e) => setName(e.target.value)} />
-            </label>
-            <label className="field grow" style={{ minWidth: 220 }}>
-              Your nickname
-              <input className="input" value={nickname} maxLength={20} onChange={(e) => setNickname(e.target.value.replace(/[^\w\- ]/g, ''))} />
-              <small>🛡️ Use a fun nickname, never your real name.</small>
-            </label>
-          </div>
-          <b>Choose a difficulty</b>
-          <div className="difficulty-cards">
-            <div className={`card difficulty-card ${difficulty === 'entry' ? 'on' : ''}`} role="button" tabIndex={0} onClick={() => setDifficulty('entry')}>
-              <h3>🌱 Entry</h3>
-              <b>Ages 6–13</b>
-              <span className="small">Counting money, needs vs. wants, saving, earning, simple budgets, what banks and stocks are. Big buttons, pictures and lots of hints.</span>
-            </div>
-            <div className={`card difficulty-card ${difficulty === 'advanced' ? 'on' : ''}`} role="button" tabIndex={0} onClick={() => setDifficulty('advanced')}>
-              <h3>🚀 Advanced</h3>
-              <b>Ages 13–18</b>
-              <span className="small">Compound interest, loans & amortization, credit scores, taxes, investing, P/E, retirement and business math. Real calculations with a calculator.</span>
-            </div>
-          </div>
-          <span className="small muted">You can change difficulty later in Pause → World options.</span>
-          <div className="row" style={{ justifyContent: 'flex-end' }}>
-            <Button onClick={onClose}>Cancel</Button>
-            <Button variant="primary" size="big" disabled={!name.trim() || !nickname.trim()} onClick={() => setStep(1)}>
-              Next →
-            </Button>
-          </div>
-        </div>
-      ) : (
-        <div className="row wrap" style={{ alignItems: 'flex-start', gap: '1.2rem' }}>
-          <div style={{ width: 240, flexShrink: 0 }}>
-            <AvatarPreview config={avatar} height={300} />
-          </div>
-          <div className="col grow" style={{ minWidth: 260, gap: '0.7rem' }}>
-            <SwatchRow label="Skin" colors={C.skin} value={avatar.skin} onPick={(c) => patch({ skin: c })} />
-            <SwatchRow label="Hair color" colors={C.hair} value={avatar.hair} onPick={(c) => patch({ hair: c })} />
-            <div className="field">
-              Hair style
-              <div className="row wrap">
-                {['Short', 'Long', 'Curly', 'Buzz', 'Bun', 'Spiky'].map((h, i) => (
-                  <Button key={h} size="small" variant={avatar.hairStyle === i ? 'gold' : undefined} onClick={() => patch({ hairStyle: i })}>
-                    {h}
-                  </Button>
-                ))}
-              </div>
-            </div>
-            <SwatchRow label="Shirt" colors={C.shirt} value={avatar.shirt} onPick={(c) => patch({ shirt: c })} />
-            <SwatchRow label="Pants" colors={C.pants} value={avatar.pants} onPick={(c) => patch({ pants: c })} />
-            <SwatchRow label="Shoes" colors={C.shoes} value={avatar.shoes} onPick={(c) => patch({ shoes: c })} />
-            <span className="small muted">Buy more outfits later at the Style Studio in Fin-City Park.</span>
-            <div className="row" style={{ justifyContent: 'flex-end' }}>
-              <Button onClick={() => setStep(0)}>← Back</Button>
-              <Button variant="gold" size="big" onClick={() => onCreate({ name, nickname, difficulty, avatar })}>
-                🌟 Start playing
-              </Button>
-            </div>
-          </div>
-        </div>
-      )}
-    </Modal>
-  );
+  return <NewGameFlow onCancel={onClose} onCreate={onCreate} />;
 }
 
-export function SwatchRow({ label, colors, value, onPick }: { label: string; colors: string[]; value: string; onPick: (c: string) => void }) {
-  return (
-    <div className="field">
-      {label}
-      <div className="swatches">
-        {colors.map((c) => (
-          <button
-            key={c}
-            type="button"
-            aria-label={`${label} ${c}`}
-            className={`swatch ${value === c ? 'on' : ''}`}
-            style={{ background: c }}
-            onClick={() => {
-              playSfx('click');
-              onPick(c);
-            }}
-          />
-        ))}
-      </div>
-    </div>
-  );
-}
+export { SwatchRow } from './NewGame';
