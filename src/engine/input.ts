@@ -63,4 +63,5 @@ export function clearKeys() {
 }
 
 /** Virtual joystick / on-screen buttons feed into the same state. */
-export const virtual = { x: 0, y: 0, sprint: false, jump: false };
+/** On-screen touch controls. `jumpTap` latches a tap so one shorter than a frame still jumps. */
+export const virtual = { x: 0, y: 0, sprint: false, jump: false, jumpTap: false };

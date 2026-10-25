@@ -423,7 +423,10 @@ function TouchControls() {
       <div className="touch-buttons">
         <button
           className="touch-btn"
-          onPointerDown={() => (virtual.jump = true)}
+          onPointerDown={() => {
+            virtual.jump = true;
+            if (!rt.vehicle) virtual.jumpTap = true;
+          }}
           onPointerUp={() => (virtual.jump = false)}
           onPointerLeave={() => (virtual.jump = false)}
           onPointerCancel={() => (virtual.jump = false)}

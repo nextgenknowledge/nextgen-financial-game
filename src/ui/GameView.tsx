@@ -78,13 +78,9 @@ export default function GameView() {
           rt.camPitch = 0.42;
           rt.camDist = 8;
           break;
-        case 'jump':
-          if (!ui.panel && rt.grounded && !rt.vehicle) pendingJump.current = true;
-          break;
       }
     });
   }, []);
-  const pendingJump = useRef(false);
 
   // First-time intro and music
   useEffect(() => {
@@ -173,7 +169,7 @@ export default function GameView() {
           <PlayerPets />
           <GoalBeacon />
           <GuideTrail />
-          <Systems pendingJump={pendingJump} />
+          <Systems />
           <CaptureBinder />
           <WorldActivityRunner />
           {quality !== 'low' && <PostFX quality={quality} interior={indoors} />}
@@ -187,7 +183,7 @@ export default function GameView() {
 }
 
 /** Runs game systems: time, market, walking stats, goal markers, performance. */
-function Systems({ pendingJump }: { pendingJump: React.RefObject<boolean> }) {
+function Systems() {
   const acc = useRef(0);
   const walked = useRef(0);
   const last = useRef(new THREE.Vector3().copy(rt.player));
@@ -206,8 +202,9 @@ function Systems({ pendingJump }: { pendingJump: React.RefObject<boolean> }) {
       const monthSeconds = useSettings.getState().monthMinutes * 60;
       const walk = walked.current;
       walked.current = 0;
-      const jump = pendingJump.current;
-      pendingJump.current = false;
+      // A real jump from either the keyboard or the on-screen touch button
+      const jump = rt.jumped;
+      rt.jumped = false;
       act((w, fx) => {
         advanceTime(w, fx, secs, monthSeconds);
         if (walk > 0.2) recordEvent(w, fx, { type: 'move', value: walk });
