@@ -6,6 +6,7 @@ import { seasonalProgress, claimSeasonal } from '@/game/progress/seasonal';
 import { Section, Empty } from '../../kit';
 import { Button, ProgressBar } from '../../common';
 import { textFor } from '@/game/activities';
+import { forDevice } from '@/ui/touch';
 
 export function QuestsApp() {
   const w = useGame((s) => s.world!);
@@ -34,7 +35,7 @@ export function QuestsApp() {
                   {q.steps.map((s, i) => (
                     <div key={s.id} className={`epic-step ${i < stepIdx ? 'past' : i === stepIdx ? 'now' : ''}`}>
                       <span className="epic-dot">{i < stepIdx ? '✓' : i + 1}</span>
-                      <span className="small">{textFor(s, w.difficulty)}</span>
+                      <span className="small">{forDevice(textFor(s, w.difficulty))}</span>
                     </div>
                   ))}
                 </div>
@@ -82,7 +83,7 @@ export function QuestsApp() {
                 {q.steps.map((s, i) => (
                   <li key={s.id} style={{ opacity: i < a.step ? 0.5 : 1, fontWeight: i === a.step ? 800 : 600 }}>
                     {i < a.step ? '✅ ' : i === a.step ? '👉 ' : ''}
-                    {textFor(s, w.difficulty)}
+                    {forDevice(textFor(s, w.difficulty))}
                   </li>
                 ))}
               </ol>

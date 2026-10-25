@@ -10,6 +10,7 @@ import { recordEvent } from '@/game/progress/events';
 import { hourOf } from '@/engine/Sky';
 import { rt } from '@/engine/runtime';
 import { virtual } from '@/engine/input';
+import { forDevice, isTouch } from '../touch';
 import { interact } from '../interact';
 import { money, shortMoney, cls } from '../format';
 import { speak, stopSpeaking } from '../speech';
@@ -281,7 +282,7 @@ function NarwhalDialog() {
     const entry = w.difficulty === 'entry';
     if (cs) {
       const lines = entry ? cs.step.entrySay ?? cs.step.say : cs.step.proSay ?? cs.step.say;
-      say(lines?.[lines.length - 1] ?? textFor(cs.step, entry ? 'entry' : 'advanced'), 'talking');
+      say(lines?.[lines.length - 1] ?? forDevice(textFor(cs.step, entry ? 'entry' : 'advanced')), 'talking');
     } else {
       const t = tips.tips[Math.floor(Math.random() * tips.tips.length)];
       say(t.text, 'confident');
@@ -313,7 +314,7 @@ function NarwhalDialog() {
               {cs.quest.title} · {cs.index + 1}/{cs.quest.steps.length}
             </span>
           </span>
-          <span className="idle-text">{textFor(cs.step, w.difficulty === 'entry' ? 'entry' : 'advanced')}</span>
+          <span className="idle-text">{forDevice(textFor(cs.step, w.difficulty === 'entry' ? 'entry' : 'advanced'))}</span>
           {cs.step.goal.type === 'move' && (
             <span className="idle-bar">
               <span style={{ width: `${Math.min(100, (cs.progress / (cs.step.goal.value ?? 1)) * 100)}%` }} />
@@ -378,9 +379,16 @@ function NarwhalDialog() {
 
 /** On-screen joystick + buttons for touch devices. */
 function TouchControls() {
-  const [touch, setTouch] = useState(false);
+  // Shown straight away on touch screens; a touch laptop shows them after the first touch.
+  const [touch, setTouch] = useState(isTouch);
   const base = useRef<{ x: number; y: number; id: number } | null>(null);
   const [knob, setKnob] = useState({ x: 0, y: 0 });
+  const release = () => {
+    base.current = null;
+    setKnob({ x: 0, y: 0 });
+    virtual.x = virtual.y = 0;
+    virtual.sprint = false;
+  };
   useEffect(() => {
     const on = () => setTouch(true);
     window.addEventListener('touchstart', on, { once: true });
@@ -405,12 +413,10 @@ function TouchControls() {
           virtual.y = -dy / 50;
           virtual.sprint = Math.hypot(dx, dy) > 45;
         }}
-        onPointerUp={() => {
-          base.current = null;
-          setKnob({ x: 0, y: 0 });
-          virtual.x = virtual.y = 0;
-          virtual.sprint = false;
-        }}
+        onPointerUp={release}
+        // iOS cancels the touch for system gestures (notification shade, home swipe); never leave the player walking
+        onPointerCancel={release}
+        onLostPointerCapture={release}
       >
         <div className="knob" style={{ transform: `translate(${knob.x}px, ${knob.y}px)` }} />
       </div>
@@ -420,10 +426,12 @@ function TouchControls() {
           onPointerDown={() => (virtual.jump = true)}
           onPointerUp={() => (virtual.jump = false)}
           onPointerLeave={() => (virtual.jump = false)}
+          onPointerCancel={() => (virtual.jump = false)}
+          aria-label="Jump"
         >
           ⤒
         </button>
-        <button className="touch-btn gold" onClick={() => interact(rt.nearTrigger)}>
+        <button className="touch-btn gold" onClick={() => interact(rt.nearTrigger)} aria-label="Interact">
           E
         </button>
       </div>

@@ -292,6 +292,7 @@ function Tutorials() {
       ))}
       <Section title="Controls">
         <ul className="small">
+          <li>Touch screens: drag the joystick (bottom left) to walk, push it all the way to run. The round buttons jump and interact (gold E). Drag anywhere else to look around, pinch to zoom, tap the ground to walk there.</li>
           <li>Move: W A S D or arrow keys · Sprint: Shift · Jump: Space · Interact: E</li>
           <li>Look around: drag with the mouse (or one finger). Zoom: mouse wheel. Click the ground to walk there.</li>
           <li>FinPhone: P · Map: M · Bag: I · Pause: Esc. Every button can also be clicked.</li>

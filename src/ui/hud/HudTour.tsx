@@ -1,5 +1,5 @@
 'use client';
-import { useCallback, useEffect, useLayoutEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useUI } from '@/store/ui';
 import { useGame, act } from '@/store/game';
 import { useSettings, keyLabel } from '@/store/settings';
@@ -139,6 +139,8 @@ export function HudTour() {
   const [i, setI] = useState(0);
   const [box, setBox] = useState<Box | null>(null);
   const [ready, setReady] = useState(false);
+  const bubble = useRef<HTMLDivElement>(null);
+  const [bh, setBh] = useState(180);
 
   useEffect(() => {
     setTouch(typeof window !== 'undefined' && (window.matchMedia?.('(pointer: coarse)').matches || 'ontouchstart' in window));
@@ -224,21 +226,32 @@ export function HudTour() {
     return () => clearTimeout(t);
   }, [tour, ready, step, go]);
 
+  useLayoutEffect(() => {
+    const el = bubble.current;
+    if (!el) return;
+    const h = el.offsetHeight;
+    if (Math.abs(h - bh) > 1) setBh(h);
+  });
+
   if (!tour || !ready || !step) return null;
   const vw = typeof window !== 'undefined' ? window.innerWidth : 1280;
   const vh = typeof window !== 'undefined' ? window.innerHeight : 800;
   const b = box ?? { x: vw / 2, y: vh / 2, w: 0, h: 0 };
   // The bubble goes on whichever side of the light has more room.
   const bw = Math.min(400, vw - 24);
-  const below = b.y + b.h / 2 < vh / 2;
+  const roomBelow = vh - (b.y + b.h + 16) - 8;
+  const roomAbove = b.y - 16 - 8;
+  const below = roomBelow >= bh || (roomAbove < bh && roomBelow >= roomAbove);
   const left = Math.max(12, Math.min(vw - bw - 12, b.x + b.w / 2 - bw / 2));
-  const pos: React.CSSProperties = below ? { top: Math.min(vh - 200, b.y + b.h + 16), left, width: bw } : { bottom: Math.max(12, vh - b.y + 16), left, width: bw };
+  // Measured height keeps the whole bubble on screen, even on a phone held sideways.
+  const top = Math.max(8, Math.min(vh - bh - 8, below ? b.y + b.h + 16 : b.y - 16 - bh));
+  const pos: React.CSSProperties = { top, left, width: bw, maxHeight: vh - 16 };
   const last = i >= steps.length - 1;
 
   return (
     <div className="hud-tour" role="dialog" aria-modal="true" aria-label="Screen tour">
       <div className="tour-light" style={{ left: b.x, top: b.y, width: b.w, height: b.h, borderRadius: step.target === 'player' ? '50%' : undefined }} />
-      <div className="narwhal-bubble tour-bubble" style={pos} key={i}>
+      <div className="narwhal-bubble tour-bubble" style={pos} key={i} ref={bubble}>
         <div className="narwhal-bubble-head">
           <img src={narwhalFace(step.mood)} alt="" />
           <span>NextGen Narwhal</span>

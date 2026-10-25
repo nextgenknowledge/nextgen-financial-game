@@ -577,11 +577,6 @@ button.item-card { cursor: pointer; }
 }
 /* Touch devices: joystick and buttons own the bottom corners */
 .hud .joystick, .hud .touch-buttons { z-index: 2; }
-@media (pointer: coarse) {
-  .hud .r-br { display: none; }
-  .hud { padding-bottom: 150px; }
-  .hud.talking { padding-bottom: 12px; }
-}
 /* The menu wraps into a second column instead of spilling out of its region */
 .hud .hud-menu { flex-flow: column wrap; max-height: 100%; align-content: flex-start; }
 .r-ml { overflow: hidden; padding: 2px 2px 6px; }
@@ -1161,6 +1156,7 @@ button.item-card { cursor: pointer; }
   position: relative;
   width: min(390px, calc(100vw - 36px));
   height: min(640px, calc(100vh - 36px));
+  height: min(640px, calc(100dvh - 36px - var(--safe-t) - var(--safe-b)));
   max-height: none;
   padding: 10px 10px 8px;
   display: flex;
@@ -1532,7 +1528,6 @@ button.item-card { cursor: pointer; }
 .hud .narwhal-guide .narwhal-bubble-head .grow { flex: 1; }
 @media (max-height: 640px) { .hud .narwhal-guide-body img { height: 96px; } }
 @media (max-width: 760px) { .hud .r-bl { position: absolute; left: 8px; bottom: 8px; } }
-@media (pointer: coarse) { .hud .r-bl { position: absolute; left: 8px; bottom: 160px; } .hud .narwhal-guide-body img { height: 96px; } }
 
 /* ═════════ In-game HUD, laid out like the earlier Fin-City build ═════════
    Top left: Settings and Save & Exit. Top right: a round minimap. Bottom right: a little
@@ -1619,10 +1614,6 @@ button.item-card { cursor: pointer; }
   .hud.classic .minimap { width: 128px; height: 128px; }
   .mini-phone { width: 64px; height: 104px; }
 }
-@media (pointer: coarse) {
-  .hud.classic .r-br { padding-bottom: 0; }
-  .mini-phone { margin-bottom: 140px; }
-}
 
 /* "You" card at the top of the FinPhone home screen */
 .fp-profile { margin: 0 0 0.6rem; padding: 0.5rem 0.6rem; background: #0b1a3a; color: #fff; border: 2px solid #3d8bff; display: flex; flex-direction: column; gap: 0.3rem; font-size: 0.78rem; }
@@ -1644,7 +1635,7 @@ button.item-card { cursor: pointer; }
   position: fixed; border: 3px solid var(--gold); box-shadow: 0 0 0 200vmax rgba(3, 11, 36, 0.74), 4px 4px 0 3px #061233;
   transition: left 0.25s steps(5, end), top 0.25s steps(5, end), width 0.25s steps(5, end), height 0.25s steps(5, end); pointer-events: none;
 }
-.hud-tour .tour-bubble { position: fixed; border-radius: 0; z-index: 1; }
+.hud-tour .tour-bubble { position: fixed; border-radius: 0; z-index: 1; overflow-y: auto; }
 .hud-tour .tour-bubble::before, .hud-tour .tour-bubble::after { display: none; }
 .hud-tour .narwhal-bubble-head .grow, .tour-actions .grow { flex: 1; }
 .tour-count { font-family: var(--font-body); font-size: 0.72rem; color: #4a5672; letter-spacing: 0.04em; }
@@ -1669,3 +1660,60 @@ button.item-card { cursor: pointer; }
 .decor-list li { display: flex; align-items: center; gap: 0.4rem; font-size: 0.9rem; font-weight: 800; }
 .decor-list li span { flex: 1; min-width: 0; }
 .decor-row { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+
+/* ═════════ Touch screens (phones, tablets) ═════════
+   The joystick owns the bottom-left corner and the jump and E buttons the bottom-right.
+   Narwhal stands above the joystick and the little FinPhone above the buttons, all clear of
+   the notch and home bar (safe-area insets need viewport-fit=cover in app/layout.tsx). */
+:root {
+  --safe-l: env(safe-area-inset-left, 0px);
+  --safe-r: env(safe-area-inset-right, 0px);
+  --safe-t: env(safe-area-inset-top, 0px);
+  --safe-b: env(safe-area-inset-bottom, 0px);
+}
+@media (pointer: coarse) {
+  .hud { padding-top: calc(10px + var(--safe-t)); padding-left: calc(10px + var(--safe-l)); padding-right: calc(10px + var(--safe-r)); }
+  .hud .joystick { left: calc(16px + var(--safe-l)); bottom: calc(16px + var(--safe-b)); width: 120px; height: 120px; }
+  .hud .touch-buttons { right: calc(16px + var(--safe-r)); bottom: calc(24px + var(--safe-b)); gap: 14px; }
+  .hud .touch-btn { width: 64px; height: 64px; }
+  /* grid-area: auto so these place against the whole HUD, not their grid cell */
+  .hud .r-bl { position: absolute; grid-area: auto; left: calc(10px + var(--safe-l)); bottom: calc(148px + var(--safe-b)); }
+  .hud .narwhal-guide-body img { height: 84px; }
+  .hud.classic .r-br, .hud.classic.talking .r-br { display: flex; position: absolute; grid-area: auto; right: calc(16px + var(--safe-r)); bottom: calc(102px + var(--safe-b)); padding: 0; }
+  .hud .r-br .hud-keys { display: none; }
+  .mini-phone { margin: 0; }
+  .mini-phone kbd { display: none; }
+  /* The phone's home bar keeps its look but gets a finger-sized hit area */
+  .fp-home { height: 26px; width: 130px; margin-top: 0; border: 10px solid transparent; background-clip: content-box; }
+  /* The prompt and Narwhal's dialog sit above the controls, not under a thumb */
+  .hud { padding-bottom: calc(100px + var(--safe-b)); }
+  .hud.talking { padding-bottom: calc(12px + var(--safe-b)); }
+  /* Comfortable tap targets */
+  .tour-actions .btn, .st-chip { min-height: 40px; }
+  .title-foot-logo { display: inline-flex; align-items: center; min-height: 44px; min-width: 44px; }
+}
+/* Wide touch screens (tablets, phones held sideways): the middle of the bottom edge is free */
+@media (pointer: coarse) and (min-width: 761px) {
+  .hud { padding-bottom: calc(16px + var(--safe-b)); }
+}
+/* Phones held upright: the FinPhone goes under the minimap so Narwhal's bubble has the width */
+@media (pointer: coarse) and (max-width: 760px) {
+  .hud.classic .r-br, .hud.classic.talking .r-br { bottom: auto; top: calc(150px + var(--safe-t)); right: calc(12px + var(--safe-r)); }
+  .hud .narwhal-guide .narwhal-bubble { width: min(300px, calc(100vw - 120px - var(--safe-l) - var(--safe-r))); }
+}
+/* Short landscape phones */
+@media (pointer: coarse) and (max-height: 500px) {
+  .hud .joystick { width: 104px; height: 104px; }
+  .hud .joystick .knob { width: 48px; height: 48px; }
+  .hud .touch-btn { width: 56px; height: 56px; font-size: 1.35rem; }
+  .hud .r-bl { bottom: calc(130px + var(--safe-b)); }
+  .hud .narwhal-guide-body img { height: 64px; }
+  .hud.classic .r-br, .hud.classic.talking .r-br { bottom: calc(90px + var(--safe-b)); }
+  .hud.classic .r-br .mini-phone { width: 56px; height: 90px; }
+}
+/* Phones held sideways: a slimmer profile card so the apps show without scrolling */
+@media (max-height: 460px) {
+  .fp-profile .fp-stat { display: none; }
+  .fp-profile { gap: 0.2rem; padding: 0.35rem 0.5rem; }
+  .fp-status { padding: 2px 10px; }
+}

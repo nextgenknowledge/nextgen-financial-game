@@ -48,17 +48,16 @@ export function TitleScreen() {
   const [selected, setSelected] = useState(0);
 
   useEffect(() => {
-    // Browsers only allow audio after a gesture; start music on the first click.
+    // Browsers only allow audio after a gesture; start music on the first click. iOS Safari only
+    // counts touchend and click as gestures, so listen for those too.
+    const events = ['pointerdown', 'touchend', 'click', 'keydown'] as const;
     const start = () => {
-      unlockAudio();
+      const ok = unlockAudio();
       playMusic('title');
+      if (ok) events.forEach((ev) => window.removeEventListener(ev, start));
     };
-    window.addEventListener('pointerdown', start, { once: true });
-    window.addEventListener('keydown', start, { once: true });
-    return () => {
-      window.removeEventListener('pointerdown', start);
-      window.removeEventListener('keydown', start);
-    };
+    events.forEach((ev) => window.addEventListener(ev, start));
+    return () => events.forEach((ev) => window.removeEventListener(ev, start));
   }, []);
 
   useEffect(() => {

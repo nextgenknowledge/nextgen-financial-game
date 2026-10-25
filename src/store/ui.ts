@@ -1,6 +1,7 @@
 'use client';
 import { create } from 'zustand';
 import type { Mood } from '@/game/effects';
+import { forDevice } from '@/ui/touch';
 
 export type Screen = 'intro' | 'title' | 'worlds' | 'game' | 'credits';
 
@@ -113,7 +114,8 @@ export const useUI = create<UIStore>((set, get) => ({
     setTimeout(() => get().dropToast(id), 3800);
   },
   dropToast: (id) => set({ toasts: get().toasts.filter((t) => t.id !== id) }),
-  sayNarwhal: (text, mood = 'talking', extra) => {
+  sayNarwhal: (raw, mood = 'talking', extra) => {
+    const text = forDevice(raw);
     const q = get().narwhal;
     // Avoid stacking the exact same line twice.
     if (q.some((l) => l.text === text)) return;

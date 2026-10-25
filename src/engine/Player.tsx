@@ -54,12 +54,38 @@ export function PlayerController() {
   // Mouse / touch look (drag) and wheel zoom
   useEffect(() => {
     const el = gl.domElement;
+    // Two fingers on the screen pinch to zoom (Android has no Safari gesture events)
+    const fingers = new Map<number, { x: number; y: number }>();
+    let pinch = 0;
+    const spread = () => {
+      const [a, b] = [...fingers.values()];
+      return Math.hypot(a.x - b.x, a.y - b.y);
+    };
     const onDown = (e: PointerEvent) => {
+      if (e.pointerType === 'touch') {
+        fingers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+        if (fingers.size === 2) {
+          drag.current = null;
+          pinch = spread();
+          return;
+        }
+      }
       if (e.button === 2 || e.button === 0 || e.pointerType === 'touch') {
         drag.current = { x: e.clientX, y: e.clientY, moved: 0, id: e.pointerId };
       }
     };
     const onMove = (e: PointerEvent) => {
+      const f = fingers.get(e.pointerId);
+      if (f) {
+        f.x = e.clientX;
+        f.y = e.clientY;
+        if (fingers.size === 2 && pinch > 0) {
+          const now = spread();
+          if (now > 0) zoomBy(pinch / now);
+          pinch = now;
+          return;
+        }
+      }
       const d = drag.current;
       if (!d || d.id !== e.pointerId) return;
       const dx = e.clientX - d.x;
@@ -74,6 +100,8 @@ export function PlayerController() {
       rt.camPitch = Math.max(0.05, Math.min(1.25, rt.camPitch));
     };
     const onUp = (e: PointerEvent) => {
+      fingers.delete(e.pointerId);
+      if (fingers.size < 2) pinch = 0;
       if (drag.current?.id === e.pointerId) drag.current = null;
     };
     // ── Zoom: mouse wheel, trackpad pinch, two-finger scroll, Safari gestures, +/- keys ──
@@ -119,6 +147,7 @@ export function PlayerController() {
     el.addEventListener('pointerdown', onDown);
     window.addEventListener('pointermove', onMove);
     window.addEventListener('pointerup', onUp);
+    window.addEventListener('pointercancel', onUp);
     window.addEventListener('wheel', onWheel, { passive: false });
     window.addEventListener('gesturestart', onGestureStart, { passive: false } as AddEventListenerOptions);
     window.addEventListener('gesturechange', onGestureChange, { passive: false } as AddEventListenerOptions);
@@ -128,6 +157,7 @@ export function PlayerController() {
       el.removeEventListener('pointerdown', onDown);
       window.removeEventListener('pointermove', onMove);
       window.removeEventListener('pointerup', onUp);
+      window.removeEventListener('pointercancel', onUp);
       window.removeEventListener('wheel', onWheel);
       window.removeEventListener('gesturestart', onGestureStart);
       window.removeEventListener('gesturechange', onGestureChange);
