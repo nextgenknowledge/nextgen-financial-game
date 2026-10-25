@@ -36,27 +36,24 @@ export function HUD() {
   return (
     // Named layout regions (see .hud grid in globals.css): pieces flow inside their region,
     // so nothing can overlap whatever the window size.
-    <div className={cls('hud', world.difficulty === 'entry' && 'entry-mode', talking && 'talking')}>
+    // Everything sits in the four corners so the middle of the screen stays clear for the city.
+    <div className={cls('hud', 'clean', world.difficulty === 'entry' && 'entry-mode', talking && 'talking')}>
       <div className="hud-region r-tl">
         <MoneyBar />
         <QuestTracker />
-      </div>
-      <div className="hud-region r-tc">
-        <ArrivalBanner />
-        <Compass />
         <WorldActivityHud />
         <ResumeRun />
-        <Toasts inline />
       </div>
       <div className="hud-region r-tr">
         <TopRight />
+        <Compass />
+        <ArrivalBanner />
+        <Toasts inline />
       </div>
-      <div className="hud-region r-ml">
-        <MenuButtons />
-      </div>
-      <div className="hud-region r-bc">{!panel && <InteractPrompt />}</div>
       <div className="hud-region r-br">
+        {!panel && !talking && <InteractPrompt />}
         {!panel && !talking && <KeyHints />}
+        <CornerDock />
         <FpsCounter />
       </div>
       <div className="hud-region r-bl">
@@ -85,20 +82,17 @@ function MoneyBar() {
       return () => clearTimeout(t);
     }
   }, [f.cash, bank]);
+  const mood = happiness >= 75 ? '😄' : happiness >= 50 ? '🙂' : happiness >= 30 ? '😐' : '😟';
   return (
     <div className="hud-money">
-      <button className={cls('pill', 'fb-pill', flash && `flash-${flash}`)} onClick={() => open({ type: 'phone', app: 'bank' })} title="FinBucks in your pocket (1 FinBuck = $1)">
-        <span className="pill-icon fb"><FinBucksCoin size="1.5rem" /></span>
-        <span className="pill-label">FinBucks</span>
+      <button
+        className={cls('pill', 'fb-pill', flash && `flash-${flash}`)}
+        onClick={() => open({ type: 'phone', app: 'bank' })}
+        title={`FinBucks in your pocket: ${money(f.cash)}${f.hasChecking || f.hasSavings ? ` · bank ${money(bank)}` : ''}`}
+      >
+        <span className="pill-icon fb"><FinBucksCoin size="1.1rem" /></span>
         <b className="mono">{money(f.cash)}</b>
       </button>
-      {(f.hasChecking || f.hasSavings) && (
-        <button className="pill" onClick={() => open({ type: 'phone', app: 'bank' })} title="Checking + savings">
-          <span className="pill-icon">🏦</span>
-          <span className="pill-label">Bank</span>
-          <b className="mono">{shortMoney(bank)}</b>
-        </button>
-      )}
       <button
         className="pill nw"
         onClick={() => {
@@ -108,14 +102,13 @@ function MoneyBar() {
         title="Net worth = what you own − what you owe"
       >
         <span className="pill-icon">📈</span>
-        <span className="pill-label">Net worth</span>
         <b className={cls('mono', nw < 0 && 'bad')}>{shortMoney(nw)}</b>
       </button>
-      <div className="pill small-pill" title={`Happiness ${happiness}/100. Above 70 boosts XP!`}>
-        <span className="pill-icon">{happiness >= 75 ? '😄' : happiness >= 50 ? '🙂' : happiness >= 30 ? '😐' : '😟'}</span>
-        <div className="mini-bar">
-          <div style={{ width: `${happiness}%`, background: happiness >= 70 ? 'var(--good)' : happiness >= 40 ? 'var(--gold)' : 'var(--bad)' }} />
-        </div>
+      <div className="pill mood-pill" title={`Happiness ${happiness}/100. Above 70 boosts XP!`} aria-label={`Happiness ${happiness} out of 100`}>
+        <span className="pill-icon">{mood}</span>
+        <span className="mood-bar">
+          <span style={{ height: `${happiness}%`, background: happiness >= 70 ? 'var(--good)' : happiness >= 40 ? 'var(--gold)' : 'var(--bad)' }} />
+        </span>
       </div>
     </div>
   );
@@ -138,35 +131,25 @@ function TopRight() {
   const weatherIcon = rt.weather === 'rain' ? '🌧️' : rt.weather === 'snow' ? '🌨️' : rt.weather === 'cloudy' ? '⛅' : rt.weather === 'fog' ? '🌫️' : rt.weather === 'haze' ? '🌤️' : night ? '🌙' : '☀️';
   return (
     <div className="hud-topright">
-      <div className="hud-card">
-        <div className="row between" style={{ gap: '0.5rem' }}>
-          <span className="bold">
-            {CITY_META[location].icon} {CITY_META[location].name}
-          </span>
-          <span>{weatherIcon}</span>
-        </div>
-        <div className="row between small" style={{ gap: '0.5rem' }}>
-          <span className="pixel">{monthLabel(month)}</span>
-          <span className="mono muted">
-            {h12}:{String(Math.floor((h - hh) * 60 / 15) * 15).padStart(2, '0')}
-            {ampm}
-          </span>
-        </div>
-        <div className="month-bar" title="Month progress: bills, interest and paychecks happen at the end of each month">
-          <div style={{ width: `${t * 100}%` }} />
-        </div>
-      </div>
-      <div className="hud-card level">
+      <div className="hud-card status-card" title={`${CITY_META[location].name} · ${monthLabel(month)} · Level ${level}, ${xp - lo}/${hi - lo} XP`}>
         <div className="lvl-badge pixel">{level}</div>
-        <div className="col grow" style={{ gap: 2 }}>
-          <span className="tiny bold">
-            Level {level} · {xp - lo}/{hi - lo} XP
-          </span>
-          <div className="mini-bar xp">
+        <div className="status-text">
+          <div className="status-row">
+            <b>{CITY_META[location].name}</b>
+            <span aria-hidden>{weatherIcon}</span>
+          </div>
+          <div className="status-row tiny muted">
+            <span>{monthLabel(month)}</span>
+            <span className="mono">
+              {h12}:{String(Math.floor(((h - hh) * 60) / 15) * 15).padStart(2, '0')}
+              {ampm}
+            </span>
+          </div>
+          <div className="mini-bar xp" aria-label={`${xp - lo} of ${hi - lo} XP`}>
             <div style={{ width: `${((xp - lo) / (hi - lo)) * 100}%` }} />
           </div>
-          {tickets > 0 && <span className="tiny">🎟️ {tickets} tickets</span>}
         </div>
+        {tickets > 0 && <span className="status-tickets tiny">🎟️ {tickets}</span>}
       </div>
       <Minimap />
     </div>
@@ -175,7 +158,6 @@ function TopRight() {
 
 function QuestTracker() {
   const w = useGame((s) => s.world!);
-  const hints = useSettings((s) => s.hints);
   const cs = useMemo(() => currentStep(w), [w]);
   const say = useUI((s) => s.sayNarwhal);
   const daily = w.progress.daily.list;
@@ -202,7 +184,6 @@ function QuestTracker() {
               <div style={{ width: `${Math.min(100, (cs.progress / (cs.step.goal.value ?? 1)) * 100)}%` }} />
             </div>
           )}
-          {hints && <div className="tiny muted">💡 Tap for a hint · follow the ✨ light</div>}
         </button>
       )}
     </div>
@@ -401,49 +382,46 @@ function NarwhalDialog() {
   );
 }
 
-function MenuButtons() {
+/*
+ * Bottom right: small square buttons for Learn, Map and Pause, and the FinPhone, which holds
+ * everything else (bank, goals, quests, my stuff, settings...).
+ */
+function CornerDock() {
   const open = useUI((s) => s.open);
   const panel = useUI((s) => s.panel);
   const keys = useSettings((s) => s.keys);
-  const btns: { icon: string; label: string; key: string; onClick: () => void }[] = [
-    {
-      icon: '📱',
-      label: 'FinPhone',
-      key: keys.phone,
-      onClick: () => {
-        open({ type: 'phone' });
-        act((d, fx) => recordEvent(d, fx, { type: 'menu', target: 'phone' }));
-      },
-    },
-    { icon: '🗺️', label: 'Map', key: keys.map, onClick: () => open({ type: 'map' }) },
-    { icon: '🎒', label: 'Bag', key: keys.inventory, onClick: () => open({ type: 'phone', app: 'bag' }) },
-    { icon: '⏸️', label: 'Pause', key: keys.pause, onClick: () => open({ type: 'pause' }) },
-  ];
   const done = useGame((s) => s.world?.progress.lessons.length ?? 0);
+  const claimable = useGame((s) => (s.world ? [...s.world.progress.daily.list, ...s.world.progress.weekly.list].filter((c) => !c.claimed).length : 0));
   if (panel) return null;
-  const total = LESSONS.length;
+  const small: { icon: string; label: string; key: string; onClick: () => void; extra?: string }[] = [
+    { icon: '📚', label: 'Learn', key: 'L', onClick: () => open({ type: 'learn' }), extra: `${done}/${LESSONS.length}` },
+    { icon: '🗺️', label: 'Map', key: keyLabel(keys.map), onClick: () => open({ type: 'map' }) },
+    { icon: '⏸️', label: 'Pause', key: keyLabel(keys.pause), onClick: () => open({ type: 'pause' }) },
+  ];
   return (
-    <div className="hud-menu">
-      {/* Learning is the point of the game: the Learn hub gets the top spot */}
-      <button className="menu-btn learn-btn" onClick={() => (playSfx('pop'), open({ type: 'learn' }))} title="Learn: lessons, tips and formulas (L)">
-        <span className="menu-icon">📚</span>
-        <span className="col" style={{ gap: 2, alignItems: 'flex-start' }}>
-          <span className="menu-label">Learn</span>
-          <span className="learn-progress">
-            <span style={{ width: `${(done / total) * 100}%` }} />
-          </span>
-        </span>
-        <span className="learn-count">
-          {done}/{total}
-        </span>
-      </button>
-      {btns.map((b) => (
-        <button key={b.label} className="menu-btn" onClick={() => (playSfx('pop'), b.onClick())} title={`${b.label} (${keyLabel(b.key)})`}>
-          <span className="menu-icon">{b.icon}</span>
-          <span className="menu-label">{b.label}</span>
-          <kbd>{keyLabel(b.key)}</kbd>
+    <div className="corner-dock">
+      {small.map((b) => (
+        <button key={b.label} className="dock-btn" onClick={() => (playSfx('pop'), b.onClick())} title={`${b.label} (${b.key})${b.extra ? ` · ${b.extra} lessons` : ''}`} aria-label={b.label}>
+          <span className="dock-icon">{b.icon}</span>
+          <kbd>{b.key}</kbd>
         </button>
       ))}
+      <button
+        className="dock-btn dock-phone"
+        onClick={() => {
+          playSfx('pop');
+          open({ type: 'phone' });
+          act((d, fx) => recordEvent(d, fx, { type: 'menu', target: 'phone' }));
+        }}
+        title={`FinPhone (${keyLabel(keys.phone)}): bank, goals, quests, my stuff and more`}
+        aria-label="FinPhone"
+      >
+        <span className="dock-phone-screen">
+          <span className="dock-icon">📱</span>
+        </span>
+        <kbd>{keyLabel(keys.phone)}</kbd>
+        {claimable > 0 && <span className="dock-badge">{claimable}</span>}
+      </button>
     </div>
   );
 }
@@ -451,6 +429,14 @@ function MenuButtons() {
 function KeyHints() {
   const k = useSettings((s) => s.keys);
   const riding = useRide((s) => s.riding);
+  const location = useScene((s) => s.location);
+  const [show, setShow] = useState(true);
+  useEffect(() => {
+    setShow(true);
+    const t = setTimeout(() => setShow(false), 20000);
+    return () => clearTimeout(t);
+  }, [location, riding]);
+  if (!show) return null;
   const hints = riding
     ? [
         [`${keyLabel(k.forward)}/${keyLabel(k.back)}`, 'Gas / reverse'],
