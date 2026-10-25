@@ -1,5 +1,5 @@
 'use client';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useUI } from '@/store/ui';
 import { useGame, act } from '@/store/game';
 import { recordEvent } from '@/game/progress/events';
@@ -17,6 +17,10 @@ import { CreditApp } from './apps/CreditApp';
 import { TaxesApp } from './apps/TaxesApp';
 import { NewsApp } from './apps/NewsApp';
 import { CalculatorApp } from './apps/CalculatorApp';
+import { xpForLevel } from '@/game/progress/xp';
+import { netWorth } from '@/game/finance/netWorth';
+import { monthLabel } from '@/game/world';
+import { shortMoney } from '../format';
 
 interface AppDef {
   id: string;
@@ -105,6 +109,7 @@ export function Phone({ app, arg }: { app?: string; arg?: string }) {
           </button>
         </div>
       <div className="phone-screen">
+        {!app && <PhoneProfile />}
         {!app && (
           <div className="app-grid">
             {APPS.filter((a) => !a.advanced || difficulty === 'advanced').map((a) => (
@@ -133,6 +138,49 @@ export function Phone({ app, arg }: { app?: string; arg?: string }) {
       </div>
         <button className="fp-home" onClick={() => (playSfx('click'), app ? open({ type: 'phone' }) : close())} aria-label={app ? 'Home' : 'Close FinPhone'} />
       </div>
+    </div>
+  );
+}
+
+/* Top of the phone's home screen: level and XP, happiness, net worth and the date
+   (these used to sit on the main screen). */
+function PhoneProfile() {
+  const w = useGame((s) => s.world!);
+  const open = useUI((s) => s.open);
+  const nw = useMemo(() => netWorth(w).total, [w]);
+  const { level, xp } = w.progress;
+  const lo = xpForLevel(level);
+  const hi = xpForLevel(level + 1);
+  const happy = w.player.happiness;
+  return (
+    <div className="fp-profile">
+      <div className="fp-profile-top">
+        <span className="fp-lvl">{level}</span>
+        <div className="fp-profile-text">
+          <b>{w.nickname}</b>
+          <span>{monthLabel(w.time.month)}</span>
+        </div>
+      </div>
+      <div className="fp-stat">
+        <span>XP</span>
+        <span className="fp-meter">
+          <span style={{ width: `${Math.max(0, Math.min(100, ((xp - lo) / (hi - lo)) * 100))}%`, background: 'var(--px-gold, #f2c94c)' }} />
+        </span>
+        <span className="fp-num">
+          {xp - lo}/{hi - lo}
+        </span>
+      </div>
+      <div className="fp-stat" title="Above 70 boosts XP!">
+        <span>Happy</span>
+        <span className="fp-meter">
+          <span style={{ width: `${happy}%`, background: happy >= 70 ? 'var(--good)' : happy >= 40 ? 'var(--gold)' : 'var(--bad)' }} />
+        </span>
+        <span className="fp-num">{happy}</span>
+      </div>
+      <button className="fp-networth" onClick={() => (playSfx('pop'), open({ type: 'phone', app: 'networth' }))}>
+        <span>Net worth</span>
+        <b className={nw < 0 ? 'bad' : ''}>{shortMoney(nw)}</b>
+      </button>
     </div>
   );
 }
