@@ -1630,3 +1630,21 @@ button.item-card { cursor: pointer; }
 .tour-title { display: block; margin-top: 0.4rem; font-family: var(--font-body); font-size: 1.05rem; font-weight: 900; color: #0b1a3a; }
 .tour-actions { display: flex; align-items: center; gap: 0.45rem; margin-top: 0.6rem; }
 @media (prefers-reduced-motion: reduce) { .tour-light { transition: none; } }
+
+/* Arranging furniture at home: a pixel panel above the prompt, never over Narwhal or the phone. */
+.decor-open { pointer-events: auto; margin-bottom: 8px; }
+.decor-panel {
+  pointer-events: auto; width: min(380px, 92vw); max-height: 46vh; overflow-y: auto; margin-bottom: 8px; padding: 0.7rem 0.8rem;
+  background: #fff; color: #0b1a3a; border: 3px solid #0b1a3a; box-shadow: 0 6px 0 rgba(3, 11, 36, 0.45); font-family: var(--font-body);
+}
+.decor-head { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
+.decor-title { font-size: 1rem; font-weight: 900; }
+.decor-help { margin: 0.35rem 0; font-size: 0.85rem; font-weight: 700; color: #4a5672; }
+.decor-status { margin: 0.25rem 0 0.5rem; font-size: 0.85rem; font-weight: 800; }
+.decor-status.ok { color: #1f7a3a; }
+.decor-status.bad { color: #b3261e; }
+.decor-label { margin-top: 0.5rem; font-size: 0.68rem; font-weight: 900; letter-spacing: 0.1em; text-transform: uppercase; color: #1b6fd6; }
+.decor-list { list-style: none; margin: 0.25rem 0 0; padding: 0; display: flex; flex-direction: column; gap: 0.3rem; }
+.decor-list li { display: flex; align-items: center; gap: 0.4rem; font-size: 0.9rem; font-weight: 800; }
+.decor-list li span { flex: 1; min-width: 0; }
+.decor-row { display: flex; gap: 0.4rem; flex-wrap: wrap; }

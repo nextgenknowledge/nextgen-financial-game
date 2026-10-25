@@ -18,6 +18,7 @@ import type { Mood } from '@/game/effects';
 import { CITY_META } from '@/world/cities';
 import { useRide, getOff } from '@/world/ParkedVehicles';
 import { Minimap } from './Minimap';
+import { DecorPanel } from './DecorPanel';
 import { playSfx } from '@/engine/audio';
 import { Toasts } from '../Toasts';
 import { quitToWorlds } from '../startWorld';
@@ -28,6 +29,7 @@ export function HUD() {
   const world = useGame((s) => s.world);
   const panel = useUI((s) => s.panel);
   const talking = useUI((s) => s.narwhal.length > 0);
+  const decor = useUI((s) => s.decor);
   if (!world) return null;
   return (
     // Same layout as the earlier Fin-City build: settings top left, map top right, phone bottom
@@ -44,7 +46,10 @@ export function HUD() {
         <ArrivalBanner />
         <Toasts inline />
       </div>
-      <div className="hud-region r-bc">{!panel && !talking && <InteractPrompt />}</div>
+      <div className="hud-region r-bc">
+        <DecorPanel />
+        {!panel && !talking && !decor?.carrying && <InteractPrompt />}
+      </div>
       <div className="hud-region r-br">
         <MiniPhone />
         <FpsCounter />
@@ -91,7 +96,7 @@ function MapCorner() {
   return (
     <div className="map-corner">
       <Minimap />
-      <span className="map-corner-name">{interior ? 'Inside' : CITY_META[location].name}</span>
+      <span className="map-corner-name">{interior?.startsWith('home:') ? 'Home' : interior ? 'Inside' : CITY_META[location].name}</span>
     </div>
   );
 }

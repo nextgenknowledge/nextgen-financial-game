@@ -4,6 +4,7 @@ import { rt } from '@/engine/runtime';
 import { useScene } from '@/store/scene';
 import { useUI } from '@/store/ui';
 import { act, getWorld } from '@/store/game';
+import { homeInfo, canEnterHome } from '@/game/home';
 import { playSfx, playMusic } from '@/engine/audio';
 import { CITIES, CITY_META, buildingById } from '@/world/cities';
 import type { LocationId } from '@/game/types';
@@ -75,6 +76,26 @@ export function enterBuilding(id: string) {
   }, 150);
 }
 
+/** Walk into a home you own. Homes rented out to tenants stay locked. */
+export function enterHome(propUid: string) {
+  const w = getWorld();
+  if (!w) return;
+  const home = homeInfo(w, propUid);
+  if (!home) return;
+  if (!canEnterHome(w, propUid)) {
+    useUI.getState().sayNarwhal(`Tenants are renting your ${home.name}, so it's their home for now. To move in and decorate, stop renting it out in the FinPhone (My Stuff).`, 'talking');
+    return;
+  }
+  playSfx('door');
+  const ui = useUI.getState();
+  ui.setLoading({ active: true, progress: 0.6, text: home.name, kind: 'building', city: useScene.getState().location, building: undefined });
+  const outside = { x: rt.player.x, z: rt.player.z, rot: rt.playerRotY + Math.PI };
+  setTimeout(() => {
+    useScene.getState().go(useScene.getState().location, `home:${propUid}`, outside);
+    playMusic('interior');
+  }, 150);
+}
+
 export function exitBuilding() {
   const scene = useScene.getState();
   const spawn = scene.spawn;
@@ -97,7 +118,8 @@ export function interact(t: Trigger | null) {
   const data = (t.data ?? {}) as Record<string, string | undefined>;
   switch (t.kind) {
     case 'door':
-      enterBuilding(data.building!);
+      if (data.home) enterHome(data.home);
+      else enterBuilding(data.building!);
       break;
     case 'exit':
       exitBuilding();

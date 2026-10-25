@@ -10,6 +10,7 @@ import { round2 } from './interest';
 import { recordEvent } from '../progress/events';
 import { uid } from '../world';
 import { vehicleDef } from '../sim/vehicleCatalog';
+import { storeFurniture, clearHome } from '../home';
 import { outfitDef, furnitureDef, collectibleDef, petDef, plotDef, houseDef, condoDef, businessType, insurancePlan, subscriptionDef, itemDef } from '../sim/catalog';
 import { businessValue } from './netWorth';
 import community from '@/data/community.json';
@@ -108,6 +109,7 @@ export function sellItem(w: WorldState, fx: Fx, itemUid: string) {
   if (!it) return;
   const def = itemDef(it.itemId);
   const value = round2(it.value);
+  storeFurniture(w, itemUid);
   w.assets.items = w.assets.items.filter((i) => i.uid !== itemUid);
   for (const slot of ['hat', 'top', 'accessory'] as const) if (w.avatar[slot] === it.itemId) w.avatar[slot] = null;
   if (def?.kind === 'collectible' || def?.kind === 'art') w.progress.stats.collectiblesOwned = Math.max(0, (w.progress.stats.collectiblesOwned ?? 1) - 1);
@@ -286,6 +288,8 @@ export function setRented(w: WorldState, fx: Fx, propUid: string, rented: boolea
   if (!p || (!p.houseId && !condoDef(p.itemId))) return;
   p.rented = rented;
   if (rented && w.player.residence === propUid) w.player.residence = 'narwhal';
+  // Tenants move into an empty home; your furniture goes back into storage
+  if (rented) clearHome(w, propUid);
   fx.push({ type: 'toast', text: rented ? 'Listed for rent! Tenants pay you each month.' : 'No longer rented.', icon: '🔑', tone: 'info' });
 }
 
@@ -321,6 +325,8 @@ export function sellProperty(w: WorldState, fx: Fx, propUid: string) {
     net = round2(net - payoff);
     w.finance.loans = w.finance.loans.filter((x) => x.id !== l.id);
   }
+  // Furniture comes with you: it goes back into storage
+  clearHome(w, propUid);
   w.assets.properties = w.assets.properties.filter((x) => x.uid !== propUid);
   if (w.player.residence === propUid) w.player.residence = 'narwhal';
   receive(w, net, 'Property sale');

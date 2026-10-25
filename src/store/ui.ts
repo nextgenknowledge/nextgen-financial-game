@@ -62,6 +62,9 @@ export interface UIStore {
   run: { id: string; name: string } | null;
   /** The first-play screen tour is showing; the game is paused under it. */
   tour: boolean;
+  /** Arranging furniture at home: which home, and the piece being carried (item uid) if any. */
+  decor: { home: string; carrying: string | null; rot: number } | null;
+  setDecor: (d: UIStore['decor']) => void;
   setRun: (r: UIStore['run']) => void;
   setScreen: (s: Screen) => void;
   setLoading: (l: Partial<UIStore['loading']>) => void;
@@ -98,9 +101,11 @@ export const useUI = create<UIStore>((set, get) => ({
   worldActivity: null,
   run: null,
   tour: false,
+  decor: null,
+  setDecor: (decor) => set({ decor }),
   setRun: (run) => set({ run }),
   // Leaving the game drops any paused activity
-  setScreen: (screen) => set(screen === 'game' ? { screen } : { screen, run: null, tour: false }),
+  setScreen: (screen) => set(screen === 'game' ? { screen } : { screen, run: null, tour: false, decor: null }),
   setLoading: (l) => set({ loading: { ...get().loading, ...l } }),
   pushToast: (t) => {
     const id = nextId++;

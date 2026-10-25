@@ -26,7 +26,7 @@ export function stationsFor(b: BuildingDef, difficulty: Difficulty): StationDef[
   return b.stations;
 }
 
-const GLASS_MAT = new THREE.MeshBasicMaterial({ vertexColors: true, transparent: true, opacity: 0.28, depthWrite: false, toneMapped: false });
+export const GLASS_MAT = new THREE.MeshBasicMaterial({ vertexColors: true, transparent: true, opacity: 0.28, depthWrite: false, toneMapped: false });
 
 /* ───────── People ───────── */
 
@@ -138,7 +138,8 @@ function People({ actors, seed }: { actors: Actor[]; seed: number }) {
 
 /* ───────── Room shell ───────── */
 
-function buildShell(b: VoxelBuilder, g: VoxelBuilder, kind: InteriorKind, L: Layout) {
+/** Floor, walls, ceiling and entrance of a room. Homes leave out the two lobby plants. */
+export function buildShell(b: VoxelBuilder, g: VoxelBuilder, kind: Pick<InteriorKind, 'wall' | 'wallTex' | 'floor' | 'floorColor' | 'windows'>, L: Layout, plants = true) {
   const { w, d, h } = L;
   const wall = kind.wall;
   const tx = { tex: kind.wallTex };
@@ -174,8 +175,10 @@ function buildShell(b: VoxelBuilder, g: VoxelBuilder, kind: InteriorKind, L: Lay
   b.block(0, 0, d / 2 + 0.05, 4.8, 3.4, 0.2, '#4a3324', { tex: 'wood' });
   g.block(-1.05, 0.3, d / 2 + 0.17, 1.8, 2.8, 0.04, '#cfe2ee');
   g.block(1.05, 0.3, d / 2 + 0.17, 1.8, 2.8, 0.04, '#cfe2ee');
-  plant(b, -3.6, d / 2 - 1.6, true);
-  plant(b, 3.6, d / 2 - 1.6, true);
+  if (plants) {
+    plant(b, -3.6, d / 2 - 1.6, true);
+    plant(b, 3.6, d / 2 - 1.6, true);
+  }
 }
 
 /**

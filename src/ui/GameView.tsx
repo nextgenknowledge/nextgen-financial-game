@@ -11,6 +11,8 @@ import { PostFX } from '@/engine/PostFX';
 import { PlayerController } from '@/engine/Player';
 import { OutdoorScene } from '@/world/OutdoorScene';
 import { InteriorScene } from '@/world/InteriorScene';
+import { HomeScene } from '@/world/HomeScene';
+import { decorAction } from './hud/DecorPanel';
 import { NarwhalGuide, GoalBeacon, GuideTrail } from '@/world/Narwhal';
 import { CITIES, applyDifficulty, buildingById } from '@/world/cities';
 import { rt } from '@/engine/runtime';
@@ -48,7 +50,8 @@ export default function GameView() {
       if (ui.screen !== 'game' || ui.loading.active || ui.tour) return;
       switch (a) {
         case 'interact':
-          if (!ui.panel) interact(rt.nearTrigger);
+          if (ui.decor?.carrying) decorAction('place');
+          else if (!ui.panel) interact(rt.nearTrigger);
           break;
         case 'map':
           if (ui.panel?.type === 'map') ui.close();
@@ -66,7 +69,8 @@ export default function GameView() {
           }
           break;
         case 'pause':
-          if (ui.panel) ui.close();
+          if (ui.decor) decorAction('cancel');
+          else if (ui.panel) ui.close();
           else ui.open({ type: 'pause' });
           break;
         case 'camera':
@@ -134,7 +138,9 @@ export default function GameView() {
     };
   }, []);
 
-  const building = interior ? buildingById(interior)?.building : null;
+  const home = interior?.startsWith('home:') ? interior.slice(5) : null;
+  const building = interior && !home ? buildingById(interior)?.building : null;
+  const indoors = !!building || !!home;
   const sceneKey = `${location}:${interior ?? ''}:${difficulty}`;
 
   return (
@@ -152,9 +158,15 @@ export default function GameView() {
         style={{ position: 'fixed', inset: 0 }}
       >
         <Suspense fallback={null}>
-          <SkyAndLights interior={!!building} />
+          <SkyAndLights interior={indoors} />
           <group key={sceneKey}>
-            {building ? <InteriorScene building={building} difficulty={difficulty} /> : <OutdoorScene def={CITIES[location]} difficulty={difficulty} />}
+            {home ? (
+              <HomeScene propUid={home} />
+            ) : building ? (
+              <InteriorScene building={building} difficulty={difficulty} />
+            ) : (
+              <OutdoorScene def={CITIES[location]} difficulty={difficulty} />
+            )}
           </group>
           <PlayerController />
           <NarwhalGuide />
@@ -164,7 +176,7 @@ export default function GameView() {
           <Systems pendingJump={pendingJump} />
           <CaptureBinder />
           <WorldActivityRunner />
-          {quality !== 'low' && <PostFX quality={quality} interior={!!building} />}
+          {quality !== 'low' && <PostFX quality={quality} interior={indoors} />}
         </Suspense>
       </Canvas>
       <HUD />

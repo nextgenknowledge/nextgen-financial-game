@@ -21,7 +21,7 @@ interface Grid {
 let cache: Grid | null = null;
 
 function gridFor(c: CollisionWorld, sceneKey: string): Grid {
-  const key = `${sceneKey}:${c.boxes.length}`;
+  const key = `${sceneKey}:${c.id}:${c.boxes.length}`;
   if (cache?.key === key) return cache;
   const { minX, maxX, minZ, maxZ } = c.bounds;
   const nx = Math.ceil((maxX - minX) / CELL);
