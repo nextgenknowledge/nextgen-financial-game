@@ -11,6 +11,9 @@ import { startWorld } from '../startWorld';
 import { CityBackdrop } from './CityBackdrop';
 import { NewGameFlow } from './NewGame';
 
+/** NextGen Knowledge's website. Only ever opened by the player clicking the logo; the game itself never goes online. */
+export const ORG_SITE = 'https://nextgenknowledge.org';
+
 /** The animated pixel city behind every start screen. */
 export function SkyBackdrop() {
   return <CityBackdrop />;
@@ -116,7 +119,13 @@ export function TitleScreen() {
     <div className="screen start-screen">
       <SkyBackdrop />
       <section className="st-content">
-        <div className="st-presents">NextGen Knowledge presents</div>
+        <a className="st-org" href={ORG_SITE} target="_blank" rel="noopener noreferrer" title="Visit NextGen Knowledge (opens nextgenknowledge.org in a new tab)">
+          <img src={ORG_LOGO} alt="NextGen Knowledge" draggable={false} />
+          <span className="st-org-text">
+            <span className="st-org-kicker">A game built by</span>
+            <span className="st-org-name">NextGen Knowledge</span>
+          </span>
+        </a>
         <h1 className="st-logo-wrap">
           <img className="st-logo" src={FIN_LOGO} alt="Fin City" draggable={false} />
         </h1>
@@ -153,7 +162,9 @@ export function TitleScreen() {
         <div className="st-words">Earn · Save · Invest · Explore</div>
       </section>
       <div className="title-foot">
-        <img src={ORG_LOGO} alt="" />
+        <a className="title-foot-logo" href={ORG_SITE} target="_blank" rel="noopener noreferrer" title="nextgenknowledge.org">
+          <img src={ORG_LOGO} alt="NextGen Knowledge" />
+        </a>
         <span>A NextGen Knowledge game · Everything stays on this device</span>
       </div>
       {newGame && (

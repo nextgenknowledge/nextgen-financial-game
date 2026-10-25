@@ -1341,6 +1341,20 @@ button.item-card { cursor: pointer; }
   background: rgba(6, 18, 51, 0.88); border: 3px solid #2f7bff; padding: 0.45rem 1rem; box-shadow: 4px 4px 0 #061233;
   animation: st-fade-down 0.8s ease-out both;
 }
+/* "A game built by NextGen Knowledge": the org logo, linking to nextgenknowledge.org */
+.st-org {
+  display: inline-flex; align-items: center; gap: 0.7rem; padding: 0.4rem 0.9rem 0.4rem 0.4rem; text-decoration: none;
+  background: rgba(6, 18, 51, 0.92); border: 3px solid #2f7bff; box-shadow: 4px 4px 0 #061233; color: #fff;
+  margin-bottom: 0.5rem; animation: st-fade-down 0.8s ease-out both; transition: transform 0.08s ease, background 0.15s ease;
+}
+.st-org img { display: block; height: 72px; width: auto; border: 2px solid #061233; }
+.st-org-text { display: flex; flex-direction: column; align-items: flex-start; text-align: left; }
+.st-org-kicker { font-family: var(--font-body); font-weight: 800; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: #9fc1ff; }
+.st-org-name { font-family: var(--font-pixel); font-weight: 700; font-size: 1.3rem; letter-spacing: 0.06em; color: #ffd23f; }
+.st-org:hover { background: #123b8f; transform: translateY(-2px); }
+.st-org:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0 #061233; }
+.st-org:focus-visible { outline: 3px solid #fff; outline-offset: 4px; }
+@media (max-width: 420px) { .st-org img { height: 52px; } .st-org-name { font-size: 1rem; } }
 .st-logo-wrap { margin: 0.6rem 0 0; }
 /* The logo art has its own night-sky square, so it hangs like a framed pixel billboard. */
 .st-logo {
@@ -1377,6 +1391,8 @@ button.item-card { cursor: pointer; }
 .start-screen .title-foot { bottom: 14px; z-index: 2; pointer-events: none; }
 .start-screen .title-foot span { background: #071433; padding: 0.15rem 0.5rem; }
 .start-screen .title-foot img { height: 30px; border: 2px solid #061233; border-radius: 0; }
+.start-screen .title-foot .title-foot-logo { pointer-events: auto; display: block; line-height: 0; }
+.start-screen .title-foot .title-foot-logo:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
 @keyframes st-fade-down { from { opacity: 0; transform: translateY(-14px); } to { opacity: 1; transform: none; } }
 @keyframes st-fade-up { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
 .st-panel-in { animation: st-fade-up 0.35s ease-out both; }
