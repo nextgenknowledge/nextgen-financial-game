@@ -10,7 +10,7 @@ Read [README.md](README.md) for setup, layout and how to add content, and [docs/
 
 ## Rules the team agreed on
 
-- **Private by design.** No network requests, analytics or accounts. Fonts are bundled through @fontsource (no Google Fonts, no drei `Text` or `Environment` presets, which fetch from CDNs).
+- **Private by design.** No network requests or accounts. The one exception is Google Analytics page views (`app/Analytics.tsx`), which load only when `NEXT_PUBLIC_GA_ID` is set in the production build; never send nicknames, world names or answers to it. Fonts are bundled through @fontsource (no Google Fonts, no drei `Text` or `Environment` presets, which fetch from CDNs).
 - **Nicknames only**, never real names.
 - **Logos and art in `public/brand/` are used exactly as provided.** Never redraw or recolor them.
 - **No emojis in the UI.** Emoji characters in data are drawn by the custom pixel icon font `app/fonts/fin-icons.woff`, built from `tools/icons/designs.py` by `tools/icons/build_icon_font.py` (needs Python fontTools). An emoji that isn't in `designs.py` shows as a real emoji, so reuse icons already in the data or add a design first.

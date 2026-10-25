@@ -8,7 +8,7 @@ life of their own. NextGen Narwhal guides them through it.
 - **Two modes.** *Entry* (ages 6–13) has big buttons, read-aloud, generous hints and gentle
   adaptive levels. *Advanced* (ages 13–18) uses real computations, a calculator, taxes, credit
   scores and markets.
-- **Private by design.** There are no accounts, ads, analytics or network requests. Saves stay in
+- **Private by design.** There are no accounts, ads or game network requests. The live site at fincity.dev counts page views with Google Analytics (ad features off), only when `NEXT_PUBLIC_GA_ID` is set at build time. Saves stay in
   the browser (IndexedDB) and can be exported as files. Fonts are bundled.
 - **Light enough for Chromebooks.** Low, Medium and High quality tiers, instanced crowds and
   merged voxel geometry.
