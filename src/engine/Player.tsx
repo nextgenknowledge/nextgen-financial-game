@@ -203,11 +203,13 @@ export function PlayerController() {
       const accel = rt.grounded ? 14 : 4;
       v.x += (dir.x * speed - v.x) * Math.min(1, accel * dt);
       v.z += (dir.z * speed - v.z) * Math.min(1, accel * dt);
-      if ((isDown('jump') || virtual.jump) && rt.grounded) {
+      if ((isDown('jump') || virtual.jump || virtual.jumpTap) && rt.grounded) {
         v.y = JUMP;
         rt.grounded = false;
+        rt.jumped = true;
         playSfx('jump');
       }
+      virtual.jumpTap = false;
       v.y -= GRAVITY * dt;
       p.x += v.x * dt;
       p.z += v.z * dt;

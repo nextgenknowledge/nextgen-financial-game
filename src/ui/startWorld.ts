@@ -4,7 +4,7 @@ import { useGame } from '@/store/game';
 import { useUI } from '@/store/ui';
 import { useScene } from '@/store/scene';
 import { rt } from '@/engine/runtime';
-import { saveWorld } from '@/save/db';
+import { saveWorld, storageMode } from '@/save/db';
 import { stopSpeaking } from './speech';
 import { clearKeys } from '@/engine/input';
 import { updateHallOfFame } from '@/save/fame';
@@ -62,8 +62,27 @@ export async function saveNow(withThumb = false): Promise<void> {
     await saveWorld(patched, thumb);
     await updateHallOfFame(patched);
   } catch {
-    useUI.getState().pushToast({ text: "Couldn't save (browser storage blocked?)", icon: '⚠️', tone: 'bad' });
+    // Storage falls back on its own; this is only reached if even memory refuses
   }
+  warnIfNotSaving();
+}
+
+let warned = false;
+
+/**
+ * Some browsers block every kind of site storage (private windows, Lockdown Mode, "block all
+ * site data"). The game still plays, keeping saves in memory, so say once what that means
+ * instead of showing an error on every autosave.
+ */
+export function warnIfNotSaving() {
+  if (warned || storageMode() !== 'memory') return;
+  warned = true;
+  useUI
+    .getState()
+    .sayNarwhal(
+      "Heads up! This browser isn't letting games save, so your progress only lasts until you close this tab. A normal (not private) window usually fixes it, or use Export world in the Pause menu to keep a copy.",
+      'skeptical',
+    );
 }
 
 export async function quitToWorlds() {

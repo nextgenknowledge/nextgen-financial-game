@@ -34,6 +34,8 @@ export const rt = {
   playerRotY: 0,
   playerSpeed: 0,
   grounded: true,
+  /** Set when the player leaves the ground in a jump (keyboard or touch button); quests read and clear it. */
+  jumped: false,
   camYaw: Math.PI,
   camPitch: 0.42,
   camDist: 8,
