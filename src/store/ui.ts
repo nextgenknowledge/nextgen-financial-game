@@ -60,6 +60,8 @@ export interface UIStore {
   worldActivity: { id: string; data?: unknown } | null;
   /** An activity mid-play. It stays mounted (hidden) when closed so it can be resumed. */
   run: { id: string; name: string } | null;
+  /** The first-play screen tour is showing; the game is paused under it. */
+  tour: boolean;
   setRun: (r: UIStore['run']) => void;
   setScreen: (s: Screen) => void;
   setLoading: (l: Partial<UIStore['loading']>) => void;
@@ -95,9 +97,10 @@ export const useUI = create<UIStore>((set, get) => ({
   fps: 60,
   worldActivity: null,
   run: null,
+  tour: false,
   setRun: (run) => set({ run }),
   // Leaving the game drops any paused activity
-  setScreen: (screen) => set(screen === 'game' ? { screen } : { screen, run: null }),
+  setScreen: (screen) => set(screen === 'game' ? { screen } : { screen, run: null, tour: false }),
   setLoading: (l) => set({ loading: { ...get().loading, ...l } }),
   pushToast: (t) => {
     const id = nextId++;
@@ -139,5 +142,5 @@ export const useUI = create<UIStore>((set, get) => ({
 
 export const isPaused = () => {
   const s = useUI.getState();
-  return s.panel !== null || s.screen !== 'game' || s.loading.active;
+  return s.panel !== null || s.screen !== 'game' || s.loading.active || s.tour;
 };

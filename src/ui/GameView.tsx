@@ -24,6 +24,7 @@ import { sayStep, currentStep, startEpics } from '@/game/progress/quests';
 import { capture, saveNow } from './startWorld';
 import { interact } from './interact';
 import { HUD } from './hud/HUD';
+import { HudTour, startTour } from './hud/HudTour';
 import { Panels } from './panels/Panels';
 import { updateGoalMarker } from './goal';
 import { getOff } from '@/world/ParkedVehicles';
@@ -43,7 +44,7 @@ export default function GameView() {
   useEffect(() => {
     return onAction((a) => {
       const ui = useUI.getState();
-      if (ui.screen !== 'game' || ui.loading.active) return;
+      if (ui.screen !== 'game' || ui.loading.active || ui.tour) return;
       switch (a) {
         case 'interact':
           if (!ui.panel) interact(rt.nearTrigger);
@@ -85,15 +86,19 @@ export default function GameView() {
     const w = getWorld();
     if (!w) return;
     playMusic(CITIES[w.player.location].music);
+    // A brand-new world gets the screen tour first; the first quest line plays when it ends.
+    // Older saves that already saw the intro never get it unasked.
+    const fresh = !w.progress.flags.introDone && !w.progress.flags.tourDone;
     act((d, fx) => {
       refreshChallenges(d);
       startEpics(d, fx);
       if (!d.progress.flags.introDone) {
         d.progress.flags.introDone = true;
         const cs = currentStep(d);
-        if (cs) sayStep(d, fx, cs.step);
+        if (cs && !fresh) sayStep(d, fx, cs.step);
       }
     });
+    if (fresh) startTour();
   }, []);
 
   // L opens the Learn hub
@@ -101,7 +106,7 @@ export default function GameView() {
     const h = (e: KeyboardEvent) => {
       if (e.key.toLowerCase() !== 'l' || e.repeat || (e.target as HTMLElement)?.tagName === 'INPUT') return;
       const ui = useUI.getState();
-      if (ui.screen !== 'game' || ui.loading.active) return;
+      if (ui.screen !== 'game' || ui.loading.active || ui.tour) return;
       if (ui.panel?.type === 'learn') ui.close();
       else if (!ui.panel) ui.open({ type: 'learn' });
     };
@@ -162,6 +167,7 @@ export default function GameView() {
       </Canvas>
       <HUD />
       <Panels />
+      <HudTour />
     </div>
   );
 }

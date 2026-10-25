@@ -1616,3 +1616,17 @@ button.item-card { cursor: pointer; }
 .fp-networth { display: flex; justify-content: space-between; align-items: center; padding: 0.25rem 0.4rem; background: #123b8f; color: #fff; border: 1px solid #3d8bff; cursor: pointer; font: inherit; font-weight: 800; }
 .fp-networth:hover { background: #1d4fd6; }
 .fp-networth b.bad { color: #ff9b8a; }
+
+/* First-play screen tour: everything dims except the one thing Narwhal is talking about. */
+.hud-tour { position: fixed; inset: 0; z-index: 70; pointer-events: auto; }
+.tour-light {
+  position: fixed; border: 3px solid var(--gold); box-shadow: 0 0 0 200vmax rgba(3, 11, 36, 0.74), 4px 4px 0 3px #061233;
+  transition: left 0.25s steps(5, end), top 0.25s steps(5, end), width 0.25s steps(5, end), height 0.25s steps(5, end); pointer-events: none;
+}
+.hud-tour .tour-bubble { position: fixed; border-radius: 0; z-index: 1; }
+.hud-tour .tour-bubble::before, .hud-tour .tour-bubble::after { display: none; }
+.hud-tour .narwhal-bubble-head .grow, .tour-actions .grow { flex: 1; }
+.tour-count { font-family: var(--font-body); font-size: 0.72rem; color: #4a5672; letter-spacing: 0.04em; }
+.tour-title { display: block; margin-top: 0.4rem; font-family: var(--font-body); font-size: 1.05rem; font-weight: 900; color: #0b1a3a; }
+.tour-actions { display: flex; align-items: center; gap: 0.45rem; margin-top: 0.6rem; }
+@media (prefers-reduced-motion: reduce) { .tour-light { transition: none; } }

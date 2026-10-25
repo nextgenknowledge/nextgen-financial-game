@@ -4,6 +4,8 @@ import { useSettings, KEY_ACTION_LABELS, DEFAULT_KEYS, keyLabel, type KeyAction 
 import { Button, Modal, Toggle } from './common';
 import { setVolumes, playSfx } from '@/engine/audio';
 import { speak, speechAvailable } from './speech';
+import { useUI } from '@/store/ui';
+import { startTour } from './hud/HudTour';
 
 type Tab = 'game' | 'video' | 'audio' | 'access' | 'controls';
 
@@ -114,6 +116,13 @@ export function SettingsModal({ onClose, extra }: { onClose: () => void; extra?:
         )}
         {tab === 'access' && (
           <>
+            {useUI.getState().screen === 'game' && (
+              <Row label="Screen tour" hint="Narwhal walks you through the buttons on the screen again.">
+                <Button size="small" onClick={() => startTour()}>
+                  Show the tour again
+                </Button>
+              </Row>
+            )}
             <Row label="Read aloud automatically" hint={speechAvailable() ? 'Narwhal and questions are read out loud. Every text also has a 🔊 button.' : 'Read-aloud is not supported in this browser.'}>
               <Toggle value={s.readAloud ? 'on' : 'off'} options={[{ value: 'on', label: 'On' }, { value: 'off', label: 'Off' }]} onChange={(v) => s.set({ readAloud: v === 'on' })} />
             </Row>
