@@ -29,6 +29,7 @@ import { Panels } from './panels/Panels';
 import { updateGoalMarker } from './goal';
 import { getOff } from '@/world/ParkedVehicles';
 import { WorldActivityRunner } from '@/activities/world/WorldActivityRunner';
+import { PlayerPets } from '@/world/Pets';
 
 const DPR = { low: 0.75, medium: 1, high: Math.min(2, typeof window !== 'undefined' ? window.devicePixelRatio : 1) };
 
@@ -157,6 +158,7 @@ export default function GameView() {
           </group>
           <PlayerController />
           <NarwhalGuide />
+          <PlayerPets />
           <GoalBeacon />
           <GuideTrail />
           <Systems pendingJump={pendingJump} />
