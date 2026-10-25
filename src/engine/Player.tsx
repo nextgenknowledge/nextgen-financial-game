@@ -272,7 +272,7 @@ export function PlayerController() {
 
   if (!avatar) return null;
   return (
-    <group ref={group}>
+    <group ref={group} name="player">
       {riding && rt.vehicle ? (
         <VehicleModel itemId={rt.vehicle.itemId} rider={avatar} />
       ) : (

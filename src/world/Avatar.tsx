@@ -3,6 +3,7 @@ import { useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js';
+import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import type { AvatarConfig } from '@/game/types';
 import outfits from '@/data/shop/outfits.json';
 import { fabric } from '@/engine/pixtex';
@@ -71,6 +72,7 @@ function cloth(it: OutfitItem | undefined, fallback: string, pattern = 'cotton')
 
 const SUITS = new Set(['suit', 'threepiece', 'tux', 'blazer']);
 const SHORT_SLEEVE = new Set(['tee', 'polo', 'jersey']);
+const TUCKED = new Set(['polo', 'turtleneck', 'cardigan', 'vest', 'suit', 'threepiece', 'tux', 'blazer']);
 function Hair({ style, color }: { style: number; color: string }) {
   const m = mat(color);
   switch (style) {
@@ -558,30 +560,131 @@ function Shoe({ it, color }: { it: OutfitItem | undefined; color: string }) {
   }
 }
 
-/** One leg: trousers (or shorts + bare shin), an optional cuff, and the shoe. */
-function Leg({ pants, skin, bottom, feet, shoeColor }: { pants: THREE.Material; skin: THREE.Material; bottom?: OutfitItem; feet?: OutfitItem; shoeColor: string }) {
+/** One leg: thigh and shin (or shorts and a bare knee), an optional cuff, and the shoe. Pivot at the hip. */
+function Leg({ pants, skin, bottom, feet, shoeColor }: { pants: THREE.Material; skin: string; bottom?: OutfitItem; feet?: OutfitItem; shoeColor: string }) {
   const shorts = bottom?.style === 'shorts';
+  // Thigh a little wider than the shin, merged into one mesh per material
+  const trouser = merged([
+    { s: [0.3, 0.38, 0.32], p: [0, -0.19, 0], r: 0.06 },
+    { s: [0.26, 0.34, 0.28], p: [0, -0.49, 0.005], r: 0.05 },
+  ]);
+  const shortsGeo = merged([{ s: [0.3, 0.32, 0.32], p: [0, -0.16, 0], r: 0.06 }]);
+  const knee = merged([
+    { s: [0.2, 0.16, 0.22], p: [0, -0.36, 0.01], r: 0.05, c: skin },
+    { s: [0.18, 0.26, 0.2], p: [0, -0.52, 0.005], r: 0.05, c: skin },
+  ]);
   return (
     <group>
       {shorts ? (
         <>
-          <mesh geometry={rbox(0.3, 0.34, 0.32, 0.06)} material={pants} position={[0, -0.17, 0]} castShadow />
-          <mesh geometry={rbox(0.22, 0.34, 0.24, 0.05)} material={skin} position={[0, -0.47, 0]} />
+          <mesh geometry={shortsGeo} material={pants} castShadow />
+          <mesh geometry={knee} material={vcMat} />
         </>
       ) : (
-        <mesh geometry={rbox(0.28, 0.66, 0.3, 0.06)} material={pants} position={[0, -0.33, 0]} castShadow />
+        <mesh geometry={trouser} material={pants} castShadow />
       )}
-      {bottom?.style === 'joggers' && <mesh geometry={rbox(0.27, 0.07, 0.29, 0.02)} material={fabric('knit', bottom.color2 ?? '#9aa0aa')} position={[0, -0.6, 0]} />}
-      {bottom?.style === 'cargo' && <mesh geometry={rbox(0.05, 0.16, 0.18, 0.02)} material={pants} position={[0.15, -0.36, 0]} />}
+      {bottom?.style === 'joggers' && <mesh geometry={rbox(0.27, 0.07, 0.29, 0.02)} material={fabric('knit', bottom.color2 ?? '#9aa0aa')} position={[0, -0.62, 0.005]} />}
+      {bottom?.style === 'cargo' && <mesh geometry={rbox(0.05, 0.16, 0.18, 0.02)} material={pants} position={[0.155, -0.3, 0]} />}
       {bottom?.style === 'trousers' && <mesh geometry={rbox(0.02, 0.6, 0.02, 0.005)} material={mat(shade(bottom.color ?? '#333333', 0.75))} position={[0, -0.33, 0.152]} />}
       <Shoe it={feet} color={shoeColor} />
     </group>
   );
 }
 
+/* ───────── Merged parts ─────────
+ * Skin, face and other flat-coloured pieces are merged into one mesh with vertex colours, and the
+ * pieces of a garment into one mesh with its fabric texture, so a detailed character still costs
+ * about half the draw calls the old blocky one did. */
+
+interface Piece {
+  /** Size, centre, corner radius, colour (vertex-coloured merges only) and rotation. */
+  s: [number, number, number];
+  p: [number, number, number];
+  r?: number;
+  c?: string;
+  rot?: [number, number, number];
+}
+
+const vcMat = new THREE.MeshLambertMaterial({ vertexColors: true });
+const mergeCache = new Map<string, THREE.BufferGeometry>();
+const tmpCol = new THREE.Color();
+const tmpM = new THREE.Matrix4();
+const tmpE = new THREE.Euler();
+
+export function merged(pieces: Piece[]): THREE.BufferGeometry {
+  const key = JSON.stringify(pieces);
+  const hit = mergeCache.get(key);
+  if (hit) return hit;
+  const colored = pieces.some((pc) => pc.c);
+  const geos = pieces.map((pc) => {
+    const g = rbox(pc.s[0], pc.s[1], pc.s[2], pc.r ?? 0.03).clone();
+    tmpM.makeRotationFromEuler(tmpE.set(...(pc.rot ?? [0, 0, 0]))).setPosition(pc.p[0], pc.p[1], pc.p[2]);
+    g.applyMatrix4(tmpM);
+    if (colored) {
+      tmpCol.set(pc.c ?? '#ffffff');
+      const n = g.attributes.position.count;
+      const col = new Float32Array(n * 3);
+      for (let i = 0; i < n; i++) col.set([tmpCol.r, tmpCol.g, tmpCol.b], i * 3);
+      g.setAttribute('color', new THREE.BufferAttribute(col, 3));
+    }
+    return g;
+  });
+  const out = mergeGeometries(geos)!;
+  mergeCache.set(key, out);
+  return out;
+}
+
+/** Neck, head and face in the head's own frame (origin at the top of the neck, facing +Z). */
+function headPieces(c: AvatarConfig): Piece[] {
+  const skin = c.skin;
+  const shadow = shade(skin, 0.86);
+  const lips = shade(skin, 0.74);
+  const line = shade(skin, 0.55);
+  const brow = shade(c.hair, 0.85);
+  const out: Piece[] = [
+    { s: [0.16, 0.16, 0.16], p: [0, -0.04, -0.01], r: 0.04, c: skin }, // neck
+    { s: [0.42, 0.38, 0.44], p: [0, 0.29, 0], r: 0.1, c: skin }, // cranium
+    { s: [0.39, 0.24, 0.4], p: [0, 0.14, 0.01], r: 0.1, c: skin }, // jaw, tapering gently from the cheeks
+    { s: [0.2, 0.06, 0.08], p: [0, 0.05, 0.15], r: 0.03, c: skin }, // chin
+    { s: [0.04, 0.11, 0.09], p: [0.215, 0.25, -0.01], r: 0.02, c: shadow }, // ears
+    { s: [0.04, 0.11, 0.09], p: [-0.215, 0.25, -0.01], r: 0.02, c: shadow },
+    { s: [0.045, 0.11, 0.05], p: [0, 0.215, 0.226], r: 0.016, c: skin }, // nose bridge
+    { s: [0.07, 0.045, 0.06], p: [0, 0.168, 0.236], r: 0.018, c: skin }, // nose tip
+    { s: [0.05, 0.012, 0.02], p: [0, 0.147, 0.257], r: 0.004, c: shadow }, // nostrils
+    { s: [0.1, 0.02, 0.02], p: [0, 0.106, 0.2], r: 0.007, c: lips }, // upper lip
+    { s: [0.085, 0.007, 0.01], p: [0, 0.096, 0.21], r: 0.002, c: line }, // mouth
+    { s: [0.08, 0.024, 0.02], p: [0, 0.084, 0.198], r: 0.008, c: lips }, // lower lip
+    { s: [0.022, 0.012, 0.01], p: [0.05, 0.103, 0.207], r: 0.003, c: line, rot: [0, 0, 0.5] }, // corners turned up a little: a friendly look
+    { s: [0.022, 0.012, 0.01], p: [-0.05, 0.103, 0.207], r: 0.003, c: line, rot: [0, 0, -0.5] },
+  ];
+  for (const x of [0.085, -0.085]) {
+    out.push(
+      { s: [0.09, 0.05, 0.02], p: [x, 0.27, 0.214], r: 0.014, c: '#f6f3ee' }, // white
+      { s: [0.045, 0.05, 0.02], p: [x, 0.27, 0.221], r: 0.012, c: c.eyes }, // iris
+      { s: [0.022, 0.026, 0.01], p: [x, 0.27, 0.231], r: 0.004, c: '#121216' }, // pupil
+      { s: [0.012, 0.012, 0.01], p: [x - 0.01, 0.283, 0.236], r: 0.003, c: '#ffffff' }, // glint
+      { s: [0.1, 0.016, 0.03], p: [x, 0.297, 0.213], r: 0.006, c: line }, // upper lid
+      { s: [0.1, 0.022, 0.03], p: [x, 0.336, 0.212], r: 0.008, c: brow, rot: [0, 0, x > 0 ? 0.07 : -0.07] }, // brow, outer end a touch higher: relaxed
+    );
+  }
+  return out;
+}
+
+/** Hand hanging from the arm (wrist at y ≈ −0.56): palm, slightly curled fingers and a thumb toward the front. */
+function handPieces(skin: string, forearm: boolean): Piece[] {
+  const out: Piece[] = [
+    { s: [0.09, 0.13, 0.16], p: [0, -0.63, 0], r: 0.035, c: skin },
+    { s: [0.075, 0.11, 0.145], p: [0.004, -0.735, 0.01], r: 0.03, c: skin, rot: [0.14, 0, 0] },
+    { s: [0.055, 0.09, 0.05], p: [0, -0.6, 0.095], r: 0.02, c: skin, rot: [0.35, 0, 0] },
+  ];
+  if (forearm) out.push({ s: [0.16, 0.36, 0.18], p: [0, -0.38, 0], r: 0.05, c: skin });
+  return out;
+}
+
 /**
- * Blocky player/NPC character. Feet at y=0, faces +Z.
- * Original design: cube head, chunky rounded limbs, simple pixel-free face.
+ * Player/NPC character. Feet at y=0, faces +Z. Semi-realistic proportions (the head is about a
+ * sixth of the height) with a modelled face, hands with fingers, a tapered torso and a belt; the
+ * clothes keep their pixel fabric textures.
  */
 export function Avatar({ config, anim, scale = 1 }: { config: AvatarConfig; anim?: React.RefObject<AnimState>; scale?: number }) {
   const lLeg = useRef<THREE.Group>(null);
@@ -604,40 +707,47 @@ export function Avatar({ config, anim, scale = 1 }: { config: AvatarConfig; anim
       top?.style === 'qzvest' ? fabric('knit', top.color2 ?? '#7f9cc9') : top?.style === 'varsity' ? fabric('leather', top.color2 ?? '#f4f1ea') : torso;
     // Suits come with matching trousers unless the player picked other pants
     const pants = bottom ? cloth(bottom, config.pants, 'twill') : top && SUITS.has(top.style) && top.style !== 'blazer' ? torso : fabric('twill', config.pants);
-    return {
-      torso,
-      sleeve,
-      pants,
-      skin: mat(config.skin),
-      eyes: mat(config.eyes),
-      white: mat('#ffffff'),
-      mouth: mat(shade(config.skin, 0.55)),
-      lips: mat(shade(config.skin, 0.78)),
-      nose: mat(shade(config.skin, 0.9)),
-      brow: mat(shade(config.hair, 0.85)),
-      cuff: mat('#f4f6fa'),
-    };
-  }, [top, bottom, config.shirt, config.pants, config.skin, config.eyes, config.hair]);
+    return { torso, sleeve, pants, cuff: mat('#f4f6fa') };
+  }, [top, bottom, config.shirt, config.pants]);
   const short = !!top && SHORT_SLEEVE.has(top.style);
+  // Tucked-in shirts show the belt; hoodies, jackets and tees hang over it
+  const belted = !top || TUCKED.has(top.style);
   const jacket = !!top && SUITS.has(top.style);
   const ribCuff = top && (top.style === 'bomber' || top.style === 'varsity') ? fabric('knit', top.style === 'varsity' ? top.color2 ?? '#f4f1ea' : '#2a2a30') : null;
   const headAcc = acc && ['glasses', 'shades', 'headset'].includes(acc.style) ? acc : undefined;
   const bodyAcc = acc && ['backpack', 'scarf', 'chain', 'lanyard'].includes(acc.style) ? acc : undefined;
   const handAcc = acc && ['watch', 'briefcase'].includes(acc.style) ? acc : undefined;
 
+  const g = useMemo(
+    () => ({
+      head: merged(headPieces(config)),
+      // Chest, waist and rounded shoulders: one fabric mesh
+      torso: merged([
+        { s: [0.68, 0.38, 0.38], p: [0, 0.13, 0], r: 0.08 },
+        { s: [0.58, 0.3, 0.34], p: [0, -0.12, 0], r: 0.07 },
+        { s: [0.16, 0.14, 0.34], p: [0.31, 0.24, 0], r: 0.06 },
+        { s: [0.16, 0.14, 0.34], p: [-0.31, 0.24, 0], r: 0.06 },
+      ]),
+      belt: merged([
+        { s: [0.6, 0.06, 0.35], p: [0, 0.95, 0], r: 0.02, c: '#2a1f18' },
+        { s: [0.07, 0.05, 0.02], p: [0, 0.95, 0.177], r: 0.008, c: '#c9a24a' },
+      ]),
+      sleeveLong: merged([
+        { s: [0.19, 0.32, 0.22], p: [0, -0.15, 0], r: 0.06 },
+        { s: [0.17, 0.27, 0.2], p: [0, -0.43, 0.005], r: 0.05 },
+      ]),
+      sleeveShort: merged([{ s: [0.21, 0.22, 0.24], p: [0, -0.11, 0], r: 0.06 }]),
+      skinArm: merged(handPieces(config.skin, short)),
+    }),
+    [config, short],
+  );
+
   const arm = (side: 'left' | 'right') => (
     <>
-      {short ? (
-        <>
-          <mesh geometry={rbox(0.23, 0.24, 0.26, 0.06)} material={m.sleeve} position={[0, -0.11, 0]} castShadow />
-          <mesh geometry={rbox(0.18, 0.34, 0.2, 0.05)} material={m.skin} position={[0, -0.4, 0]} />
-        </>
-      ) : (
-        <mesh geometry={rbox(0.21, 0.56, 0.24, 0.06)} material={m.sleeve} position={[0, -0.26, 0]} castShadow />
-      )}
-      {jacket && <mesh geometry={rbox(0.19, 0.05, 0.22, 0.02)} material={m.cuff} position={[0, -0.53, 0]} />}
-      {ribCuff && <mesh geometry={rbox(0.22, 0.07, 0.25, 0.02)} material={ribCuff} position={[0, -0.51, 0]} />}
-      <mesh geometry={rbox(0.2, 0.16, 0.22, 0.06)} material={m.skin} position={[0, -0.6, 0]} />
+      <mesh geometry={short ? g.sleeveShort : g.sleeveLong} material={m.sleeve} castShadow />
+      {jacket && <mesh geometry={rbox(0.18, 0.05, 0.21, 0.02)} material={m.cuff} position={[0, -0.555, 0]} />}
+      {ribCuff && <mesh geometry={rbox(0.19, 0.07, 0.22, 0.02)} material={ribCuff} position={[0, -0.54, 0]} />}
+      <mesh geometry={g.skinArm} material={vcMat} />
       <HandAccessory it={handAcc} side={side} />
     </>
   );
@@ -741,63 +851,42 @@ export function Avatar({ config, anim, scale = 1 }: { config: AvatarConfig; anim
   return (
     <group scale={scale}>
       <group ref={body}>
-        {/* Legs: longer than they used to be, for grown-up proportions */}
         <group ref={lLeg} position={[0.16, 0.9, 0]}>
           <group scale={[1, 1.15, 1]}>
-            <Leg pants={m.pants} skin={m.skin} bottom={bottom} feet={feet} shoeColor={config.shoes} />
+            <Leg pants={m.pants} skin={config.skin} bottom={bottom} feet={feet} shoeColor={config.shoes} />
           </group>
         </group>
         <group ref={rLeg} position={[-0.16, 0.9, 0]}>
           <group scale={[1, 1.15, 1]}>
-            <Leg pants={m.pants} skin={m.skin} bottom={bottom} feet={feet} shoeColor={config.shoes} />
+            <Leg pants={m.pants} skin={config.skin} bottom={bottom} feet={feet} shoeColor={config.shoes} />
           </group>
         </group>
-        {/* Hips join the legs to the body */}
-        <mesh geometry={rbox(0.62, 0.16, 0.34, 0.05)} material={m.pants} position={[0, 0.9, 0]} />
+        {/* Hips, and a belt between trousers and shirt */}
+        <mesh geometry={rbox(0.6, 0.16, 0.33, 0.05)} material={m.pants} position={[0, 0.88, 0]} />
+        {belted && <mesh geometry={g.belt} material={vcMat} />}
         {/* Upper body pivots at the hips so riders can lean and twist */}
         <group ref={upper} position={[0, 0.9, 0]}>
           <group position={[0, -0.9, 0]}>
-            {/* Torso */}
             <group position={[0, 1.23, 0]}>
-              <mesh geometry={rbox(0.66, 0.68, 0.38, 0.08)} material={m.torso} castShadow />
+              <mesh geometry={g.torso} material={m.torso} castShadow />
               <TopDetails it={top} body={m.torso} />
               <BodyAccessory it={bodyAcc} />
             </group>
-            {/* Arms */}
-            <group ref={lArm} position={[0.44, 1.52, 0]}>
+            <group ref={lArm} position={[0.44, 1.5, 0]}>
               <group scale={[1, 1.1, 1]}>{arm('left')}</group>
             </group>
-            <group ref={rArm} position={[-0.44, 1.52, 0]}>
+            <group ref={rArm} position={[-0.44, 1.5, 0]}>
               <group scale={[1, 1.1, 1]}>{arm('right')}</group>
             </group>
-            {/* Neck */}
-            <mesh geometry={rbox(0.22, 0.14, 0.22, 0.04)} material={m.skin} position={[0, 1.6, 0]} />
-            {/* Head: smaller in proportion to the body, with a proper face */}
-            <group ref={head} position={[0, 1.6, 0]} scale={0.82}>
-              <mesh geometry={rbox(0.62, 0.62, 0.6, 0.09)} material={m.skin} position={[0, 0.31, 0]} castShadow />
-              {/* Ears */}
-              <mesh geometry={rbox(0.06, 0.15, 0.11, 0.025)} material={m.nose} position={[0.32, 0.3, 0]} />
-              <mesh geometry={rbox(0.06, 0.15, 0.11, 0.025)} material={m.nose} position={[-0.32, 0.3, 0]} />
-              {/* Eyes: white, coloured iris with a dark pupil and a glint */}
-              <mesh geometry={rbox(0.14, 0.1, 0.02, 0.02)} material={m.white} position={[0.14, 0.35, 0.3]} />
-              <mesh geometry={rbox(0.14, 0.1, 0.02, 0.02)} material={m.white} position={[-0.14, 0.35, 0.3]} />
-              <mesh geometry={rbox(0.07, 0.09, 0.02, 0.015)} material={m.eyes} position={[0.13, 0.348, 0.31]} />
-              <mesh geometry={rbox(0.07, 0.09, 0.02, 0.015)} material={m.eyes} position={[-0.15, 0.348, 0.31]} />
-              <mesh geometry={rbox(0.025, 0.025, 0.01, 0.005)} material={m.white} position={[0.115, 0.365, 0.322]} />
-              <mesh geometry={rbox(0.025, 0.025, 0.01, 0.005)} material={m.white} position={[-0.165, 0.365, 0.322]} />
-              {/* Eyebrows */}
-              <mesh geometry={rbox(0.16, 0.035, 0.03, 0.01)} material={m.brow} position={[0.14, 0.45, 0.3]} rotation={[0, 0, -0.08]} />
-              <mesh geometry={rbox(0.16, 0.035, 0.03, 0.01)} material={m.brow} position={[-0.14, 0.45, 0.3]} rotation={[0, 0, 0.08]} />
-              {/* Nose and mouth */}
-              <mesh geometry={rbox(0.08, 0.13, 0.07, 0.025)} material={m.nose} position={[0, 0.26, 0.32]} />
-              <mesh geometry={rbox(0.15, 0.035, 0.02, 0.012)} material={m.lips} position={[0, 0.13, 0.302]} />
-              <mesh geometry={rbox(0.11, 0.015, 0.02, 0.006)} material={m.mouth} position={[0, 0.14, 0.31]} />
-              {/* Corners of the mouth turned up a touch: a relaxed, friendly expression */}
-              <mesh geometry={rbox(0.03, 0.02, 0.02, 0.006)} material={m.mouth} position={[0.065, 0.152, 0.31]} />
-              <mesh geometry={rbox(0.03, 0.02, 0.02, 0.006)} material={m.mouth} position={[-0.065, 0.152, 0.31]} />
-              <Hair style={config.hairStyle} color={config.hair} />
-              <Hat id={config.hat} />
-              <HeadAccessory it={headAcc} />
+            {/* Head: neck, face and ears in one mesh; hair, hats and glasses sit on it */}
+            <group ref={head} position={[0, 1.62, 0]}>
+              <mesh geometry={g.head} material={vcMat} castShadow />
+              {/* Hair and headwear were drawn for the old cube head; this maps them onto the new one */}
+              <group position={[0, 0.02, 0]} scale={[0.68, 0.74, 0.73]}>
+                <Hair style={config.hairStyle} color={config.hair} />
+                <Hat id={config.hat} />
+                <HeadAccessory it={headAcc} />
+              </group>
             </group>
           </group>
         </group>
