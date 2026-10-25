@@ -41,7 +41,7 @@ export default function Commodities({ onFinish, addReview, seed }: KindProps) {
     const contango = rng.chance(0.5);
     const spot = rng.pick([72, 78, 84]);
     const curve: number[] = [0, 1, 2, 3, 4, 5, 6].map((m) => spot * (1 + (contango ? 0.008 : -0.012) * m));
-    const s3 = shuffled(['Contango: later months cost more, as storage and financing are paid for', 'Backwardation: buyers pay up for oil delivered right now, a sign of tight supply', 'A flat curve: no information'], contango ? 0 : 1, r);
+    const s3 = shuffled(['Contango: later months cost more, covering storage and financing', 'Backwardation: oil for delivery now costs more, so supply is tight', 'A flat curve: no information'], contango ? 0 : 1, r);
     out.push({
       brief: 'Oil futures prices for delivery over the next six months:',
       visual: <LineChart series={[{ pts: curve, color: C.gold, label: 'Futures price ($/barrel)' }]} fmt={(v) => `$${v.toFixed(0)}`} xLabel="Months to delivery →" />,
