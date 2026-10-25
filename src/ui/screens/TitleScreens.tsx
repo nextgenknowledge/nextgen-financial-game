@@ -194,13 +194,24 @@ export function CreditsScreen() {
             <Button onClick={() => setScreen('title')}>← Back</Button>
           </div>
           <div className="row" style={{ gap: '1.2rem', margin: '1rem 0', flexWrap: 'wrap' }}>
-            <img src={ORG_LOGO} alt="NextGen Knowledge" style={{ width: 220, borderRadius: 12 }} />
+            <a href={ORG_SITE} target="_blank" rel="noopener noreferrer" title="nextgenknowledge.org">
+              <img src={ORG_LOGO} alt="NextGen Knowledge" style={{ width: 220, borderRadius: 12, display: 'block' }} />
+            </a>
             <img src={FIN_LOGO} alt="Fin City" style={{ width: 150 }} />
           </div>
           <p>
             <b>Fin City</b> is made by <b>NextGen Knowledge</b>, a student-led organization teaching financial literacy to
             kids and teens.
           </p>
+          <div className="credits-team">
+            <b>Created by</b>
+            <dl>
+              <dt>Lead Developer</dt>
+              <dd>Esh Bompali</dd>
+              <dt>Supervisor</dt>
+              <dd>Svar Patel</dd>
+            </dl>
+          </div>
           <div className="row" style={{ alignItems: 'flex-start', gap: '1rem', flexWrap: 'wrap' }}>
             <img src={NARWHAL_SHEET} alt="NextGen Narwhal character sheet" style={{ width: 300, borderRadius: 12, border: '3px solid var(--ink)' }} />
             <div className="col grow" style={{ minWidth: 220 }}>

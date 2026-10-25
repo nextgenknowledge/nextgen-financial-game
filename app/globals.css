@@ -212,7 +212,7 @@ input[type='range'] { width: 100%; accent-color: var(--teal); height: 2rem; }
   color: #fff;
   overflow: auto;
 }
-.screen-inner { width: min(1100px, 94vw); max-height: 100%; padding: 2rem 0; }
+.screen-inner { position: relative; z-index: 1; width: min(1100px, 94vw); max-height: 100%; padding: 2rem 0; }
 
 .intro-org { display: flex; flex-direction: column; align-items: center; gap: 1.2rem; animation: fadeInOut 3.2s ease forwards; }
 .intro-org .presents { font-weight: 800; letter-spacing: 0.35em; text-transform: uppercase; font-size: 1rem; color: #cfe0ff; }
@@ -1356,6 +1356,11 @@ button.item-card { cursor: pointer; }
 .st-org:focus-visible { outline: 3px solid #fff; outline-offset: 4px; }
 @media (max-width: 420px) { .st-org img { height: 52px; } .st-org-name { font-size: 1rem; } }
 .st-logo-wrap { margin: 0.6rem 0 0; }
+/* Credits: the people who made the game */
+.credits-team { margin: 0 0 1rem; padding: 0.7rem 0.9rem; background: #fff8dd; border: 3px solid var(--ink); box-shadow: 4px 4px 0 var(--ink); }
+.credits-team dl { display: grid; grid-template-columns: auto 1fr; gap: 0.3rem 1rem; margin: 0.5rem 0 0; }
+.credits-team dt { font-size: 0.78rem; font-weight: 900; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); align-self: center; }
+.credits-team dd { margin: 0; font-size: 1.1rem; font-weight: 900; }
 /* The logo art has its own night-sky square, so it hangs like a framed pixel billboard. */
 .st-logo {
   display: block; height: min(26vh, 260px); max-width: 80vw; width: auto; object-fit: contain;
