@@ -28,7 +28,7 @@ export default function BizStructure({ onFinish, addReview, seed }: KindProps) {
     const r = () => rng.next();
     const out: VisualItem[] = [];
 
-    const s1 = shuffled(['An LLC: it shields their homes from the business’s debts', 'A sole proprietorship: it is the cheapest to set up', 'A general partnership: partners share the risk', 'It makes no difference to liability'], 0, r);
+    const s1 = shuffled(['An LLC: their homes stay safe from business debts', 'A sole proprietorship: it is the cheapest to set up', 'A general partnership: the partners share the risk equally', 'It makes no difference to liability'], 0, r);
     out.push({
       brief: 'Two friends are opening a climbing gym. A customer injury lawsuit could exceed their insurance. Both own homes.',
       visual: MATRIX,
@@ -52,7 +52,7 @@ export default function BizStructure({ onFinish, addReview, seed }: KindProps) {
       q: rq({ id: 'bs-pass', topic: 'taxes', type: 'numeric', format: 'money', value: Math.round(pTake - cTake), tolRel: 0.01, prompt: 'How much more does the owner keep as an LLC?', explanation: `${usd(pTake)} − ${usd(cTake)} = ${usd(pTake - cTake)}. Pass-through taxation is why small, profitable businesses that pay out their profits often choose an LLC or S corp.` }),
     });
 
-    const s4 = shuffled(['Convert to a C corporation: VCs buy preferred stock and want a standard structure', 'Stay a sole proprietor and borrow from the VC', 'Become a general partnership with the VC', 'An LLC: pass-through losses help the VC'], 0, r);
+    const s4 = shuffled(['A C corporation: it can issue preferred stock and options', 'Stay a sole proprietor and borrow the money from the VC fund', 'Become a general partnership with the VC', 'An LLC: pass-through losses help the VC'], 0, r);
     out.push({
       brief: 'A software startup wants $3M from a venture capital fund, plans to grant stock options to employees, and hopes to list on the stock market one day.',
       visual: MATRIX,

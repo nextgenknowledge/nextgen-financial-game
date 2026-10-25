@@ -39,7 +39,15 @@ export async function loadWorld(id: string): Promise<WorldState | null> {
   return raw ? migrateWorld(raw) : null;
 }
 
+let askedToPersist = false;
+
 export async function saveWorld(w: WorldState, thumbnail?: string | null): Promise<void> {
+  // Ask the browser not to clear saves when space runs low or the site goes unvisited (Safari
+  // clears site data after a week away unless the game is added to the Home Screen).
+  if (!askedToPersist && typeof navigator !== 'undefined') {
+    askedToPersist = true;
+    navigator.storage?.persist?.().catch(() => {});
+  }
   const d = await db();
   const prev = (await d.get('meta', w.id)) as WorldMeta | undefined;
   const thumb = thumbnail === undefined ? (prev?.thumbnail ?? null) : thumbnail;

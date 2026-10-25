@@ -174,10 +174,10 @@
    "type": "mc",
    "prompt": "An item 'originally $200, now $99!' sells for $105 everywhere else and was never actually sold at $200. The real discount is about…",
    "choices": [
-    "6%",
-    "50%",
-    "100%",
-    "0%, it's more expensive"
+    "About 6%",
+    "About 50%",
+    "About 100%",
+    "None: it costs more"
    ],
    "answer": 0,
    "explanation": "Compare to the real market price ($105): (105 − 99)/105 ≈ 6%. Inflated 'original' prices are a common trick."
@@ -284,10 +284,10 @@
    "type": "mc",
    "prompt": "Find the error: Income $3,000. Rent $1,200, food $400, transport $150, fun $600, savings $500, debt minimum $250. Total planned?",
    "choices": [
-    "$3,100, over budget by $100",
-    "$3,000, balanced",
-    "$2,900, $100 unassigned",
-    "$2,850"
+    "$3,100: over budget by $100",
+    "$3,000: exactly balanced",
+    "$2,900: $100 left unassigned",
+    "$2,850: $150 left unassigned"
    ],
    "answer": 0,
    "explanation": "1,200 + 400 + 150 + 600 + 500 + 250 = 3,100. The plan spends $100 more than income, cut fun or savings."
@@ -301,10 +301,10 @@
    "type": "mc",
    "prompt": "A zero-based budget means…",
    "choices": [
-    "Income minus planned spending and saving equals zero, every dollar has a job",
-    "You spend nothing",
-    "Your balance is zero",
-    "You have no income"
+    "Every dollar of income is assigned a job",
+    "You spend nothing at all that month",
+    "Your checking balance must reach $0",
+    "You budget as if income were zero"
    ],
    "answer": 0,
    "explanation": "Every dollar is assigned to something (including savings)."
@@ -521,7 +521,7 @@
     "Cheaper",
     "More expensive",
     "Exactly the same",
-    "Free"
+    "Cheaper only in cash"
    ],
    "answer": 0,
    "explanation": "Each dollar buys more pounds, so London prices cost fewer dollars."
@@ -580,10 +580,10 @@
    "type": "mc",
    "prompt": "Using a card abroad, you're asked 'Pay in USD or GBP?' Choosing your home currency (USD) often…",
    "choices": [
-    "Adds a poor conversion rate set by the merchant (dynamic currency conversion)",
-    "Saves money",
-    "Is required by law",
-    "Is always free"
+    "Adds the merchant’s poor exchange rate",
+    "Saves money by skipping bank fees",
+    "Is required by UK law for tourists",
+    "Is always free on any card"
    ],
    "answer": 0,
    "explanation": "Dynamic currency conversion usually uses a worse rate. Paying in the local currency is often cheaper."
@@ -687,10 +687,10 @@
    "type": "mc",
    "prompt": "Which costs does a homeowner pay that a renter usually doesn't?",
    "choices": [
-    "Property tax, maintenance and homeowners insurance",
-    "Groceries",
-    "Phone bill",
-    "Transport"
+    "Property tax, upkeep and home insurance",
+    "Groceries and household cleaning supplies",
+    "The monthly phone and internet bill",
+    "Bus and train fares to work"
    ],
    "answer": 0,
    "explanation": "Owners pay these 'hidden' costs on top of the mortgage."
@@ -704,10 +704,10 @@
    "type": "mc",
    "prompt": "Opportunity cost of a big down payment is…",
    "choices": [
-    "The investment return you could have earned on that money",
-    "The mortgage interest",
-    "The home's price",
-    "Property tax"
+    "The return that money could have earned",
+    "The interest charged on the mortgage",
+    "The purchase price of the home itself",
+    "The yearly property tax on the home"
    ],
    "answer": 0,
    "explanation": "Money tied up in a down payment can't be invested elsewhere, that forgone return is a real cost of buying."
@@ -764,14 +764,21 @@
    "city": "london",
    "topic": "counting",
    "difficulty": "advanced",
-   "level": 1,
+   "level": 2,
    "type": "numeric",
-   "prompt": "Bill ${b}; customer pays ${p}. Change due?",
+   "prompt": "A ${b} restaurant bill, plus a {t}% tip on the bill. You pay with ${p}. Change due?",
    "vars": {
     "b": {
      "min": 23.05,
-     "max": 48.95,
+     "max": 38.95,
      "step": 0.05
+    },
+    "t": {
+     "choices": [
+      15,
+      18,
+      20
+     ]
     },
     "p": {
      "choices": [
@@ -779,9 +786,10 @@
      ]
     }
    },
-   "answerExpr": "p-b",
+   "answerExpr": "p-round(b*(1+t/100), 2)",
    "format": "money",
-   "explanation": "${p} − ${b} = ${ANSWER}."
+   "explanation": "Bill plus tip: ${b} × (1 + {t}%), rounded to the cent. ${p} minus that = ${ANSWER}.",
+   "hint": "Work out the tip and add it before making change."
   },
   {
    "id": "lda-32",
@@ -848,10 +856,10 @@
    "type": "mc",
    "prompt": "You have $300 left after needs. Concert ($150), emergency fund (currently $200), and new sneakers ($120). Best order of priorities?",
    "choices": [
-    "Emergency fund first, then plan one want",
-    "Concert and sneakers now",
-    "Sneakers, then concert",
-    "Borrow for all three"
+    "Emergency fund first, then one want",
+    "Concert and sneakers now, fund later",
+    "Sneakers first, then the concert",
+    "Put all three on a credit card"
    ],
    "answer": 0,
    "explanation": "With only $200 of cushion, building the emergency fund protects you; then choose a want that fits."
@@ -894,10 +902,10 @@
    "type": "mc",
    "prompt": "A 0%-interest 'buy now, pay later' plan for a $400 phone has a $35 late fee per missed payment. The biggest risk is…",
    "choices": [
-    "Overspending and fees if you miss payments",
-    "Interest at 0%",
-    "Getting the phone",
-    "There's no risk"
+    "Overspending, then fees on missed payments",
+    "The interest charged at 0%",
+    "Getting the phone delivered late",
+    "There is no risk with 0% interest"
    ],
    "answer": 0,
    "explanation": "BNPL makes purchases feel smaller; missed payments add fees and can hurt credit."
@@ -1044,10 +1052,10 @@
    "type": "mc",
    "prompt": "Your budget keeps failing because 'small' purchases add up. The best fix is…",
    "choices": [
-    "Track every purchase for a month and set category limits",
-    "Stop budgeting",
-    "Use only credit cards",
-    "Ignore small purchases"
+    "Track a month of spending and set limits",
+    "Stop budgeting, it clearly doesn’t work",
+    "Put everything on credit cards instead",
+    "Ignore purchases under $10 from now on"
    ],
    "answer": 0,
    "explanation": "Tracking reveals leaks; category limits make them visible before they grow."
@@ -1147,10 +1155,10 @@
    "type": "mc",
    "prompt": "Pay-yourself-first means…",
    "choices": [
-    "Moving savings out right when you get paid, before spending",
+    "Saving the moment you’re paid",
     "Buying yourself a treat first",
-    "Paying bills last",
-    "Never saving"
+    "Paying every bill last",
+    "Saving only what is left over"
    ],
    "answer": 0,
    "explanation": "Automatic saving at payday makes saving the default instead of the leftover."
@@ -1236,10 +1244,10 @@
    "type": "mc",
    "prompt": "Which is the strongest reason to buy store brand over name brand?",
    "choices": [
-    "Same ingredients and quality at a lower unit price",
-    "The packaging is plainer",
-    "It's always healthier",
-    "Name brands are illegal"
+    "Same quality at a lower unit price",
+    "The packaging is plainer and simpler",
+    "Store brands are always healthier",
+    "Name brands cost more to recycle"
    ],
    "answer": 0,
    "explanation": "Compare ingredients and unit price; store brands often match name brands for less."
@@ -1278,10 +1286,10 @@
    "type": "mc",
    "prompt": "A security deposit on a rental is…",
    "choices": [
-    "Money held by the landlord to cover damage, usually returned when you move out",
-    "Your first month's rent",
-    "A tax",
-    "A non-refundable fee always"
+    "Money held for damage, usually returned",
+    "Your first month’s rent paid early",
+    "A city tax on every rental lease",
+    "A fee the landlord keeps no matter what"
    ],
    "answer": 0,
    "explanation": "Leave the place in good shape to get your deposit back."

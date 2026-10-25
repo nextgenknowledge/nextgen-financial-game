@@ -50,12 +50,12 @@ export default function RetailAnalyst({ onFinish, addReview, seed }: KindProps) 
     out.push({
       brief: `${B.name}’s headline sales grew ${pc(growth(B))} this year. Same-store sales strip out new stores.`,
       visual: <Bars items={[{ label: `${B.name} total`, value: growth(B) * 100, color: C.blue }, { label: `${B.name} same-store`, value: B.sss * 100 }, { label: `${A.name} same-store`, value: A.sss * 100, color: C.green }]} fmt={(v) => `${v.toFixed(1)}%`} />,
-      q: rq({ id: 'ra-sss', topic: 'investing', prompt: `What does this tell you about ${B.name}?`, ...shuffled(['Growth is bought by opening stores while existing stores sell less', 'Customers love it: total sales are growing fast', 'Same-store sales do not matter to analysts', 'Its margins must be rising'], 0, r), explanation: 'Negative same-store sales mean the average existing store is shrinking. Opening stores hides it in the headline number, but new stores cost capital and eventually run out of places to go.' }),
+      q: rq({ id: 'ra-sss', topic: 'investing', prompt: `What does this tell you about ${B.name}?`, ...shuffled(['New stores drive growth while old stores sell less', 'Customers love it: total sales are growing very fast', 'Same-store sales do not matter to analysts', 'Its margins must be rising'], 0, r), explanation: 'Negative same-store sales mean the average existing store is shrinking. Opening stores hides it in the headline number, but new stores cost capital and eventually run out of places to go.' }),
     });
     out.push({
       brief: 'Both trade at a similar price-to-earnings ratio. Write the call.',
       visual: table,
-      q: rq({ id: 'ra-call', topic: 'investing', prompt: 'Which stock would you rate higher, and why?', ...shuffled([`${A.name}: higher margins and positive same-store sales at the same valuation`, `${B.name}: it has more revenue`, `${B.name}: more stores means more growth`, 'Neither: retail stocks always fall'], 0, r), explanation: `${A.name} grows from its existing stores and keeps more of each sale. ${B.name}’s growth comes from expansion while the core shrinks. At the same multiple, quality is cheaper.` }),
+      q: rq({ id: 'ra-call', topic: 'investing', prompt: 'Which stock would you rate higher, and why?', ...shuffled([`${A.name}: better margins and same-store sales at the same P/E`, `${B.name}: it has more revenue, so it must be the better business`, `${B.name}: more stores means more growth`, 'Neither: retail stocks always fall'], 0, r), explanation: `${A.name} grows from its existing stores and keeps more of each sale. ${B.name}’s growth comes from expansion while the core shrinks. At the same multiple, quality is cheaper.` }),
     });
     return out;
   }, [seed]);

@@ -11,6 +11,8 @@ import { PostFX } from '@/engine/PostFX';
 import { PlayerController } from '@/engine/Player';
 import { OutdoorScene } from '@/world/OutdoorScene';
 import { InteriorScene } from '@/world/InteriorScene';
+import { HomeScene } from '@/world/HomeScene';
+import { decorAction } from './hud/DecorPanel';
 import { NarwhalGuide, GoalBeacon, GuideTrail } from '@/world/Narwhal';
 import { CITIES, applyDifficulty, buildingById } from '@/world/cities';
 import { rt } from '@/engine/runtime';
@@ -24,10 +26,12 @@ import { sayStep, currentStep, startEpics } from '@/game/progress/quests';
 import { capture, saveNow } from './startWorld';
 import { interact } from './interact';
 import { HUD } from './hud/HUD';
+import { HudTour, startTour } from './hud/HudTour';
 import { Panels } from './panels/Panels';
 import { updateGoalMarker } from './goal';
 import { getOff } from '@/world/ParkedVehicles';
 import { WorldActivityRunner } from '@/activities/world/WorldActivityRunner';
+import { PlayerPets } from '@/world/Pets';
 
 const DPR = { low: 0.75, medium: 1, high: Math.min(2, typeof window !== 'undefined' ? window.devicePixelRatio : 1) };
 
@@ -43,10 +47,11 @@ export default function GameView() {
   useEffect(() => {
     return onAction((a) => {
       const ui = useUI.getState();
-      if (ui.screen !== 'game' || ui.loading.active) return;
+      if (ui.screen !== 'game' || ui.loading.active || ui.tour) return;
       switch (a) {
         case 'interact':
-          if (!ui.panel) interact(rt.nearTrigger);
+          if (ui.decor?.carrying) decorAction('place');
+          else if (!ui.panel) interact(rt.nearTrigger);
           break;
         case 'map':
           if (ui.panel?.type === 'map') ui.close();
@@ -64,7 +69,8 @@ export default function GameView() {
           }
           break;
         case 'pause':
-          if (ui.panel) ui.close();
+          if (ui.decor) decorAction('cancel');
+          else if (ui.panel) ui.close();
           else ui.open({ type: 'pause' });
           break;
         case 'camera':
@@ -85,15 +91,19 @@ export default function GameView() {
     const w = getWorld();
     if (!w) return;
     playMusic(CITIES[w.player.location].music);
+    // A brand-new world gets the screen tour first; the first quest line plays when it ends.
+    // Older saves that already saw the intro never get it unasked.
+    const fresh = !w.progress.flags.introDone && !w.progress.flags.tourDone;
     act((d, fx) => {
       refreshChallenges(d);
       startEpics(d, fx);
       if (!d.progress.flags.introDone) {
         d.progress.flags.introDone = true;
         const cs = currentStep(d);
-        if (cs) sayStep(d, fx, cs.step);
+        if (cs && !fresh) sayStep(d, fx, cs.step);
       }
     });
+    if (fresh) startTour();
   }, []);
 
   // L opens the Learn hub
@@ -101,7 +111,7 @@ export default function GameView() {
     const h = (e: KeyboardEvent) => {
       if (e.key.toLowerCase() !== 'l' || e.repeat || (e.target as HTMLElement)?.tagName === 'INPUT') return;
       const ui = useUI.getState();
-      if (ui.screen !== 'game' || ui.loading.active) return;
+      if (ui.screen !== 'game' || ui.loading.active || ui.tour) return;
       if (ui.panel?.type === 'learn') ui.close();
       else if (!ui.panel) ui.open({ type: 'learn' });
     };
@@ -128,7 +138,9 @@ export default function GameView() {
     };
   }, []);
 
-  const building = interior ? buildingById(interior)?.building : null;
+  const home = interior?.startsWith('home:') ? interior.slice(5) : null;
+  const building = interior && !home ? buildingById(interior)?.building : null;
+  const indoors = !!building || !!home;
   const sceneKey = `${location}:${interior ?? ''}:${difficulty}`;
 
   return (
@@ -146,22 +158,30 @@ export default function GameView() {
         style={{ position: 'fixed', inset: 0 }}
       >
         <Suspense fallback={null}>
-          <SkyAndLights interior={!!building} />
+          <SkyAndLights interior={indoors} />
           <group key={sceneKey}>
-            {building ? <InteriorScene building={building} difficulty={difficulty} /> : <OutdoorScene def={CITIES[location]} difficulty={difficulty} />}
+            {home ? (
+              <HomeScene propUid={home} />
+            ) : building ? (
+              <InteriorScene building={building} difficulty={difficulty} />
+            ) : (
+              <OutdoorScene def={CITIES[location]} difficulty={difficulty} />
+            )}
           </group>
           <PlayerController />
           <NarwhalGuide />
+          <PlayerPets />
           <GoalBeacon />
           <GuideTrail />
           <Systems pendingJump={pendingJump} />
           <CaptureBinder />
           <WorldActivityRunner />
-          {quality !== 'low' && <PostFX quality={quality} interior={!!building} />}
+          {quality !== 'low' && <PostFX quality={quality} interior={indoors} />}
         </Suspense>
       </Canvas>
       <HUD />
       <Panels />
+      <HudTour />
     </div>
   );
 }

@@ -21,7 +21,7 @@ export default function ShortDesk({ onFinish, addReview, seed }: KindProps) {
     out.push({
       brief: `${co} is the market’s favourite story stock. Its reported profit is soaring. Here is profit against operating cash flow ($M):`,
       visual: <LineChart series={[{ pts: ni, color: C.green, label: 'Net income' }, { pts: ocf, color: C.red, label: 'Operating cash flow' }]} fmt={(v) => `$${v.toFixed(0)}M`} xLabel="Last 4 years →" />,
-      q: rq({ id: 'sh-cash', topic: 'investing', prompt: 'What is the warning sign?', ...shuffled(['Profits rise while cash flow falls: earnings may come from aggressive accounting', 'Nothing: profit is what matters', 'Cash flow is falling because the company is too successful', 'Net income is too low'], 0, r), explanation: 'Real profits eventually show up as cash. When reported earnings keep diverging from cash flow, revenue may be booked before customers pay, or costs pushed into the future.' }),
+      q: rq({ id: 'sh-cash', topic: 'investing', prompt: 'What is the warning sign?', ...shuffled(['Profit up, cash flow down: earnings may be inflated', 'Nothing: reported profit is the only number that matters', 'Cash flow is falling because the company is too successful', 'Net income is too low'], 0, r), explanation: 'Real profits eventually show up as cash. When reported earnings keep diverging from cash flow, revenue may be booked before customers pay, or costs pushed into the future.' }),
     });
     const rev = rng.pick([800, 900, 1000]);
     const ar = [90, 130, 210].map((v) => (v * rev) / 900);
@@ -34,7 +34,7 @@ export default function ShortDesk({ onFinish, addReview, seed }: KindProps) {
     out.push({
       brief: 'In the last quarter the CEO and CFO sold 40% of their shares, and the auditor resigned.',
       visual: <Bars items={[{ label: 'Insider buys', value: 0.4, color: C.green }, { label: 'Insider sales', value: 38, color: C.red }]} fmt={(v) => `$${v.toFixed(1)}M`} />,
-      q: rq({ id: 'sh-insider', topic: 'investing', prompt: 'How should you read this?', ...shuffled(['Red flags: the people with the most information are getting out', 'Bullish: the executives are diversifying', 'Irrelevant to the share price', 'A sign the auditor was too strict'], 0, r), explanation: 'Insiders sell for many reasons, but heavy selling plus an auditor quitting is a classic pattern before accounting problems come out.' }),
+      q: rq({ id: 'sh-insider', topic: 'investing', prompt: 'How should you read this?', ...shuffled(['A red flag: the best-informed people are selling', 'Bullish: the executives are just diversifying their savings', 'Irrelevant to the share price', 'A sign the auditor was too strict'], 0, r), explanation: 'Insiders sell for many reasons, but heavy selling plus an auditor quitting is a classic pattern before accounting problems come out.' }),
     });
     const sh = rng.pick([500, 1000, 2000]);
     const p0 = rng.pick([80, 90, 120]);

@@ -1,5 +1,5 @@
 'use client';
-import { useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import { VoxelBuilder, cylinder, sphere, trs } from '@/engine/voxel';
@@ -480,7 +480,7 @@ function Neighborhood({ d }: { d: Dyn }) {
         return (
           <group key={pl.id} position={[x, 0, z]}>
             {own?.houseId ? (
-              <HouseOnPlot houseId={own.houseId} rot={x > 0 ? -Math.PI / 2 : Math.PI / 2} cx={d.x + x} cz={d.z + z} />
+              <HouseOnPlot houseId={own.houseId} propUid={own.uid} rented={own.rented} rot={x > 0 ? -Math.PI / 2 : Math.PI / 2} cx={d.x + x} cz={d.z + z} />
             ) : (
               <group position={[x > 0 ? -6 : 6, 0, -3]} rotation={[0, x > 0 ? -Math.PI / 2 : Math.PI / 2, 0]}>
                 <mesh position={[0, 0.8, 0]}>
@@ -499,11 +499,24 @@ function Neighborhood({ d }: { d: Dyn }) {
   );
 }
 
-function HouseOnPlot({ houseId, rot, cx, cz }: { houseId: string; rot: number; cx: number; cz: number }) {
+/** Depth of each house from its centre to the front door (see houseGeometry). */
+const HOUSE_FRONT: Record<string, number> = { 'tiny-house': 2.5, cottage: 3.5, 'family-home': 4.5, 'modern-villa': 4.5 };
+
+function HouseOnPlot({ houseId, propUid, rented, rot, cx, cz }: { houseId: string; propUid: string; rented: boolean; rot: number; cx: number; cz: number }) {
   const geo = useMemo(() => houseGeometry(houseId), [houseId]);
   useMemo(() => {
     const size = houseId === 'tiny-house' ? 6 : houseId === 'cottage' ? 9 : 12;
     rt.collision.addBox(cx, cz, size * 0.75, size, 0, 8, 'house');
   }, [houseId, cx, cz]);
+  // Front door: the house faces the street, so the step is out along the rotated +z
+  useEffect(() => {
+    const id = `home:${propUid}`;
+    const out = (HOUSE_FRONT[houseId] ?? 3.5) + 0.9;
+    rt.triggers = rt.triggers.filter((t) => t.id !== id);
+    rt.triggers.push({ id, kind: 'door', x: cx + Math.sin(rot) * out, z: cz + Math.cos(rot) * out, r: 2, label: rented ? 'Rented to tenants' : 'Go home', icon: '🏠', data: { home: propUid } });
+    return () => {
+      rt.triggers = rt.triggers.filter((t) => t.id !== id);
+    };
+  }, [houseId, propUid, rented, rot, cx, cz]);
   return <mesh geometry={geo} material={M.vc} rotation={[0, rot, 0]} castShadow />;
 }

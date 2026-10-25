@@ -29,7 +29,7 @@ export default function ImpactDesk({ onFinish, addReview, seed }: KindProps) {
     out.push({
       brief: 'A friend says: "Only give to charities with the lowest overhead."',
       visual: <Bars items={orgs.map((o, i) => ({ label: o.name, value: cpo(o), color: i === best ? C.green : C.red }))} fmt={(v) => `${usd(v)} per child`} />,
-      q: rq({ id: 'im-overhead', topic: 'giving', prompt: 'Is overhead the right test?', ...shuffled(['No: judge by results per dollar; some overhead pays for what makes programs work', 'Yes: overhead is wasted money', 'Yes: the lower the budget the better', 'Only for religious charities'], 0, r), explanation: 'The "overhead myth": starving charities of staff, data and systems can make them less effective. Cost per outcome measures what donors actually care about.' }),
+      q: rq({ id: 'im-overhead', topic: 'giving', prompt: 'Is overhead the right test?', ...shuffled(['No: look at results per dollar instead', 'Yes: every dollar of overhead is money wasted', 'Yes: the charity with the smallest budget is best', 'Only for religious charities'], 0, r), explanation: 'The "overhead myth": starving charities of staff, data and systems can make them less effective. Cost per outcome measures what donors actually care about.' }),
     });
     const gift = rng.pick([2000, 5000, 10000]);
     const rate = rng.pick([0.22, 0.24, 0.32]);
@@ -50,7 +50,7 @@ export default function ImpactDesk({ onFinish, addReview, seed }: KindProps) {
     out.push({
       brief: `Your employer matches donations ${match === 1 ? 'dollar for dollar' : '50 cents per dollar'}. You also have a windfall year and want to give now but choose charities slowly.`,
       visual: <Bars items={[{ label: 'Your gift', value: 1000, color: C.blue }, { label: 'Employer match', value: 1000 * match, color: C.green }]} fmt={(v) => usd(v)} />,
-      q: rq({ id: 'im-daf', topic: 'giving', prompt: 'What is the best plan?', ...shuffled(['Claim the match, and put the windfall gift in a donor-advised fund: deduct now, grant to charities over time', 'Skip the match: it is taxable', 'Wait several years to give, so the deduction is bigger', 'Give everything to the first charity that asks'], 0, r), explanation: `Matching turns $1,000 into ${usd(1000 * (1 + match))} of impact. A donor-advised fund takes the gift (and deduction) in the high-income year, invests it, and lets you recommend grants later after doing your research.` }),
+      q: rq({ id: 'im-daf', topic: 'giving', prompt: 'What is the best plan?', ...shuffled(['Take the match; put the windfall in a donor-advised fund', 'Skip the employer match, since matched gifts are taxable', 'Wait several years to give so the tax deduction is bigger', 'Give the whole windfall to the first charity that asks you'], 0, r), explanation: `Matching turns $1,000 into ${usd(1000 * (1 + match))} of impact. A donor-advised fund takes the gift (and deduction) in the high-income year, invests it, and lets you recommend grants later after doing your research.` }),
     });
     return out;
   }, [seed]);

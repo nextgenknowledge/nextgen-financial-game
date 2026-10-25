@@ -1,6 +1,7 @@
 'use client';
 import { create } from 'zustand';
 import type { Mood } from '@/game/effects';
+import { forDevice } from '@/ui/touch';
 
 export type Screen = 'intro' | 'title' | 'worlds' | 'game' | 'credits';
 
@@ -60,6 +61,11 @@ export interface UIStore {
   worldActivity: { id: string; data?: unknown } | null;
   /** An activity mid-play. It stays mounted (hidden) when closed so it can be resumed. */
   run: { id: string; name: string } | null;
+  /** The first-play screen tour is showing; the game is paused under it. */
+  tour: boolean;
+  /** Arranging furniture at home: which home, and the piece being carried (item uid) if any. */
+  decor: { home: string; carrying: string | null; rot: number } | null;
+  setDecor: (d: UIStore['decor']) => void;
   setRun: (r: UIStore['run']) => void;
   setScreen: (s: Screen) => void;
   setLoading: (l: Partial<UIStore['loading']>) => void;
@@ -95,9 +101,12 @@ export const useUI = create<UIStore>((set, get) => ({
   fps: 60,
   worldActivity: null,
   run: null,
+  tour: false,
+  decor: null,
+  setDecor: (decor) => set({ decor }),
   setRun: (run) => set({ run }),
   // Leaving the game drops any paused activity
-  setScreen: (screen) => set(screen === 'game' ? { screen } : { screen, run: null }),
+  setScreen: (screen) => set(screen === 'game' ? { screen } : { screen, run: null, tour: false, decor: null }),
   setLoading: (l) => set({ loading: { ...get().loading, ...l } }),
   pushToast: (t) => {
     const id = nextId++;
@@ -105,7 +114,8 @@ export const useUI = create<UIStore>((set, get) => ({
     setTimeout(() => get().dropToast(id), 3800);
   },
   dropToast: (id) => set({ toasts: get().toasts.filter((t) => t.id !== id) }),
-  sayNarwhal: (text, mood = 'talking', extra) => {
+  sayNarwhal: (raw, mood = 'talking', extra) => {
+    const text = forDevice(raw);
     const q = get().narwhal;
     // Avoid stacking the exact same line twice.
     if (q.some((l) => l.text === text)) return;
@@ -139,5 +149,5 @@ export const useUI = create<UIStore>((set, get) => ({
 
 export const isPaused = () => {
   const s = useUI.getState();
-  return s.panel !== null || s.screen !== 'game' || s.loading.active;
+  return s.panel !== null || s.screen !== 'game' || s.loading.active || s.tour;
 };

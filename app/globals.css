@@ -212,7 +212,7 @@ input[type='range'] { width: 100%; accent-color: var(--teal); height: 2rem; }
   color: #fff;
   overflow: auto;
 }
-.screen-inner { width: min(1100px, 94vw); max-height: 100%; padding: 2rem 0; }
+.screen-inner { position: relative; z-index: 1; width: min(1100px, 94vw); max-height: 100%; padding: 2rem 0; }
 
 .intro-org { display: flex; flex-direction: column; align-items: center; gap: 1.2rem; animation: fadeInOut 3.2s ease forwards; }
 .intro-org .presents { font-weight: 800; letter-spacing: 0.35em; text-transform: uppercase; font-size: 1rem; color: #cfe0ff; }
@@ -577,11 +577,6 @@ button.item-card { cursor: pointer; }
 }
 /* Touch devices: joystick and buttons own the bottom corners */
 .hud .joystick, .hud .touch-buttons { z-index: 2; }
-@media (pointer: coarse) {
-  .hud .r-br { display: none; }
-  .hud { padding-bottom: 150px; }
-  .hud.talking { padding-bottom: 12px; }
-}
 /* The menu wraps into a second column instead of spilling out of its region */
 .hud .hud-menu { flex-flow: column wrap; max-height: 100%; align-content: flex-start; }
 .r-ml { overflow: hidden; padding: 2px 2px 6px; }
@@ -1161,6 +1156,7 @@ button.item-card { cursor: pointer; }
   position: relative;
   width: min(390px, calc(100vw - 36px));
   height: min(640px, calc(100vh - 36px));
+  height: min(640px, calc(100dvh - 36px - var(--safe-t) - var(--safe-b)));
   max-height: none;
   padding: 10px 10px 8px;
   display: flex;
@@ -1341,7 +1337,26 @@ button.item-card { cursor: pointer; }
   background: rgba(6, 18, 51, 0.88); border: 3px solid #2f7bff; padding: 0.45rem 1rem; box-shadow: 4px 4px 0 #061233;
   animation: st-fade-down 0.8s ease-out both;
 }
+/* "A game built by NextGen Knowledge": the org logo, linking to nextgenknowledge.org */
+.st-org {
+  display: inline-flex; align-items: center; gap: 0.7rem; padding: 0.4rem 0.9rem 0.4rem 0.4rem; text-decoration: none;
+  background: rgba(6, 18, 51, 0.92); border: 3px solid #2f7bff; box-shadow: 4px 4px 0 #061233; color: #fff;
+  margin-bottom: 0.5rem; animation: st-fade-down 0.8s ease-out both; transition: transform 0.08s ease, background 0.15s ease;
+}
+.st-org img { display: block; height: 72px; width: auto; border: 2px solid #061233; }
+.st-org-text { display: flex; flex-direction: column; align-items: flex-start; text-align: left; }
+.st-org-kicker { font-family: var(--font-body); font-weight: 800; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: #9fc1ff; }
+.st-org-name { font-family: var(--font-pixel); font-weight: 700; font-size: 1.3rem; letter-spacing: 0.06em; color: #ffd23f; }
+.st-org:hover { background: #123b8f; transform: translateY(-2px); }
+.st-org:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0 #061233; }
+.st-org:focus-visible { outline: 3px solid #fff; outline-offset: 4px; }
+@media (max-width: 420px) { .st-org img { height: 52px; } .st-org-name { font-size: 1rem; } }
 .st-logo-wrap { margin: 0.6rem 0 0; }
+/* Credits: the people who made the game */
+.credits-team { margin: 0 0 1rem; padding: 0.7rem 0.9rem; background: #fff8dd; border: 3px solid var(--ink); box-shadow: 4px 4px 0 var(--ink); }
+.credits-team dl { display: grid; grid-template-columns: auto 1fr; gap: 0.3rem 1rem; margin: 0.5rem 0 0; }
+.credits-team dt { font-size: 0.78rem; font-weight: 900; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); align-self: center; }
+.credits-team dd { margin: 0; font-size: 1.1rem; font-weight: 900; }
 /* The logo art has its own night-sky square, so it hangs like a framed pixel billboard. */
 .st-logo {
   display: block; height: min(26vh, 260px); max-width: 80vw; width: auto; object-fit: contain;
@@ -1377,6 +1392,8 @@ button.item-card { cursor: pointer; }
 .start-screen .title-foot { bottom: 14px; z-index: 2; pointer-events: none; }
 .start-screen .title-foot span { background: #071433; padding: 0.15rem 0.5rem; }
 .start-screen .title-foot img { height: 30px; border: 2px solid #061233; border-radius: 0; }
+.start-screen .title-foot .title-foot-logo { pointer-events: auto; display: block; line-height: 0; }
+.start-screen .title-foot .title-foot-logo:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
 @keyframes st-fade-down { from { opacity: 0; transform: translateY(-14px); } to { opacity: 1; transform: none; } }
 @keyframes st-fade-up { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
 .st-panel-in { animation: st-fade-up 0.35s ease-out both; }
@@ -1511,7 +1528,6 @@ button.item-card { cursor: pointer; }
 .hud .narwhal-guide .narwhal-bubble-head .grow { flex: 1; }
 @media (max-height: 640px) { .hud .narwhal-guide-body img { height: 96px; } }
 @media (max-width: 760px) { .hud .r-bl { position: absolute; left: 8px; bottom: 8px; } }
-@media (pointer: coarse) { .hud .r-bl { position: absolute; left: 8px; bottom: 160px; } .hud .narwhal-guide-body img { height: 96px; } }
 
 /* ═════════ In-game HUD, laid out like the earlier Fin-City build ═════════
    Top left: Settings and Save & Exit. Top right: a round minimap. Bottom right: a little
@@ -1598,10 +1614,6 @@ button.item-card { cursor: pointer; }
   .hud.classic .minimap { width: 128px; height: 128px; }
   .mini-phone { width: 64px; height: 104px; }
 }
-@media (pointer: coarse) {
-  .hud.classic .r-br { padding-bottom: 0; }
-  .mini-phone { margin-bottom: 140px; }
-}
 
 /* "You" card at the top of the FinPhone home screen */
 .fp-profile { margin: 0 0 0.6rem; padding: 0.5rem 0.6rem; background: #0b1a3a; color: #fff; border: 2px solid #3d8bff; display: flex; flex-direction: column; gap: 0.3rem; font-size: 0.78rem; }
@@ -1616,3 +1628,92 @@ button.item-card { cursor: pointer; }
 .fp-networth { display: flex; justify-content: space-between; align-items: center; padding: 0.25rem 0.4rem; background: #123b8f; color: #fff; border: 1px solid #3d8bff; cursor: pointer; font: inherit; font-weight: 800; }
 .fp-networth:hover { background: #1d4fd6; }
 .fp-networth b.bad { color: #ff9b8a; }
+
+/* First-play screen tour: everything dims except the one thing Narwhal is talking about. */
+.hud-tour { position: fixed; inset: 0; z-index: 70; pointer-events: auto; }
+.tour-light {
+  position: fixed; border: 3px solid var(--gold); box-shadow: 0 0 0 200vmax rgba(3, 11, 36, 0.74), 4px 4px 0 3px #061233;
+  transition: left 0.25s steps(5, end), top 0.25s steps(5, end), width 0.25s steps(5, end), height 0.25s steps(5, end); pointer-events: none;
+}
+.hud-tour .tour-bubble { position: fixed; border-radius: 0; z-index: 1; overflow-y: auto; }
+.hud-tour .tour-bubble::before, .hud-tour .tour-bubble::after { display: none; }
+.hud-tour .narwhal-bubble-head .grow, .tour-actions .grow { flex: 1; }
+.tour-count { font-family: var(--font-body); font-size: 0.72rem; color: #4a5672; letter-spacing: 0.04em; }
+.tour-title { display: block; margin-top: 0.4rem; font-family: var(--font-body); font-size: 1.05rem; font-weight: 900; color: #0b1a3a; }
+.tour-actions { display: flex; align-items: center; gap: 0.45rem; margin-top: 0.6rem; }
+@media (prefers-reduced-motion: reduce) { .tour-light { transition: none; } }
+
+/* Arranging furniture at home: a pixel panel above the prompt, never over Narwhal or the phone. */
+.decor-open { pointer-events: auto; margin-bottom: 8px; }
+.decor-panel {
+  pointer-events: auto; width: min(380px, 92vw); max-height: 46vh; overflow-y: auto; margin-bottom: 8px; padding: 0.7rem 0.8rem;
+  background: #fff; color: #0b1a3a; border: 3px solid #0b1a3a; box-shadow: 0 6px 0 rgba(3, 11, 36, 0.45); font-family: var(--font-body);
+}
+.decor-head { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
+.decor-title { font-size: 1rem; font-weight: 900; }
+.decor-help { margin: 0.35rem 0; font-size: 0.85rem; font-weight: 700; color: #4a5672; }
+.decor-status { margin: 0.25rem 0 0.5rem; font-size: 0.85rem; font-weight: 800; }
+.decor-status.ok { color: #1f7a3a; }
+.decor-status.bad { color: #b3261e; }
+.decor-label { margin-top: 0.5rem; font-size: 0.68rem; font-weight: 900; letter-spacing: 0.1em; text-transform: uppercase; color: #1b6fd6; }
+.decor-list { list-style: none; margin: 0.25rem 0 0; padding: 0; display: flex; flex-direction: column; gap: 0.3rem; }
+.decor-list li { display: flex; align-items: center; gap: 0.4rem; font-size: 0.9rem; font-weight: 800; }
+.decor-list li span { flex: 1; min-width: 0; }
+.decor-row { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+
+/* ═════════ Touch screens (phones, tablets) ═════════
+   The joystick owns the bottom-left corner and the jump and E buttons the bottom-right.
+   Narwhal stands above the joystick and the little FinPhone above the buttons, all clear of
+   the notch and home bar (safe-area insets need viewport-fit=cover in app/layout.tsx). */
+:root {
+  --safe-l: env(safe-area-inset-left, 0px);
+  --safe-r: env(safe-area-inset-right, 0px);
+  --safe-t: env(safe-area-inset-top, 0px);
+  --safe-b: env(safe-area-inset-bottom, 0px);
+}
+@media (pointer: coarse) {
+  .hud { padding-top: calc(10px + var(--safe-t)); padding-left: calc(10px + var(--safe-l)); padding-right: calc(10px + var(--safe-r)); }
+  .hud .joystick { left: calc(16px + var(--safe-l)); bottom: calc(16px + var(--safe-b)); width: 120px; height: 120px; }
+  .hud .touch-buttons { right: calc(16px + var(--safe-r)); bottom: calc(24px + var(--safe-b)); gap: 14px; }
+  .hud .touch-btn { width: 64px; height: 64px; }
+  /* grid-area: auto so these place against the whole HUD, not their grid cell */
+  .hud .r-bl { position: absolute; grid-area: auto; left: calc(10px + var(--safe-l)); bottom: calc(148px + var(--safe-b)); }
+  .hud .narwhal-guide-body img { height: 84px; }
+  .hud.classic .r-br, .hud.classic.talking .r-br { display: flex; position: absolute; grid-area: auto; right: calc(16px + var(--safe-r)); bottom: calc(102px + var(--safe-b)); padding: 0; }
+  .hud .r-br .hud-keys { display: none; }
+  .mini-phone { margin: 0; }
+  .mini-phone kbd { display: none; }
+  /* The phone's home bar keeps its look but gets a finger-sized hit area */
+  .fp-home { height: 26px; width: 130px; margin-top: 0; border: 10px solid transparent; background-clip: content-box; }
+  /* The prompt and Narwhal's dialog sit above the controls, not under a thumb */
+  .hud { padding-bottom: calc(100px + var(--safe-b)); }
+  .hud.talking { padding-bottom: calc(12px + var(--safe-b)); }
+  /* Comfortable tap targets */
+  .tour-actions .btn, .st-chip { min-height: 40px; }
+  .title-foot-logo { display: inline-flex; align-items: center; min-height: 44px; min-width: 44px; }
+}
+/* Wide touch screens (tablets, phones held sideways): the middle of the bottom edge is free */
+@media (pointer: coarse) and (min-width: 761px) {
+  .hud { padding-bottom: calc(16px + var(--safe-b)); }
+}
+/* Phones held upright: the FinPhone goes under the minimap so Narwhal's bubble has the width */
+@media (pointer: coarse) and (max-width: 760px) {
+  .hud.classic .r-br, .hud.classic.talking .r-br { bottom: auto; top: calc(150px + var(--safe-t)); right: calc(12px + var(--safe-r)); }
+  .hud .narwhal-guide .narwhal-bubble { width: min(300px, calc(100vw - 120px - var(--safe-l) - var(--safe-r))); }
+}
+/* Short landscape phones */
+@media (pointer: coarse) and (max-height: 500px) {
+  .hud .joystick { width: 104px; height: 104px; }
+  .hud .joystick .knob { width: 48px; height: 48px; }
+  .hud .touch-btn { width: 56px; height: 56px; font-size: 1.35rem; }
+  .hud .r-bl { bottom: calc(130px + var(--safe-b)); }
+  .hud .narwhal-guide-body img { height: 64px; }
+  .hud.classic .r-br, .hud.classic.talking .r-br { bottom: calc(90px + var(--safe-b)); }
+  .hud.classic .r-br .mini-phone { width: 56px; height: 90px; }
+}
+/* Phones held sideways: a slimmer profile card so the apps show without scrolling */
+@media (max-height: 460px) {
+  .fp-profile .fp-stat { display: none; }
+  .fp-profile { gap: 0.2rem; padding: 0.35rem 0.5rem; }
+  .fp-status { padding: 2px 10px; }
+}

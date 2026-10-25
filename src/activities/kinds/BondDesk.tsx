@@ -103,7 +103,7 @@ export default function BondDesk({ onFinish, addReview, seed }: KindProps) {
     // 2. Premium / discount
     const b2: Bond = { coupon: rng.pick([0.02, 0.07]), years: 10, ytm: 0.045 };
     const prem = b2.coupon > b2.ytm;
-    const s2 = shuffled(['At a premium (above $1,000)', 'At a discount (below $1,000)', 'Exactly at par ($1,000)'], prem ? 0 : 1, r);
+    const s2 = shuffled(['At a premium (above $1,000)', 'At a discount (below $1,000)', 'Exactly at its par value ($1,000)'], prem ? 0 : 1, r);
     out.push({
       brief: `A 10-year bond pays a ${pc(b2.coupon, 0)} coupon. Similar bonds now yield ${pc(b2.ytm, 1)}.`,
       visual: <PriceYield bonds={[{ ...b2, label: `${pc(b2.coupon, 0)} 10y`, color: '#ffd25a' }]} mark={b2.ytm} />,
@@ -153,7 +153,7 @@ export default function BondDesk({ onFinish, addReview, seed }: KindProps) {
     const curve: [string, number][] = inverted
       ? [['3m', 0.052], ['2y', 0.049], ['5y', 0.044], ['10y', 0.041], ['30y', 0.042]]
       : [['3m', 0.031], ['2y', 0.035], ['5y', 0.039], ['10y', 0.043], ['30y', 0.046]];
-    const s5 = shuffled(['Inverted: markets expect rate cuts, often a recession warning', 'Normal: investors want more yield to lock money up longer', 'Flat: no information at all'], inverted ? 0 : 1, r);
+    const s5 = shuffled(['Inverted: rate cuts expected, a recession warning', 'Normal: lenders want more yield for locking up money', 'Flat: no information at all'], inverted ? 0 : 1, r);
     out.push({
       brief: 'Here is today’s government yield curve.',
       visual: <YieldCurve pts={curve} />,

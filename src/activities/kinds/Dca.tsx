@@ -112,7 +112,7 @@ export default function Dca({ params, difficulty, onFinish, addReview, seed }: K
         : `DCA invested ${money(monthly * params.months, { cents: false })} and bought ${dcaShares.toFixed(4)} shares. What was the average cost per share?`,
     topic: 'investing',
     ...(difficulty === 'entry'
-      ? { choices: ['Buying a little every month means you buy more shares when prices are low', 'You must always buy at the top', 'Waiting always wins', 'Prices never change'], correct: 0 }
+      ? { choices: ['You buy more shares when prices are low', 'You must always buy at the very top of the market', 'Waiting for the perfect moment always wins', 'Prices never change, so timing never matters'], correct: 0 }
       : { value: avgCost, format: 'money' as const }),
     explanation: `Average cost = total invested ÷ shares = ${money(monthly * params.months, { cents: false })} ÷ ${dcaShares.toFixed(4)} = ${money(avgCost)}.`,
   });

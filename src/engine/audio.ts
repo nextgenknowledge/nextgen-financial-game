@@ -32,9 +32,18 @@ function ensure(): AudioContext | null {
   return ctx;
 }
 
-/** Call from any user gesture to unlock audio on browsers that require it. */
-export function unlockAudio() {
-  ensure();
+/** Call from any user gesture to unlock audio on browsers that require it. True once sound can play. */
+export function unlockAudio(): boolean {
+  return ensure()?.state === 'running';
+}
+
+// iOS suspends audio when the tab goes to the background or a call comes in, and only lets it
+// resume inside a tap. Any later tap or key brings the sound back.
+if (typeof window !== 'undefined') {
+  const wake = () => {
+    if (ctx && ctx.state !== 'running') ctx.resume().catch(() => {});
+  };
+  for (const ev of ['touchend', 'click', 'keydown']) window.addEventListener(ev, wake, { passive: true });
 }
 
 export function setVolumes(music: number, sfx: number) {

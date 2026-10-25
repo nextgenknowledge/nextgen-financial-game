@@ -28,7 +28,7 @@
         { "entry": "Saving helps you buy bigger things, like a bike!", "advanced": "Goals make saving easier: name the goal, set a number, and a date." },
         { "entry": "It also helps when surprises happen, like a broken phone.", "advanced": "An emergency fund of 3–6 months of expenses keeps surprises from becoming debt." }
       ],
-      "check": { "prompt": "Why is an emergency fund helpful?", "choices": ["To buy surprise toys", "To pay for surprise problems without borrowing", "To pay taxes"], "answer": 1, "explanation": "An emergency fund lets you pay for surprises without going into debt." },
+      "check": { "prompt": "Why is an emergency fund helpful?", "choices": ["To buy surprise toys and treats", "To cover surprises without a loan", "To pay the whole year’s taxes early"], "answer": 1, "explanation": "An emergency fund lets you pay for surprises without going into debt." },
       "perk": { "id": "saver-perk", "name": "Saver's Bonus", "desc": "+0.25% extra interest on savings, forever" },
       "reward": { "xp": 60, "cash": 0 }
     },
@@ -39,7 +39,7 @@
         { "entry": "Banks lend some money to people who need to borrow, like for a house.", "advanced": "Banks lend out deposits and earn the spread: they charge borrowers more interest than they pay savers." },
         { "entry": "Because of that, the bank pays YOU a little extra for saving. That's interest!", "advanced": "That's why savings rates are lower than loan rates, the difference is the bank's profit." }
       ],
-      "check": { "prompt": "How do banks make money?", "choices": ["They print it", "They charge borrowers more interest than they pay savers", "They keep all money in a vault"], "answer": 1, "explanation": "Banks earn the 'spread' between loan interest and savings interest." },
+      "check": { "prompt": "How do banks make money?", "choices": ["They print new money whenever they need it", "Borrowers pay more interest than savers get", "They keep everyone’s money in a vault for a fee"], "answer": 1, "explanation": "Banks earn the 'spread' between loan interest and savings interest." },
       "reward": { "xp": 50, "cash": 10 }
     },
     {
@@ -69,7 +69,7 @@
         { "entry": "Try 3 jars: Save, Spend, Share!", "advanced": "The 50/30/20 rule: 50% needs, 30% wants, 20% savings and extra debt payments." },
         { "entry": "Check your plan. Did you stick to it?", "advanced": "Track actual spending vs. plan monthly and adjust. Surprise expenses are why you keep a buffer." }
       ],
-      "check": { "prompt": "In 50/30/20, what is the 20% for?", "choices": ["Wants", "Needs", "Savings and paying off debt"], "answer": 2, "explanation": "20% goes to savings and extra debt payments." },
+      "check": { "prompt": "In 50/30/20, what is the 20% for?", "choices": ["Wants like games and concerts", "Needs like rent and food", "Savings and paying off debt"], "answer": 2, "explanation": "20% goes to savings and extra debt payments." },
       "perk": { "id": "budget-boss", "name": "Budget Boss", "desc": "+10% rewards from budgeting activities" },
       "reward": { "xp": 60, "cash": 0 }
     },
@@ -102,7 +102,7 @@
         { "entry": "Taxes pay for roads, parks, schools and firefighters.", "advanced": "Withholding is an estimate; filing a return settles the difference as a refund or amount owed." },
         { "entry": "The money you take home is called your net pay.", "advanced": "Pre-tax retirement contributions lower taxable income; Roth contributions don't, but grow tax-free." }
       ],
-      "check": { "prompt": "Pay BEFORE taxes is called…", "choices": ["Net pay", "Gross pay", "Tip"], "answer": 1, "explanation": "Gross pay is before taxes; net pay is what you take home." },
+      "check": { "prompt": "Pay BEFORE taxes is called…", "choices": ["Net pay", "Gross pay", "Take-home pay"], "answer": 1, "explanation": "Gross pay is before taxes; net pay is what you take home." },
       "reward": { "xp": 60, "cash": 10 }
     },
     {
@@ -112,7 +112,7 @@
         { "entry": "If the company does well, the piece can be worth more!", "advanced": "Prices move on expectations; good news can already be 'priced in'." },
         { "entry": "But prices go up AND down. Think long term.", "advanced": "Volatility is the price of higher expected returns. Diversify and hold for years." }
       ],
-      "check": { "prompt": "Owning a share of Byte Burger means you…", "choices": ["Work at Byte Burger", "Own a tiny piece of Byte Burger", "Get free burgers"], "answer": 1, "explanation": "Shareholders own a small part of the company." },
+      "check": { "prompt": "Owning a share of Byte Burger means you…", "choices": ["Work at Byte Burger part-time", "Own a tiny piece of Byte Burger", "Get free burgers whenever you want"], "answer": 1, "explanation": "Shareholders own a small part of the company." },
       "reward": { "xp": 60, "cash": 10 }
     },
     {
@@ -122,7 +122,7 @@
         { "entry": "Owning many companies is safer.", "advanced": "An index fund owns hundreds of companies at very low cost." },
         { "entry": "An index fund is a basket of many companies at once!", "advanced": "Low fees matter: a 1% fee can consume ~25% of your ending balance over 30 years." }
       ],
-      "check": { "prompt": "What lowers risk the most?", "choices": ["Buying one hot stock", "Owning a diversified index fund", "Selling whenever prices dip"], "answer": 1, "explanation": "Diversification spreads risk over many companies." },
+      "check": { "prompt": "What lowers risk the most?", "choices": ["Buying one hot stock everyone likes", "Owning a diversified index fund", "Selling whenever prices dip"], "answer": 1, "explanation": "Diversification spreads risk over many companies." },
       "perk": { "id": "market-eye", "name": "Market Eye", "desc": "+10% rewards in Stock Exchange games" },
       "reward": { "xp": 70, "cash": 0 }
     },
@@ -153,7 +153,7 @@
         { "entry": "Paying only a little each month can take years!", "advanced": "Paying the minimum on $3,000 at 25% APR takes 10+ years and costs thousands in interest." },
         { "entry": "Pay it all every month and it costs nothing extra.", "advanced": "Pay the full statement balance and you pay zero interest, use the card as a tool, not a loan." }
       ],
-      "check": { "prompt": "How do you avoid credit card interest?", "choices": ["Pay the minimum", "Pay the full balance every month", "Use two cards"], "answer": 1, "explanation": "Paying in full each month means no interest is charged." },
+      "check": { "prompt": "How do you avoid credit card interest?", "choices": ["Pay the minimum on time every month", "Pay the full balance every month", "Spread spending across two cards"], "answer": 1, "explanation": "Paying in full each month means no interest is charged." },
       "reward": { "xp": 70, "cash": 10 }
     },
     {
@@ -163,7 +163,7 @@
         { "entry": "You pay back more than you borrowed because of interest.", "advanced": "Early payments are mostly interest; later ones mostly principal." },
         { "entry": "Paying extra helps you finish sooner!", "advanced": "Extra principal payments shorten the loan and cut total interest dramatically." }
       ],
-      "check": { "prompt": "What does paying extra on a loan do?", "choices": ["Adds more interest", "Pays it off faster and saves interest", "Nothing"], "answer": 1, "explanation": "Extra payments reduce principal, so less interest builds up." },
+      "check": { "prompt": "What does paying extra on a loan do?", "choices": ["It adds more interest to the total you owe", "Pays it off faster and saves interest", "Nothing, the schedule stays the same"], "answer": 1, "explanation": "Extra payments reduce principal, so less interest builds up." },
       "reward": { "xp": 60, "cash": 10 }
     },
     {
@@ -173,7 +173,7 @@
         { "entry": "Watch out for 'Hurry!', 'You won!', or 'Send your password'.", "advanced": "Red flags: urgency, secrecy, strange links/domains, gift-card or crypto payments, too-good-to-be-true offers." },
         { "entry": "If you're unsure, ask a grown-up you trust.", "advanced": "Verify independently: type the real website yourself or call the official number." }
       ],
-      "check": { "prompt": "A text says 'Your prize expires in 5 minutes! Send your bank password.' What should you do?", "choices": ["Send it fast", "Ignore it and tell a trusted adult", "Reply asking for more prizes"], "answer": 1, "explanation": "Real companies never ask for passwords. Urgency is a scam trick." },
+      "check": { "prompt": "A text says 'Your prize expires in 5 minutes! Send your bank password.' What should you do?", "choices": ["Send it fast before the prize expires", "Ignore it and tell a trusted adult", "Reply asking for more prizes"], "answer": 1, "explanation": "Real companies never ask for passwords. Urgency is a scam trick." },
       "perk": { "id": "safe-surfer", "name": "Safe Surfer", "desc": "+10% rewards in the Cyber Safety Lab" },
       "reward": { "xp": 70, "cash": 0 }
     },
@@ -184,7 +184,7 @@
         { "entry": "You pay a little every month to be protected.", "advanced": "Higher deductible = lower premium. Choose one you could pay from an emergency fund." },
         { "entry": "It's like friends sharing the cost of accidents.", "advanced": "Insurance pools risk: many pay small premiums so the few with big losses are covered." }
       ],
-      "check": { "prompt": "The amount YOU pay before insurance helps is the…", "choices": ["Premium", "Deductible", "Dividend"], "answer": 1, "explanation": "The deductible is your share before coverage kicks in." },
+      "check": { "prompt": "The amount YOU pay before insurance helps is the…", "choices": ["Premium", "Deductible", "Coinsurance"], "answer": 1, "explanation": "The deductible is your share before coverage kicks in." },
       "reward": { "xp": 60, "cash": 10 }
     },
     {
@@ -235,7 +235,7 @@
         { "entry": "Pick causes you care about.", "advanced": "Check a charity: clear mission, public reports, reasonable overhead, and a real address." },
         { "entry": "Some 'charities' are fake. Ask a grown-up to check!", "advanced": "Pressure, prizes for donating, or 'cash only' are red flags for charity scams." }
       ],
-      "check": { "prompt": "Which is a warning sign of a fake charity?", "choices": ["Publishes yearly reports", "'Donate in 3 minutes to WIN BIG!'", "Has a website and address"], "answer": 1, "explanation": "Pressure and prizes are classic scam signals." },
+      "check": { "prompt": "Which is a warning sign of a fake charity?", "choices": ["Publishes detailed yearly reports", "‘Donate in 3 minutes to WIN BIG!’", "Has a street address and a website"], "answer": 1, "explanation": "Pressure and prizes are classic scam signals." },
       "reward": { "xp": 60, "cash": 10 }
     },
     {

@@ -10,7 +10,7 @@ import { isDown, virtual } from './input';
 import { rt } from './runtime';
 import { playSfx } from './audio';
 import { VehicleModel } from '@/world/Vehicles';
-import { updateVehicle } from './vehicles';
+import { updateVehicle, CHASE_DIST } from './vehicles';
 import { useRide } from '@/world/ParkedVehicles';
 
 const RADIUS = 0.38;
@@ -54,12 +54,38 @@ export function PlayerController() {
   // Mouse / touch look (drag) and wheel zoom
   useEffect(() => {
     const el = gl.domElement;
+    // Two fingers on the screen pinch to zoom (Android has no Safari gesture events)
+    const fingers = new Map<number, { x: number; y: number }>();
+    let pinch = 0;
+    const spread = () => {
+      const [a, b] = [...fingers.values()];
+      return Math.hypot(a.x - b.x, a.y - b.y);
+    };
     const onDown = (e: PointerEvent) => {
+      if (e.pointerType === 'touch') {
+        fingers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+        if (fingers.size === 2) {
+          drag.current = null;
+          pinch = spread();
+          return;
+        }
+      }
       if (e.button === 2 || e.button === 0 || e.pointerType === 'touch') {
         drag.current = { x: e.clientX, y: e.clientY, moved: 0, id: e.pointerId };
       }
     };
     const onMove = (e: PointerEvent) => {
+      const f = fingers.get(e.pointerId);
+      if (f) {
+        f.x = e.clientX;
+        f.y = e.clientY;
+        if (fingers.size === 2 && pinch > 0) {
+          const now = spread();
+          if (now > 0) zoomBy(pinch / now);
+          pinch = now;
+          return;
+        }
+      }
       const d = drag.current;
       if (!d || d.id !== e.pointerId) return;
       const dx = e.clientX - d.x;
@@ -74,6 +100,8 @@ export function PlayerController() {
       rt.camPitch = Math.max(0.05, Math.min(1.25, rt.camPitch));
     };
     const onUp = (e: PointerEvent) => {
+      fingers.delete(e.pointerId);
+      if (fingers.size < 2) pinch = 0;
       if (drag.current?.id === e.pointerId) drag.current = null;
     };
     // ── Zoom: mouse wheel, trackpad pinch, two-finger scroll, Safari gestures, +/- keys ──
@@ -119,6 +147,7 @@ export function PlayerController() {
     el.addEventListener('pointerdown', onDown);
     window.addEventListener('pointermove', onMove);
     window.addEventListener('pointerup', onUp);
+    window.addEventListener('pointercancel', onUp);
     window.addEventListener('wheel', onWheel, { passive: false });
     window.addEventListener('gesturestart', onGestureStart, { passive: false } as AddEventListenerOptions);
     window.addEventListener('gesturechange', onGestureChange, { passive: false } as AddEventListenerOptions);
@@ -128,6 +157,7 @@ export function PlayerController() {
       el.removeEventListener('pointerdown', onDown);
       window.removeEventListener('pointermove', onMove);
       window.removeEventListener('pointerup', onUp);
+      window.removeEventListener('pointercancel', onUp);
       window.removeEventListener('wheel', onWheel);
       window.removeEventListener('gesturestart', onGestureStart);
       window.removeEventListener('gesturechange', onGestureChange);
@@ -219,7 +249,7 @@ export function PlayerController() {
       d = Math.atan2(Math.sin(d), Math.cos(d));
       rt.camYaw += d * Math.min(1, 2.5 * dt);
     }
-    const desired = vehicleCam ? Math.max(rt.camDist, rt.vehicle!.type === 'plane' ? 16 : 10) : rt.camDist;
+    const desired = vehicleCam ? Math.max(rt.camDist, CHASE_DIST[rt.vehicle!.type]) : rt.camDist;
     tmp.set(Math.sin(rt.camYaw) * Math.cos(rt.camPitch), Math.sin(rt.camPitch), Math.cos(rt.camYaw) * Math.cos(rt.camPitch));
     const hit = rt.collision.raycast(camTarget, tmp, desired);
     const dist = hit !== null ? Math.max(1.2, hit - 0.4) : desired;
@@ -272,7 +302,7 @@ export function PlayerController() {
 
   if (!avatar) return null;
   return (
-    <group ref={group}>
+    <group ref={group} name="player">
       {riding && rt.vehicle ? (
         <VehicleModel itemId={rt.vehicle.itemId} rider={avatar} />
       ) : (

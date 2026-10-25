@@ -21,7 +21,11 @@ export interface Vec3Like {
 
 const CELL = 8;
 
+let worldIds = 0;
+
 export class CollisionWorld {
+  /** Unique per collision world, so caches built from it (the nav grid) know when it was rebuilt. */
+  readonly id = ++worldIds;
   boxes: AABB[] = [];
   private grid = new Map<number, number[]>();
   bounds = { minX: -200, maxX: 200, minZ: -200, maxZ: 200 };

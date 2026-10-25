@@ -71,7 +71,7 @@ export default function FranchiseDeal({ onFinish, addReview, seed }: KindProps) 
     });
     const syn = rng.pick([1, 1.5, 2]) * 1e6;
     const maxBid = equity + syn * 0.5 * multiple;
-    const s5 = shuffled([`Up to about ${usdK(maxBid)}: pay for half the synergies, keep the other half`, `${usdK(equity + syn * multiple)}: pay for all the synergies`, `${usdK(equity * 0.6)}: always lowball`, `Whatever it takes to win`], 0, r);
+    const s5 = shuffled([`Up to about ${usdK(maxBid)}: split the synergies 50/50`, `${usdK(equity + syn * multiple)}: pay the seller for all of the synergies`, `${usdK(equity * 0.6)}: always open with a lowball bid`, `Whatever it takes to beat the other bidder`], 0, r);
     out.push({
       brief: `Combining kitchens and buying in bulk should save ${usdK(syn)} a year (synergies), worth about ${multiple}× that in value. Another bidder is circling.`,
       visual: <Bars items={[{ label: 'Stand-alone equity', value: equity, color: C.blue }, { label: 'Value of synergies', value: syn * multiple, color: C.gold }]} fmt={usdK} />,

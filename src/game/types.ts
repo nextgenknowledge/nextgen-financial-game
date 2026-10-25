@@ -131,6 +131,17 @@ export interface OwnedProperty {
   rented: boolean;
   boughtMonth: number;
   houseId?: string; // built house on a plot
+  /** Furniture standing in this home (houses and condos). Missing in older saves. */
+  layout?: PlacedFurniture[];
+}
+
+/** A furniture item (OwnedItem uid) placed in a home, in room coordinates (door at +z). */
+export interface PlacedFurniture {
+  item: string;
+  x: number;
+  z: number;
+  /** Quarter turns only: 0, π/2, π, 3π/2. */
+  rot: number;
 }
 
 export interface OwnedBusiness {

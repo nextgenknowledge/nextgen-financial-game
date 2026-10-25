@@ -86,10 +86,10 @@
    "type": "mc",
    "prompt": "Your taxable income rises from $48,000 to $49,000, crossing into the 22% bracket. What happens?",
    "choices": [
-    "Only the dollars above $48,475 are taxed at 22%",
+    "Only dollars above $48,475 face 22%",
     "All $49,000 is now taxed at 22%",
-    "Your take-home pay falls",
-    "You pay no tax on the raise"
+    "Your take-home pay actually falls",
+    "The whole raise is taxed at 0%"
    ],
    "answer": 0,
    "explanation": "Progressive brackets apply higher rates only to the dollars inside each bracket. A raise never reduces take-home pay."
@@ -156,10 +156,10 @@
    "type": "mc",
    "prompt": "In the 22% bracket, which saves more tax: a $1,000 deduction or a $1,000 credit?",
    "choices": [
-    "The credit (saves $1,000 vs. $220)",
-    "The deduction",
-    "They're equal",
-    "Neither saves anything"
+    "The credit ($1,000 vs. $220)",
+    "The deduction ($1,000 vs. $220)",
+    "They’re equal: both cut $1,000",
+    "Neither one changes your tax"
    ],
    "answer": 0,
    "explanation": "A deduction lowers taxable income (saving 22% × $1,000 = $220). A credit cuts tax dollar-for-dollar."
@@ -199,9 +199,9 @@
    "prompt": "Itemized deductions total $11,000. The standard deduction is $15,000. What should you do?",
    "choices": [
     "Take the standard deduction",
-    "Itemize",
-    "Take both",
-    "Skip deductions"
+    "Itemize: it lists more detail",
+    "Take both deductions together",
+    "Skip deductions to avoid audits"
    ],
    "answer": 0,
    "explanation": "Take whichever is larger. $15,000 > $11,000, so standard wins."
@@ -315,10 +315,10 @@
    "type": "mc",
    "prompt": "In salary negotiation, what is a BATNA?",
    "choices": [
-    "Your best alternative if this deal fails",
-    "A type of bonus",
-    "A tax form",
-    "The first offer"
+    "Your best alternative if talks fail",
+    "A type of signing bonus",
+    "A payroll tax form",
+    "The first offer on the table"
    ],
    "answer": 0,
    "explanation": "Best Alternative To a Negotiated Agreement, knowing it tells you when to walk away."
@@ -332,10 +332,10 @@
    "type": "mc",
    "prompt": "A job pays $60,000; another pays $56,000 but includes a 6% retirement match you'd use fully and $3,000/yr better health coverage. Which offers more total compensation?",
    "choices": [
-    "The $56,000 offer (≈ $62,360)",
-    "The $60,000 offer",
-    "They're exactly equal",
-    "Can't compare benefits"
+    "The $56,000 offer (about $62,360)",
+    "The $60,000 offer (higher salary)",
+    "They’re exactly equal in value",
+    "Benefits can’t be compared to pay"
    ],
    "answer": 0,
    "explanation": "$56,000 + 6% match ($3,360) + $3,000 benefits ≈ $62,360 > $60,000. Compare total compensation, not just salary."
@@ -385,9 +385,9 @@
    "prompt": "A 4-year vesting schedule with a 1-year cliff means if you leave after 10 months you get…",
    "choices": [
     "0% of your options",
-    "25%",
-    "10/48 of them",
-    "All of them"
+    "25% of your options",
+    "10/48 of your options",
+    "All of your options"
    ],
    "answer": 0,
    "explanation": "Nothing vests until the 1-year cliff. Leaving at 10 months forfeits the grant."
@@ -401,10 +401,10 @@
    "type": "mc",
    "prompt": "Which is the strongest protection if your password leaks?",
    "choices": [
-    "Two-factor authentication (2FA)",
-    "Adding '!' to the end",
-    "Using your pet's name",
-    "Writing it on a sticky note"
+    "Two-factor authentication",
+    "Adding “!” to the end of it",
+    "Switching to your pet’s name",
+    "Keeping it on a sticky note"
    ],
    "answer": 0,
    "explanation": "2FA requires a second proof (app code or key), so a stolen password alone isn't enough."
@@ -418,10 +418,10 @@
    "type": "mc",
    "prompt": "What does a credit freeze do?",
    "choices": [
-    "Stops new credit from being opened in your name",
-    "Lowers your interest rates",
-    "Closes your bank account",
-    "Hides your salary"
+    "Blocks new credit in your name",
+    "Lowers your current interest rates",
+    "Closes your checking account",
+    "Hides your salary from lenders"
    ],
    "answer": 0,
    "explanation": "A freeze blocks lenders from pulling your report, preventing thieves from opening accounts. It's free and you can lift it when needed."
@@ -435,10 +435,10 @@
    "type": "mc",
    "prompt": "A 'job' offers $900/week to deposit checks and wire 80% to others. This is…",
    "choices": [
-    "A fake-check / money-mule scam",
-    "A normal payroll job",
-    "A bank internship",
-    "A tax refund"
+    "A fake-check, money-mule scam",
+    "A normal remote payroll job",
+    "A paid bank internship",
+    "A legitimate tax refund service"
    ],
    "answer": 0,
    "explanation": "The checks bounce days later; you owe the bank everything you wired, and may be helping launder money."
@@ -473,10 +473,10 @@
    "type": "mc",
    "prompt": "You notice an unfamiliar $1 charge on your card. Why does it matter?",
    "choices": [
-    "Scammers test stolen cards with tiny charges before big ones",
-    "It doesn't, it's only $1",
-    "It's interest",
-    "It's a refund"
+    "Thieves test stolen cards with tiny charges",
+    "It doesn’t: it’s only $1, so let it go",
+    "It’s interest the card charges monthly",
+    "It’s a refund that hasn’t posted yet"
    ],
    "answer": 0,
    "explanation": "Small test charges often come before large fraud. Report it and get a new card."
@@ -564,10 +564,10 @@
    "type": "mc",
    "prompt": "Why do software engineers in a tech hub often earn more than the national average?",
    "choices": [
-    "High demand and limited supply of those skills",
-    "Laws require it",
-    "Because rents are high only",
-    "They work fewer hours"
+    "High demand, limited supply of skills",
+    "A state law requires higher pay",
+    "Rents are high, and that’s the only reason",
+    "They work fewer hours than average"
    ],
    "answer": 0,
    "explanation": "Wages reflect supply and demand for skills (and local cost of living). Scarce, in-demand skills pay more."
@@ -714,10 +714,10 @@
    "type": "mc",
    "prompt": "Sales tax is called 'regressive' because…",
    "choices": [
-    "Lower-income people pay a larger share of their income",
-    "It rises with income",
-    "Only businesses pay it",
-    "It's refunded every year"
+    "Lower incomes pay a bigger share",
+    "It rises as your income rises",
+    "Only businesses actually pay it",
+    "It is refunded every year"
    ],
    "answer": 0,
    "explanation": "Everyone pays the same rate on purchases, but lower earners spend a bigger share of income, so it takes a bigger bite."
@@ -750,10 +750,10 @@
    "type": "mc",
    "prompt": "A $2,000 signing bonus vs. a $2,000 higher salary: which is worth more over time?",
    "choices": [
-    "The higher salary, it repeats every year and future raises build on it",
-    "The bonus",
-    "They're the same",
-    "Neither"
+    "The salary: it repeats and raises build on it",
+    "The bonus: you get it all up front",
+    "They’re the same: both are $2,000",
+    "Neither: both are taxed away"
    ],
    "answer": 0,
    "explanation": "A bonus is paid once. A salary increase repeats and compounds with raises."
@@ -787,9 +787,9 @@
    "prompt": "If your employer matches up to 6% and you contribute only 2%, you are…",
    "choices": [
     "Leaving free money on the table",
-    "Maximizing your benefit",
-    "Paying more tax",
-    "Breaking a rule"
+    "Getting the full benefit already",
+    "Paying more tax on the match",
+    "Breaking a plan rule"
    ],
    "answer": 0,
    "explanation": "Contribute at least enough to get the full match, it's part of your pay."
@@ -803,10 +803,10 @@
    "type": "mc",
    "prompt": "An 'investment' promises guaranteed 30% monthly returns and pays early investors from new investors' money. This is a…",
    "choices": [
-    "Ponzi scheme",
-    "Index fund",
-    "Bond",
-    "CD"
+    "A Ponzi scheme",
+    "An index fund",
+    "A Treasury bond",
+    "A bank CD"
    ],
    "answer": 0,
    "explanation": "Paying old investors with new investors' money collapses when new money slows. Guaranteed high returns are the red flag."
@@ -820,10 +820,10 @@
    "type": "mc",
    "prompt": "What does 'phishing' mean?",
    "choices": [
-    "Fake messages that trick you into giving information",
-    "A fishing trip",
-    "Checking your credit report",
-    "A secure website"
+    "Fake messages that steal information",
+    "A fishing trip with coworkers",
+    "Checking your own credit report",
+    "A website with a secure padlock"
    ],
    "answer": 0,
    "explanation": "Phishing uses fake emails, texts or sites that look real to steal passwords and money."
@@ -837,10 +837,10 @@
    "type": "mc",
    "prompt": "The unemployment rate rises during a recession. What usually happens to wage growth?",
    "choices": [
-    "It slows, because more people compete for jobs",
-    "It speeds up",
-    "It doesn't change",
-    "Wages double"
+    "It slows: more people compete for jobs",
+    "It speeds up as companies compete",
+    "It doesn’t change during a recession",
+    "Wages double to keep workers"
    ],
    "answer": 0,
    "explanation": "More job seekers relative to openings reduces workers' bargaining power."
@@ -896,10 +896,10 @@
    "type": "mc",
    "prompt": "Lifestyle creep means…",
    "choices": [
-    "Spending rises whenever income rises",
+    "Spending rises as income rises",
     "Saving more after each raise",
-    "Rent decreasing",
-    "Taxes falling"
+    "Rent slowly decreasing",
+    "Taxes falling every year"
    ],
    "answer": 0,
    "explanation": "If spending grows with every raise, savings never improve. Bank part of each raise first."
@@ -936,10 +936,10 @@
    "type": "mc",
    "prompt": "Roth vs. traditional: which is generally better if you expect to be in a HIGHER bracket in retirement?",
    "choices": [
-    "Roth, pay tax now at the lower rate",
-    "Traditional, deduct now",
-    "No difference",
-    "Neither allows growth"
+    "Roth: pay tax now at the lower rate",
+    "Traditional: deduct at today’s rate",
+    "No difference: tax is tax",
+    "Neither allows tax-free growth"
    ],
    "answer": 0,
    "explanation": "Roth contributions are taxed now; withdrawals later are tax-free. That wins if your future rate is higher."
@@ -986,10 +986,10 @@
    "type": "mc",
    "prompt": "Your data was in a breach. Best order of actions?",
    "choices": [
-    "Change passwords (start with email), enable 2FA, freeze credit, monitor statements",
-    "Ignore it",
-    "Post about it publicly",
-    "Close all accounts immediately"
+    "New passwords, 2FA, credit freeze, monitor",
+    "Ignore it unless money goes missing",
+    "Post about it publicly to warn friends",
+    "Close every account immediately"
    ],
    "answer": 0,
    "explanation": "Secure your email first (it resets everything else), add 2FA, freeze credit, and watch for fraud."
@@ -1004,9 +1004,9 @@
    "prompt": "Automation replaces some routine tasks. Which response best protects your earning power?",
    "choices": [
     "Build skills that complement technology",
-    "Avoid all training",
-    "Rely on one employer forever",
-    "Stop working"
+    "Avoid training so your role stays the same",
+    "Rely on one employer for your whole career",
+    "Stop working until the changes settle"
    ],
    "answer": 0,
    "explanation": "Skills that work alongside technology (analysis, design, communication) stay in demand."
@@ -1039,10 +1039,10 @@
    "type": "mc",
    "prompt": "Which counts as total compensation?",
    "choices": [
-    "Salary + bonuses + retirement match + benefits",
-    "Salary only",
-    "Net pay only",
-    "Tips only"
+    "Salary, bonuses, match and benefits",
+    "Salary only, before any deductions",
+    "Net pay only, after taxes",
+    "Tips only, for service jobs"
    ],
    "answer": 0,
    "explanation": "Compare jobs on total compensation, not just salary."

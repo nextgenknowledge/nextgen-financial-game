@@ -11,6 +11,9 @@ import { startWorld } from '../startWorld';
 import { CityBackdrop } from './CityBackdrop';
 import { NewGameFlow } from './NewGame';
 
+/** NextGen Knowledge's website. Only ever opened by the player clicking the logo; the game itself never goes online. */
+export const ORG_SITE = 'https://nextgenknowledge.org';
+
 /** The animated pixel city behind every start screen. */
 export function SkyBackdrop() {
   return <CityBackdrop />;
@@ -45,17 +48,16 @@ export function TitleScreen() {
   const [selected, setSelected] = useState(0);
 
   useEffect(() => {
-    // Browsers only allow audio after a gesture; start music on the first click.
+    // Browsers only allow audio after a gesture; start music on the first click. iOS Safari only
+    // counts touchend and click as gestures, so listen for those too.
+    const events = ['pointerdown', 'touchend', 'click', 'keydown'] as const;
     const start = () => {
-      unlockAudio();
+      const ok = unlockAudio();
       playMusic('title');
+      if (ok) events.forEach((ev) => window.removeEventListener(ev, start));
     };
-    window.addEventListener('pointerdown', start, { once: true });
-    window.addEventListener('keydown', start, { once: true });
-    return () => {
-      window.removeEventListener('pointerdown', start);
-      window.removeEventListener('keydown', start);
-    };
+    events.forEach((ev) => window.addEventListener(ev, start));
+    return () => events.forEach((ev) => window.removeEventListener(ev, start));
   }, []);
 
   useEffect(() => {
@@ -116,7 +118,13 @@ export function TitleScreen() {
     <div className="screen start-screen">
       <SkyBackdrop />
       <section className="st-content">
-        <div className="st-presents">NextGen Knowledge presents</div>
+        <a className="st-org" href={ORG_SITE} target="_blank" rel="noopener noreferrer" title="Visit NextGen Knowledge (opens nextgenknowledge.org in a new tab)">
+          <img src={ORG_LOGO} alt="NextGen Knowledge" draggable={false} />
+          <span className="st-org-text">
+            <span className="st-org-kicker">A game built by</span>
+            <span className="st-org-name">NextGen Knowledge</span>
+          </span>
+        </a>
         <h1 className="st-logo-wrap">
           <img className="st-logo" src={FIN_LOGO} alt="Fin City" draggable={false} />
         </h1>
@@ -153,7 +161,9 @@ export function TitleScreen() {
         <div className="st-words">Earn · Save · Invest · Explore</div>
       </section>
       <div className="title-foot">
-        <img src={ORG_LOGO} alt="" />
+        <a className="title-foot-logo" href={ORG_SITE} target="_blank" rel="noopener noreferrer" title="nextgenknowledge.org">
+          <img src={ORG_LOGO} alt="NextGen Knowledge" />
+        </a>
         <span>A NextGen Knowledge game · Everything stays on this device</span>
       </div>
       {newGame && (
@@ -183,13 +193,24 @@ export function CreditsScreen() {
             <Button onClick={() => setScreen('title')}>← Back</Button>
           </div>
           <div className="row" style={{ gap: '1.2rem', margin: '1rem 0', flexWrap: 'wrap' }}>
-            <img src={ORG_LOGO} alt="NextGen Knowledge" style={{ width: 220, borderRadius: 12 }} />
+            <a href={ORG_SITE} target="_blank" rel="noopener noreferrer" title="nextgenknowledge.org">
+              <img src={ORG_LOGO} alt="NextGen Knowledge" style={{ width: 220, borderRadius: 12, display: 'block' }} />
+            </a>
             <img src={FIN_LOGO} alt="Fin City" style={{ width: 150 }} />
           </div>
           <p>
             <b>Fin City</b> is made by <b>NextGen Knowledge</b>, a student-led organization teaching financial literacy to
             kids and teens.
           </p>
+          <div className="credits-team">
+            <b>Created by</b>
+            <dl>
+              <dt>Lead Developer</dt>
+              <dd>Esh Bompali</dd>
+              <dt>Supervisor</dt>
+              <dd>Svar Patel</dd>
+            </dl>
+          </div>
           <div className="row" style={{ alignItems: 'flex-start', gap: '1rem', flexWrap: 'wrap' }}>
             <img src={NARWHAL_SHEET} alt="NextGen Narwhal character sheet" style={{ width: 300, borderRadius: 12, border: '3px solid var(--ink)' }} />
             <div className="col grow" style={{ minWidth: 220 }}>

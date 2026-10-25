@@ -19,6 +19,7 @@ import { useUI } from '@/store/ui';
 import { CITY_META } from './cities';
 import npcs from '@/data/npcs.json';
 import { ParkedVehicles } from './ParkedVehicles';
+import { CondoEntrances } from './CondoEntrance';
 import { Weather } from './Weather';
 import { Sites, Steam, Pigeons, Flags } from './Ambient';
 import { worldUniforms } from '@/engine/atlas';
@@ -103,6 +104,7 @@ export function OutdoorScene({ def, difficulty }: { def: CityDef; difficulty: Di
       <Tickers tickers={build.tickers} />
       <Boats loops={build.boatLoops} count={def.boats} junk={def.id === 'hong-kong'} />
       <ParkedVehicles />
+      <CondoEntrances city={def.id} footprints={build.map.footprints} spawn={build.spawn} />
       {quality !== 'low' && <Clouds count={quality === 'high' ? 16 : 10} spread={def.half + 60} />}
       <Birds count={quality === 'low' ? 4 : 10} />
       <Weather cityId={def.id} />

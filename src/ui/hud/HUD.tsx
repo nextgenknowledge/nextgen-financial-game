@@ -10,6 +10,7 @@ import { recordEvent } from '@/game/progress/events';
 import { hourOf } from '@/engine/Sky';
 import { rt } from '@/engine/runtime';
 import { virtual } from '@/engine/input';
+import { forDevice, isTouch } from '../touch';
 import { interact } from '../interact';
 import { money, shortMoney, cls } from '../format';
 import { speak, stopSpeaking } from '../speech';
@@ -18,6 +19,7 @@ import type { Mood } from '@/game/effects';
 import { CITY_META } from '@/world/cities';
 import { useRide, getOff } from '@/world/ParkedVehicles';
 import { Minimap } from './Minimap';
+import { DecorPanel } from './DecorPanel';
 import { playSfx } from '@/engine/audio';
 import { Toasts } from '../Toasts';
 import { quitToWorlds } from '../startWorld';
@@ -28,6 +30,7 @@ export function HUD() {
   const world = useGame((s) => s.world);
   const panel = useUI((s) => s.panel);
   const talking = useUI((s) => s.narwhal.length > 0);
+  const decor = useUI((s) => s.decor);
   if (!world) return null;
   return (
     // Same layout as the earlier Fin-City build: settings top left, map top right, phone bottom
@@ -44,7 +47,10 @@ export function HUD() {
         <ArrivalBanner />
         <Toasts inline />
       </div>
-      <div className="hud-region r-bc">{!panel && !talking && <InteractPrompt />}</div>
+      <div className="hud-region r-bc">
+        <DecorPanel />
+        {!panel && !talking && !decor?.carrying && <InteractPrompt />}
+      </div>
       <div className="hud-region r-br">
         <MiniPhone />
         <FpsCounter />
@@ -91,7 +97,7 @@ function MapCorner() {
   return (
     <div className="map-corner">
       <Minimap />
-      <span className="map-corner-name">{interior ? 'Inside' : CITY_META[location].name}</span>
+      <span className="map-corner-name">{interior?.startsWith('home:') ? 'Home' : interior ? 'Inside' : CITY_META[location].name}</span>
     </div>
   );
 }
@@ -276,7 +282,7 @@ function NarwhalDialog() {
     const entry = w.difficulty === 'entry';
     if (cs) {
       const lines = entry ? cs.step.entrySay ?? cs.step.say : cs.step.proSay ?? cs.step.say;
-      say(lines?.[lines.length - 1] ?? textFor(cs.step, entry ? 'entry' : 'advanced'), 'talking');
+      say(lines?.[lines.length - 1] ?? forDevice(textFor(cs.step, entry ? 'entry' : 'advanced')), 'talking');
     } else {
       const t = tips.tips[Math.floor(Math.random() * tips.tips.length)];
       say(t.text, 'confident');
@@ -308,7 +314,7 @@ function NarwhalDialog() {
               {cs.quest.title} · {cs.index + 1}/{cs.quest.steps.length}
             </span>
           </span>
-          <span className="idle-text">{textFor(cs.step, w.difficulty === 'entry' ? 'entry' : 'advanced')}</span>
+          <span className="idle-text">{forDevice(textFor(cs.step, w.difficulty === 'entry' ? 'entry' : 'advanced'))}</span>
           {cs.step.goal.type === 'move' && (
             <span className="idle-bar">
               <span style={{ width: `${Math.min(100, (cs.progress / (cs.step.goal.value ?? 1)) * 100)}%` }} />
@@ -373,9 +379,16 @@ function NarwhalDialog() {
 
 /** On-screen joystick + buttons for touch devices. */
 function TouchControls() {
-  const [touch, setTouch] = useState(false);
+  // Shown straight away on touch screens; a touch laptop shows them after the first touch.
+  const [touch, setTouch] = useState(isTouch);
   const base = useRef<{ x: number; y: number; id: number } | null>(null);
   const [knob, setKnob] = useState({ x: 0, y: 0 });
+  const release = () => {
+    base.current = null;
+    setKnob({ x: 0, y: 0 });
+    virtual.x = virtual.y = 0;
+    virtual.sprint = false;
+  };
   useEffect(() => {
     const on = () => setTouch(true);
     window.addEventListener('touchstart', on, { once: true });
@@ -400,12 +413,10 @@ function TouchControls() {
           virtual.y = -dy / 50;
           virtual.sprint = Math.hypot(dx, dy) > 45;
         }}
-        onPointerUp={() => {
-          base.current = null;
-          setKnob({ x: 0, y: 0 });
-          virtual.x = virtual.y = 0;
-          virtual.sprint = false;
-        }}
+        onPointerUp={release}
+        // iOS cancels the touch for system gestures (notification shade, home swipe); never leave the player walking
+        onPointerCancel={release}
+        onLostPointerCapture={release}
       >
         <div className="knob" style={{ transform: `translate(${knob.x}px, ${knob.y}px)` }} />
       </div>
@@ -415,10 +426,12 @@ function TouchControls() {
           onPointerDown={() => (virtual.jump = true)}
           onPointerUp={() => (virtual.jump = false)}
           onPointerLeave={() => (virtual.jump = false)}
+          onPointerCancel={() => (virtual.jump = false)}
+          aria-label="Jump"
         >
           ⤒
         </button>
-        <button className="touch-btn gold" onClick={() => interact(rt.nearTrigger)}>
+        <button className="touch-btn gold" onClick={() => interact(rt.nearTrigger)} aria-label="Interact">
           E
         </button>
       </div>

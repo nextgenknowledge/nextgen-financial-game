@@ -85,7 +85,7 @@ export default function TravelDesk({ onFinish, addReview, seed }: KindProps) {
     });
 
     const buffer = Math.round(usdMonthly * 1.5);
-    const s5 = shuffled([`About ${usd(buffer)}: 1 to 2 months of costs, in an account you can reach from abroad`, 'Nothing: the credit card covers emergencies', `About ${usd(Math.round(usdMonthly * 0.25))}: one week of costs in cash`, 'Everything you have, all in cash in your room'], 0, r);
+    const s5 = shuffled([`About ${usd(buffer)}: 1 to 2 months of costs, easy to reach`, 'Nothing: the credit card will cover any emergency abroad', `About ${usd(Math.round(usdMonthly * 0.25))}: one week of costs in cash`, 'Everything you have, in cash, hidden in your rented room'], 0, r);
     out.push({
       brief: 'Last item: an emergency buffer for a cancelled flight, a deposit or a sudden trip home.',
       visual: <Bars items={[{ label: 'Monthly cost', value: usdMonthly, color: C.blue }, { label: '1.5 months', value: buffer, color: C.green }]} fmt={(v) => usd(v)} />,

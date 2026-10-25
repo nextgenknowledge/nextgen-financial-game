@@ -32,7 +32,7 @@ export default function Deals({ params, difficulty, onFinish, addReview, seed }:
           context: <div className="price-sign">{item} · {money(p)} · {a}% off sale + extra {b}% coupon at the register</div>,
           questions: [
             synthQ({ id: `deal-stack-${k}`, prompt: 'Final price after both discounts (applied one after the other)?', topic: 'shopping', value: final, format: 'money', explanation: `${money(p)} × (1 − ${a}%) × (1 − ${b}%) = ${money(final)}. Stacked discounts are NOT ${a + b}% off, that would be ${money(p * (1 - (a + b) / 100))}.` }),
-            synthQ({ id: `deal-stack2-${k}`, prompt: `Is ${a}% + ${b}% stacked the same as ${a + b}% off?`, topic: 'shopping', choices: ['No, it saves a little less', 'Yes, exactly the same', 'It saves more'], correct: 0, explanation: `The second discount applies to the already-reduced price, so the total discount is ${(100 - (1 - a / 100) * (1 - b / 100) * 100).toFixed(1)}%.` }),
+            synthQ({ id: `deal-stack2-${k}`, prompt: `Is ${a}% + ${b}% stacked the same as ${a + b}% off?`, topic: 'shopping', choices: ['No, it saves a little less', 'Yes, it saves exactly the same', 'No, stacking saves you more'], correct: 0, explanation: `The second discount applies to the already-reduced price, so the total discount is ${(100 - (1 - a / 100) * (1 - b / 100) * 100).toFixed(1)}%.` }),
           ],
         };
       }
@@ -56,7 +56,7 @@ export default function Deals({ params, difficulty, onFinish, addReview, seed }:
               <div className="tiny">Other stores sell the same item for {money(real)}.</div>
             </div>
           ),
-          questions: [synthQ({ id: `deal-fake-${k}`, prompt: 'How good is this deal really, compared with other stores?', topic: 'shopping', choices: ['About 10% off the real price', '55% off', 'It costs double', 'It is free'], correct: 0, explanation: `The "original" price was inflated. Compared with the real market price of ${money(real)}, ${money(real * 0.9)} is only 10% off.` })],
+          questions: [synthQ({ id: `deal-fake-${k}`, prompt: 'How good is this deal really, compared with other stores?', topic: 'shopping', choices: ['About 10% off the real price', '55% off, just as the sign says', 'It costs twice the normal price', 'It is basically free'], correct: 0, explanation: `The "original" price was inflated. Compared with the real market price of ${money(real)}, ${money(real * 0.9)} is only 10% off.` })],
         };
       }
       // compare two offers

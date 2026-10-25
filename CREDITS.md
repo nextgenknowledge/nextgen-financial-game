@@ -1,6 +1,13 @@
 # Credits
 
-**Fin City** is a NextGen Knowledge project.
+**Fin City** is a NextGen Knowledge project ([nextgenknowledge.org](https://nextgenknowledge.org)).
+
+## Created by
+
+| Role | Name |
+| --- | --- |
+| Lead Developer | Esh Bompali |
+| Supervisor | Svar Patel |
 
 ## Brand and character art
 
