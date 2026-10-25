@@ -10,7 +10,7 @@ import { isDown, virtual } from './input';
 import { rt } from './runtime';
 import { playSfx } from './audio';
 import { VehicleModel } from '@/world/Vehicles';
-import { updateVehicle } from './vehicles';
+import { updateVehicle, CHASE_DIST } from './vehicles';
 import { useRide } from '@/world/ParkedVehicles';
 
 const RADIUS = 0.38;
@@ -219,7 +219,7 @@ export function PlayerController() {
       d = Math.atan2(Math.sin(d), Math.cos(d));
       rt.camYaw += d * Math.min(1, 2.5 * dt);
     }
-    const desired = vehicleCam ? Math.max(rt.camDist, rt.vehicle!.type === 'plane' ? 16 : 10) : rt.camDist;
+    const desired = vehicleCam ? Math.max(rt.camDist, CHASE_DIST[rt.vehicle!.type]) : rt.camDist;
     tmp.set(Math.sin(rt.camYaw) * Math.cos(rt.camPitch), Math.sin(rt.camPitch), Math.cos(rt.camYaw) * Math.cos(rt.camPitch));
     const hit = rt.collision.raycast(camTarget, tmp, desired);
     const dist = hit !== null ? Math.max(1.2, hit - 0.4) : desired;

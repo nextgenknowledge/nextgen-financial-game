@@ -17,7 +17,9 @@ export const useRide = create<{ riding: string | null; parkedRev: number; set: (
 }));
 
 function spotFor(type: string) {
+  // The seaplane takes off from the water: its wings don't fit between the cars at the garage
   if (type === 'boat') return rt.dock;
+  if (type === 'plane') return rt.dock ?? rt.garage;
   return rt.garage;
 }
 
@@ -48,7 +50,9 @@ export function getOff() {
 export function summonVehicle(uid: string, itemId: string) {
   const def = vehicleDef(itemId);
   if (!def) return false;
-  if (def.type === 'boat') {
+  if (def.type === 'plane' && rt.dock) {
+    rt.parked = { uid, itemId, x: rt.dock.x, z: rt.dock.z, rot: rt.dock.rot, scene: rt.sceneKey };
+  } else if (def.type === 'boat') {
     if (!rt.dock) {
       useUI.getState().pushToast({ text: 'Boats can only be launched at a dock (Fin-City Park, New York, Hong Kong, SF, Singapore).', icon: '⚓', tone: 'info' });
       return false;
@@ -87,13 +91,13 @@ export function ParkedVehicles() {
     rt.triggers = rt.triggers.filter((t) => t.kind !== 'vehicle');
     if (p && !riding) {
       const def = vehicleDef(p.itemId);
-      rt.triggers.push({ id: `vehicle:${p.uid}`, kind: 'vehicle', x: p.x, z: p.z, r: def?.type === 'boat' ? 6 : 3, label: `Ride ${def?.name ?? 'vehicle'}`, icon: def?.icon });
+      rt.triggers.push({ id: `vehicle:${p.uid}`, kind: 'vehicle', x: p.x, z: p.z, r: def?.type === 'boat' || def?.type === 'plane' ? 6 : 3, label: `Ride ${def?.name ?? 'vehicle'}`, icon: def?.icon });
     }
   }, [p, riding, rev]);
 
   if (!p || riding || p.scene !== rt.sceneKey) return null;
   return (
-    <group position={[p.x, p.itemId && vehicleDef(p.itemId)?.type === 'boat' ? -0.15 : 0, p.z]} rotation={[0, p.rot, 0]}>
+    <group position={[p.x, vehicleDef(p.itemId)?.type === 'boat' ? -0.15 : 0, p.z]} rotation={[0, p.rot, 0]}>
       <VehicleModel itemId={p.itemId} />
     </group>
   );

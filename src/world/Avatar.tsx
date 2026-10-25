@@ -14,6 +14,17 @@ export interface AnimState {
   sitting?: boolean;
   /** Arms forward and busy (typing, cooking, browsing a shelf). */
   busy?: boolean;
+  /**
+   * Riding pose: 'drive' sits with hands on a wheel (cars, kart, speedboat, plane), 'pedal'
+   * sits on a saddle and pedals, 'stand' stands on a deck holding a bar (scooter), 'paddle'
+   * sits low and paddles (kayak).
+   */
+  ride?: 'drive' | 'pedal' | 'stand' | 'paddle';
+  /** Riding: how far forward the arms reach (radians) and how far the upper body leans. */
+  reach?: number;
+  lean?: number;
+  /** Written by the avatar each frame so props (a paddle, pedals) can move in step. */
+  phase?: number;
 }
 
 const geoCache = new Map<string, THREE.BufferGeometry>();
@@ -578,6 +589,7 @@ export function Avatar({ config, anim, scale = 1 }: { config: AvatarConfig; anim
   const lArm = useRef<THREE.Group>(null);
   const rArm = useRef<THREE.Group>(null);
   const body = useRef<THREE.Group>(null);
+  const upper = useRef<THREE.Group>(null);
   const head = useRef<THREE.Group>(null);
   const phase = useRef(Math.random() * 10);
 
@@ -665,7 +677,66 @@ export function Avatar({ config, anim, scale = 1 }: { config: AvatarConfig; anim
       body.current.position.y = a?.sitting ? -0.42 : bob;
     }
     if (head.current) head.current.rotation.y = Math.sin(p * 0.2) * 0.08 * (1 - Math.min(1, speed));
+    if (upper.current) {
+      upper.current.rotation.x = 0;
+      upper.current.rotation.y = 0;
+    }
+    if (a) a.phase = p;
+    if (a?.ride) ridePose(a, p, speed);
   });
+
+  /** Seated or standing on a vehicle. Overrides the walk cycle completely. */
+  const ridePose = (a: AnimState, p: number, speed: number) => {
+    const ride = a.ride!;
+    const L = lLeg.current;
+    const R = rLeg.current;
+    const la = lArm.current;
+    const ra = rArm.current;
+    const up = upper.current;
+    if (!L || !R || !la || !ra || !up || !body.current) return;
+    const seated = ride !== 'stand';
+    body.current.position.y = seated ? -0.42 : 0;
+    // Arms reach forward and a little inward to the wheel or bars (left arm sits on +x)
+    const reach = a.reach ?? 1.15;
+    la.rotation.set(-reach, 0, -0.16);
+    ra.rotation.set(-reach, 0, 0.16);
+    if (head.current) head.current.rotation.y = 0;
+    switch (ride) {
+      case 'drive':
+        L.rotation.set(-1.45, 0, -0.04);
+        R.rotation.set(-1.45, 0, 0.04);
+        up.rotation.x = a.lean ?? 0.06;
+        break;
+      case 'pedal': {
+        // Thighs down toward the cranks; legs push in turn while moving
+        const k = Math.sin(p * 1.6) * 0.32 * Math.min(1, speed * 2);
+        L.rotation.set(-0.62 + k, 0, 0);
+        R.rotation.set(-0.62 - k, 0, 0);
+        up.rotation.x = a.lean ?? 0.38;
+        la.rotation.set(-reach, 0, -0.12);
+        ra.rotation.set(-reach, 0, 0.12);
+        break;
+      }
+      case 'stand':
+        // One foot forward on the deck, slight lean into the bars
+        L.rotation.set(-0.16, 0, 0);
+        R.rotation.set(0.14, 0, 0);
+        up.rotation.x = a.lean ?? 0.12;
+        la.rotation.set(-reach, 0, -0.14);
+        ra.rotation.set(-reach, 0, 0.14);
+        break;
+      case 'paddle': {
+        // Legs out in front inside the hull; torso twists as the paddle dips side to side
+        const k = Math.sin(p * 0.9) * Math.min(1, 0.25 + speed * 2);
+        L.rotation.set(-1.5, 0, 0);
+        R.rotation.set(-1.5, 0, 0);
+        up.rotation.y = k * 0.3;
+        la.rotation.set(-reach + k * 0.3, 0, -0.22);
+        ra.rotation.set(-reach - k * 0.3, 0, 0.22);
+        break;
+      }
+    }
+  };
 
   return (
     <group scale={scale}>
@@ -683,47 +754,52 @@ export function Avatar({ config, anim, scale = 1 }: { config: AvatarConfig; anim
         </group>
         {/* Hips join the legs to the body */}
         <mesh geometry={rbox(0.62, 0.16, 0.34, 0.05)} material={m.pants} position={[0, 0.9, 0]} />
-        {/* Torso */}
-        <group position={[0, 1.23, 0]}>
-          <mesh geometry={rbox(0.66, 0.68, 0.38, 0.08)} material={m.torso} castShadow />
-          <TopDetails it={top} body={m.torso} />
-          <BodyAccessory it={bodyAcc} />
-        </group>
-        {/* Arms */}
-        <group ref={lArm} position={[0.44, 1.52, 0]}>
-          <group scale={[1, 1.1, 1]}>{arm('left')}</group>
-        </group>
-        <group ref={rArm} position={[-0.44, 1.52, 0]}>
-          <group scale={[1, 1.1, 1]}>{arm('right')}</group>
-        </group>
-        {/* Neck */}
-        <mesh geometry={rbox(0.22, 0.14, 0.22, 0.04)} material={m.skin} position={[0, 1.6, 0]} />
-        {/* Head: smaller in proportion to the body, with a proper face */}
-        <group ref={head} position={[0, 1.6, 0]} scale={0.82}>
-          <mesh geometry={rbox(0.62, 0.62, 0.6, 0.09)} material={m.skin} position={[0, 0.31, 0]} castShadow />
-          {/* Ears */}
-          <mesh geometry={rbox(0.06, 0.15, 0.11, 0.025)} material={m.nose} position={[0.32, 0.3, 0]} />
-          <mesh geometry={rbox(0.06, 0.15, 0.11, 0.025)} material={m.nose} position={[-0.32, 0.3, 0]} />
-          {/* Eyes: white, coloured iris with a dark pupil and a glint */}
-          <mesh geometry={rbox(0.14, 0.1, 0.02, 0.02)} material={m.white} position={[0.14, 0.35, 0.3]} />
-          <mesh geometry={rbox(0.14, 0.1, 0.02, 0.02)} material={m.white} position={[-0.14, 0.35, 0.3]} />
-          <mesh geometry={rbox(0.07, 0.09, 0.02, 0.015)} material={m.eyes} position={[0.13, 0.348, 0.31]} />
-          <mesh geometry={rbox(0.07, 0.09, 0.02, 0.015)} material={m.eyes} position={[-0.15, 0.348, 0.31]} />
-          <mesh geometry={rbox(0.025, 0.025, 0.01, 0.005)} material={m.white} position={[0.115, 0.365, 0.322]} />
-          <mesh geometry={rbox(0.025, 0.025, 0.01, 0.005)} material={m.white} position={[-0.165, 0.365, 0.322]} />
-          {/* Eyebrows */}
-          <mesh geometry={rbox(0.16, 0.035, 0.03, 0.01)} material={m.brow} position={[0.14, 0.45, 0.3]} rotation={[0, 0, -0.08]} />
-          <mesh geometry={rbox(0.16, 0.035, 0.03, 0.01)} material={m.brow} position={[-0.14, 0.45, 0.3]} rotation={[0, 0, 0.08]} />
-          {/* Nose and mouth */}
-          <mesh geometry={rbox(0.08, 0.13, 0.07, 0.025)} material={m.nose} position={[0, 0.26, 0.32]} />
-          <mesh geometry={rbox(0.15, 0.035, 0.02, 0.012)} material={m.lips} position={[0, 0.13, 0.302]} />
-          <mesh geometry={rbox(0.11, 0.015, 0.02, 0.006)} material={m.mouth} position={[0, 0.14, 0.31]} />
-          {/* Corners of the mouth turned up a touch: a relaxed, friendly expression */}
-          <mesh geometry={rbox(0.03, 0.02, 0.02, 0.006)} material={m.mouth} position={[0.065, 0.152, 0.31]} />
-          <mesh geometry={rbox(0.03, 0.02, 0.02, 0.006)} material={m.mouth} position={[-0.065, 0.152, 0.31]} />
-          <Hair style={config.hairStyle} color={config.hair} />
-          <Hat id={config.hat} />
-          <HeadAccessory it={headAcc} />
+        {/* Upper body pivots at the hips so riders can lean and twist */}
+        <group ref={upper} position={[0, 0.9, 0]}>
+          <group position={[0, -0.9, 0]}>
+            {/* Torso */}
+            <group position={[0, 1.23, 0]}>
+              <mesh geometry={rbox(0.66, 0.68, 0.38, 0.08)} material={m.torso} castShadow />
+              <TopDetails it={top} body={m.torso} />
+              <BodyAccessory it={bodyAcc} />
+            </group>
+            {/* Arms */}
+            <group ref={lArm} position={[0.44, 1.52, 0]}>
+              <group scale={[1, 1.1, 1]}>{arm('left')}</group>
+            </group>
+            <group ref={rArm} position={[-0.44, 1.52, 0]}>
+              <group scale={[1, 1.1, 1]}>{arm('right')}</group>
+            </group>
+            {/* Neck */}
+            <mesh geometry={rbox(0.22, 0.14, 0.22, 0.04)} material={m.skin} position={[0, 1.6, 0]} />
+            {/* Head: smaller in proportion to the body, with a proper face */}
+            <group ref={head} position={[0, 1.6, 0]} scale={0.82}>
+              <mesh geometry={rbox(0.62, 0.62, 0.6, 0.09)} material={m.skin} position={[0, 0.31, 0]} castShadow />
+              {/* Ears */}
+              <mesh geometry={rbox(0.06, 0.15, 0.11, 0.025)} material={m.nose} position={[0.32, 0.3, 0]} />
+              <mesh geometry={rbox(0.06, 0.15, 0.11, 0.025)} material={m.nose} position={[-0.32, 0.3, 0]} />
+              {/* Eyes: white, coloured iris with a dark pupil and a glint */}
+              <mesh geometry={rbox(0.14, 0.1, 0.02, 0.02)} material={m.white} position={[0.14, 0.35, 0.3]} />
+              <mesh geometry={rbox(0.14, 0.1, 0.02, 0.02)} material={m.white} position={[-0.14, 0.35, 0.3]} />
+              <mesh geometry={rbox(0.07, 0.09, 0.02, 0.015)} material={m.eyes} position={[0.13, 0.348, 0.31]} />
+              <mesh geometry={rbox(0.07, 0.09, 0.02, 0.015)} material={m.eyes} position={[-0.15, 0.348, 0.31]} />
+              <mesh geometry={rbox(0.025, 0.025, 0.01, 0.005)} material={m.white} position={[0.115, 0.365, 0.322]} />
+              <mesh geometry={rbox(0.025, 0.025, 0.01, 0.005)} material={m.white} position={[-0.165, 0.365, 0.322]} />
+              {/* Eyebrows */}
+              <mesh geometry={rbox(0.16, 0.035, 0.03, 0.01)} material={m.brow} position={[0.14, 0.45, 0.3]} rotation={[0, 0, -0.08]} />
+              <mesh geometry={rbox(0.16, 0.035, 0.03, 0.01)} material={m.brow} position={[-0.14, 0.45, 0.3]} rotation={[0, 0, 0.08]} />
+              {/* Nose and mouth */}
+              <mesh geometry={rbox(0.08, 0.13, 0.07, 0.025)} material={m.nose} position={[0, 0.26, 0.32]} />
+              <mesh geometry={rbox(0.15, 0.035, 0.02, 0.012)} material={m.lips} position={[0, 0.13, 0.302]} />
+              <mesh geometry={rbox(0.11, 0.015, 0.02, 0.006)} material={m.mouth} position={[0, 0.14, 0.31]} />
+              {/* Corners of the mouth turned up a touch: a relaxed, friendly expression */}
+              <mesh geometry={rbox(0.03, 0.02, 0.02, 0.006)} material={m.mouth} position={[0.065, 0.152, 0.31]} />
+              <mesh geometry={rbox(0.03, 0.02, 0.02, 0.006)} material={m.mouth} position={[-0.065, 0.152, 0.31]} />
+              <Hair style={config.hairStyle} color={config.hair} />
+              <Hat id={config.hat} />
+              <HeadAccessory it={headAcc} />
+            </group>
+          </group>
         </group>
       </group>
     </group>

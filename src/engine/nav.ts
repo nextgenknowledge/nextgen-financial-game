@@ -217,3 +217,13 @@ export function aheadOnPath(path: [number, number][], x: number, z: number, dist
   const rest: [number, number][] = [[ax + (bx - ax) * bestT, az + (bz - az) * bestT], ...path.slice(best + 1)];
   return alongPath(rest, dist);
 }
+
+/** True when a body can walk straight from (ax,az) to (bx,bz) without meeting a blocked cell. */
+export function lineClear(c: CollisionWorld, sceneKey: string, ax: number, az: number, bx: number, bz: number): boolean {
+  const g = gridFor(c, sceneKey);
+  const a: [number, number] = [Math.floor((ax - g.x0) / CELL), Math.floor((az - g.z0) / CELL)];
+  const b: [number, number] = [Math.floor((bx - g.x0) / CELL), Math.floor((bz - g.z0) / CELL)];
+  const inside = (p: [number, number]) => p[0] >= 0 && p[1] >= 0 && p[0] < g.nx && p[1] < g.nz;
+  if (!inside(a) || !inside(b)) return false;
+  return clear(g, a, b);
+}
