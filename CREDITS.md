@@ -30,7 +30,7 @@ resemblance to real ones is coincidental. Real cities appear only as stylized se
 
 ## Music
 
-- `public/music/background.mp3`, the background music for the title screen and the game, was
+- `public/music/background.m4a`, the background music for the title screen and the game, was
   brought over from the team's earlier game, NextGen Financial Hub
   (`Thegamers1384/nextgen-financial-hub-ESH`). Its note asks that only music with permission is
   used; add the track's title, artist and licence here.

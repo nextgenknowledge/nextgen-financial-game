@@ -190,13 +190,13 @@ export function playSfx(name: SfxName) {
 /* ───────── Music ───────── */
 
 /*
- * One looping track (public/music/background.mp3) plays on the title screen and all through the
+ * One looping track (public/music/background.m4a) plays on the title screen and all through the
  * game. It streams: preload is "none", so nothing is downloaded until the first click or key
  * press starts it, and the browser fetches it a bit at a time while it plays. It runs through the
  * music gain node, so the Music volume setting works everywhere (iOS ignores audio.volume), and a
  * volume of 0 turns it off and stops the download.
  */
-const TRACK_SRC = `${process.env.NEXT_PUBLIC_BASE_PATH ?? ''}/music/background.mp3`;
+const TRACK_SRC = `${process.env.NEXT_PUBLIC_BASE_PATH ?? ''}/music/background.m4a`;
 let track: HTMLAudioElement | null = null;
 /** True while some screen wants music (title, city, building, activity). */
 let musicWanted = false;
