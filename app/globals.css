@@ -1740,3 +1740,35 @@ button.item-card { cursor: pointer; }
   .hud.classic .r-br .mini-phone .mp-time { font-size: 1rem; }
   .hud.classic .r-br .mini-phone .mp-cash { font-size: 0.66rem; }
 }
+
+/* ═════════ Middle left: shortcuts to the most used FinPhone apps ═════════ */
+.quick-apps {
+  position: absolute; left: calc(14px + var(--safe-l, 0px)); top: 50%; transform: translateY(-50%);
+  display: grid; grid-template-columns: auto; gap: 8px; pointer-events: auto; z-index: 3;
+}
+.qa-btn { display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 0; background: none; border: 0; cursor: pointer; }
+.qa-tile {
+  position: relative; width: 52px; height: 52px; display: flex; align-items: center; justify-content: center;
+  font-size: 1.65rem; border: 3px solid #0b1a3a; box-shadow: 3px 3px 0 #061233; transition: transform 0.08s;
+}
+.qa-btn:hover .qa-tile { transform: translateY(-2px); }
+.qa-btn:active .qa-tile { transform: translate(2px, 2px); box-shadow: 1px 1px 0 #061233; }
+.qa-btn:focus-visible .qa-tile { outline: 3px solid var(--gold); outline-offset: 2px; }
+.qa-name { padding: 0 5px; background: #0b1a3a; color: #fff; font-size: 0.66rem; font-weight: 800; line-height: 1.5; white-space: nowrap; }
+@media (max-height: 640px) {
+  .quick-apps { gap: 6px; }
+  .qa-tile { width: 42px; height: 42px; font-size: 1.3rem; }
+  .qa-name { font-size: 0.6rem; }
+}
+/* Upright phones: under the top-left buttons, clear of Narwhal above the joystick */
+@media (pointer: coarse) and (max-width: 760px) {
+  .quick-apps { top: calc(68px + var(--safe-t, 0px)); transform: none; left: calc(10px + var(--safe-l, 0px)); gap: 6px; }
+  .qa-tile { width: 44px; height: 44px; font-size: 1.35rem; }
+  .qa-name { font-size: 0.58rem; }
+}
+/* Phones held sideways: a compact two-column grid without labels */
+@media (pointer: coarse) and (max-height: 500px) {
+  .quick-apps { top: calc(58px + var(--safe-t, 0px)); transform: none; grid-template-columns: auto auto; gap: 6px; }
+  .qa-tile { width: 40px; height: 40px; font-size: 1.2rem; }
+  .qa-name { display: none; }
+}

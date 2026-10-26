@@ -4,7 +4,6 @@ import { useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import { rt } from './runtime';
 import { getWorld } from '@/store/game';
-import { setNight } from './audio';
 import { useSettings } from '@/store/settings';
 import { worldUniforms } from './atlas';
 
@@ -128,7 +127,6 @@ export function SkyAndLights({ interior = false }: { interior?: boolean }) {
     const dir = new THREE.Vector3(Math.cos(az) * 0.8, Math.max(0.15, elev), 0.45).normalize();
     const nightAmt = isDay ? Math.max(0, 1 - elev * 5) * 0.4 : Math.min(1, 0.4 + elev * 2);
     rt.dayLight = 1 - Math.min(1, nightAmt * 1.25);
-    setNight(rt.dayLight < 0.4);
 
     // Weather: overcast skies flatten the light and pull the fog in
     const wl = WEATHER_LOOK[rt.weather] ?? WEATHER_LOOK.clear;

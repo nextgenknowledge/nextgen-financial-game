@@ -22,11 +22,18 @@
 
 All of the following were created for this project:
 - 3D models (voxel buildings, landmarks, vehicles, avatars, props);
-- shaders, procedural sound effects and music;
+- shaders and procedural sound effects;
 - question banks, lessons, stories and activity designs.
 
 Fictional companies, news headlines, people and places are invented for teaching. Any
 resemblance to real ones is coincidental. Real cities appear only as stylized settings.
+
+## Music
+
+- `public/music/background.m4a`, the background music for the title screen and the game, was
+  brought over from the team's earlier game, NextGen Financial Hub
+  (`Thegamers1384/nextgen-financial-hub-ESH`). Its note asks that only music with permission is
+  used; add the track's title, artist and licence here.
 
 ## Fonts (bundled; nothing is fetched at runtime)
 

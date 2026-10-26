@@ -1,14 +1,15 @@
 /**
- * Procedural audio: every sound effect and music loop is synthesized with Web Audio,
- * so there are no audio files to load and nothing is fetched from the network.
+ * Audio: sound effects are synthesized with Web Audio; the music is one bundled track that
+ * streams from this site (public/music). Nothing is fetched from anywhere else.
  */
 import type { SfxName } from '@/game/effects';
-import { makeRng } from '@/game/rng';
 
 let ctx: AudioContext | null = null;
 let musicGain: GainNode | null = null;
 let sfxGain: GainNode | null = null;
-let musicVol = 0.5;
+let musicVol = 0.05;
+/** How loud the music track sits under the sound effects at full Music volume. */
+const MUSIC_LEVEL = 0.7;
 let sfxVol = 0.8;
 
 function ensure(): AudioContext | null {
@@ -22,7 +23,7 @@ function ensure(): AudioContext | null {
     const comp = ctx.createDynamicsCompressor();
     master.connect(comp).connect(ctx.destination);
     musicGain = ctx.createGain();
-    musicGain.gain.value = musicVol * 0.35;
+    musicGain.gain.value = musicVol * MUSIC_LEVEL;
     musicGain.connect(master);
     sfxGain = ctx.createGain();
     sfxGain.gain.value = sfxVol * 0.6;
@@ -42,6 +43,7 @@ export function unlockAudio(): boolean {
 if (typeof window !== 'undefined') {
   const wake = () => {
     if (ctx && ctx.state !== 'running') ctx.resume().catch(() => {});
+    if (track?.paused) syncTrack();
   };
   for (const ev of ['touchend', 'click', 'keydown']) window.addEventListener(ev, wake, { passive: true });
 }
@@ -49,8 +51,9 @@ if (typeof window !== 'undefined') {
 export function setVolumes(music: number, sfx: number) {
   musicVol = music;
   sfxVol = sfx;
+  syncTrack();
   if (ctx && musicGain && sfxGain) {
-    musicGain.gain.setTargetAtTime(music * 0.35, ctx.currentTime, 0.1);
+    musicGain.gain.setTargetAtTime(music * MUSIC_LEVEL, ctx.currentTime, 0.1);
     sfxGain.gain.setTargetAtTime(sfx * 0.6, ctx.currentTime, 0.05);
   }
 }
@@ -186,111 +189,44 @@ export function playSfx(name: SfxName) {
 
 /* ───────── Music ───────── */
 
-interface Theme {
-  bpm: number;
-  root: number; // midi
-  scale: number[];
-  prog: number[]; // scale degrees (0-based) per bar
-  lead: OscillatorType;
-  pad: OscillatorType;
-  swing: number;
-  density: number; // 0..1 chance of a melody note per 8th
-  seed: number;
-  sevenths?: boolean;
+/*
+ * One looping track (public/music/background.m4a) plays on the title screen and all through the
+ * game. It streams: preload is "none", so nothing is downloaded until the first click or key
+ * press starts it, and the browser fetches it a bit at a time while it plays. It runs through the
+ * music gain node, so the Music volume setting works everywhere (iOS ignores audio.volume), and a
+ * volume of 0 turns it off and stops the download.
+ */
+const TRACK_SRC = `${process.env.NEXT_PUBLIC_BASE_PATH ?? ''}/music/background.m4a`;
+let track: HTMLAudioElement | null = null;
+/** True while some screen wants music (title, city, building, activity). */
+let musicWanted = false;
+
+function trackElement(): HTMLAudioElement | null {
+  if (track || typeof Audio === 'undefined') return track;
+  const c = ensure();
+  if (!c || !musicGain) return null;
+  const el = new Audio();
+  el.preload = 'none';
+  el.loop = true;
+  el.src = TRACK_SRC;
+  c.createMediaElementSource(el).connect(musicGain);
+  track = el;
+  return el;
 }
 
-const MAJ = [0, 2, 4, 5, 7, 9, 11];
-const MIN = [0, 2, 3, 5, 7, 8, 10];
-const PENTA = [0, 2, 4, 7, 9];
-
-export const THEMES: Record<string, Theme> = {
-  title: { bpm: 92, root: 60, scale: MAJ, prog: [0, 5, 3, 4], lead: 'triangle', pad: 'sine', swing: 0, density: 0.45, seed: 11 },
-  park: { bpm: 100, root: 62, scale: MAJ, prog: [0, 3, 4, 0, 5, 3, 1, 4], lead: 'triangle', pad: 'sine', swing: 0.08, density: 0.5, seed: 3 },
-  'new-york': { bpm: 108, root: 58, scale: MAJ, prog: [1, 4, 0, 5], lead: 'triangle', pad: 'sine', swing: 0.22, density: 0.55, seed: 7, sevenths: true },
-  london: { bpm: 96, root: 65, scale: MAJ, prog: [0, 4, 5, 3, 0, 3, 4, 4], lead: 'sine', pad: 'triangle', swing: 0, density: 0.5, seed: 21 },
-  'hong-kong': { bpm: 104, root: 63, scale: PENTA, prog: [0, 3, 4, 2], lead: 'triangle', pad: 'sine', swing: 0.05, density: 0.6, seed: 5 },
-  'san-francisco': { bpm: 84, root: 57, scale: MIN, prog: [0, 5, 2, 6], lead: 'sine', pad: 'triangle', swing: 0.15, density: 0.4, seed: 13, sevenths: true },
-  singapore: { bpm: 88, root: 64, scale: MAJ, prog: [0, 5, 3, 4, 0, 2, 3, 4], lead: 'sine', pad: 'sine', swing: 0, density: 0.35, seed: 17 },
-  interior: { bpm: 90, root: 60, scale: MAJ, prog: [0, 3, 0, 4], lead: 'sine', pad: 'sine', swing: 0.1, density: 0.3, seed: 29, sevenths: true },
-  activity: { bpm: 116, root: 62, scale: PENTA, prog: [0, 3, 4, 3], lead: 'square', pad: 'triangle', swing: 0, density: 0.5, seed: 31 },
-};
-
-let currentTheme: string | null = null;
-let schedTimer: ReturnType<typeof setInterval> | null = null;
-let musicBus: GainNode | null = null;
-let nextBarTime = 0;
-let barIndex = 0;
-let night = false;
-
-export function setNight(isNight: boolean) {
-  night = isNight;
-}
-
-function degreeToMidi(theme: Theme, degree: number, octave = 0): number {
-  const s = theme.scale;
-  const oct = Math.floor(degree / s.length);
-  const idx = ((degree % s.length) + s.length) % s.length;
-  return theme.root + s[idx] + 12 * (oct + octave);
-}
-
-function scheduleBar(theme: Theme, t0: number) {
-  const c = ctx!;
-  const beat = 60 / theme.bpm;
-  const bus = musicBus!;
-  const deg = theme.prog[barIndex % theme.prog.length];
-  const rng = makeRng(theme.seed * 1000 + (barIndex % (theme.prog.length * 2)));
-  const soft = night ? 0.7 : 1;
-  // Pad chord
-  const chord = [0, 2, 4, ...(theme.sevenths ? [6] : [])].map((d) => degreeToMidi(theme, deg + d, -1));
-  for (const n of chord) tone(bus, midiHz(n), t0, beat * 4 - 0.1, { type: theme.pad, vol: 0.05 * soft, attack: 0.4, release: 0.6, filter: 1400 });
-  // Bass
-  tone(bus, midiHz(degreeToMidi(theme, deg, -2)), t0, beat * 1.5, { type: 'sine', vol: 0.16 * soft, release: 0.2 });
-  tone(bus, midiHz(degreeToMidi(theme, deg + 4, -2)), t0 + beat * 2, beat * 1.5, { type: 'sine', vol: 0.12 * soft, release: 0.2 });
-  // Melody: random walk on chord-friendly degrees
-  let cur = deg + 7;
-  for (let i = 0; i < 8; i++) {
-    if (rng.next() > theme.density * (night ? 0.7 : 1)) continue;
-    cur += rng.pick([-2, -1, -1, 0, 1, 1, 2]);
-    if (cur < deg + 4) cur = deg + 5;
-    if (cur > deg + 12) cur = deg + 10;
-    const swing = i % 2 === 1 ? theme.swing * beat : 0;
-    const t = t0 + (i * beat) / 2 + swing;
-    tone(bus, midiHz(degreeToMidi(theme, cur)), t, beat * 0.42, { type: theme.lead, vol: 0.07 * soft, release: 0.15, filter: 2600 });
-  }
-  // Soft percussion: hat on off-beats
-  if (!night) for (let i = 0; i < 4; i++) noise(bus, t0 + i * beat + beat / 2 + theme.swing * beat, 0.04, 0.025, 8000);
+/** Plays or pauses the track to match what the game wants and the volume setting. */
+function syncTrack() {
+  const on = musicWanted && musicVol > 0.001;
+  const el = on ? trackElement() : track;
+  if (!el) return;
+  if (on && el.paused) el.play().catch(() => {});
+  else if (!on && !el.paused) el.pause();
 }
 
 export function playMusic(themeId: string | null) {
-  const c = ensure();
-  if (!c || !musicGain) return;
-  if (themeId === currentTheme) return;
-  currentTheme = themeId;
-  if (schedTimer) clearInterval(schedTimer);
-  schedTimer = null;
-  if (musicBus) {
-    const old = musicBus;
-    old.gain.setTargetAtTime(0.0001, c.currentTime, 0.4);
-    setTimeout(() => old.disconnect(), 2500);
-    musicBus = null;
-  }
-  if (!themeId) return;
-  const theme = THEMES[themeId] ?? THEMES.park;
-  musicBus = c.createGain();
-  musicBus.gain.setValueAtTime(0.0001, c.currentTime);
-  musicBus.gain.setTargetAtTime(1, c.currentTime + 0.2, 0.8);
-  musicBus.connect(musicGain);
-  nextBarTime = c.currentTime + 0.25;
-  barIndex = 0;
-  const barLen = (60 / theme.bpm) * 4;
-  schedTimer = setInterval(() => {
-    if (!ctx || !musicBus) return;
-    while (nextBarTime < ctx.currentTime + 1.2) {
-      scheduleBar(theme, nextBarTime);
-      nextBarTime += barLen;
-      barIndex++;
-    }
-  }, 300);
+  // Every screen shares the one track, so moving between them never restarts it
+  musicWanted = themeId !== null;
+  syncTrack();
 }
 
 /** The audio context and effects bus, for the ambience engine (null until audio is unlocked). */

@@ -54,6 +54,8 @@ export interface Settings {
   sfx: number;
   readAloud: boolean;
   speechRate: number;
+  /** Chosen read-aloud voice (voiceURI); empty picks the friendliest one on the device. */
+  voice: string;
   textSize: 's' | 'm' | 'l' | 'xl';
   colorblind: 'off' | 'deuteranopia' | 'protanopia' | 'tritanopia';
   reducedMotion: boolean;
@@ -68,10 +70,11 @@ export interface Settings {
 export const DEFAULT_SETTINGS: Settings = {
   quality: 'medium',
   autoQuality: true,
-  music: 0.5,
+  music: 0.05,
   sfx: 0.8,
   readAloud: false,
   speechRate: 1,
+  voice: '',
   textSize: 'm',
   colorblind: 'off',
   reducedMotion: false,
