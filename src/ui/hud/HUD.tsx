@@ -26,6 +26,8 @@ import { Toasts } from '../Toasts';
 import { quitToWorlds } from '../startWorld';
 import { NARWHAL_ART, narwhalFace } from '../narwhalArt';
 import tips from '@/data/tips.json';
+import { FinBucksCoin } from '../FinBucks';
+import { netWorth } from '@/game/finance/netWorth';
 
 export function HUD() {
   const world = useGame((s) => s.world);
@@ -38,7 +40,10 @@ export function HUD() {
     // right, Narwhal bottom left. Everything else lives in the phone.
     <div className={cls('hud', 'classic', world.difficulty === 'entry' && 'entry-mode', talking && 'talking')}>
       <div className="hud-region r-tl">
-        <TopLeftButtons />
+        <div className="tl-row">
+          <TopLeftButtons />
+          <WalletBar />
+        </div>
         <WorldActivityHud />
         <ResumeRun />
       </div>
@@ -87,6 +92,38 @@ function TopLeftButtons() {
         title="Save your game and go back to your worlds"
       >
         💾 {saving ? 'Saving…' : 'Save & Exit'}
+      </button>
+    </div>
+  );
+}
+
+/* Top left, beside the buttons: spendable FinBucks and net worth. Tap either for the details. */
+function WalletBar() {
+  const open = useUI((s) => s.open);
+  const panel = useUI((s) => s.panel);
+  const w = useGame((s) => s.world!);
+  const spendable = w.finance.cash + w.finance.checking;
+  const worth = useMemo(() => netWorth(w).total, [w]);
+  if (panel) return null;
+  const go = (app: string) => {
+    playSfx('pop');
+    open({ type: 'phone', app });
+  };
+  return (
+    <div className="hud-wallet">
+      <button className="wallet-pill" onClick={() => go('bank')} title="FinBucks you can spend (cash + checking). Tap for your bank." aria-label={`FinBucks: ${money(spendable)}. Open the bank.`}>
+        <FinBucksCoin size="1.35em" />
+        <span className="wallet-text">
+          <span className="wallet-label">FinBucks</span>
+          <b>{shortMoney(spendable)}</b>
+        </span>
+      </button>
+      <button className="wallet-pill" onClick={() => go('networth')} title="Net worth: everything you own minus everything you owe. Tap for the breakdown." aria-label={`Net worth: ${money(worth)}. Open Net Worth.`}>
+        <span className="wallet-icon">📈</span>
+        <span className="wallet-text">
+          <span className="wallet-label">Net worth</span>
+          <b className={worth < 0 ? 'neg' : undefined}>{shortMoney(worth)}</b>
+        </span>
       </button>
     </div>
   );
@@ -164,11 +201,11 @@ function QuickApps() {
             act((d, fx) => recordEvent(d, fx, { type: 'menu', target: 'phone' }));
           }}
         >
-          <span className="qa-tile" style={{ background: a.color }}>
+          <span className="qa-icon" style={{ background: a.color }}>
             {a.icon}
-            {a.id === 'quests' && claimable > 0 && <span className="dock-badge">{claimable}</span>}
           </span>
           <span className="qa-name">{a.name}</span>
+          {a.id === 'quests' && claimable > 0 && <span className="dock-badge">{claimable}</span>}
         </button>
       ))}
     </nav>

@@ -66,7 +66,7 @@ export function MapPanel() {
     const hp = pois.find((p) => p.id === hover);
     if (hp) {
       const v = P(hp.x, hp.z);
-      g.font = "700 17px 'Pixelify Sans', monospace";
+      g.font = "800 17px 'Montserrat', 'Nunito', sans-serif";
       const tw = g.measureText(hp.name).width;
       const lx = Math.min(c.width - tw - 24, Math.max(8, v.x - tw / 2 - 10));
       const ly = Math.max(8, v.y - 72);

@@ -329,7 +329,7 @@ export function baseMap(def: CityDef, data: CityMapData) {
     g.fillStyle = '#2f5f9a';
     rect((p.minX + p.maxX) / 2 - 0.9, (p.minZ + p.maxZ) / 2 - 0.9, (p.minX + p.maxX) / 2 + 0.9, (p.minZ + p.maxZ) / 2 + 0.9);
     g.fillStyle = '#ffffff';
-    g.font = `700 ${W(1.4)}px 'Pixelify Sans', monospace`;
+    g.font = `800 ${W(1.4)}px 'Montserrat', 'Nunito', sans-serif`;
     g.textAlign = 'center';
     g.textBaseline = 'middle';
     g.fillText('P', X((p.minX + p.maxX) / 2), Z((p.minZ + p.maxZ) / 2) + 1);
@@ -463,7 +463,7 @@ export function baseMap(def: CityDef, data: CityMapData) {
     g.textAlign = 'center';
     g.textBaseline = 'middle';
     const fs = Math.round(PPM * 2.4);
-    g.font = `700 ${fs}px 'Pixelify Sans', monospace`;
+    g.font = `800 ${fs}px 'Montserrat', 'Nunito', sans-serif`;
     const label = (text: string, x: number, y: number, rot: number) => {
       g.save();
       g.translate(x, y);

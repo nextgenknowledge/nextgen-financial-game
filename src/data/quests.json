@@ -279,10 +279,38 @@
             "target": "ownHome"
           },
           "say": [
-            "Last one: a home of your own. Fin City's First-Home Grant pays for most of a Tiny House, so you pay $30. Then go inside and decorate it with furniture you buy."
+            "Last one: a home of your own. Fin City's First-Home Grant pays for most of a Tiny House, so you pay $30. Then we'll go and see it."
           ],
           "entrySay": [
-            "Last one: your very own house! The city helps new players, so a Tiny House costs only $30. Then you can go inside and decorate it!"
+            "Last one: your very own house! The city helps new players, so a Tiny House costs only $30. Then we'll go see it!"
+          ]
+        },
+        {
+          "id": "starter-visit-home",
+          "text": "Walk into your new Tiny House on Maple Lane",
+          "goal": {
+            "type": "event",
+            "target": "enterHome"
+          },
+          "say": [
+            "Your home is on Maple Lane, at the edge of the park. Follow the light and walk in. Furniture you buy gets delivered here, and you can arrange it however you like."
+          ],
+          "entrySay": [
+            "Let's go see your new house! Follow the sparkly light to Maple Lane and walk inside."
+          ]
+        },
+        {
+          "id": "starter-see-lots",
+          "text": "Check out the lots for sale on Maple Lane",
+          "goal": {
+            "type": "event",
+            "target": "viewPlot"
+          },
+          "say": [
+            "See the For Sale signs next door? Those are empty lots. Land can be bought with cash or a mortgage, and you can build a bigger house on it later. Walk up to a sign to see the prices."
+          ],
+          "entrySay": [
+            "See the For Sale signs? Those are empty lots you can buy one day and build a bigger house on. Walk up to a sign to see how much they cost!"
           ]
         }
       ],

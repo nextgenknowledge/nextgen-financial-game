@@ -63,7 +63,8 @@ const phonebox: PortalKind = {
     // Crown emblem
     for (const z of [0.05, -D - 0.05]) b.block(0, H - 0.05, z, 0.8, 0.5, 0.1, '#d9b04a');
   },
-  swirl: { y: 4.6, w: 3.4, h: 7.8, shape: 'rect', z: 0.1 },
+  // Fills the doorway: between the corner posts (±1.8) from the plinth (0.35) to the header (8.55)
+  swirl: { y: 4.45, w: 3.6, h: 8.2, shape: 'rect', z: 0.1 },
   plate: { y: 0.9, z: 1.4, w: 4.2 },
   colliders: [
     [-2.2, -2.3, 0.5, 4.6, 10],
@@ -110,7 +111,8 @@ const taxi: PortalKind = {
     b.block(2.2, 0.95, 1.5, 0.35, 4.8, 2.9, CAB);
     g.block(2.18, 3.6, 1.5, 0.37, 1.8, 2.3, DARK_GLASS);
   },
-  swirl: { y: 3.3, w: 3.5, h: 4.6, shape: 'rect', z: 0.08 },
+  // Between the door jambs (±1.8), from the sill (1.15) to the top of the frame (5.9)
+  swirl: { y: 3.52, w: 3.6, h: 4.75, shape: 'rect', z: 0.08 },
   plate: { y: 7.6, z: -2.6, w: 4.4 },
   colliders: [
     [0, -2.6, 13, 5.2, 6.5],
@@ -153,7 +155,8 @@ const tram: PortalKind = {
     // Door frame for the doorway
     for (const sx of [-1, 1]) b.block(sx * 1.6, 1.7, 0.02, 0.25, 3.6, 0.15, '#1b1b1b');
   },
-  swirl: { y: 3.3, w: 2.9, h: 3.3, shape: 'rect', z: 0.08 },
+  // Between the door posts (±1.48), from the floor (1.7) to the top of the frame (5.3)
+  swirl: { y: 3.5, w: 2.95, h: 3.6, shape: 'rect', z: 0.08 },
   plate: { y: 10.4, z: -2.3, w: 4.4 },
   colliders: [[0, -2.3, 12, 4.6, 9.5]],
 };
@@ -193,7 +196,8 @@ const ggTower: PortalKind = {
     // Red aviation lights on top
     for (const sx of [-1, 1]) b.block(sx * 3.8, H + 0.5, -1.2, 0.3, 0.3, 0.3, '#ff3b2f');
   },
-  swirl: { y: 4.1, w: 5.2, h: 8.0, shape: 'arch', z: -0.2 },
+  // Between the legs (±2.5 at the base) from the footing (0.4) up to the lowest brace (8.6)
+  swirl: { y: 4.5, w: 5.0, h: 8.2, shape: 'rect', z: -1.2 },
   plate: { y: 10.2, z: 0.2, w: 4.6 },
   colliders: [
     [-3.8, -1.2, 2.8, 2.8, 16],
@@ -222,7 +226,8 @@ const supertrees: PortalKind = {
     for (const sz of [-1, 1]) b.block(0, 9.55, -1 + sz * 0.75, 7.6, 0.9, 0.06, '#b9c2c4');
     g.block(0, 9.15, -1, 7.4, 0.05, 1.4, '#eaf6ff');
   },
-  swirl: { y: 4.2, w: 5.2, h: 7.6, shape: 'arch', z: -0.4 },
+  // Between the trunks (±3.1) up to the underside of the skyway (9.2)
+  swirl: { y: 4.55, w: 6.0, h: 9.0, shape: 'arch', z: -1 },
   plate: { y: 0.9, z: 1.6, w: 4.6 },
   colliders: [
     [-4.4, -1, 2.6, 2.6, 12],
@@ -248,7 +253,8 @@ const coin: PortalKind = {
     b.block(0, 0, -0.6, 9, 0.25, 4, '#cfc8b8', { tex: 'stone' });
     b.block(0, 0, 1.8, 6, 0.12, 1.2, '#cfc8b8', { tex: 'stone' });
   },
-  swirl: { y: 6.0, w: 7.6, h: 7.6, shape: 'circle', z: -0.6 },
+  // The hole inside the coin's rim (radius 3.13)
+  swirl: { y: 6.0, w: 6.25, h: 6.25, shape: 'circle', z: -0.6 },
   plate: { y: 12.9, z: -0.6, w: 4.6 },
   colliders: [
     [-4.9, -0.6, 1.9, 2.6, 8],

@@ -43,7 +43,9 @@
   --shadow-soft: 0 10px 30px rgba(11, 20, 51, 0.25);
   --ui-scale: 1;
   --font-body: 'FinIcons', 'Nunito', system-ui, sans-serif;
-  --font-pixel: 'FinIcons', 'Pixelify Sans', 'Nunito', system-ui, sans-serif;
+  /* Display font for headings and numbers. Was Pixelify Sans, whose 5 read like an S; Montserrat
+     keeps the bold game look and stays legible at every size. FinIcons draws the icons. */
+  --font-pixel: 'FinIcons', 'Montserrat', 'Nunito', system-ui, sans-serif;
 }
 
 html[data-cb='deuteranopia'],
@@ -1787,3 +1789,90 @@ button.item-card { cursor: pointer; }
 .st-perk b { font-size: 0.82rem; }
 .st-perk span:last-child { font-size: 0.68rem; font-weight: 700; color: #9db4e6; }
 @media (max-width: 560px) { .st-perks { grid-template-columns: repeat(2, 1fr); } }
+
+/* ═════════ HUD v3: wallet bar and rounded shortcut buttons ═════════ */
+.tl-row { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 8px; pointer-events: none; }
+.tl-row > * { pointer-events: auto; }
+.hud-wallet { display: flex; gap: 8px; }
+.wallet-pill {
+  display: inline-flex; align-items: center; gap: 8px; height: 42px; padding: 0 12px 0 8px; cursor: pointer;
+  background: rgba(11, 26, 58, 0.86); border: 2px solid rgba(157, 180, 230, 0.45); border-radius: 12px;
+  box-shadow: 0 3px 0 rgba(6, 18, 51, 0.55); color: #fff; font-family: var(--font-body);
+}
+.wallet-pill:hover { background: rgba(18, 59, 143, 0.92); }
+.wallet-pill:active { transform: translateY(2px); box-shadow: 0 1px 0 rgba(6, 18, 51, 0.55); }
+.wallet-icon { font-size: 1.2rem; line-height: 1; }
+.wallet-text { display: flex; flex-direction: column; align-items: flex-start; line-height: 1.05; }
+.wallet-label { white-space: nowrap; font-size: 0.6rem; font-weight: 900; letter-spacing: 0.08em; text-transform: uppercase; color: #9db4e6; }
+.wallet-text b { white-space: nowrap; font-family: var(--font-pixel); font-size: 1rem; font-weight: 800; color: #fff; }
+.wallet-text b.neg { color: #ff8a7a; }
+
+.quick-apps { gap: 8px; }
+.qa-btn {
+  position: relative; flex-direction: row; justify-content: flex-start; gap: 8px; height: 44px; min-width: 138px; padding: 0 14px 0 6px;
+  background: rgba(11, 26, 58, 0.82); border: 2px solid rgba(157, 180, 230, 0.4); border-radius: 12px;
+  box-shadow: 0 3px 0 rgba(6, 18, 51, 0.55); color: #fff; transition: background 0.1s, transform 0.08s;
+}
+.qa-btn:hover { background: rgba(18, 59, 143, 0.92); transform: translateX(2px); }
+.qa-btn:active { transform: translateY(2px); box-shadow: 0 1px 0 rgba(6, 18, 51, 0.55); }
+.qa-btn:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+.qa-icon { width: 32px; height: 32px; flex: none; display: flex; align-items: center; justify-content: center; font-size: 1.15rem; border-radius: 8px; }
+.qa-btn .qa-name { padding: 0; background: none; font-family: var(--font-body); font-size: 0.9rem; font-weight: 800; line-height: 1; color: #fff; }
+.qa-btn .dock-badge { position: absolute; top: -7px; right: -7px; }
+@media (max-height: 640px) {
+  .qa-btn { height: 38px; min-width: 124px; }
+  .qa-icon { width: 28px; height: 28px; font-size: 1rem; }
+  .qa-btn .qa-name { font-size: 0.82rem; }
+}
+/* iPad and other tablets */
+@media (pointer: coarse) and (min-width: 761px) {
+  .qa-btn { height: 46px; min-width: 144px; }
+  .wallet-pill { height: 44px; }
+}
+/* Upright phones: buttons and wallet on two lines, shortcuts below them */
+@media (max-width: 760px) {
+  .wallet-pill { height: 38px; padding: 0 10px 0 6px; }
+  .wallet-text b { font-size: 0.9rem; }
+  .wallet-label { font-size: 0.55rem; }
+}
+@media (pointer: coarse) and (max-width: 760px) {
+  .quick-apps { top: calc(118px + var(--safe-t, 0px)); gap: 6px; }
+  .qa-btn { height: 36px; min-width: 0; padding: 0 10px 0 4px; gap: 6px; }
+  .qa-icon { width: 28px; height: 28px; font-size: 1rem; }
+  .qa-btn .qa-name { display: inline; font-size: 0.74rem; }
+}
+/* Phones held sideways: compact, still labelled */
+@media (pointer: coarse) and (max-height: 500px) {
+  .quick-apps { top: calc(58px + var(--safe-t, 0px)); grid-template-columns: auto; gap: 5px; }
+  .qa-btn { height: 32px; min-width: 0; padding: 0 9px 0 3px; }
+  .qa-icon { width: 26px; height: 26px; font-size: 0.95rem; border-radius: 6px; }
+  .qa-btn .qa-name { display: inline; font-size: 0.7rem; }
+  .wallet-pill { height: 34px; }
+}
+
+/* Paper documents (pay stubs, statements) keep dark ink even inside the dark Advanced theme */
+.paystub, .doc-media,
+.activity-modal.adv .paystub, .activity-modal.adv .doc-media,
+.activity-modal .paystub, .activity-modal .doc-media { color: #14181f; }
+.activity-modal.adv :is(.paystub, .doc-media) .muted, :is(.paystub, .doc-media) .muted { color: #4a5260; }
+/* Phones held sideways (and any very short window): everything up top on two short rows, clear of the joystick */
+@media (max-height: 500px) {
+  .hud.classic .r-tl { overflow: visible; }
+  .tl-row { flex-wrap: nowrap; }
+  .wallet-pill { height: 34px; padding: 0 9px 0 5px; gap: 6px; }
+  .wallet-text b { font-size: 0.82rem; }
+  .wallet-label { font-size: 0.5rem; }
+  .quick-apps { display: flex; flex-direction: row; flex-wrap: nowrap; top: calc(54px + var(--safe-t, 0px)); left: calc(12px + var(--safe-l, 0px)); transform: none; gap: 6px; }
+  .qa-btn { height: 32px; min-width: 0; padding: 0 9px 0 3px; gap: 5px; }
+  .qa-icon { width: 26px; height: 26px; font-size: 0.95rem; border-radius: 6px; }
+  .qa-btn .qa-name { display: inline; font-size: 0.7rem; }
+  .corner-btn { height: 34px; }
+  .corner-btn.square { width: 34px; }
+}
+/* Touch screens (joystick showing): keep the shortcuts high up, clear of the joystick */
+@media (min-height: 501px) {
+  .hud.classic:has(.joystick) .quick-apps { top: calc(118px + var(--safe-t, 0px)); transform: none; }
+}
+@media (min-height: 501px) and (orientation: landscape) {
+  .hud.classic:has(.joystick) .quick-apps { top: calc(66px + var(--safe-t, 0px)); }
+}

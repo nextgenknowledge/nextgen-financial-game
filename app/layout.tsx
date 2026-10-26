@@ -4,8 +4,6 @@ import '@fontsource/nunito/600.css';
 import '@fontsource/nunito/700.css';
 import '@fontsource/nunito/800.css';
 import '@fontsource/nunito/900.css';
-import '@fontsource/pixelify-sans/500.css';
-import '@fontsource/pixelify-sans/700.css';
 // In-world signage typefaces (bundled, latin subset only)
 import '@fontsource/cinzel/latin-700.css';
 import '@fontsource/montserrat/latin-600.css';

@@ -83,7 +83,7 @@ export function Minimap() {
       g.fillStyle = 'rgba(20,24,31,0.75)';
       g.fillRect(W - 18, 4, 14, 14);
       g.fillStyle = '#fbf6ea';
-      g.font = "700 11px 'Pixelify Sans', monospace";
+      g.font = "800 11px 'Montserrat', 'Nunito', sans-serif";
       g.textAlign = 'center';
       g.textBaseline = 'middle';
       g.fillText('N', W - 11, 11.5);
