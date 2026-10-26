@@ -19,6 +19,7 @@ import type { Mood } from '@/game/effects';
 import { CITY_META } from '@/world/cities';
 import { useRide, getOff } from '@/world/ParkedVehicles';
 import { Minimap } from './Minimap';
+import { APPS } from '../phone/Phone';
 import { DecorPanel } from './DecorPanel';
 import { playSfx } from '@/engine/audio';
 import { Toasts } from '../Toasts';
@@ -58,6 +59,7 @@ export function HUD() {
       <div className="hud-region r-bl">
         <NarwhalDialog />
       </div>
+      <QuickApps />
       <TouchControls />
     </div>
   );
@@ -136,6 +138,40 @@ function MiniPhone() {
       <kbd>{keyLabel(keys.phone)}</kbd>
       {claimable > 0 && <span className="dock-badge">{claimable}</span>}
     </button>
+  );
+}
+
+/** The FinPhone apps players reach for most, one tap away on the middle left. */
+const QUICK_APPS = ['quests', 'bank', 'goals', 'portfolio', 'bag'];
+
+function QuickApps() {
+  const open = useUI((s) => s.open);
+  const panel = useUI((s) => s.panel);
+  const decor = useUI((s) => s.decor);
+  const claimable = useGame((s) => [...s.world!.progress.daily.list, ...s.world!.progress.weekly.list].filter((c) => !c.claimed).length);
+  if (panel || decor) return null;
+  return (
+    <nav className="quick-apps" aria-label="FinPhone shortcuts">
+      {QUICK_APPS.map((id) => APPS.find((a) => a.id === id)!).map((a) => (
+        <button
+          key={a.id}
+          className="qa-btn"
+          title={`Open ${a.name}`}
+          aria-label={`Open ${a.name}`}
+          onClick={() => {
+            playSfx('pop');
+            open({ type: 'phone', app: a.id });
+            act((d, fx) => recordEvent(d, fx, { type: 'menu', target: 'phone' }));
+          }}
+        >
+          <span className="qa-tile" style={{ background: a.color }}>
+            {a.icon}
+            {a.id === 'quests' && claimable > 0 && <span className="dock-badge">{claimable}</span>}
+          </span>
+          <span className="qa-name">{a.name}</span>
+        </button>
+      ))}
+    </nav>
   );
 }
 

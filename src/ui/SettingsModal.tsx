@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useSettings, KEY_ACTION_LABELS, DEFAULT_KEYS, keyLabel, type KeyAction } from '@/store/settings';
 import { Button, Modal, Toggle } from './common';
 import { setVolumes, playSfx } from '@/engine/audio';
-import { speak, speechAvailable } from './speech';
+import { englishVoices, onVoicesChanged, speak, speechAvailable } from './speech';
 import { useUI } from '@/store/ui';
 import { startTour } from './hud/HudTour';
 
@@ -13,6 +13,14 @@ export function SettingsModal({ onClose, extra }: { onClose: () => void; extra?:
   const s = useSettings();
   const [tab, setTab] = useState<Tab>('game');
   const [rebinding, setRebinding] = useState<KeyAction | null>(null);
+  const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
+
+  // Some browsers list their voices a moment after the page loads
+  useEffect(() => {
+    const load = () => setVoices(englishVoices());
+    load();
+    return onVoicesChanged(load);
+  }, []);
 
   useEffect(() => {
     setVolumes(s.music, s.sfx);
@@ -126,6 +134,26 @@ export function SettingsModal({ onClose, extra }: { onClose: () => void; extra?:
             <Row label="Read aloud automatically" hint={speechAvailable() ? 'Narwhal and questions are read out loud. Every text also has a 🔊 button.' : 'Read-aloud is not supported in this browser.'}>
               <Toggle value={s.readAloud ? 'on' : 'off'} options={[{ value: 'on', label: 'On' }, { value: 'off', label: 'Off' }]} onChange={(v) => s.set({ readAloud: v === 'on' })} />
             </Row>
+            {voices.length > 1 && (
+              <Row label="Voice" hint="Automatic picks the friendliest, most natural voice on this device.">
+                <select
+                  className="input"
+                  value={s.voice}
+                  onChange={(e) => {
+                    s.set({ voice: e.target.value });
+                    setTimeout(() => speak("Hi! I'm NextGen Narwhal. Let's grow your money!"), 0);
+                  }}
+                  aria-label="Reading voice"
+                >
+                  <option value="">Automatic ({voices[0].name})</option>
+                  {voices.map((v) => (
+                    <option key={v.voiceURI} value={v.voiceURI}>
+                      {v.name}
+                    </option>
+                  ))}
+                </select>
+              </Row>
+            )}
             <Row label={`Reading speed · ${s.speechRate.toFixed(1)}×`}>
               <div className="row">
                 <input type="range" min={0.6} max={1.4} step={0.1} value={s.speechRate} onChange={(e) => s.set({ speechRate: Number(e.target.value) })} aria-label="Reading speed" />
