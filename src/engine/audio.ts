@@ -7,7 +7,7 @@ import type { SfxName } from '@/game/effects';
 let ctx: AudioContext | null = null;
 let musicGain: GainNode | null = null;
 let sfxGain: GainNode | null = null;
-let musicVol = 0.5;
+let musicVol = 0.05;
 /** How loud the music track sits under the sound effects at full Music volume. */
 const MUSIC_LEVEL = 0.7;
 let sfxVol = 0.8;

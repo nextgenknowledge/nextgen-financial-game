@@ -70,7 +70,7 @@ export interface Settings {
 export const DEFAULT_SETTINGS: Settings = {
   quality: 'medium',
   autoQuality: true,
-  music: 0.5,
+  music: 0.05,
   sfx: 0.8,
   readAloud: false,
   speechRate: 1,
