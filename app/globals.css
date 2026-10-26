@@ -1772,3 +1772,18 @@ button.item-card { cursor: pointer; }
   .qa-tile { width: 40px; height: 40px; font-size: 1.2rem; }
   .qa-name { display: none; }
 }
+
+/* Starter deals: one cheap item per shop for new players */
+.starter-tag { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 6px; font-weight: 800; font-size: 0.85rem; }
+.starter-tag b { background: #22d38f; color: #0b1430; padding: 1px 6px; border: 2px solid #0b1430; font-size: 0.7rem; letter-spacing: 0.06em; }
+.starter-tag s { opacity: 0.6; }
+.starter-tag .mono { font-size: 1rem; }
+.starter-tag em { font-style: normal; font-weight: 700; font-size: 0.75rem; opacity: 0.75; flex-basis: 100%; }
+.starter-mini { background: #22d38f; color: #0b1430; padding: 0 5px; border: 2px solid #0b1430; font-weight: 900; font-size: 0.72rem; }
+.starter-card { border: 3px solid #22d38f !important; background: #effcf6 !important; }
+.st-perks { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 1rem; }
+.st-perk { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 2px; padding: 0.55rem 0.3rem; background: #0e1a3d; border: 3px solid #000; box-shadow: 3px 3px 0 #000; color: #e7eefc; }
+.st-perk-icon { font-size: 1.6rem; line-height: 1.1; }
+.st-perk b { font-size: 0.82rem; }
+.st-perk span:last-child { font-size: 0.68rem; font-weight: 700; color: #9db4e6; }
+@media (max-width: 560px) { .st-perks { grid-template-columns: repeat(2, 1fr); } }

@@ -19,6 +19,7 @@ import {
   buyPlot,
   buildHouse,
   buyCondo,
+  claimStarterHome,
   propertyOffer,
   currentPrice,
   upgradeProperty,
@@ -26,6 +27,8 @@ import {
 import { withSalesTax } from '@/game/finance/tax';
 import { available, cardAvailable } from '@/game/finance/accounts';
 import type { WorldState } from '@/game/types';
+import { STARTER, starterPrice } from '@/game/starter';
+import { StarterTag } from './StarterTag';
 
 const TITLES: Record<string, string> = {
   outfits: '🛍️ Outfit Shop',
@@ -141,15 +144,17 @@ function PetShop() {
         <ReadAloud text="A pet is a promise. Before adopting, check the monthly cost. It's added to your bills every month." />
       </div>
       <div className="item-grid">
-        {pets.items.map((p) => {
+        {[...pets.items].sort((a, b) => Number(starterPrice(w, 'pet', b.id) !== null) - Number(starterPrice(w, 'pet', a.id) !== null)).map((p) => {
           const lock = (p as { unlockLevel?: number }).unlockLevel;
+          const deal = starterPrice(w, 'pet', p.id);
           return (
             <div key={p.id} className="item-card">
               <span style={{ fontSize: '2.4rem' }}>{p.icon}</span>
               <b>{p.name}</b>
               <span className="tiny muted">{p.blurb}</span>
+              {deal !== null && <StarterTag was={currentPrice(w, p.adoption)} now={deal} />}
               <span className="small">
-                Adopt {money(currentPrice(w, p.adoption))} · <b>{money(p.monthly * w.market.priceIndex)}/month</b>
+                Adopt {money(deal ?? currentPrice(w, p.adoption))} · <b>{money(p.monthly * w.market.priceIndex)}/month</b>
               </span>
               <span className="tiny">≈ {money(p.monthly * 12 * w.market.priceIndex, { cents: false })} per year</span>
               <input className="input" style={{ minHeight: 34, padding: '0.2rem 0.5rem' }} placeholder="Name your pet" maxLength={16} value={names[p.id] ?? ''} onChange={(e) => setNames({ ...names, [p.id]: e.target.value })} />
@@ -167,9 +172,10 @@ function PetShop() {
 function AutoDealer({ card }: { card: boolean }) {
   const w = useGame((s) => s.world!);
   const entry = w.difficulty === 'entry';
-  const [sel, setSel] = useState(VEHICLES[0].id);
+  const [sel, setSel] = useState(starterPrice(w, 'ride', STARTER.ride.id) !== null ? STARTER.ride.id : VEHICLES[0].id);
   const v = VEHICLES.find((x) => x.id === sel)!;
   const o = vehicleOffer(w, v.id);
+  const deal = starterPrice(w, 'ride', v.id);
   const lock = v.unlockLevel && w.progress.level < v.unlockLevel;
   return (
     <div className="row wrap" style={{ gap: 14, alignItems: 'flex-start' }}>
@@ -179,7 +185,7 @@ function AutoDealer({ card }: { card: boolean }) {
             <span className="trade-icon">{x.icon}</span>
             <b className="small">{x.name}</b>
             <span className="small mono" style={{ marginLeft: 'auto' }}>
-              {money(currentPrice(w, x.price), { cents: false })}
+              {starterPrice(w, 'ride', x.id) !== null ? <span className="starter-mini">DEAL {money(STARTER.ride.price, { cents: false })}</span> : money(currentPrice(w, x.price), { cents: false })}
             </span>
           </button>
         ))}
@@ -189,6 +195,7 @@ function AutoDealer({ card }: { card: boolean }) {
           {v.icon} {v.name}
         </h3>
         <span className="small">{v.blurb}</span>
+        {deal !== null && <StarterTag was={o.price} now={deal} note="Pay in full only. One per player." />}
         <StatGrid>
           <Stat label="Price" value={money(o.price, { cents: false })} />
           <Stat label="Upkeep" value={`${money(v.upkeep)}/mo`} sub="Fuel, care, parking" tone="bad" />
@@ -204,7 +211,7 @@ function AutoDealer({ card }: { card: boolean }) {
                 <b>{card ? '💳 Pay by card' : '💵 Pay in full'}</b> <span className="small muted">Own it now, no interest.</span>
               </span>
               <Button variant="green" onClick={() => act((d, fx) => void buyVehicle(d, fx, v.id, card ? 'card' : 'cash'))}>
-                Buy {money(o.price, { cents: false })}
+                Buy {money(deal ?? o.price, { cents: false })}
               </Button>
             </div>
             {v.price >= 1000 && (
@@ -263,6 +270,18 @@ function RealEstate({ focusPlot }: { focusPlot?: string }) {
     <div>
       <Tabs value={tab} onChange={setTab} tabs={[{ id: 'land', label: '🟩 Land & houses' }, { id: 'condos', label: '🏙️ City condos' }, { id: 'upgrades', label: '🔨 Upgrades' }]} />
       {tab !== 'upgrades' && <DownPicker />}
+      {tab === 'land' && starterPrice(w, 'home', STARTER.home.id) !== null && (
+        <div className="card starter-card row between wrap" style={{ marginTop: 8 }}>
+          <div className="col" style={{ gap: 4 }}>
+            <b>🏠 Starter Tiny Home</b>
+            <span className="small">Fin City&apos;s First-Home Grant pays for most of a Tiny House on a free lot. Live in it and decorate it. It can&apos;t be rented out.</span>
+            <StarterTag was={currentPrice(w, (property.plots[0]?.price ?? 0) + (property.houses.find((h) => h.id === STARTER.home.id)?.buildCost ?? 0))} now={STARTER.home.price} note="One per player." />
+          </div>
+          <Button variant="green" onClick={() => act((d, fx) => void claimStarterHome(d, fx))}>
+            Claim for {money(STARTER.home.price, { cents: false })}
+          </Button>
+        </div>
+      )}
       {tab === 'land' && (
         <div className="col" style={{ gap: 8, marginTop: 8 }}>
           {property.plots.map((p) => {

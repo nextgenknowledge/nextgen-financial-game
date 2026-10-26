@@ -133,6 +133,8 @@ export interface OwnedProperty {
   houseId?: string; // built house on a plot
   /** Furniture standing in this home (houses and condos). Missing in older saves. */
   layout?: PlacedFurniture[];
+  /** Came from the starter deal (First-Home Grant): yours to live in, but it can't be rented out. */
+  starter?: boolean;
 }
 
 /** A furniture item (OwnedItem uid) placed in a home, in room coordinates (door at +z). */

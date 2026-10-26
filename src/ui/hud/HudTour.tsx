@@ -66,6 +66,13 @@ const STEPS = (k: Keys, touch: boolean): TourStep[] => [
     mood: 'talking',
   },
   {
+    target: 'player',
+    title: 'Make Fin City yours',
+    entry: 'Fin City is not just about learning. You can buy cool clothes, adopt a puppy that follows you, ride a scooter and even own a house you can decorate! Every shop has one super cheap starter deal, and I will take you to them after your first job.',
+    pro: 'The money you earn is yours to use: clothes, pets that follow you around, vehicles and homes you can furnish. Each shop has one starter deal so you can try them all early. I will walk you through them after your first job.',
+    mood: 'hyped',
+  },
+  {
     target: '.tl-buttons .corner-btn.square',
     title: 'Settings',
     entry: 'This gear opens Settings. You can turn on read-aloud, change the sound, or make the game run smoother.',

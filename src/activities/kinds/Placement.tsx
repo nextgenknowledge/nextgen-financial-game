@@ -1,7 +1,7 @@
 'use client';
 /**
- * Placement Test (Advanced). An adaptive test across every topic: a right answer moves you up a
- * level, a wrong one down. It ends with a level per topic and the lessons to start with.
+ * Placement Test (Advanced). Eight multiple-choice questions across the topics: a right answer
+ * moves you up a level, a wrong one down. It ends with a level per topic and the lessons to start with.
  */
 import { useMemo, useRef, useState } from 'react';
 import type { KindProps } from '../types';
@@ -19,11 +19,12 @@ import type { Topic } from '@/game/types';
 import { Bars, C, ProHead } from './pro/kit';
 
 const TOPICS: Topic[] = ['budgeting', 'banking', 'credit', 'investing', 'taxes', 'business', 'insurance', 'retirement', 'economics', 'interest', 'debt', 'earning'];
-const COUNT = 12;
+// Short on purpose: long tests lose players before they get to the game
+const COUNT = 8;
 
 export default function Placement({ onFinish, addReview, seed }: KindProps) {
   const rng = useMemo(() => makeRng(seed * 5 + 3), [seed]);
-  const bank = useMemo(() => QUESTION_BANK.filter((q) => q.difficulty === 'advanced'), []);
+  const bank = useMemo(() => QUESTION_BANK.filter((q) => q.difficulty === 'advanced' && q.type === 'mc'), []);
   const order = useMemo(() => rng.shuffle([...TOPICS]), [rng]);
   const [level, setLevel] = useState(3);
   const [i, setI] = useState(0);

@@ -19,6 +19,11 @@ const EVENT_SERVICE: Record<string, string | string[]> = {
   invest: 'brokerage',
   openCD: 'cds',
   insure: 'insurance',
+  // Starter deals (the "Make Fin City Yours" quest)
+  ownOutfit: 'shop:outfits',
+  ownPet: 'shop:pets',
+  ownRide: 'shop:vehicles',
+  ownHome: 'shop:property',
 };
 
 /** First building with a matching station, looking in the city you're in before anywhere else. */

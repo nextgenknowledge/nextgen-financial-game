@@ -103,6 +103,22 @@ export function NewGameFlow({ onCancel, onCreate }: { onCancel: () => void; onCr
             />
             <div className="st-note">Use a fun nickname, never your real name.</div>
 
+            <div className="st-perks" aria-label="What you can do in Fin City">
+              {[
+                ['🏠', 'Own a home', 'and decorate it'],
+                ['🐶', 'Adopt a pet', 'that follows you'],
+                ['🛵', 'Ride & drive', 'bikes to sports cars'],
+                ['👕', 'Style your look', 'from basics to legendary'],
+              ].map(([icon, title, sub]) => (
+                <div key={title} className="st-perk">
+                  <span className="st-perk-icon">{icon}</span>
+                  <b>{title}</b>
+                  <span>{sub}</span>
+                </div>
+              ))}
+            </div>
+            <div className="st-note">Every shop has one starter deal, so you can try them all early.</div>
+
             <button type="submit" className="st-big gold" disabled={!ready}>
               Next: choose your level ▶
             </button>
