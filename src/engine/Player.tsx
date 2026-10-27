@@ -34,6 +34,8 @@ export function PlayerController() {
   const anim = useRef<AnimState>({ speed: 0, grounded: true });
   const { camera, gl } = useThree();
   const drag = useRef<{ x: number; y: number; moved: number; id: number } | null>(null);
+  /** When the player last turned the camera by hand; auto-follow waits a moment after that. */
+  const lookedAt = useRef(0);
   const smoothedDist = useRef(rt.camDist);
 
   // Any key, click or scroll skips the arrival flyover
@@ -96,6 +98,7 @@ export function PlayerController() {
       if (d.moved < 4) return;
       const s = useSettings.getState();
       rt.camYaw -= dx * 0.006 * s.mouseSensitivity;
+      lookedAt.current = performance.now();
       rt.camPitch += dy * 0.0045 * s.mouseSensitivity * (s.invertY ? -1 : 1);
       rt.camPitch = Math.max(0.05, Math.min(1.25, rt.camPitch));
     };
@@ -250,6 +253,12 @@ export function PlayerController() {
       let d = rt.vehicle!.yaw + Math.PI - rt.camYaw;
       d = Math.atan2(Math.sin(d), Math.cos(d));
       rt.camYaw += d * Math.min(1, 2.5 * dt);
+    } else if (!vehicleCam && !paused && !drag.current && rt.playerSpeed > 1 && useSettings.getState().camFollow && performance.now() - lookedAt.current > 1500) {
+      // On foot the view eases round behind the player as they turn. Walking back toward the
+      // camera (more than ~110 degrees off) leaves it alone, so pressing back never spins the view.
+      let d = rt.playerRotY + Math.PI - rt.camYaw;
+      d = Math.atan2(Math.sin(d), Math.cos(d));
+      if (Math.abs(d) < 1.9) rt.camYaw += d * Math.min(1, 1.6 * dt);
     }
     const desired = vehicleCam ? Math.max(rt.camDist, CHASE_DIST[rt.vehicle!.type]) : rt.camDist;
     tmp.set(Math.sin(rt.camYaw) * Math.cos(rt.camPitch), Math.sin(rt.camPitch), Math.cos(rt.camYaw) * Math.cos(rt.camPitch));

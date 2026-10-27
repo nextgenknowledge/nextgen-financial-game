@@ -198,6 +198,9 @@ export function SettingsModal({ onClose, extra }: { onClose: () => void; extra?:
             <Row label={`Mouse / touch look speed · ${s.mouseSensitivity.toFixed(1)}×`}>
               <input type="range" min={0.3} max={2.5} step={0.1} value={s.mouseSensitivity} onChange={(e) => s.set({ mouseSensitivity: Number(e.target.value) })} aria-label="Look speed" />
             </Row>
+            <Row label="Camera turns with me" hint="When you turn while walking, the view swings round behind you. Off: you steer the camera yourself.">
+              <Toggle value={s.camFollow ? 'on' : 'off'} options={[{ value: 'on', label: 'On' }, { value: 'off', label: 'Off' }]} onChange={(v) => s.set({ camFollow: v === 'on' })} />
+            </Row>
             <Row label="Invert up/down look">
               <Toggle value={s.invertY ? 'on' : 'off'} options={[{ value: 'on', label: 'On' }, { value: 'off', label: 'Off' }]} onChange={(v) => s.set({ invertY: v === 'on' })} />
             </Row>

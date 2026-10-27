@@ -65,6 +65,8 @@ export interface Settings {
   monthMinutes: number;
   mouseSensitivity: number;
   invertY: boolean;
+  /** The camera swings round behind the player as they turn while walking. */
+  camFollow: boolean;
   keys: Record<KeyAction, string>;
   showFps: boolean;
 }
@@ -85,6 +87,7 @@ export const DEFAULT_SETTINGS: Settings = {
   monthMinutes: 8,
   mouseSensitivity: 1,
   invertY: false,
+  camFollow: true,
   keys: DEFAULT_KEYS,
   showFps: false,
 };
