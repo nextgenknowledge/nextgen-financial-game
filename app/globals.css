@@ -1556,7 +1556,9 @@ button.item-card { cursor: pointer; }
 .map-corner { position: relative; display: flex; flex-direction: column; align-items: center; }
 .hud.classic .minimap { width: 168px; height: 168px; border-radius: 50%; border: 4px solid #1d4fd6; box-shadow: 0 0 0 3px #061233, 4px 4px 0 3px rgba(6, 18, 51, 0.6); background: #2b3138; }
 .hud.classic .minimap canvas { width: 100%; height: 100%; border-radius: 50%; }
-.map-corner-name { margin-top: -14px; z-index: 1; padding: 0.15rem 0.55rem; background: #0b1a3a; border: 2px solid #3d8bff; color: #fff; font-size: 0.68rem; font-weight: 900; letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap; pointer-events: none; }
+.map-corner-name { margin-top: -14px; z-index: 1; display: flex; flex-direction: column; align-items: center; padding: 0.15rem 0.55rem; background: #0b1a3a; border: 2px solid #3d8bff; color: #fff; font-family: inherit; font-size: 0.68rem; font-weight: 900; letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap; pointer-events: auto; cursor: pointer; }
+.map-corner-name:hover { background: #123b8f; }
+.map-corner-hint { font-size: 0.58rem; font-weight: 800; letter-spacing: 0.02em; text-transform: none; color: #ffd23f; }
 
 /* Compass, arrival card and messages stack under the map */
 .hud.classic .hud-compass { border-radius: 0; padding: 0.15rem 0.5rem; font-size: 0.8rem; background: rgba(11, 26, 58, 0.85); }
@@ -1776,3 +1778,8 @@ button.item-card { cursor: pointer; }
 /* Outfit shop: money that is still in savings can't pay at the till */
 .savings-note { display: block; max-width: 100%; padding: 2px 6px; border: 2px solid #b8860b; background: #fff6d6; color: #5a4300; font-weight: 700; text-align: center; }
 .savings-note.warn { border-color: #e1553f; background: #ffe4df; color: #7a1d10; }
+
+/* Map: each place has a jump-to-door button and a Show the way button */
+.map-place-row { display: flex; align-items: stretch; gap: 6px; }
+.map-place-row .map-place { flex: 1; min-width: 0; }
+.map-place-row > .btn { flex-shrink: 0; align-self: center; }

@@ -20,6 +20,7 @@ import { CITY_META } from '@/world/cities';
 import { useRide, getOff } from '@/world/ParkedVehicles';
 import { Minimap } from './Minimap';
 import { APPS } from '../phone/Phone';
+import { condoDef } from '@/game/sim/catalog';
 import { DecorPanel } from './DecorPanel';
 import { playSfx } from '@/engine/audio';
 import { Toasts } from '../Toasts';
@@ -60,6 +61,7 @@ export function HUD() {
         <NarwhalDialog />
       </div>
       <QuickApps />
+      <NavTips />
       <TouchControls />
     </div>
   );
@@ -96,10 +98,15 @@ function TopLeftButtons() {
 function MapCorner() {
   const location = useScene((s) => s.location);
   const interior = useScene((s) => s.interior);
+  const open = useUI((s) => s.open);
   return (
     <div className="map-corner">
       <Minimap />
-      <span className="map-corner-name">{interior?.startsWith('home:') ? 'Home' : interior ? 'Inside' : CITY_META[location].name}</span>
+      {/* The name doubles as a clear way into the full map, where every place has Show the way */}
+      <button type="button" className="map-corner-name" onClick={() => open({ type: 'map' })}>
+        {interior?.startsWith('home:') ? 'Home' : interior ? 'Inside' : CITY_META[location].name}
+        <span className="map-corner-hint">{forDevice('Click for the map')}</span>
+      </button>
     </div>
   );
 }
@@ -139,6 +146,38 @@ function MiniPhone() {
       {claimable > 0 && <span className="dock-badge">{claimable}</span>}
     </button>
   );
+}
+
+/**
+ * First-time tips for getting around: what a portal does, how to ride your vehicle, how to find
+ * your home, and how to find your way in a new city. Each plays once per world.
+ */
+function NavTips() {
+  useEffect(() => {
+    const tip = (flag: string, text: string) => {
+      const w = useGame.getState().world;
+      if (!w || w.progress.flags[flag] || useUI.getState().tour) return;
+      act((d) => void (d.progress.flags[flag] = true));
+      useUI.getState().sayNarwhal(text, 'confident');
+    };
+    const id = setInterval(() => {
+      const w = useGame.getState().world;
+      const ui = useUI.getState();
+      if (!w || ui.panel || ui.narwhal.length || ui.loading.active || rt.flyover) return;
+      const near = rt.nearTrigger?.kind;
+      const scene = useScene.getState();
+      if (near === 'portal')
+        tip('tipPortal', 'This portal takes you to another city. Press E to travel. Open the Map any time to see every city, jump to any building, or pick Show the way and follow the gold trail.');
+      else if (near === 'vehicle')
+        tip('tipRide', 'Your ride is here! Press E to hop on. W A S D or the arrow keys drive, and E gets you off again. Lost it? Open My Stuff in your FinPhone and tap Bring it here.');
+      else if (w.assets.properties.some((pr) => (pr.houseId || condoDef(pr.itemId)) && !pr.rented))
+        tip('tipHome', 'You own a home now! To get there, open My Stuff in your FinPhone, go to Property, and tap Show the way. Its front door says Go home.');
+      else if (scene.location !== 'park' && !scene.interior)
+        tip('tipCity', 'New city! The portal back to Fin-City Park is on your minimap. Tap the minimap to open the Map, then pick any building and tap Show the way.');
+    }, 1000);
+    return () => clearInterval(id);
+  }, []);
+  return null;
 }
 
 /** The FinPhone apps players reach for most, one tap away on the middle left. */
