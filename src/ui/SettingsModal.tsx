@@ -68,6 +68,9 @@ export function SettingsModal({ onClose, extra }: { onClose: () => void; extra?:
             <Row label="Narwhal hints" hint="Narwhal gives tips and points the way.">
               <Toggle value={s.hints ? 'on' : 'off'} options={[{ value: 'on', label: 'On' }, { value: 'off', label: 'Off' }]} onChange={(v) => s.set({ hints: v === 'on' })} />
             </Row>
+            <Row label="Narwhal follows me" hint="Off: Narwhal stops walking beside you but still gives every instruction from the corner of the screen.">
+              <Toggle value={s.narwhalFollow ? 'on' : 'off'} options={[{ value: 'on', label: 'On' }, { value: 'off', label: 'Off' }]} onChange={(v) => s.set({ narwhalFollow: v === 'on' })} />
+            </Row>
             <Row label="Month length" hint="One day/night cycle is one Fin City month.">
               <Toggle
                 value={String(s.monthMinutes)}

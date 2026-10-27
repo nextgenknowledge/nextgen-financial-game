@@ -60,6 +60,8 @@ export interface Settings {
   colorblind: 'off' | 'deuteranopia' | 'protanopia' | 'tritanopia';
   reducedMotion: boolean;
   hints: boolean;
+  /** Narwhal walks beside the player in the world. Off keeps the instructions but not the companion. */
+  narwhalFollow: boolean;
   monthMinutes: number;
   mouseSensitivity: number;
   invertY: boolean;
@@ -79,6 +81,7 @@ export const DEFAULT_SETTINGS: Settings = {
   colorblind: 'off',
   reducedMotion: false,
   hints: true,
+  narwhalFollow: true,
   monthMinutes: 8,
   mouseSensitivity: 1,
   invertY: false,
