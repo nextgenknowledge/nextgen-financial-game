@@ -36,6 +36,8 @@ export function PlayerController() {
   const drag = useRef<{ x: number; y: number; moved: number; id: number } | null>(null);
   /** When the player last turned the camera by hand; auto-follow waits a moment after that. */
   const lookedAt = useRef(0);
+  /** Seconds a click-to-walk has made no progress. */
+  const stuck = useRef(0);
   const smoothedDist = useRef(rt.camDist);
 
   // Any key, click or scroll skips the arrival flyover
@@ -194,10 +196,27 @@ export function PlayerController() {
       const rx = Math.cos(rt.camYaw);
       const rz = -Math.sin(rt.camYaw);
       dir.set(fx * iz + rx * ix, 0, fz * iz + rz * ix);
-      if (dir.lengthSq() > 0.01) rt.walkTarget = null;
-      else if (rt.walkTarget) {
-        dir.set(rt.walkTarget.x - p.x, 0, rt.walkTarget.z - p.z);
-        if (dir.length() < 0.6) rt.walkTarget = null;
+      if (dir.lengthSq() > 0.01) {
+        rt.walkTarget = null;
+        rt.walkPath = null;
+      } else if (rt.walkTarget) {
+        // Follow the route's turning points, then the target itself
+        const path = rt.walkPath;
+        while (path && path.length > 1 && Math.hypot(path[0][0] - p.x, path[0][1] - p.z) < 0.5) path.shift();
+        const [nx, nz] = path && path.length ? path[0] : [rt.walkTarget.x, rt.walkTarget.z];
+        dir.set(nx - p.x, 0, nz - p.z);
+        if (Math.hypot(rt.walkTarget.x - p.x, rt.walkTarget.z - p.z) < 0.6) {
+          rt.walkTarget = null;
+          rt.walkPath = null;
+          dir.set(0, 0, 0);
+        }
+        // Pressed against something for a moment (a door, a person in the way): give up
+        stuck.current = rt.playerSpeed < 0.25 ? stuck.current + dt : 0;
+        if (stuck.current > 0.9) {
+          rt.walkTarget = null;
+          rt.walkPath = null;
+          stuck.current = 0;
+        }
       }
       const len = Math.min(1, dir.length());
       if (len > 0.01) dir.normalize();

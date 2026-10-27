@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useMemo, useRef } from 'react';
+import { walkTo } from '@/engine/walk';
 import { useFrame, type ThreeEvent } from '@react-three/fiber';
 import * as THREE from 'three';
 import { useGame } from '@/store/game';
@@ -109,7 +110,7 @@ export function HomeScene({ propUid }: { propUid: string }) {
   const onClick = (e: ThreeEvent<MouseEvent>) => {
     if (e.delta > 6) return;
     e.stopPropagation();
-    rt.walkTarget = new THREE.Vector3(e.point.x, 0, e.point.z);
+    walkTo(e.point.x, e.point.z);
   };
 
   if (!home) return null;

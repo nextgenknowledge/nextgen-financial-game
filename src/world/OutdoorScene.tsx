@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useMemo, useRef } from 'react';
+import { walkTo } from '@/engine/walk';
 import { useFrame, type ThreeEvent } from '@react-three/fiber';
 import * as THREE from 'three';
 import type { CityDef } from '@/game/content';
@@ -73,7 +74,7 @@ export function OutdoorScene({ def, difficulty }: { def: CityDef; difficulty: Di
   const onGroundClick = (e: ThreeEvent<MouseEvent>) => {
     if (e.delta > 6 || rt.vehicle) return;
     e.stopPropagation();
-    rt.walkTarget = new THREE.Vector3(e.point.x, 0, e.point.z);
+    walkTo(e.point.x, e.point.z);
   };
 
   const crowdScale = quality === 'low' ? 0.4 : quality === 'medium' ? 0.7 : 1;
