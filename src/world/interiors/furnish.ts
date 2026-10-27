@@ -37,6 +37,8 @@ export interface Actor {
 export interface InteriorKind {
   /** Put service counters along the side walls (rooms with a stage or dais at the back). */
   sideStations?: boolean;
+  /** The first counter stands on its own in the middle of the room, facing the door (the Welcome Center's Orientation desk). */
+  centreDesk?: boolean;
   /** Room size (w × d × h). */
   size: [number, number, number];
   floor: string; // atlas layer
@@ -1207,6 +1209,7 @@ export const KINDS: Record<string, InteriorKind> = {
     },
   },
   atrium: {
+    centreDesk: true,
     size: [36, 30, 11],
     floor: 'marble',
     floorColor: '#ece6da',
@@ -1216,11 +1219,13 @@ export const KINDS: Record<string, InteriorKind> = {
     windows: true,
     furnish: (k) => {
       const { b, g, zone, w, d, h, rng } = k;
-      // Grand atrium: central info screens, a tree, benches, mezzanine balcony
-      b.geom(cylinder(2.2, 2.4, 0.6, 20), trs(0, 0.3, zone.z0 + 4), '#cfc6b2', 'stone');
-      b.geom(cylinder(0.25, 0.35, 3, 8), trs(0, 2, zone.z0 + 4), '#6b5340', 'bark');
-      for (let i = 0; i < 9; i++) b.geom(sphere(1.0, 8, 6), trs(Math.cos(i) * 1.1, 4 + (i % 3) * 0.6, zone.z0 + 4 + Math.sin(i) * 1.1), '#4a7a3a', 'leaves');
-      k.solids.push({ x: 0, z: zone.z0 + 4, w: 4.6, d: 4.6, h: 1 });
+      // Grand atrium: the Orientation desk in the middle with a planted tree behind it,
+      // info screens, benches and a mezzanine balcony
+      const tz = -d / 2 + 5;
+      b.geom(cylinder(1.8, 2.0, 0.6, 20), trs(0, 0.3, tz), '#cfc6b2', 'stone');
+      b.geom(cylinder(0.25, 0.35, 3, 8), trs(0, 2, tz), '#6b5340', 'bark');
+      for (let i = 0; i < 9; i++) b.geom(sphere(1.0, 8, 6), trs(Math.cos(i) * 1.1, 4 + (i % 3) * 0.6, tz + Math.sin(i) * 1.1), '#4a7a3a', 'leaves');
+      k.solids.push({ x: 0, z: tz, w: 3.8, d: 3.8, h: 1 });
       for (const side of [-1, 1]) {
         screenWall(b, g, rng, side * (w / 2 - 0.3), 3.2, 0, 6, 2.6, side > 0 ? -Math.PI / 2 : Math.PI / 2, ['#3a8fd0', '#2fd07a', '#f4f6fa']);
         for (let z = zone.z0 + 1.5; z < zone.z1 - 1; z += 3.2) {
