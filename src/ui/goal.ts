@@ -47,11 +47,26 @@ export function showTheWay(city: LocationId, triggerId: string, label: string) {
   updateGoalMarker();
 }
 
+/** What the current guide route was planned from, so it is only re-planned when that changes. */
+let planned = { goal: '', scene: '', x: 0, z: 0, at: 0 };
+
 export function updateGoalMarker() {
   setGoal();
-  // Route the guide around buildings to the goal
+  // Route the guide around buildings to the goal. A* over a whole city costs a few milliseconds
+  // (much more on a Chromebook), so re-plan only when the goal or scene changes, the player has
+  // wandered off the old route's start, or every few seconds.
   const g = rt.goal;
-  rt.guidePath = g ? findPath(rt.collision, rt.sceneKey, rt.player.x, rt.player.z, g.x, g.z) : null;
+  if (!g) {
+    rt.guidePath = null;
+    planned.goal = '';
+    return;
+  }
+  const key = `${g.id}@${g.x.toFixed(1)},${g.z.toFixed(1)}`;
+  const now = performance.now();
+  const moved = Math.hypot(rt.player.x - planned.x, rt.player.z - planned.z);
+  if (key === planned.goal && rt.sceneKey === planned.scene && rt.guidePath && moved < 8 && now - planned.at < 5000) return;
+  rt.guidePath = findPath(rt.collision, rt.sceneKey, rt.player.x, rt.player.z, g.x, g.z);
+  planned = { goal: key, scene: rt.sceneKey, x: rt.player.x, z: rt.player.z, at: now };
 }
 
 /** Leads to a place picked with "Show me the way" (Map, My Stuff). True while it is steering. */

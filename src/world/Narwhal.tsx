@@ -140,6 +140,8 @@ export function NarwhalModel({ mood = 'confident', flap = true, talking = false 
   );
 }
 
+const scratch = new THREE.Vector3();
+
 /** Narwhal follows the player, leads toward the current goal, and faces you while talking. */
 export function NarwhalGuide() {
   const g = useRef<THREE.Group>(null);
@@ -152,7 +154,7 @@ export function NarwhalGuide() {
     const group = g.current;
     if (!group) return;
     const p = rt.player;
-    const target = new THREE.Vector3();
+    const target = scratch;
     const goal = hints ? rt.goal : null;
     if (goal && !line) {
       // Lead the way along the walking route (round buildings, to the door the beacon marks)

@@ -113,6 +113,10 @@ const vC = new THREE.Vector3();
 const UP = new THREE.Vector3(0, 1, 0);
 
 const mBase = new THREE.Matrix4();
+// Scratch objects for the per-walker transform, so the crowd allocates nothing per frame
+const vPos = new THREE.Vector3();
+const vScale = new THREE.Vector3();
+const qYaw = new THREE.Quaternion();
 const mPart = new THREE.Matrix4();
 const mRot = new THREE.Matrix4();
 const mOff = new THREE.Matrix4();
@@ -220,7 +224,7 @@ export function Crowd({ loops, count, seed = 1 }: { loops: [number, number][][];
       const swing = moving ? Math.sin(w.phase) * (jog ? 0.95 : 0.7) : 0;
       const bob = moving ? Math.abs(Math.sin(w.phase)) * (jog ? 0.12 : 0.05) : 0;
       const hold = raining && w.umbrella;
-      mBase.compose(new THREE.Vector3(w.x, bob, w.z), new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), w.yaw), new THREE.Vector3(w.scale, w.scale, w.scale));
+      mBase.compose(vPos.set(w.x, bob, w.z), qYaw.setFromAxisAngle(UP, w.yaw), vScale.setScalar(w.scale));
       PARTS.forEach((p, k) => {
         const mesh = refs.current[k];
         if (!mesh) return;

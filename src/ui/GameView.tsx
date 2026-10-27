@@ -124,7 +124,10 @@ export default function GameView() {
 
   // Autosave every 30 s and when the tab is hidden
   useEffect(() => {
-    const id = setInterval(() => saveNow(true), 30000);
+    // Autosave every 30 s; the save-slot screenshot (a full extra render plus a JPEG encode, a
+    // visible hitch on slow Chromebooks) is only retaken every 5 minutes
+    let n = 0;
+    const id = setInterval(() => saveNow(++n % 10 === 0), 30000);
     const vis = () => document.visibilityState === 'hidden' && saveNow(false);
     document.addEventListener('visibilitychange', vis);
     window.addEventListener('beforeunload', vis);

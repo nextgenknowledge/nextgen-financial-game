@@ -126,6 +126,8 @@ function detectDefaults(): Partial<Settings> {
   // School Chromebooks and older laptops: integrated or mobile GPUs start on Low
   const gpu = gpuName();
   if (/swiftshader|llvmpipe|mali|adreno|powervr|intel\(r\) (hd|uhd) graphics [0-9]{3}\b|intel\(r\) hd graphics$|celeron|pentium/i.test(gpu)) out.quality = 'low';
+  // Every Chromebook starts on Low; players with a fast one can raise it in Settings
+  if (/\bCrOS\b/.test(navigator.userAgent)) out.quality = 'low';
   return out;
 }
 
