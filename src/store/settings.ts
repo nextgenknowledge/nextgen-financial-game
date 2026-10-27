@@ -60,9 +60,13 @@ export interface Settings {
   colorblind: 'off' | 'deuteranopia' | 'protanopia' | 'tritanopia';
   reducedMotion: boolean;
   hints: boolean;
+  /** Narwhal walks beside the player in the world. Off keeps the instructions but not the companion. */
+  narwhalFollow: boolean;
   monthMinutes: number;
   mouseSensitivity: number;
   invertY: boolean;
+  /** The camera swings round behind the player as they turn while walking. */
+  camFollow: boolean;
   keys: Record<KeyAction, string>;
   showFps: boolean;
 }
@@ -79,9 +83,11 @@ export const DEFAULT_SETTINGS: Settings = {
   colorblind: 'off',
   reducedMotion: false,
   hints: true,
+  narwhalFollow: true,
   monthMinutes: 8,
   mouseSensitivity: 1,
   invertY: false,
+  camFollow: true,
   keys: DEFAULT_KEYS,
   showFps: false,
 };
@@ -120,6 +126,8 @@ function detectDefaults(): Partial<Settings> {
   // School Chromebooks and older laptops: integrated or mobile GPUs start on Low
   const gpu = gpuName();
   if (/swiftshader|llvmpipe|mali|adreno|powervr|intel\(r\) (hd|uhd) graphics [0-9]{3}\b|intel\(r\) hd graphics$|celeron|pentium/i.test(gpu)) out.quality = 'low';
+  // Every Chromebook starts on Low; players with a fast one can raise it in Settings
+  if (/\bCrOS\b/.test(navigator.userAgent)) out.quality = 'low';
   return out;
 }
 

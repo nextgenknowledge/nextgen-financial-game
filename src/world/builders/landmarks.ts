@@ -64,6 +64,8 @@ export function buildLandmark(b: Builders, lm: LandmarkDef, rng: Rng) {
         const x = Math.cos(a) * 15.5;
         const z = Math.sin(a) * 15.5;
         b.solid.box(lm.pos[0] + x, 0.25, lm.pos[1] + z, 3.2, 0.5, 1.6, '#8a6a4a', { rotY: -a + Math.PI / 2 });
+        // Colliders are axis-aligned, so a slightly smaller square stands in for the angled bed
+        b.colliders.push({ cx: lm.pos[0] + x, cz: lm.pos[1] + z, w: 2.2, d: 2.2, minY: 0, maxY: 0.85, rotY: 0 });
         for (let k = 0; k < 6; k++) {
           const t = (k - 2.5) * 0.5;
           b.solid.box(lm.pos[0] + x + Math.cos(a + Math.PI / 2) * t, 0.65, lm.pos[1] + z + Math.sin(a + Math.PI / 2) * t, 0.35, 0.35, 0.35, cols[(i + k) % cols.length]);

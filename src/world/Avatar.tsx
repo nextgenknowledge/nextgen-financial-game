@@ -71,6 +71,38 @@ function cloth(it: OutfitItem | undefined, fallback: string, pattern = 'cotton')
 
 const SUITS = new Set(['suit', 'threepiece', 'tux', 'blazer']);
 const SHORT_SLEEVE = new Set(['tee', 'polo', 'jersey']);
+/** Hats that cover the crown of the head; under them only the hair below the hat shows. */
+const COVERING_HATS = new Set(['cap', 'beanie', 'tophat', 'gradcap', 'helmet', 'bucket', 'fedora']);
+/**
+ * How far hats that sit on the hair are raised for the big hairstyles (2 curly, 4 bun, 5 spiky),
+ * so they rest on the hair instead of vanishing into it. A crown is a ring, so a bun or spikes
+ * through the middle of it look right and only the wide curly style needs a lift.
+ */
+const ONTOP_LIFT: Record<string, Record<number, number>> = {
+  crown: { 2: 0.21 },
+  party: { 2: 0.23, 4: 0.3, 5: 0.26 },
+  bow: { 2: 0.17 },
+  headphones: { 2: 0.17 },
+};
+
+/**
+ * Hair worn under a covering hat: just what shows below it (the back, and the sides for longer
+ * and curly styles), kept under the brim so nothing pokes through the hat.
+ */
+function HatHair({ style, color }: { style: number; color: string }) {
+  const m = mat(color);
+  if (style === 3) return null; // buzz: all under the hat
+  const sides = style === 1 || style === 2;
+  const w = style === 2 ? 0.76 : 0.66;
+  return (
+    <group>
+      <mesh geometry={rbox(w, style === 1 ? 0.6 : 0.3, 0.14, 0.05)} material={m} position={[0, style === 1 ? 0.27 : 0.42, -0.28]} />
+      {sides && <mesh geometry={rbox(0.1, style === 1 ? 0.46 : 0.26, 0.5, 0.04)} material={m} position={[w / 2 - 0.02, style === 1 ? 0.3 : 0.42, -0.04]} />}
+      {sides && <mesh geometry={rbox(0.1, style === 1 ? 0.46 : 0.26, 0.5, 0.04)} material={m} position={[-(w / 2 - 0.02), style === 1 ? 0.3 : 0.42, -0.04]} />}
+    </group>
+  );
+}
+
 function Hair({ style, color }: { style: number; color: string }) {
   const m = mat(color);
   switch (style) {
@@ -123,9 +155,17 @@ function Hair({ style, color }: { style: number; color: string }) {
   }
 }
 
-function Hat({ id }: { id: string | null }) {
+function Hat({ id, hairStyle = 0 }: { id: string | null; hairStyle?: number }) {
   const it = id ? OUTFIT_BY_ID.get(id) : undefined;
   if (!it) return null;
+  const lift = ONTOP_LIFT[it.style ?? '']?.[hairStyle] ?? 0;
+  if (lift > 0) {
+    return (
+      <group position={[0, lift, 0]} scale={it.style === 'headphones' && hairStyle === 2 ? [1.15, 1, 1.1] : 1}>
+        <Hat id={id} />
+      </group>
+    );
+  }
   const c = it.color ?? '#e1553f';
   const c2 = it.color2 ?? '#ffffff';
   switch (it.style) {
@@ -622,6 +662,8 @@ export function Avatar({ config, anim, scale = 1 }: { config: AvatarConfig; anim
   const jacket = !!top && SUITS.has(top.style);
   const ribCuff = top && (top.style === 'bomber' || top.style === 'varsity') ? fabric('knit', top.style === 'varsity' ? top.color2 ?? '#f4f1ea' : '#2a2a30') : null;
   const headAcc = acc && ['glasses', 'shades', 'headset'].includes(acc.style) ? acc : undefined;
+  const hatStyle = config.hat ? OUTFIT_BY_ID.get(config.hat)?.style : undefined;
+  const hatCovers = !!hatStyle && COVERING_HATS.has(hatStyle);
   const bodyAcc = acc && ['backpack', 'scarf', 'chain', 'lanyard'].includes(acc.style) ? acc : undefined;
   const handAcc = acc && ['watch', 'briefcase'].includes(acc.style) ? acc : undefined;
 
@@ -795,8 +837,8 @@ export function Avatar({ config, anim, scale = 1 }: { config: AvatarConfig; anim
               {/* Corners of the mouth turned up a touch: a relaxed, friendly expression */}
               <mesh geometry={rbox(0.03, 0.02, 0.02, 0.006)} material={m.mouth} position={[0.065, 0.152, 0.31]} />
               <mesh geometry={rbox(0.03, 0.02, 0.02, 0.006)} material={m.mouth} position={[-0.065, 0.152, 0.31]} />
-              <Hair style={config.hairStyle} color={config.hair} />
-              <Hat id={config.hat} />
+              {hatCovers ? <HatHair style={config.hairStyle} color={config.hair} /> : <Hair style={config.hairStyle} color={config.hair} />}
+              <Hat id={config.hat} hairStyle={config.hairStyle} />
               <HeadAccessory it={headAcc} />
             </group>
           </group>

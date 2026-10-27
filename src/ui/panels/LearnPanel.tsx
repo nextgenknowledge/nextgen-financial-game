@@ -299,6 +299,14 @@ function Tutorials() {
           <li>Vehicles: W/S gas & reverse, A/D steer, Space brake (fly up in a plane), Shift boost (fly down), E get off.</li>
         </ul>
       </Section>
+      <Section title="Getting around">
+        <ul className="small">
+          <li>Lost? Click the minimap (top right) to open the Map. Pick any building and choose Show the way: Narwhal and a gold trail lead you there, even in another city.</li>
+          <li>Other cities: walk into a portal and press E, or open the Map and choose Travel. Every city has a portal back to Fin-City Park.</li>
+          <li>Your home: FinPhone, My Stuff, Property, then Show the way. The front door says Go home.</li>
+          <li>Your vehicle: FinPhone, My Stuff, Rides, then Bring it here. Walk up to it and press E to ride, and E again to get off.</li>
+        </ul>
+      </Section>
     </div>
   );
 }

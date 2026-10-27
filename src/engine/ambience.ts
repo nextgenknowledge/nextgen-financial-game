@@ -23,7 +23,17 @@ let lastHour = -1;
 let stepT = 0;
 let lastPos = { x: 0, z: 0 };
 
+const noiseCache = new WeakMap<AudioContext, { white?: AudioBuffer; brown?: AudioBuffer }>();
+
+/** Three seconds of white or brown noise, made once per audio context and shared by every sound. */
 function noiseBuffer(ctx: AudioContext, brown: boolean) {
+  let c = noiseCache.get(ctx);
+  if (!c) noiseCache.set(ctx, (c = {}));
+  const key = brown ? 'brown' : 'white';
+  return (c[key] ??= makeNoise(ctx, brown));
+}
+
+function makeNoise(ctx: AudioContext, brown: boolean) {
   const len = ctx.sampleRate * 3;
   const buf = ctx.createBuffer(1, len, ctx.sampleRate);
   const d = buf.getChannelData(0);

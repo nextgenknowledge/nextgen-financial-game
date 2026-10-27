@@ -22,6 +22,11 @@ export function kindFor(b: BuildingDef): InteriorKind {
 }
 
 export function layoutFor(n: number, kind: InteriorKind): Layout {
+  if (kind.centreDesk && n > 0) {
+    // First desk free-standing in the middle of the hall, the rest laid out as usual
+    const rest = layoutFor(n - 1, { ...kind, centreDesk: false });
+    return { ...rest, spots: [{ x: 0, z: -3, rot: 0 }, ...rest.spots] };
+  }
   const [w0, d, h] = kind.size;
   const w = Math.max(w0, n * 6 + 8);
   const spots: Layout['spots'] = [];

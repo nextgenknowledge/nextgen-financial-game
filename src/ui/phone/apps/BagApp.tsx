@@ -10,7 +10,9 @@ import { itemDef, outfitDef, petDef, houseDef, condoDef, plotDef, businessType }
 import { equipOutfit, sellItem, sellVehicle, rehomePet, setRented, moveIn, sellProperty } from '@/game/finance/purchases';
 import { summonVehicle } from '@/world/ParkedVehicles';
 import { businessValue } from '@/game/finance/netWorth';
-import type { OutfitSlot } from '@/game/types';
+import type { LocationId, OutfitSlot } from '@/game/types';
+import { showTheWay } from '../../goal';
+import { forDevice } from '../../touch';
 
 type Tab = 'vehicles' | 'outfits' | 'stuff' | 'pets' | 'property' | 'business';
 
@@ -38,6 +40,11 @@ export function BagApp({ tab: initial }: { tab?: string }) {
       {tab === 'vehicles' && (
         <Section title="Your rides">
           {w.assets.vehicles.length === 0 && <Empty icon="🚲">No vehicles yet. The Auto Dealer in the park sells bikes, scooters, cars, boats and even a seaplane.</Empty>}
+          {w.assets.vehicles.length > 0 && (
+            <p className="small muted" style={{ marginTop: 0 }}>
+              {forDevice('Tap Bring it here, then walk up to your ride and press E to hop on. Drive with W A S D or the arrow keys, and press E again to get off. Boats and planes wait at the dock.')}
+            </p>
+          )}
           {w.assets.vehicles.map((v) => {
             const d = vehicleDef(v.itemId)!;
             const active = w.assets.activeVehicle === v.uid;
@@ -173,6 +180,11 @@ export function BagApp({ tab: initial }: { tab?: string }) {
                   {h && !home && !p.rented && (
                     <Button size="small" onClick={() => act((d2, fx) => moveIn(d2, fx, p.uid))}>
                       Move in
+                    </Button>
+                  )}
+                  {(h || c) && (
+                    <Button size="small" variant="primary" onClick={() => showTheWay((c?.city ?? 'park') as LocationId, `home:${p.uid}`, name)}>
+                      🧭 Show the way
                     </Button>
                   )}
                   <Button size="small" variant="danger" onClick={() => setConfirm({ text: `Sell ${name}? Selling costs 6% in fees, and any mortgage is paid off first.`, go: () => act((d2, fx) => sellProperty(d2, fx, p.uid)) })}>

@@ -13,7 +13,7 @@ import { buildLandmark, DYNAMIC_LANDMARKS } from './landmarks';
 import { kitFor, roadMarkings } from './cityKit';
 import { portalKind } from '../portalKinds';
 import { arrivalLayout, buildArrival } from './gates';
-import { buildStreetscape, buildLots, buildBackdrop, buildParkscape, type SignalHead, type ParkedCar, type Site } from './streetscape';
+import { buildStreetscape, buildLots, buildBackdrop, buildParkscape, onParterre, type SignalHead, type ParkedCar, type Site } from './streetscape';
 import type { Trigger } from '@/engine/runtime';
 
 export interface Rect {
@@ -422,6 +422,7 @@ export function buildOutdoor(def: CityDef, difficulty: Difficulty): SceneBuild {
     if ((def.paths ?? []).some((p) => segmentDist(x, z, p.from, p.to) < p.width / 2 + 1.5)) return false;
     if (doors.some((dr) => Math.hypot(dr.x - x, dr.z - z) < 6)) return false;
     if (trees.some((t) => Math.hypot(t.x - x, t.z - z) < 3.2)) return false;
+    if (!isCity && onParterre(x, z, 1.5)) return false;
     return true;
   };
   if (isCity) {

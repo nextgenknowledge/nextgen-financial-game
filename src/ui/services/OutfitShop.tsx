@@ -5,6 +5,7 @@
  */
 import { useMemo, useState } from 'react';
 import { act } from '@/store/game';
+import { useUI } from '@/store/ui';
 import { Button, ReadAloud } from '../common';
 import { Tabs } from '../kit';
 import { money } from '../format';
@@ -33,6 +34,9 @@ const ITEMS = (outfits.items as (Item & { prize?: boolean })[]).filter((i) => !i
 const TIERS = (outfits as unknown as { tiers: Record<string, { name: string; color: string }> }).tiers;
 const TIER_ORDER = ['basic', 'street', 'smart', 'business', 'legendary'];
 
+/** Shown when the player tries to buy with money that is still in savings. */
+const SAVINGS_NOTE = "You can't spend savings at the shop. Move the money to checking at the Bank first, then come back to buy.";
+
 type Filter = 'all' | OutfitSlot;
 const FILTERS: { id: Filter; label: string }[] = [
   { id: 'all', label: 'All' },
@@ -46,9 +50,11 @@ const FILTERS: { id: Filter; label: string }[] = [
 export function OutfitShop({ w, method }: { w: WorldState; method: 'auto' | 'card' }) {
   const [filter, setFilter] = useState<Filter>('all');
   const [tryOn, setTryOn] = useState<string | null>(null);
+  const [warned, setWarned] = useState<string | null>(null);
   const entry = w.difficulty === 'entry';
-  // Money the player could reasonably put toward clothes: spendable cash + savings
-  const saved = available(w) + w.finance.savings;
+  // Only spending money (cash + checking) pays at the till; savings has to be moved to checking first
+  const spendable = available(w);
+  const withSavings = spendable + w.finance.savings;
   const owned = useMemo(() => new Set(w.assets.items.map((i) => i.itemId)), [w.assets.items]);
   const tryItem = tryOn ? ITEMS.find((i) => i.id === tryOn) : undefined;
   const preview = tryItem ? { ...w.avatar, [tryItem.slot]: tryItem.id } : w.avatar;
@@ -93,7 +99,10 @@ export function OutfitShop({ w, method }: { w: WorldState; method: 'auto' | 'car
             const price = deal ?? currentPrice(w, o.price);
             const locked = !!o.unlockLevel && w.progress.level < o.unlockLevel;
             const goal = w.finance.goals.find((g) => g.name === o.name.slice(0, 30) && !g.done);
-            const progress = Math.min(1, (goal ? goal.saved : saved) / price);
+            const progress = Math.min(1, (goal ? goal.saved : spendable) / price);
+            const canPay = spendable >= price || method === 'card';
+            // Enough in total, but some of it is sitting in savings
+            const inSavings = !canPay && withSavings >= price;
             const tier = TIERS[o.tier];
             return (
               <div key={o.id} className={`item-card outfit-card tier-${o.tier}`} style={{ borderColor: tier.color }}>
@@ -105,9 +114,9 @@ export function OutfitShop({ w, method }: { w: WorldState; method: 'auto' | 'car
                 {o.blurb && <span className="tiny muted">{o.blurb}</span>}
                 {deal !== null ? <StarterTag was={currentPrice(w, o.price)} now={deal} /> : <span className="mono bold">{money(price, { cents: price < 1000 })}</span>}
                 {!own && (
-                  <div className="save-bar" title={goal ? 'Saved toward this goal' : 'Your cash + savings vs. the price'}>
+                  <div className="save-bar" title={goal ? 'Saved toward this goal (kept in savings)' : 'Your spending money (cash + checking) vs. the price'}>
                     <span style={{ width: `${progress * 100}%`, background: progress >= 1 ? 'var(--green)' : tier.color }} />
-                    <em>{progress >= 1 ? 'You can afford it' : `${Math.floor(progress * 100)}% ${goal ? 'saved' : 'there'}`}</em>
+                    <em>{progress >= 1 ? (goal ? 'Goal reached' : 'You can afford it') : `${Math.floor(progress * 100)}% ${goal ? 'saved' : 'there'}`}</em>
                   </div>
                 )}
                 <div className="row wrap" style={{ gap: 4, justifyContent: 'center' }}>
@@ -123,7 +132,19 @@ export function OutfitShop({ w, method }: { w: WorldState; method: 'auto' | 'car
                       🔒 Lv {o.unlockLevel}
                     </Button>
                   ) : (
-                    <Button size="small" variant="primary" disabled={available(w) < price && method !== 'card'} onClick={() => act((d, fx) => void buyOutfit(d, fx, o.id, method))}>
+                    <Button
+                      size="small"
+                      variant="primary"
+                      disabled={!canPay && !inSavings}
+                      onClick={() => {
+                        if (inSavings) {
+                          setWarned(o.id);
+                          useUI.getState().pushToast({ text: SAVINGS_NOTE, icon: '🏦', tone: 'bad' });
+                          return;
+                        }
+                        act((d, fx) => void buyOutfit(d, fx, o.id, method));
+                      }}
+                    >
                       Buy
                     </Button>
                   )}
@@ -132,6 +153,11 @@ export function OutfitShop({ w, method }: { w: WorldState; method: 'auto' | 'car
                   <button className="link-btn tiny" onClick={() => act((d, fx) => addGoal(d, fx, o.name, o.icon, price))}>
                     🎯 Make it a savings goal
                   </button>
+                )}
+                {!own && inSavings && (
+                  <span className={warned === o.id ? 'tiny savings-note warn' : 'tiny savings-note'}>
+                    {warned === o.id ? SAVINGS_NOTE : 'Part of this money is in savings. Move it to checking at the Bank to buy.'}
+                  </span>
                 )}
                 {goal && <span className="tiny" style={{ color: tier.color }}>🎯 Goal: {money(goal.saved, { cents: false })} / {money(goal.target, { cents: false })}</span>}
               </div>

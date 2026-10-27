@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { walkTo } from '@/engine/walk';
 import { useFrame, type ThreeEvent } from '@react-three/fiber';
 import * as THREE from 'three';
 import type { BuildingDef, StationDef } from '@/game/content';
@@ -353,7 +354,7 @@ export function InteriorScene({ building, difficulty }: { building: BuildingDef;
   const onClick = (e: ThreeEvent<MouseEvent>) => {
     if (e.delta > 6) return;
     e.stopPropagation();
-    rt.walkTarget = new THREE.Vector3(e.point.x, 0, e.point.z);
+    walkTo(e.point.x, e.point.z);
   };
 
   return (

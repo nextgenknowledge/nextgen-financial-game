@@ -3,6 +3,7 @@
 import { rt } from '@/engine/runtime';
 import { getWorld } from '@/store/game';
 import { useScene } from '@/store/scene';
+import { useUI } from '@/store/ui';
 import { currentStep } from '@/game/progress/quests';
 import { CITIES } from '@/world/cities';
 import type { LocationId } from '@/game/types';
@@ -42,11 +43,62 @@ function trigger(id: string) {
   return rt.triggers.find((t) => t.id === id) ?? null;
 }
 
+/** Point the guide trail, beacon and Narwhal at a place until the player gets there. */
+export function showTheWay(city: LocationId, triggerId: string, label: string) {
+  const ui = useUI.getState();
+  ui.setGuide({ city, trigger: triggerId, label });
+  ui.closeAll();
+  ui.pushToast({ text: `Follow the gold trail to ${label}`, icon: '🧭', tone: 'gold' });
+  updateGoalMarker();
+}
+
+/** What the current guide route was planned from, so it is only re-planned when that changes. */
+let planned = { goal: '', scene: '', x: 0, z: 0, at: 0 };
+
 export function updateGoalMarker() {
   setGoal();
-  // Route the guide around buildings to the goal
+  // Route the guide around buildings to the goal. A* over a whole city costs a few milliseconds
+  // (much more on a Chromebook), so re-plan only when the goal or scene changes, the player has
+  // wandered off the old route's start, or every few seconds.
   const g = rt.goal;
-  rt.guidePath = g ? findPath(rt.collision, rt.sceneKey, rt.player.x, rt.player.z, g.x, g.z) : null;
+  if (!g) {
+    rt.guidePath = null;
+    planned.goal = '';
+    return;
+  }
+  const key = `${g.id}@${g.x.toFixed(1)},${g.z.toFixed(1)}`;
+  const now = performance.now();
+  const moved = Math.hypot(rt.player.x - planned.x, rt.player.z - planned.z);
+  if (key === planned.goal && rt.sceneKey === planned.scene && rt.guidePath && moved < 8 && now - planned.at < 5000) return;
+  rt.guidePath = findPath(rt.collision, rt.sceneKey, rt.player.x, rt.player.z, g.x, g.z);
+  planned = { goal: key, scene: rt.sceneKey, x: rt.player.x, z: rt.player.z, at: now };
+}
+
+/** Leads to a place picked with "Show me the way" (Map, My Stuff). True while it is steering. */
+function guideGoal(): boolean {
+  const ui = useUI.getState();
+  const g = ui.guide;
+  if (!g) return false;
+  const scene = useScene.getState();
+  const here = scene.location;
+  const inside = scene.interior;
+  // Arrived: inside that building or home, or standing at its door
+  const t = here === g.city ? trigger(g.trigger) : null;
+  if ((inside && (g.trigger === `door:${inside}` || g.trigger === inside)) || (t && !inside && Math.hypot(t.x - rt.player.x, t.z - rt.player.z) < 3.5)) {
+    ui.setGuide(null);
+    return false;
+  }
+  if (inside) {
+    pointToExit();
+    return true;
+  }
+  if (here !== g.city) {
+    const portal = here === 'park' ? trigger(`portal:${g.city}`) : trigger('portal:park');
+    if (portal) rt.goal = { id: portal.id, x: portal.x, z: portal.z, label: 'Portal' };
+    return true;
+  }
+  if (t) rt.goal = { id: t.id, x: t.x, z: t.z, label: g.label };
+  return true;
 }
 
 function setGoal() {
@@ -55,6 +107,7 @@ function setGoal() {
   if (worldRun.run) return; // a world activity is steering the beacon
   rt.goal = null;
   if (!w) return;
+  if (guideGoal()) return;
   const cs = currentStep(w);
   if (!cs) return;
   const g = cs.step.goal;

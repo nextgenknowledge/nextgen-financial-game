@@ -7,6 +7,7 @@ import { Button, Modal } from '../common';
 import { CITIES, CITY_META } from '@/world/cities';
 import { rt } from '@/engine/runtime';
 import { travelTo } from '../interact';
+import { showTheWay } from '../goal';
 import { CITY_IDS, type LocationId } from '@/game/types';
 import { getCityMap } from '@/world/builders/sceneBuilder';
 import { playSfx } from '@/engine/audio';
@@ -172,18 +173,27 @@ export function MapPanel() {
             {def.name}
           </h3>
           <span className="muted small">{CITY_META[view].theme}</span>
-          {here && <span className="small">Click a place on the map, or in the list, to walk straight to its door.</span>}
+          <span className="small">
+            {here ? 'Click a place to jump straight to its door, or pick Show the way and follow the gold trail.' : 'Pick Show the way and Narwhal leads you there, through the portal.'}
+          </span>
           <div className="col" style={{ gap: '0.3rem' }}>
             {pois.map((p) => {
               const b = def.buildings.find((x) => x.id === p.id)!;
               return (
-                <button key={p.id} className={`map-place ${hover === p.id ? 'on' : ''}`} onMouseEnter={() => setHover(p.id)} onMouseLeave={() => setHover(null)} onClick={() => goTo(p.id)} disabled={!here}>
-                  <GlyphIcon poi={p} />
-                  <span className="col" style={{ alignItems: 'flex-start', minWidth: 0 }}>
-                    <b className="small">{p.name}</b>
-                    <span className="muted tiny">{b.blurb}</span>
-                  </span>
-                </button>
+                <div key={p.id} className="map-place-row">
+                  <button className={`map-place ${hover === p.id ? 'on' : ''}`} onMouseEnter={() => setHover(p.id)} onMouseLeave={() => setHover(null)} onClick={() => goTo(p.id)} disabled={!here} title={here ? 'Jump straight to the door' : undefined}>
+                    <GlyphIcon poi={p} />
+                    <span className="col" style={{ alignItems: 'flex-start', minWidth: 0 }}>
+                      <b className="small">{p.name}</b>
+                      <span className="muted tiny">{b.blurb}</span>
+                    </span>
+                  </button>
+                  {unlocked.includes(view) && (
+                    <Button size="small" onClick={() => showTheWay(view, `door:${p.id}`, p.name)} title="Narwhal and the gold trail lead you there">
+                      🧭 Show the way
+                    </Button>
+                  )}
+                </div>
               );
             })}
           </div>

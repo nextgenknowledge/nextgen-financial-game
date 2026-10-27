@@ -34,6 +34,10 @@ export function PlayerController() {
   const anim = useRef<AnimState>({ speed: 0, grounded: true });
   const { camera, gl } = useThree();
   const drag = useRef<{ x: number; y: number; moved: number; id: number } | null>(null);
+  /** When the player last turned the camera by hand; auto-follow waits a moment after that. */
+  const lookedAt = useRef(0);
+  /** Seconds a click-to-walk has made no progress. */
+  const stuck = useRef(0);
   const smoothedDist = useRef(rt.camDist);
 
   // Any key, click or scroll skips the arrival flyover
@@ -96,6 +100,7 @@ export function PlayerController() {
       if (d.moved < 4) return;
       const s = useSettings.getState();
       rt.camYaw -= dx * 0.006 * s.mouseSensitivity;
+      lookedAt.current = performance.now();
       rt.camPitch += dy * 0.0045 * s.mouseSensitivity * (s.invertY ? -1 : 1);
       rt.camPitch = Math.max(0.05, Math.min(1.25, rt.camPitch));
     };
@@ -191,10 +196,27 @@ export function PlayerController() {
       const rx = Math.cos(rt.camYaw);
       const rz = -Math.sin(rt.camYaw);
       dir.set(fx * iz + rx * ix, 0, fz * iz + rz * ix);
-      if (dir.lengthSq() > 0.01) rt.walkTarget = null;
-      else if (rt.walkTarget) {
-        dir.set(rt.walkTarget.x - p.x, 0, rt.walkTarget.z - p.z);
-        if (dir.length() < 0.6) rt.walkTarget = null;
+      if (dir.lengthSq() > 0.01) {
+        rt.walkTarget = null;
+        rt.walkPath = null;
+      } else if (rt.walkTarget) {
+        // Follow the route's turning points, then the target itself
+        const path = rt.walkPath;
+        while (path && path.length > 1 && Math.hypot(path[0][0] - p.x, path[0][1] - p.z) < 0.5) path.shift();
+        const [nx, nz] = path && path.length ? path[0] : [rt.walkTarget.x, rt.walkTarget.z];
+        dir.set(nx - p.x, 0, nz - p.z);
+        if (Math.hypot(rt.walkTarget.x - p.x, rt.walkTarget.z - p.z) < 0.6) {
+          rt.walkTarget = null;
+          rt.walkPath = null;
+          dir.set(0, 0, 0);
+        }
+        // Pressed against something for a moment (a door, a person in the way): give up
+        stuck.current = rt.playerSpeed < 0.25 ? stuck.current + dt : 0;
+        if (stuck.current > 0.9) {
+          rt.walkTarget = null;
+          rt.walkPath = null;
+          stuck.current = 0;
+        }
       }
       const len = Math.min(1, dir.length());
       if (len > 0.01) dir.normalize();
@@ -250,14 +272,24 @@ export function PlayerController() {
       let d = rt.vehicle!.yaw + Math.PI - rt.camYaw;
       d = Math.atan2(Math.sin(d), Math.cos(d));
       rt.camYaw += d * Math.min(1, 2.5 * dt);
+    } else if (!vehicleCam && !paused && !drag.current && rt.playerSpeed > 1 && useSettings.getState().camFollow && performance.now() - lookedAt.current > 1500) {
+      // On foot the view eases round behind the player as they turn. Walking back toward the
+      // camera (more than ~110 degrees off) leaves it alone, so pressing back never spins the view.
+      let d = rt.playerRotY + Math.PI - rt.camYaw;
+      d = Math.atan2(Math.sin(d), Math.cos(d));
+      if (Math.abs(d) < 1.9) rt.camYaw += d * Math.min(1, 1.6 * dt);
     }
     const desired = vehicleCam ? Math.max(rt.camDist, CHASE_DIST[rt.vehicle!.type]) : rt.camDist;
     tmp.set(Math.sin(rt.camYaw) * Math.cos(rt.camPitch), Math.sin(rt.camPitch), Math.cos(rt.camYaw) * Math.cos(rt.camPitch));
-    const hit = rt.collision.raycast(camTarget, tmp, desired);
-    const dist = hit !== null ? Math.max(1.2, hit - 0.4) : desired;
+    // Stop well short of anything solid (porches and cornices stick out past a building's
+    // collider), and come in as close as needed rather than ending up inside a wall
+    const hit = rt.collision.raycast(camTarget, tmp, desired + 0.5);
+    const dist = hit !== null ? Math.max(0.35, Math.min(desired, hit - 0.5)) : desired;
     smoothedDist.current += (dist - smoothedDist.current) * Math.min(1, (dist < smoothedDist.current ? 20 : 4) * dt);
     camPos.copy(camTarget).addScaledVector(tmp, smoothedDist.current);
     if (camPos.y < 0.4) camPos.y = 0.4;
+    // Right up against a wall the camera is at the player's head: hide the body so the view is clear
+    if (group.current) group.current.visible = smoothedDist.current > 0.7;
     camera.position.copy(camPos);
     camera.lookAt(camTarget);
     // Arrival flyover: orbit the skyline, then glide down into the normal follow camera

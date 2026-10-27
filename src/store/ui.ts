@@ -1,6 +1,7 @@
 'use client';
 import { create } from 'zustand';
 import type { Mood } from '@/game/effects';
+import type { LocationId } from '@/game/types';
 import { forDevice } from '@/ui/touch';
 
 export type Screen = 'intro' | 'title' | 'worlds' | 'game' | 'credits';
@@ -65,6 +66,10 @@ export interface UIStore {
   tour: boolean;
   /** Arranging furniture at home: which home, and the piece being carried (item uid) if any. */
   decor: { home: string; carrying: string | null; rot: number } | null;
+  /** "Show me the way": a place the player picked (a building door or their home) that the guide
+   * trail, beacon and Narwhal lead to, through portals if needed, until they arrive. */
+  guide: { city: LocationId; trigger: string; label: string } | null;
+  setGuide: (g: UIStore['guide']) => void;
   setDecor: (d: UIStore['decor']) => void;
   setRun: (r: UIStore['run']) => void;
   setScreen: (s: Screen) => void;
@@ -103,6 +108,8 @@ export const useUI = create<UIStore>((set, get) => ({
   run: null,
   tour: false,
   decor: null,
+  guide: null,
+  setGuide: (guide) => set({ guide }),
   setDecor: (decor) => set({ decor }),
   setRun: (run) => set({ run }),
   // Leaving the game drops any paused activity

@@ -513,6 +513,15 @@ export function buildBackdrop(def: CityDef, b: Builders, rng: Rng, inWater: (x: 
  * Fin City Park landscaping: formal parterres around the plaza, avenue trees along the ring road,
  * lamp-lit promenades with benches, a cast-iron perimeter fence, and a planted lake edge with a boathouse.
  */
+/** Centres of the park's formal flower gardens (parterres); trees and props keep off them. */
+export const PARTERRES: readonly (readonly [number, number])[] = [[-23, -25], [23, -25], [-23, 27]];
+const PARTERRE_W = 13;
+const PARTERRE_D = 11;
+/** True when (x, z) is within `m` metres of a parterre. */
+export function onParterre(x: number, z: number, m = 0) {
+  return PARTERRES.some(([cx, cz]) => Math.abs(x - cx) < PARTERRE_W / 2 + 0.8 + m && Math.abs(z - cz) < PARTERRE_D / 2 + 0.8 + m);
+}
+
 export function buildParkscape(
   def: CityDef,
   b: Builders,
@@ -523,10 +532,10 @@ export function buildParkscape(
 ) {
   const ring = Math.max(...def.roads.xs);
   const rw = def.roads.width;
-  // ── Formal parterres in three quadrants ──
-  for (const [cx, cz] of [[-27, -26], [27, -26], [-27, 28]] as const) {
-    const w = 13;
-    const d = 11;
+  // ── Formal parterres in three quadrants, clear of the Bank, Credit Bureau and Library porches ──
+  for (const [cx, cz] of PARTERRES) {
+    const w = PARTERRE_W;
+    const d = PARTERRE_D;
     const hedge = { tex: 'leaves' };
     b.solid.box(cx, 0.06, cz, w + 1.6, 0.06, d + 1.6, '#d9c9a4', { tex: 'path', ao: false });
     b.solid.box(cx, 0.35, cz - d / 2, w, 0.6, 0.5, '#2f5a2f', hedge);
@@ -542,7 +551,14 @@ export function buildParkscape(
     }
     b.solid.geom(sphere(0.9, 8, 6), new THREE.Matrix4().makeTranslation(cx, 1.0, cz), '#3a6630', 'leaves');
     b.solid.geom(cylinder(0.5, 0.6, 0.5, 10), new THREE.Matrix4().makeTranslation(cx, 0.25, cz), '#cfc6b2', 'stone');
-    b.colliders.push({ cx, cz, w: w + 0.5, d: d + 0.5, minY: 0, maxY: 1, rotY: 0 });
+    // Hedges, beds and the clipped bush in the middle are solid; the paths between them are
+    // walkable (a single lid over the whole bed let players walk on air and into the bush)
+    b.colliders.push({ cx, cz: cz - d / 2, w: w + 0.5, d: 0.6, minY: 0, maxY: 0.65, rotY: 0 });
+    b.colliders.push({ cx, cz: cz + d / 2, w: w + 0.5, d: 0.6, minY: 0, maxY: 0.65, rotY: 0 });
+    b.colliders.push({ cx: cx - w / 2, cz, w: 0.6, d, minY: 0, maxY: 0.65, rotY: 0 });
+    b.colliders.push({ cx: cx + w / 2, cz, w: 0.6, d, minY: 0, maxY: 0.65, rotY: 0 });
+    for (const [qx, qz] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) b.colliders.push({ cx: cx + qx * (w / 4 + 0.3), cz: cz + qz * (d / 4 + 0.2), w: w / 2 - 1.6, d: d / 2 - 1.4, minY: 0, maxY: 0.55, rotY: 0 });
+    b.colliders.push({ cx, cz, w: 1.8, d: 1.8, minY: 0, maxY: 1.9, rotY: 0 });
   }
 
   // ── Avenue trees both sides of the ring road ──

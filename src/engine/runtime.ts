@@ -40,6 +40,8 @@ export const rt = {
   camPitch: 0.42,
   camDist: 8,
   walkTarget: null as THREE.Vector3 | null,
+  /** Remaining turning points of a click-to-walk route (see engine/walk.ts). */
+  walkPath: null as [number, number][] | null,
   /** Where Narwhal should point / fly toward (quest goal). */
   goal: null as Marker | null,
   /** Extra markers to render (delivery checkpoints, etc). */
@@ -81,6 +83,7 @@ export const rt = {
     this.player.set(x, 0, z);
     this.playerVel.set(0, 0, 0);
     this.walkTarget = null;
+    this.walkPath = null;
     if (rotY !== undefined) {
       this.playerRotY = rotY;
       this.camYaw = rotY + Math.PI;
@@ -92,6 +95,7 @@ export const rt = {
     this.markers = [];
     this.nearTrigger = null;
     this.walkTarget = null;
+    this.walkPath = null;
     this.sceneKey = key;
   },
 };

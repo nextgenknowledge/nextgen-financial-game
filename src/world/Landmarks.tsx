@@ -88,6 +88,10 @@ function ConstructionSite({ d, name }: { d: Dyn; name: string }) {
     b.block(0, 0, -5.8, 0.2, 2.4, 0.2, '#5a4a3a');
   });
   const sign = useMemo(() => signMaterial({ kind: 'hoarding', text: name, sub: 'Community project · help fund it at Town Hall', w: 7, h: 1.6 }), [name]);
+  // The site is taped off: the tape line, its posts, the crate and the slab are solid
+  useMemo(() => {
+    for (const [dx, dz, w, dd] of [[0, 6, 12.3, 0.3], [0, -6, 12.3, 0.3], [6, 0, 0.3, 12.3], [-6, 0, 0.3, 12.3]] as const) rt.collision.addBox(d.x + dx, d.z + dz, w, dd, 0, 1.3, 'site');
+  }, [d.x, d.z]);
   return (
     <group position={[d.x, 0, d.z]}>
       <mesh geometry={geo} material={M.vc} />
@@ -132,7 +136,15 @@ function Fountain({ d }: { d: Dyn }) {
 }
 
 function FountainCollider({ x, z }: { x: number; z: number }) {
-  useMemo(() => rt.collision.addBox(x, z, 11, 11, 0, 1.2, 'fountain'), [x, z]);
+  useMemo(() => {
+    // The round basin (radius 6.4, rim 0.9 high) as three overlapping boxes, so there are no
+    // invisible corners outside it and the rim is exactly where it looks
+    rt.collision.addBox(x, z, 12.8, 5, 0, 0.9, 'fountain');
+    rt.collision.addBox(x, z, 5, 12.8, 0, 0.9, 'fountain');
+    rt.collision.addBox(x, z, 9.6, 9.6, 0, 0.9, 'fountain');
+    // The centre column and its bowl: solid all the way up, so nobody ends up inside them
+    rt.collision.addBox(x, z, 4.8, 4.8, 0, 5, 'fountain');
+  }, [x, z]);
   return null;
 }
 
@@ -251,6 +263,15 @@ function Garden({ d }: { d: Dyn }) {
     b.block(0, 0, 9, 4, 3, 0.3, '#8a6a42');
     b.geom(new THREE.TorusGeometry(2, 0.25, 6, 12, Math.PI), trs(0, 3, 9), '#3cc45a');
   });
+  // Raised beds and the arch's trellis are solid; the paths between the beds stay open
+  useMemo(() => {
+    const c = Math.cos(d.rot);
+    const sn = Math.sin(d.rot);
+    const at = (lx: number, lz: number, w: number, dd: number, h: number) => rt.collision.addBox(d.x + lx * c + lz * sn, d.z - lx * sn + lz * c, w, dd, 0, h, 'garden', d.rot);
+    for (let r = 0; r < 4; r++) for (let col = 0; col < 5; col++) at(-8 + col * 4, -6 + r * 4, 3, 2.6, 1);
+    at(-1.9, 9, 0.3, 0.4, 3);
+    at(1.9, 9, 0.3, 0.4, 3);
+  }, [d.x, d.z, d.rot]);
   return <mesh geometry={geo} material={M.vc} position={[d.x, 0, d.z]} rotation={[0, d.rot, 0]} />;
 }
 
@@ -462,6 +483,18 @@ function Neighborhood({ d }: { d: Dyn }) {
   });
   const forSale = useMemo(() => signMaterial({ kind: 'realty', text: 'For Sale', sub: 'Fin City Realty', w: 2.4, h: 1.1 }), []);
   const soldTex = useMemo(() => signMaterial({ kind: 'realty', text: 'Sold', sub: 'Your property', bg: '#2f6b3a', w: 2.4, h: 1.1 }), []);
+  useMemo(() => {
+    // Picket fences (three sides, open to the street) and mailboxes are solid
+    for (const pl of property.plots) {
+      const [x, z] = pl.pos;
+      const cx = d.x + x;
+      const cz = d.z + z;
+      rt.collision.addBox(cx, cz - 8, 16, 0.3, 0, 0.7, 'fence');
+      rt.collision.addBox(cx, cz + 8, 16, 0.3, 0, 0.7, 'fence');
+      rt.collision.addBox(cx + (x > 0 ? 8 : -8), cz, 0.3, 16, 0, 0.7, 'fence');
+      rt.collision.addBox(cx + (x > 0 ? -7 : 7), cz + 2, 0.6, 0.8, 0, 1.5, 'mailbox');
+    }
+  }, [d.x, d.z]);
   useMemo(() => {
     for (const pl of property.plots) {
       const [x, z] = pl.pos;
