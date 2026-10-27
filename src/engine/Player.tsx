@@ -281,11 +281,15 @@ export function PlayerController() {
     }
     const desired = vehicleCam ? Math.max(rt.camDist, CHASE_DIST[rt.vehicle!.type]) : rt.camDist;
     tmp.set(Math.sin(rt.camYaw) * Math.cos(rt.camPitch), Math.sin(rt.camPitch), Math.cos(rt.camYaw) * Math.cos(rt.camPitch));
-    const hit = rt.collision.raycast(camTarget, tmp, desired);
-    const dist = hit !== null ? Math.max(1.2, hit - 0.4) : desired;
+    // Stop well short of anything solid (porches and cornices stick out past a building's
+    // collider), and come in as close as needed rather than ending up inside a wall
+    const hit = rt.collision.raycast(camTarget, tmp, desired + 0.5);
+    const dist = hit !== null ? Math.max(0.35, Math.min(desired, hit - 0.5)) : desired;
     smoothedDist.current += (dist - smoothedDist.current) * Math.min(1, (dist < smoothedDist.current ? 20 : 4) * dt);
     camPos.copy(camTarget).addScaledVector(tmp, smoothedDist.current);
     if (camPos.y < 0.4) camPos.y = 0.4;
+    // Right up against a wall the camera is at the player's head: hide the body so the view is clear
+    if (group.current) group.current.visible = smoothedDist.current > 0.7;
     camera.position.copy(camPos);
     camera.lookAt(camTarget);
     // Arrival flyover: orbit the skyline, then glide down into the normal follow camera
