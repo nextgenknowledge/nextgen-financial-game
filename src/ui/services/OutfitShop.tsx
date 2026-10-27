@@ -14,6 +14,8 @@ import outfits from '@/data/shop/outfits.json';
 import { buyOutfit, currentPrice, equipOutfit } from '@/game/finance/purchases';
 import { addGoal, available } from '@/game/finance/accounts';
 import type { OutfitSlot, WorldState } from '@/game/types';
+import { starterPrice } from '@/game/starter';
+import { StarterTag } from './StarterTag';
 
 interface Item {
   id: string;
@@ -57,8 +59,10 @@ export function OutfitShop({ w, method }: { w: WorldState; method: 'auto' | 'car
   const tryItem = tryOn ? ITEMS.find((i) => i.id === tryOn) : undefined;
   const preview = tryItem ? { ...w.avatar, [tryItem.slot]: tryItem.id } : w.avatar;
 
+  // The starter deal (if still unused) comes first
+  const isDeal = (id: string) => starterPrice(w, 'outfit', id) !== null;
   const list = ITEMS.filter((i) => filter === 'all' || i.slot === filter).sort(
-    (a, b) => TIER_ORDER.indexOf(a.tier) - TIER_ORDER.indexOf(b.tier) || a.price - b.price,
+    (a, b) => Number(isDeal(b.id)) - Number(isDeal(a.id)) || TIER_ORDER.indexOf(a.tier) - TIER_ORDER.indexOf(b.tier) || a.price - b.price,
   );
 
   return (
@@ -91,7 +95,8 @@ export function OutfitShop({ w, method }: { w: WorldState; method: 'auto' | 'car
           {list.map((o) => {
             const own = owned.has(o.id);
             const wearing = w.avatar[o.slot] === o.id;
-            const price = currentPrice(w, o.price);
+            const deal = starterPrice(w, 'outfit', o.id);
+            const price = deal ?? currentPrice(w, o.price);
             const locked = !!o.unlockLevel && w.progress.level < o.unlockLevel;
             const goal = w.finance.goals.find((g) => g.name === o.name.slice(0, 30) && !g.done);
             const progress = Math.min(1, (goal ? goal.saved : spendable) / price);
@@ -107,7 +112,7 @@ export function OutfitShop({ w, method }: { w: WorldState; method: 'auto' | 'car
                 <span style={{ fontSize: '2rem' }}>{o.icon}</span>
                 <b className="small">{o.name}</b>
                 {o.blurb && <span className="tiny muted">{o.blurb}</span>}
-                <span className="mono bold">{money(price, { cents: price < 1000 })}</span>
+                {deal !== null ? <StarterTag was={currentPrice(w, o.price)} now={deal} /> : <span className="mono bold">{money(price, { cents: price < 1000 })}</span>}
                 {!own && (
                   <div className="save-bar" title={goal ? 'Saved toward this goal (kept in savings)' : 'Your spending money (cash + checking) vs. the price'}>
                     <span style={{ width: `${progress * 100}%`, background: progress >= 1 ? 'var(--green)' : tier.color }} />

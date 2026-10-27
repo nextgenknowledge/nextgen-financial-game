@@ -20,6 +20,11 @@ const EVENT_SERVICE: Record<string, string | string[]> = {
   invest: 'brokerage',
   openCD: 'cds',
   insure: 'insurance',
+  // Starter deals (the "Make Fin City Yours" quest)
+  ownOutfit: 'shop:outfits',
+  ownPet: 'shop:pets',
+  ownRide: 'shop:vehicles',
+  ownHome: 'shop:property',
 };
 
 /** First building with a matching station, looking in the city you're in before anywhere else. */
@@ -118,6 +123,15 @@ function setGoal() {
     const f = findBuilding((s) => s.activity === g.target);
     if (f) dest = { ...f, activity: g.target };
     else if (cs.step.marker) dest = { city: cs.step.marker.location, pos: cs.step.marker.pos };
+  } else if (g.type === 'event' && (g.target === 'enterHome' || g.target === 'viewPlot')) {
+    // Your home's front door, or a lot that's still for sale, both on Maple Lane in the park
+    if (here !== 'park') dest = { city: 'park', portal: undefined };
+    else if (inside) return pointToExit();
+    else {
+      const t = rt.triggers.find((x) => (g.target === 'enterHome' ? x.id.startsWith('home:') : x.kind === 'plot' && !w.assets.properties.some((p) => p.plotId === x.data?.plot)));
+      if (t) rt.goal = { id: t.id, x: t.x, z: t.z, label: g.target === 'enterHome' ? 'Your home' : t.label };
+      return;
+    }
   } else if (g.type === 'event' && g.target && EVENT_SERVICE[g.target]) {
     const svcs = ([] as string[]).concat(EVENT_SERVICE[g.target]);
     const f = findBuilding((s) => !!s.service && svcs.includes(s.service));

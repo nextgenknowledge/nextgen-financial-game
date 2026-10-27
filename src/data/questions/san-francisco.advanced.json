@@ -748,7 +748,7 @@
    "difficulty": "advanced",
    "level": 2,
    "type": "mc",
-   "prompt": "A $2,000 signing bonus vs. a $2,000 higher salary: which is worth more over time?",
+   "prompt": "A one-time $2,000 signing bonus, or a salary that is $2,000 a year higher: which is worth more over time?",
    "choices": [
     "The salary: it repeats and raises build on it",
     "The bonus: you get it all up front",
@@ -951,7 +951,7 @@
    "difficulty": "advanced",
    "level": 3,
    "type": "numeric",
-   "prompt": "A ${b} raise is offered as a {p}% raise on your ${s} salary or a flat ${b}. What is the {p}% raise in dollars?",
+   "prompt": "Your salary is ${s} a year. Your raise is offered as either {p}% of your salary or a flat ${b} a year. What is the {p}% raise worth in dollars per year?",
    "vars": {
     "s": {
      "choices": [

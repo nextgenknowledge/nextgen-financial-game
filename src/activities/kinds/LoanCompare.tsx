@@ -25,7 +25,7 @@ export default function LoanCompare({ params, difficulty, onFinish, addReview, s
             </div>
           ),
           questions: [
-            synthQ({ id: `lc-e-${k}`, prompt: 'Which loan costs less?', topic: 'debt', choices: [`Lender ${flip ? 'B' : 'A'}`, `Lender ${flip ? 'A' : 'B'}`], correct: 0, explanation: `Paying back ${money(a, { cents: false })} costs ${money(a - borrow, { cents: false })} extra; ${money(b, { cents: false })} costs ${money(b - borrow, { cents: false })} extra.` }),
+            synthQ({ id: `lc-e-${k}`, prompt: 'Which loan costs less in total?', topic: 'debt', choices: [`Lender ${flip ? 'B' : 'A'}`, `Lender ${flip ? 'A' : 'B'}`], correct: 0, explanation: `Paying back ${money(a, { cents: false })} costs ${money(a - borrow, { cents: false })} extra; ${money(b, { cents: false })} costs ${money(b - borrow, { cents: false })} extra.` }),
             synthQ({ id: `lc-e2-${k}`, prompt: `How much extra do you pay with the cheaper loan?`, topic: 'debt', value: a - borrow, format: 'money', explanation: `${money(a, { cents: false })} − ${money(borrow, { cents: false })} = ${money(a - borrow, { cents: false })}. That extra is the interest.` }),
           ],
         };

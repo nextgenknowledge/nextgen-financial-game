@@ -238,7 +238,7 @@
    "difficulty": "advanced",
    "level": 2,
    "type": "numeric",
-   "prompt": "Take-home pay ${N}. Using 50/30/20, how much for WANTS?",
+   "prompt": "Your monthly take-home pay is ${N}. Using the 50/30/20 rule, how much a month goes to WANTS?",
    "vars": {
     "N": {
      "min": 2000,

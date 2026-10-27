@@ -26,7 +26,7 @@ export default function Commodities({ onFinish, addReview, seed }: KindProps) {
     out.push({
       brief: 'The statistics office weights each category by how much households spend on it. This year’s price changes:',
       visual: <Table head={['Category', 'Weight', 'Price change']} rows={basket.map((b) => [b.k, pc(b.w, 0), pc(b.ch)])} />,
-      q: rq({ id: 'cm-cpi', topic: 'economics', type: 'numeric', format: 'pct', value: Math.round(cpi * 10000) / 100, tolAbs: 0.05, tolRel: 0, prompt: 'What is the inflation rate for this basket?', hint: 'Multiply each weight by its price change and add them up.', explanation: `Σ weight × change = ${pc(cpi, 2)}. ${basket[1].ch > 0.09 ? 'Energy moved a lot but only has an 8% weight, so its effect is muted.' : 'Housing has the biggest weight, so it drives the result.'}` }),
+      q: rq({ id: 'cm-cpi', topic: 'economics', type: 'numeric', format: 'pct', value: Math.round(cpi * 10000) / 100, tolAbs: 0.05, tolRel: 0, prompt: 'What is this year’s inflation rate for this basket?', hint: 'Multiply each weight by its price change and add them up.', explanation: `Σ weight × change = ${pc(cpi, 2)}. ${basket[1].ch > 0.09 ? 'Energy moved a lot but only has an 8% weight, so its effect is muted.' : 'Housing has the biggest weight, so it drives the result.'}` }),
     });
 
     const cut = rng.pick([0.04, 0.05, 0.06]);
@@ -54,7 +54,7 @@ export default function Commodities({ onFinish, addReview, seed }: KindProps) {
     out.push({
       brief: `A savings bond pays ${pc(nominal, 0)} a year while inflation runs at ${pc(infl)}.`,
       visual: <Bars items={[{ label: 'Nominal return', value: nominal * 100, color: C.blue }, { label: 'Inflation', value: infl * 100, color: C.red }]} fmt={(v) => `${v.toFixed(1)}%`} />,
-      q: rq({ id: 'cm-real', topic: 'economics', type: 'numeric', format: 'pct', value: Math.round(real * 10000) / 100, tolAbs: 0.1, tolRel: 0, prompt: 'What is the real return?', hint: '(1 + nominal) ÷ (1 + inflation) − 1', explanation: `(1 + ${nominal}) ÷ (1 + ${infl.toFixed(3)}) − 1 = ${pc(real, 2)}. The shortcut "nominal − inflation" gives ${pc(nominal - infl, 2)}, close when rates are low.` }),
+      q: rq({ id: 'cm-real', topic: 'economics', type: 'numeric', format: 'pct', value: Math.round(real * 10000) / 100, tolAbs: 0.1, tolRel: 0, prompt: 'What is the real return per year?', hint: '(1 + nominal) ÷ (1 + inflation) − 1', explanation: `(1 + ${nominal}) ÷ (1 + ${infl.toFixed(3)}) − 1 = ${pc(real, 2)}. The shortcut "nominal − inflation" gives ${pc(nominal - infl, 2)}, close when rates are low.` }),
     });
 
     const s5 = shuffled(['Commodities and inflation-linked bonds', 'Long-term fixed-rate bonds', 'Cash under the mattress', 'A 30-year fixed-rate loan you lent to a friend'], 0, r);

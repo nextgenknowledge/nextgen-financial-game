@@ -219,6 +219,106 @@
         ]
       },
       "next": [
+        "q3b-starter"
+      ]
+    },
+    {
+      "id": "q3b-starter",
+      "title": "Make Fin City Yours",
+      "icon": "🛍️",
+      "onboarding": true,
+      "steps": [
+        {
+          "id": "starter-outfit",
+          "text": "Buy the starter Bucket Hat at the Style Studio ($5 deal)",
+          "goal": {
+            "type": "event",
+            "target": "ownOutfit"
+          },
+          "say": [
+            "Now the fun part: spending some of what you earned! Every shop in Fin City has one starter deal. Head to the Style Studio and grab the Bucket Hat for just $5."
+          ],
+          "entrySay": [
+            "Time for the fun part! Every shop has one super cheap starter deal. Go to the Style Studio and get the Bucket Hat for $5!"
+          ]
+        },
+        {
+          "id": "starter-pet",
+          "text": "Adopt the starter puppy at the Pet Shop ($10 deal)",
+          "proText": "Adopt the starter puppy at the Veterinary Clinic ($10 deal)",
+          "goal": {
+            "type": "event",
+            "target": "ownPet"
+          },
+          "say": [
+            "Looking sharp! Next, adopt a puppy for $10. Remember that pets cost money every month for food and care. That cost lands in your bills."
+          ],
+          "entrySay": [
+            "Looking good! Now adopt a puppy for $10. It will follow you everywhere! Pets need food every month, so they cost a little each month too."
+          ]
+        },
+        {
+          "id": "starter-ride",
+          "text": "Get the starter Electric Scooter at the Auto Dealer ($15 deal)",
+          "goal": {
+            "type": "event",
+            "target": "ownRide"
+          },
+          "say": [
+            "Walking is slow. The Auto Dealer has a starter deal on an Electric Scooter: $15. Vehicles lose value every year, and that's called depreciation."
+          ],
+          "entrySay": [
+            "Let's get you a ride! The Auto Dealer has an Electric Scooter for only $15. Walk up to it and press the interact button to ride."
+          ]
+        },
+        {
+          "id": "starter-home",
+          "text": "Claim your starter Tiny Home at the Real Estate Office ($30 deal)",
+          "goal": {
+            "type": "event",
+            "target": "ownHome"
+          },
+          "say": [
+            "Last one: a home of your own. Fin City's First-Home Grant pays for most of a Tiny House, so you pay $30. Then we'll go and see it."
+          ],
+          "entrySay": [
+            "Last one: your very own house! The city helps new players, so a Tiny House costs only $30. Then we'll go see it!"
+          ]
+        },
+        {
+          "id": "starter-visit-home",
+          "text": "Walk into your new Tiny House on Maple Lane",
+          "goal": {
+            "type": "event",
+            "target": "enterHome"
+          },
+          "say": [
+            "Your home is on Maple Lane, at the edge of the park. Follow the light and walk in. Furniture you buy gets delivered here, and you can arrange it however you like."
+          ],
+          "entrySay": [
+            "Let's go see your new house! Follow the sparkly light to Maple Lane and walk inside."
+          ]
+        },
+        {
+          "id": "starter-see-lots",
+          "text": "Check out the lots for sale on Maple Lane",
+          "goal": {
+            "type": "event",
+            "target": "viewPlot"
+          },
+          "say": [
+            "See the For Sale signs next door? Those are empty lots. Land can be bought with cash or a mortgage, and you can build a bigger house on it later. Walk up to a sign to see the prices."
+          ],
+          "entrySay": [
+            "See the For Sale signs? Those are empty lots you can buy one day and build a bigger house on. Walk up to a sign to see how much they cost!"
+          ]
+        }
+      ],
+      "reward": {
+        "cash": 30,
+        "xp": 150
+      },
+      "next": [
         "q4-sf"
       ]
     },
@@ -374,7 +474,7 @@
         "xp": 80
       },
       "next": [
-        "q7-buy"
+        "q8-networth"
       ]
     },
     {

@@ -13,6 +13,7 @@ import { vehicleDef } from '../sim/vehicleCatalog';
 import { storeFurniture, clearHome } from '../home';
 import { outfitDef, furnitureDef, collectibleDef, petDef, plotDef, houseDef, condoDef, businessType, insurancePlan, subscriptionDef, itemDef } from '../sim/catalog';
 import { businessValue } from './netWorth';
+import { STARTER, starterPrice, useStarter } from '../starter';
 import community from '@/data/community.json';
 import furniture from '@/data/shop/furniture.json';
 import property from '@/data/shop/property.json';
@@ -54,14 +55,17 @@ export function buyOutfit(w: WorldState, fx: Fx, id: string, method: 'auto' | 'c
   const o = outfitDef(id);
   if (!o || w.assets.items.some((i) => i.itemId === id)) return false;
   if (levelLocked(w, fx, (o as { unlockLevel?: number }).unlockLevel)) return false;
-  const price = currentPrice(w, o.price);
-  if (checkout(w, fx, price, o.name, method) === null) return false;
+  const deal = starterPrice(w, 'outfit', id);
+  const price = deal ?? currentPrice(w, o.price);
+  if (checkout(w, fx, price, deal === null ? o.name : `${o.name} (starter deal)`, method) === null) return false;
+  if (deal !== null) useStarter(w, 'outfit');
   w.assets.items.push({ uid: uid('item'), itemId: id, value: round2(price * 0.3), price, boughtMonth: w.time.month });
   boostHappiness(w, o.happiness);
   w.progress.stats.outfitsOwned = (w.progress.stats.outfitsOwned ?? 0) + 1;
   equipOutfit(w, id);
   fx.push({ type: 'toast', text: `You bought ${o.name}! (Equipped)`, icon: o.icon, tone: 'good' });
   recordEvent(w, fx, { type: 'buy', target: id, value: price });
+  recordEvent(w, fx, { type: 'ownOutfit', target: id });
   return true;
 }
 
@@ -126,14 +130,17 @@ export function adoptPet(w: WorldState, fx: Fx, id: string, name: string) {
   const d = petDef(id);
   if (!d) return false;
   if (levelLocked(w, fx, (d as { unlockLevel?: number }).unlockLevel)) return false;
-  const price = currentPrice(w, d.adoption);
-  if (checkout(w, fx, price, `${d.name} adoption`) === null) return false;
+  const deal = starterPrice(w, 'pet', id);
+  const price = deal ?? currentPrice(w, d.adoption);
+  if (checkout(w, fx, price, `${d.name} adoption${deal === null ? '' : ' (starter deal)'}`) === null) return false;
+  if (deal !== null) useStarter(w, 'pet');
   w.assets.pets.push({ uid: uid('pet'), itemId: id, name: name.slice(0, 16) || d.name, boughtMonth: w.time.month });
   boostHappiness(w, d.happiness * 2);
   w.progress.collection[`pet:${id}`] = 1;
   fx.push({ type: 'narwhal', text: `Welcome home, ${name || d.name}! ${d.icon} Remember: pets cost about ${fmt(d.monthly)} every month for food and care. That's in your Bills now.`, mood: 'hyped' });
   fx.push({ type: 'confetti' });
   recordEvent(w, fx, { type: 'buy', target: id, value: price });
+  recordEvent(w, fx, { type: 'ownPet', target: id });
   return true;
 }
 
@@ -167,9 +174,12 @@ export function buyVehicle(w: WorldState, fx: Fx, id: string, method: PayMethod)
   if (levelLocked(w, fx, d.unlockLevel)) return false;
   const o = vehicleOffer(w, id);
   const ownedUid = uid('veh');
+  const deal = method === 'cash' || method === 'card' ? starterPrice(w, 'ride', id) : null;
   if (method === 'cash' || method === 'card') {
-    if (checkout(w, fx, o.price, d.name, method === 'card' ? 'card' : 'auto') === null) return false;
-    w.assets.vehicles.push({ uid: ownedUid, itemId: id, value: o.price, price: o.price, boughtMonth: w.time.month });
+    const price = deal ?? o.price;
+    if (checkout(w, fx, price, deal === null ? d.name : `${d.name} (starter deal)`, method === 'card' ? 'card' : 'auto') === null) return false;
+    if (deal !== null) useStarter(w, 'ride');
+    w.assets.vehicles.push({ uid: ownedUid, itemId: id, value: price, price, boughtMonth: w.time.month });
   } else if (method === 'loan') {
     if (checkout(w, fx, o.down, `${d.name} down payment`) === null) return false;
     takeLoan(w, fx, 'auto', o.price - o.down, o.months, { name: `${d.name} auto loan`, collateral: ownedUid, deposit: false });
@@ -184,7 +194,8 @@ export function buyVehicle(w: WorldState, fx: Fx, id: string, method: PayMethod)
   w.progress.collection[`vehicle:${id}`] = 1;
   fx.push({ type: 'narwhal', text: `Congrats on your ${d.name}! ${d.icon} It's parked by the garage spot, walk up and press E to ride. It costs about ${fmt(d.upkeep)}/month to keep and loses value over time (depreciation).`, mood: 'hyped' });
   fx.push({ type: 'confetti' });
-  recordEvent(w, fx, { type: 'buy', target: id, value: o.price });
+  recordEvent(w, fx, { type: 'buy', target: id, value: deal ?? o.price });
+  recordEvent(w, fx, { type: 'ownRide', target: id });
   return true;
 }
 
@@ -262,6 +273,7 @@ export function buildHouse(w: WorldState, fx: Fx, plotId: string, houseId: strin
   fx.push({ type: 'confetti' });
   recordEvent(w, fx, { type: 'buy', target: houseId, value: cost });
   recordEvent(w, fx, { type: 'build', target: houseId });
+  recordEvent(w, fx, { type: 'ownHome', target: houseId });
   return true;
 }
 
@@ -280,12 +292,39 @@ export function buyCondo(w: WorldState, fx: Fx, condoId: string, downPct: number
   w.assets.properties.push({ uid: propUid, itemId: condoId, value: price, price, level: 1, rented: true, boughtMonth: w.time.month });
   fx.push({ type: 'narwhal', text: `You bought the ${c.name}! It's rented out to tenants for about ${fmt(c.rent)}/month. That's passive income, but upkeep and empty months happen too.`, mood: 'hyped' });
   recordEvent(w, fx, { type: 'buy', target: condoId, value: price });
+  recordEvent(w, fx, { type: 'ownHome', target: condoId });
+  return true;
+}
+
+/**
+ * The starter home: the first free plot with a Tiny House on it, for the starter price (the city's
+ * First-Home Grant covers the rest). It's valued at what you paid and can't be rented out, so the
+ * deal is for living in, not for profit.
+ */
+export function claimStarterHome(w: WorldState, fx: Fx) {
+  const h = houseDef(STARTER.home.id);
+  const plot = property.plots.find((p) => !w.assets.properties.some((x) => x.plotId === p.id));
+  if (!h || !plot || starterPrice(w, 'home', STARTER.home.id) === null) return false;
+  if (!spend(w, fx, STARTER.home.price, `${h.name} (starter deal)`)) return false;
+  useStarter(w, 'home');
+  const propUid = uid('prop');
+  w.assets.properties.push({ uid: propUid, itemId: plot.id, plotId: plot.id, houseId: h.id, value: STARTER.home.price, price: STARTER.home.price, level: 1, rented: false, boughtMonth: w.time.month, starter: true });
+  if (w.player.residence === 'narwhal') w.player.residence = propUid;
+  boostHappiness(w, h.happiness);
+  fx.push({ type: 'narwhal', text: `Your own ${h.name} on ${plot.name}! ${h.icon} The First-Home Grant paid for most of it. You still pay about ${fmt(h.upkeep)} a month to keep it up. Walk in and add your furniture!`, mood: 'hyped' });
+  fx.push({ type: 'confetti' });
+  recordEvent(w, fx, { type: 'buy', target: h.id, value: STARTER.home.price });
+  recordEvent(w, fx, { type: 'ownHome', target: h.id });
   return true;
 }
 
 export function setRented(w: WorldState, fx: Fx, propUid: string, rented: boolean) {
   const p = w.assets.properties.find((x) => x.uid === propUid);
   if (!p || (!p.houseId && !condoDef(p.itemId))) return;
+  if (rented && p.starter) {
+    fx.push({ type: 'toast', text: 'Starter homes come from the First-Home Grant: you can live in yours, but not rent it out.', icon: '🔑', tone: 'info' });
+    return;
+  }
   p.rented = rented;
   if (rented && w.player.residence === propUid) w.player.residence = 'narwhal';
   // Tenants move into an empty home; your furniture goes back into storage

@@ -87,6 +87,7 @@ export function enterHome(propUid: string) {
     return;
   }
   playSfx('door');
+  act((d, fx) => recordEvent(d, fx, { type: 'enterHome', target: propUid }));
   const ui = useUI.getState();
   ui.setLoading({ active: true, progress: 0.6, text: home.name, kind: 'building', city: useScene.getState().location, building: undefined });
   const outside = { x: rt.player.x, z: rt.player.z, rot: rt.playerRotY + Math.PI };
@@ -141,6 +142,7 @@ export function interact(t: Trigger | null) {
       rideParked();
       break;
     case 'plot':
+      act((d, fx) => recordEvent(d, fx, { type: 'viewPlot', target: data.plot }));
       ui.open({ type: 'shop', id: `property:${data.plot}` });
       break;
     case 'checkpoint':

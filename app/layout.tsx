@@ -4,8 +4,6 @@ import '@fontsource/nunito/600.css';
 import '@fontsource/nunito/700.css';
 import '@fontsource/nunito/800.css';
 import '@fontsource/nunito/900.css';
-import '@fontsource/pixelify-sans/500.css';
-import '@fontsource/pixelify-sans/700.css';
 // In-world signage typefaces (bundled, latin subset only)
 import '@fontsource/cinzel/latin-700.css';
 import '@fontsource/montserrat/latin-600.css';
@@ -16,10 +14,13 @@ import '@fontsource/playfair-display/latin-700.css';
 import '@fontsource/oswald/latin-600.css';
 import '@fontsource/bebas-neue/latin-400.css';
 import './globals.css';
+import { Analytics } from './Analytics';
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://fincity.dev'),
   title: 'Fin City · NextGen Knowledge',
   description: 'Explore Fin City, play money games, and grow your net worth with NextGen Narwhal.',
+  openGraph: { title: 'Fin City', description: 'A 3D financial literacy game by NextGen Knowledge.', url: 'https://fincity.dev', siteName: 'Fin City' },
   icons: { icon: `${process.env.NEXT_PUBLIC_BASE_PATH ?? ''}/brand/fin-city-logo.webp` },
 };
 
@@ -33,7 +34,10 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        {children}
+        <Analytics />
+      </body>
     </html>
   );
 }

@@ -40,10 +40,9 @@ resemblance to real ones is coincidental. Real cities appear only as stylized se
 | Font | Author | Licence |
 | --- | --- | --- |
 | [Nunito](https://fonts.google.com/specimen/Nunito) | Vernon Adams, Cyreal, Jacques Le Bailly | SIL Open Font License 1.1 |
-| [Pixelify Sans](https://fonts.google.com/specimen/Pixelify+Sans) | Stefie Justprince | SIL Open Font License 1.1 |
 | [Cinzel](https://fonts.google.com/specimen/Cinzel) (carved stone lettering) | Natanael Gama | SIL Open Font License 1.1 |
 | [Playfair Display](https://fonts.google.com/specimen/Playfair+Display) (painted shop boards) | Claus Eggers Sørensen | SIL Open Font License 1.1 |
-| [Montserrat](https://fonts.google.com/specimen/Montserrat) (office channel letters) | Julieta Ulanovsky and contributors | SIL Open Font License 1.1 |
+| [Montserrat](https://fonts.google.com/specimen/Montserrat) (headings, numbers, map labels and office signs) | Julieta Ulanovsky and contributors | SIL Open Font License 1.1 |
 | [Inter](https://fonts.google.com/specimen/Inter) (transit and wayfinding signs) | Rasmus Andersson | SIL Open Font License 1.1 |
 | [Oswald](https://fonts.google.com/specimen/Oswald) (marquees, hoardings, barriers) | Vernon Adams and contributors | SIL Open Font License 1.1 |
 | [Bebas Neue](https://fonts.google.com/specimen/Bebas+Neue) (ad headlines) | Dharma Type | SIL Open Font License 1.1 |

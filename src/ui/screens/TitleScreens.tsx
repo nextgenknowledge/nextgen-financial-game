@@ -219,7 +219,7 @@ export function CreditsScreen() {
               <b style={{ marginTop: '0.6rem' }}>Built with</b>
               <span className="muted small">
                 Next.js, React, three.js, React Three Fiber, drei, Zustand, immer and idb (all MIT). Fonts: Nunito and
-                Pixelify Sans (SIL Open Font License), bundled locally. All 3D models and sound effects are
+                Montserrat (SIL Open Font License), bundled locally. All 3D models and sound effects are
                 generated in code for this game; the background music comes from the team&apos;s earlier NextGen
                 Financial Hub game. See CREDITS.md for full details.
               </span>
