@@ -1565,6 +1565,19 @@ button.item-card { cursor: pointer; }
 /* Compass, arrival card and messages stack under the map */
 .hud.classic .hud-compass { border-radius: 0; padding: 0.15rem 0.5rem; font-size: 0.8rem; background: rgba(11, 26, 58, 0.85); }
 .hud.classic .hud-compass .arrow { font-size: 1.1rem; }
+/* Long place names shorten with an ellipsis instead of widening the top-right column on phones
+   (which squeezed and clipped Save & Exit and the wallet) */
+.hud .hud-compass { max-width: 100%; min-width: 0; }
+.hud .hud-compass .compass-label { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.hud .hud-compass .compass-dist { flex-shrink: 0; white-space: nowrap; margin-left: -4px; }
+@media (max-width: 760px) {
+  .hud.classic .hud-compass { max-width: 150px; }
+}
+/* Narrow phones: wallet pills drop their icons so both fit beside the minimap */
+@media (max-width: 420px) {
+  .wallet-icon, .wallet-pill > svg { display: none; }
+  .wallet-pill { padding: 0 9px; }
+}
 .hud.classic .arrival-banner { text-align: right; background: rgba(11, 26, 58, 0.85); border: 2px solid #3d8bff; padding: 0.3rem 0.6rem; }
 .hud.classic .arrival-name { font-size: 1.15rem; }
 .hud.classic .arrival-kicker { font-size: 0.62rem; }
@@ -1703,6 +1716,8 @@ button.item-card { cursor: pointer; }
 /* Phones held upright: the FinPhone goes under the minimap so Narwhal's bubble has the width */
 @media (pointer: coarse) and (max-width: 760px) {
   .hud.classic .r-br, .hud.classic.talking .r-br { bottom: auto; top: calc(150px + var(--safe-t)); right: calc(12px + var(--safe-r)); }
+  /* ...and below the "next place" pill when a goal is set */
+  .hud.classic:has(.hud-compass) .r-br { top: calc(194px + var(--safe-t)); }
   .hud .narwhal-guide .narwhal-bubble { width: min(300px, calc(100vw - 120px - var(--safe-l) - var(--safe-r))); }
 }
 /* Short landscape phones */

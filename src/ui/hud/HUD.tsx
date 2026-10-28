@@ -274,8 +274,9 @@ function Compass() {
       <div className="arrow" style={{ transform: `rotate(${state.angle}rad)` }}>
         ▲
       </div>
-      <span className="tiny bold">
-        {state.label ? `${state.label} · ` : ''}
+      {state.label && <span className="tiny bold compass-label">{state.label}</span>}
+      <span className="tiny bold compass-dist">
+        {state.label ? '· ' : ''}
         {Math.round(state.dist)}m
       </span>
     </div>

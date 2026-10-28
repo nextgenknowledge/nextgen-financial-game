@@ -212,17 +212,22 @@ export function GoalBeacon() {
   });
   return (
     <group ref={g}>
-      <mesh position={[0, 12, 0]}>
-        <cylinderGeometry args={[1.0, 1.4, 24, 12, 1, true]} />
-        <meshBasicMaterial color="#ffcf3f" transparent opacity={0.22} depthWrite={false} side={THREE.DoubleSide} toneMapped={false} />
+      {/* Bright core beam inside a wider glow, both visible from across the city */}
+      <mesh position={[0, 15, 0]}>
+        <cylinderGeometry args={[0.55, 0.75, 30, 12, 1, true]} />
+        <meshBasicMaterial color="#fff2b0" transparent opacity={0.75} depthWrite={false} side={THREE.DoubleSide} toneMapped={false} />
+      </mesh>
+      <mesh position={[0, 15, 0]}>
+        <cylinderGeometry args={[1.3, 1.8, 30, 16, 1, true]} />
+        <meshBasicMaterial color="#ffc21a" transparent opacity={0.38} depthWrite={false} side={THREE.DoubleSide} toneMapped={false} blending={THREE.AdditiveBlending} />
       </mesh>
       <mesh ref={arrow} rotation={[Math.PI, 0, 0]}>
-        <coneGeometry args={[0.7, 1.4, 4]} />
-        <meshBasicMaterial color="#ffcf3f" toneMapped={false} />
+        <coneGeometry args={[1.0, 2.0, 4]} />
+        <meshBasicMaterial color="#ffd23f" toneMapped={false} />
       </mesh>
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.08, 0]}>
-        <ringGeometry args={[1.6, 2.1, 24]} />
-        <meshBasicMaterial color="#ffcf3f" transparent opacity={0.7} toneMapped={false} />
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.12, 0]}>
+        <ringGeometry args={[1.5, 2.3, 32]} />
+        <meshBasicMaterial color="#ffd23f" transparent opacity={0.95} toneMapped={false} />
       </mesh>
     </group>
   );
@@ -236,34 +241,54 @@ const TRAIL_DOTS = 48;
  */
 export function GuideTrail() {
   const ref = useRef<THREE.InstancedMesh>(null);
+  const glowRef = useRef<THREE.InstancedMesh>(null);
   const hints = useSettings((s) => s.hints);
-  const geo = useMemo(() => new THREE.CircleGeometry(0.16, 10).rotateX(-Math.PI / 2), []);
-  const mat = useMemo(() => new THREE.MeshBasicMaterial({ color: '#ffd864', transparent: true, opacity: 0.85, depthWrite: false, toneMapped: false }), []);
+  // Short dashes pointing along the route, each with a soft gold halo, so the trail reads on grass,
+  // paving and snow
+  const geo = useMemo(() => new THREE.PlaneGeometry(0.22, 0.62).rotateX(-Math.PI / 2), []);
+  const glowGeo = useMemo(() => new THREE.PlaneGeometry(0.4, 0.8).rotateX(-Math.PI / 2), []);
+  const mat = useMemo(() => new THREE.MeshBasicMaterial({ color: '#ffc81e', depthWrite: false, toneMapped: false }), []);
+  const glowMat = useMemo(() => new THREE.MeshBasicMaterial({ color: '#ff9d00', transparent: true, opacity: 0.45, depthWrite: false, toneMapped: false, blending: THREE.AdditiveBlending }), []);
   const m4 = useMemo(() => new THREE.Matrix4(), []);
+  const size = useMemo(() => new THREE.Vector3(), []);
   useFrame((state) => {
     const mesh = ref.current;
-    if (!mesh) return;
+    const glow = glowRef.current;
+    if (!mesh || !glow) return;
     const path = rt.guidePath;
     const goal = rt.goal;
     const p = rt.player;
     if (!hints || !path || path.length < 2 || !goal || Math.hypot(goal.x - p.x, goal.z - p.z) < 3.5) {
       mesh.count = 0;
+      glow.count = 0;
       return;
     }
     const t = state.clock.elapsedTime;
     let n = 0;
     for (let k = 0; k < TRAIL_DOTS; k++) {
-      const dist = 1.6 + k * 1.1;
+      const dist = 1.4 + k * 1.25;
       const [x, z] = aheadOnPath(path, p.x, p.z, dist);
+      // Face the dash along the route
+      const [nx, nz] = aheadOnPath(path, p.x, p.z, dist + 0.3);
+      const yaw = Math.atan2(nx - x, nz - z);
       if (Math.hypot(goal.x - x, goal.z - z) < 1.2) break;
       // Pulse travelling away from the player toward the goal
       const wave = Math.max(0, Math.cos((dist - ((t * 9) % 60)) * 0.35));
-      const s = (0.7 + wave * 0.6) * (1 - k / TRAIL_DOTS * 0.5);
-      m4.makeScale(s, 1, s).setPosition(x, 0.2, z);
+      const s = (0.85 + wave * 0.5) * (1 - (k / TRAIL_DOTS) * 0.35);
+      m4.makeRotationY(yaw).scale(size.set(s, 1, s)).setPosition(x, 0.24, z);
+      glow.setMatrixAt(n, m4);
+      m4.setPosition(x, 0.26, z);
       mesh.setMatrixAt(n++, m4);
     }
     mesh.count = n;
+    glow.count = n;
     mesh.instanceMatrix.needsUpdate = true;
+    glow.instanceMatrix.needsUpdate = true;
   });
-  return <instancedMesh ref={ref} args={[geo, mat, TRAIL_DOTS]} frustumCulled={false} renderOrder={2} />;
+  return (
+    <>
+      <instancedMesh ref={glowRef} args={[glowGeo, glowMat, TRAIL_DOTS]} frustumCulled={false} renderOrder={2} />
+      <instancedMesh ref={ref} args={[geo, mat, TRAIL_DOTS]} frustumCulled={false} renderOrder={3} />
+    </>
+  );
 }

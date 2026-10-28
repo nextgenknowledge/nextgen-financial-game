@@ -169,6 +169,7 @@ export default function GameView() {
             )}
           </group>
           <PlayerController />
+          <PortraitView />
           {narwhalFollow && <NarwhalGuide />}
           <PlayerPets />
           <GoalBeacon />
@@ -184,6 +185,20 @@ export default function GameView() {
       <HudTour />
     </div>
   );
+}
+
+/**
+ * A phone held upright sees only a sliver of the world at the normal 55° view (the player fills
+ * the screen and hides the guide trail), so narrow screens get a wider view.
+ */
+function PortraitView() {
+  const camera = useThree((s) => s.camera) as THREE.PerspectiveCamera;
+  const aspect = useThree((s) => s.size.width / s.size.height);
+  useEffect(() => {
+    camera.fov = aspect < 1 ? Math.min(78, 55 + (1 - aspect) * 45) : 55;
+    camera.updateProjectionMatrix();
+  }, [camera, aspect]);
+  return null;
 }
 
 /** Runs game systems: time, market, walking stats, goal markers, performance. */
