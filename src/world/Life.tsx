@@ -62,6 +62,9 @@ interface Walker {
   wait: number;
   scale: number;
   carry: number; // -1 = hands free
+  /** Women are drawn a touch narrower, with longer hair at the back (some tied up). */
+  female: boolean;
+  longHair: boolean;
 }
 
 const PARTS = [
@@ -76,6 +79,7 @@ const PARTS = [
   { key: 'head', geo: rbox(0.5, 0.5, 0.49, 0.08), pivot: [0, 1.93, 0], offset: [0, 0, 0], color: 'skin', swing: 0 },
   { key: 'eyes', geo: new THREE.BoxGeometry(0.3, 0.06, 0.02).translate(0, 0, 0.25), pivot: [0, 1.96, 0], offset: [0, 0, 0], color: 'eyes', swing: 0 },
   { key: 'hair', geo: rbox(0.54, 0.17, 0.53, 0.06), pivot: [0, 2.17, -0.02], offset: [0, 0, 0], color: 'hair', swing: 0 },
+  { key: 'hairBack', geo: rbox(0.54, 0.46, 0.1, 0.04), pivot: [0, 1.93, -0.25], offset: [0, 0, 0], color: 'hair', swing: 0 },
   { key: 'shoeL', geo: rbox(0.3, 0.15, 0.4, 0.05), pivot: [0.16, 0.9, 0], offset: [0, -0.82, 0.04], color: 'shoes', swing: 1 },
   { key: 'shoeR', geo: rbox(0.3, 0.15, 0.4, 0.05), pivot: [-0.16, 0.9, 0], offset: [0, -0.82, 0.04], color: 'shoes', swing: -1 },
   { key: 'carry', geo: new THREE.BoxGeometry(1, 1, 1), pivot: [-0.43, 1.53, 0], offset: [0, 0, 0], color: 'carry', swing: 0.9 },
@@ -157,6 +161,8 @@ export function Crowd({ loops, count, seed = 1 }: { loops: [number, number][][];
         wait: 0,
         scale: rng.range(0.85, 1.05),
         carry: role === 'walk' && rng.chance(0.55) ? rng.int(0, CARRY.length - 1) : -1,
+        female: rng.chance(0.5),
+        longHair: rng.chance(0.6),
       } as Walker;
     });
   }, [loops, count, seed]);
@@ -224,10 +230,16 @@ export function Crowd({ loops, count, seed = 1 }: { loops: [number, number][][];
       const swing = moving ? Math.sin(w.phase) * (jog ? 0.95 : 0.7) : 0;
       const bob = moving ? Math.abs(Math.sin(w.phase)) * (jog ? 0.12 : 0.05) : 0;
       const hold = raining && w.umbrella;
-      mBase.compose(vPos.set(w.x, bob, w.z), qYaw.setFromAxisAngle(UP, w.yaw), vScale.setScalar(w.scale));
+      mBase.compose(vPos.set(w.x, bob, w.z), qYaw.setFromAxisAngle(UP, w.yaw), vScale.set(w.scale * (w.female ? 0.93 : 1), w.scale * (w.female ? 0.97 : 1), w.scale));
       PARTS.forEach((p, k) => {
         const mesh = refs.current[k];
         if (!mesh) return;
+        if (p.key === 'hairBack') {
+          // Long hair to the shoulders, or tied back short
+          if (w.female) mesh.setMatrixAt(i, mPart.makeTranslation(0, w.longHair ? 1.86 : 1.96, -0.25).multiply(mScale.makeScale(1, w.longHair ? 1 : 0.55, 1)).premultiply(mBase));
+          else mesh.setMatrixAt(i, HIDE);
+          return;
+        }
         mPart.makeTranslation(p.pivot[0], p.pivot[1], p.pivot[2]);
         // Umbrella arm is raised and still; joggers pump bent arms
         const left = p.key === 'armL' || p.key === 'handL';

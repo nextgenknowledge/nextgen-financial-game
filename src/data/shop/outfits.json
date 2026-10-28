@@ -1,5 +1,5 @@
 {
- "$comment": "Outfits. slot: hat | top | bottom | feet | accessory. style picks the 3D shape and pattern the pixel fabric (src/world/Avatar.tsx, src/engine/pixtex.ts). tier: basic | street | smart | business | legendary, expensive tiers are long-term savings goals. happiness = lift to the happiness meter (a 'want'). unlockLevel gates the item.",
+ "$comment": "Outfits. slot: hat | top | bottom | feet | accessory. style picks the 3D shape and pattern the pixel fabric (src/world/Avatar.tsx, src/engine/pixtex.ts). tier: basic | street | smart | business | legendary, expensive tiers are long-term savings goals. happiness = lift to the happiness meter (a 'want'). unlockLevel gates the item. for: 'male' | 'female' shows an item only on that body's shelves (no for = everyone); swap names the item it stands in for on the other body.",
  "items": [
   {
    "id": "party-hat",
@@ -232,6 +232,20 @@
    "happiness": 6
   },
   {
+   "id": "blouse",
+   "name": "Silk Blouse",
+   "slot": "top",
+   "style": "blouse",
+   "color": "#f4f1ea",
+   "color2": "#d9d2c2",
+   "pattern": "satin",
+   "price": 95,
+   "icon": "👕",
+   "tier": "basic",
+   "happiness": 6,
+   "for": "female"
+  },
+  {
    "id": "jersey",
    "name": "Fin City FC Jersey",
    "slot": "top",
@@ -362,6 +376,21 @@
    "unlockLevel": 5
   },
   {
+   "id": "work-dress",
+   "name": "Sheath Work Dress",
+   "slot": "top",
+   "style": "dress",
+   "color": "#1f2b4d",
+   "color2": "#15161a",
+   "pattern": "wool",
+   "price": 1500,
+   "icon": "👗",
+   "tier": "smart",
+   "happiness": 12,
+   "unlockLevel": 6,
+   "for": "female"
+  },
+  {
    "id": "bomber",
    "name": "Suede Bomber",
    "slot": "top",
@@ -370,6 +399,20 @@
    "color2": "#2a2a30",
    "pattern": "leather",
    "price": 1600,
+   "icon": "🧥",
+   "tier": "smart",
+   "happiness": 12,
+   "unlockLevel": 6
+  },
+  {
+   "id": "trench",
+   "name": "Trench Coat",
+   "slot": "top",
+   "style": "trench",
+   "color": "#b9a27a",
+   "color2": "#5a4630",
+   "pattern": "twill",
+   "price": 2000,
    "icon": "🧥",
    "tier": "smart",
    "happiness": 12,
@@ -474,7 +517,24 @@
    "icon": "🤵",
    "tier": "business",
    "happiness": 16,
-   "unlockLevel": 14
+   "unlockLevel": 14,
+   "for": "male"
+  },
+  {
+   "id": "skirt-suit",
+   "name": "Tailored Skirt Suit",
+   "slot": "top",
+   "style": "skirtsuit",
+   "color": "#2f3138",
+   "color2": "#f4f1ea",
+   "pattern": "pinstripe",
+   "price": 25000,
+   "icon": "💼",
+   "tier": "business",
+   "happiness": 16,
+   "unlockLevel": 14,
+   "for": "female",
+   "swap": "three-piece"
   },
   {
    "id": "tux",
@@ -488,7 +548,24 @@
    "icon": "🤵",
    "tier": "business",
    "happiness": 18,
-   "unlockLevel": 16
+   "unlockLevel": 16,
+   "for": "male"
+  },
+  {
+   "id": "gown",
+   "name": "Black-Tie Evening Gown",
+   "slot": "top",
+   "style": "gown",
+   "color": "#15161a",
+   "color2": "#c9a24a",
+   "pattern": "satin",
+   "price": 40000,
+   "icon": "👗",
+   "tier": "business",
+   "happiness": 18,
+   "unlockLevel": 16,
+   "for": "female",
+   "swap": "tux"
   },
   {
    "id": "gold-suit",
@@ -507,7 +584,7 @@
   },
   {
    "id": "velvet-suit",
-   "name": "Chairman's Velvet Suit",
+   "name": "Chair's Velvet Suit",
    "slot": "top",
    "style": "threepiece",
    "color": "#5a1626",
@@ -557,6 +634,19 @@
    "happiness": 6
   },
   {
+   "id": "leggings",
+   "name": "Black Leggings",
+   "slot": "bottom",
+   "style": "leggings",
+   "color": "#1b1c20",
+   "pattern": "knit",
+   "price": 50,
+   "icon": "👖",
+   "tier": "basic",
+   "happiness": 5,
+   "for": "female"
+  },
+  {
    "id": "cargo",
    "name": "Cargo Pants",
    "slot": "bottom",
@@ -567,6 +657,19 @@
    "icon": "👖",
    "tier": "street",
    "happiness": 7
+  },
+  {
+   "id": "pleated-skirt",
+   "name": "Pleated Skirt",
+   "slot": "bottom",
+   "style": "skirt",
+   "color": "#2f3e66",
+   "pattern": "twill",
+   "price": 160,
+   "icon": "👗",
+   "tier": "street",
+   "happiness": 8,
+   "for": "female"
   },
   {
    "id": "joggers",
@@ -595,6 +698,20 @@
    "unlockLevel": 5
   },
   {
+   "id": "pencil-skirt",
+   "name": "Pencil Skirt",
+   "slot": "bottom",
+   "style": "pencil",
+   "color": "#2f3138",
+   "pattern": "wool",
+   "price": 2200,
+   "icon": "👗",
+   "tier": "business",
+   "happiness": 13,
+   "unlockLevel": 8,
+   "for": "female"
+  },
+  {
    "id": "trousers",
    "name": "Wool Dress Trousers",
    "slot": "bottom",
@@ -605,7 +722,23 @@
    "icon": "👖",
    "tier": "business",
    "happiness": 14,
-   "unlockLevel": 8
+   "unlockLevel": 8,
+   "for": "male"
+  },
+  {
+   "id": "wide-trousers",
+   "name": "Wide-Leg Dress Trousers",
+   "slot": "bottom",
+   "style": "widetrousers",
+   "color": "#2f3138",
+   "pattern": "wool",
+   "price": 2500,
+   "icon": "👖",
+   "tier": "business",
+   "happiness": 14,
+   "unlockLevel": 8,
+   "for": "female",
+   "swap": "trousers"
   },
   {
    "id": "canvas",
@@ -619,6 +752,19 @@
    "icon": "👟",
    "tier": "basic",
    "happiness": 5
+  },
+  {
+   "id": "flats",
+   "name": "Ballet Flats",
+   "slot": "feet",
+   "style": "flats",
+   "color": "#15161a",
+   "pattern": "leather",
+   "price": 55,
+   "icon": "👞",
+   "tier": "basic",
+   "happiness": 5,
+   "for": "female"
   },
   {
    "id": "sneakers",
@@ -658,6 +804,19 @@
    "unlockLevel": 3
   },
   {
+   "id": "ankle-boots",
+   "name": "Leather Ankle Boots",
+   "slot": "feet",
+   "style": "boots",
+   "color": "#3a2a1e",
+   "pattern": "leather",
+   "price": 700,
+   "icon": "👞",
+   "tier": "street",
+   "happiness": 9,
+   "unlockLevel": 3
+  },
+  {
    "id": "loafers",
    "name": "Suede Loafers",
    "slot": "feet",
@@ -682,6 +841,20 @@
    "tier": "business",
    "happiness": 14,
    "unlockLevel": 9
+  },
+  {
+   "id": "pumps",
+   "name": "Block-Heel Pumps",
+   "slot": "feet",
+   "style": "pumps",
+   "color": "#15161a",
+   "pattern": "leather",
+   "price": 3200,
+   "icon": "👞",
+   "tier": "business",
+   "happiness": 14,
+   "unlockLevel": 9,
+   "for": "female"
   },
   {
    "id": "gold-kicks",
@@ -795,6 +968,19 @@
    "unlockLevel": 5
   },
   {
+   "id": "pearls",
+   "name": "Pearl Necklace",
+   "slot": "accessory",
+   "style": "pearls",
+   "color": "#f4f1ea",
+   "price": 2600,
+   "icon": "💎",
+   "tier": "smart",
+   "happiness": 12,
+   "unlockLevel": 5,
+   "for": "female"
+  },
+  {
    "id": "briefcase",
    "name": "Leather Briefcase",
    "slot": "accessory",
@@ -807,6 +993,21 @@
    "tier": "business",
    "happiness": 14,
    "unlockLevel": 7
+  },
+  {
+   "id": "tote",
+   "name": "Leather Work Tote",
+   "slot": "accessory",
+   "style": "tote",
+   "color": "#6b4428",
+   "color2": "#d9a823",
+   "pattern": "leather",
+   "price": 3200,
+   "icon": "💼",
+   "tier": "business",
+   "happiness": 14,
+   "unlockLevel": 7,
+   "for": "female"
   },
   {
    "id": "steel-watch",
