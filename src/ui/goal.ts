@@ -70,7 +70,15 @@ export function updateGoalMarker() {
   const now = performance.now();
   const moved = Math.hypot(rt.player.x - planned.x, rt.player.z - planned.z);
   if (key === planned.goal && rt.sceneKey === planned.scene && rt.guidePath && moved < 8 && now - planned.at < 5000) return;
-  rt.guidePath = findPath(rt.collision, rt.sceneKey, rt.player.x, rt.player.z, g.x, g.z);
+  const { x, z } = rt.player;
+  // No walking route (the player hopped into a fenced garden or site): allow hopping the low
+  // fence, and failing that point straight at the goal, so the trail never just disappears
+  rt.guidePath =
+    findPath(rt.collision, rt.sceneKey, x, z, g.x, g.z) ??
+    findPath(rt.collision, rt.sceneKey, x, z, g.x, g.z, 2.2, true) ?? [
+      [x, z],
+      [g.x, g.z],
+    ];
   planned = { goal: key, scene: rt.sceneKey, x: rt.player.x, z: rt.player.z, at: now };
 }
 

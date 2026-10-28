@@ -8,6 +8,8 @@ import type { CollisionWorld } from './collision';
 
 const CELL = 0.5;
 const BODY = 0.3;
+/** Anything this low can be jumped over (a jump clears about 1.8 m). */
+const HOP = 1.7;
 
 interface Grid {
   key: string;
@@ -18,18 +20,21 @@ interface Grid {
   blocked: Uint8Array;
 }
 
-let cache: Grid | null = null;
+const cache: Record<'walk' | 'hop', Grid | null> = { walk: null, hop: null };
 
-function gridFor(c: CollisionWorld, sceneKey: string): Grid {
+/** Blocked cells for walking, or for hopping (low hedges, fences and tape count as open). */
+function gridFor(c: CollisionWorld, sceneKey: string, hop = false): Grid {
   const key = `${sceneKey}:${c.id}:${c.boxes.length}`;
-  if (cache?.key === key) return cache;
+  const mode = hop ? 'hop' : 'walk';
+  const hit = cache[mode];
+  if (hit?.key === key) return hit;
   const { minX, maxX, minZ, maxZ } = c.bounds;
   const nx = Math.ceil((maxX - minX) / CELL);
   const nz = Math.ceil((maxZ - minZ) / CELL);
   const blocked = new Uint8Array(nx * nz);
   for (const b of c.boxes) {
     // Kerbs, steps and anything you can walk over don't block
-    if (b.maxY <= 0.5 || b.minY > 1.6) continue;
+    if (b.maxY <= (hop ? HOP : 0.5) || b.minY > 1.6) continue;
     const i0 = Math.max(0, Math.floor((b.minX - BODY - minX) / CELL));
     const i1 = Math.min(nx - 1, Math.floor((b.maxX + BODY - minX) / CELL));
     const j0 = Math.max(0, Math.floor((b.minZ - BODY - minZ) / CELL));
@@ -43,8 +48,9 @@ function gridFor(c: CollisionWorld, sceneKey: string): Grid {
     const j1 = Math.min(nz - 1, Math.floor((w.maxZ - minZ) / CELL));
     for (let j = j0; j <= j1; j++) for (let i = i0; i <= i1; i++) blocked[j * nx + i] = 1;
   }
-  cache = { key, x0: minX, z0: minZ, nx, nz, blocked };
-  return cache;
+  const grid = { key, x0: minX, z0: minZ, nx, nz, blocked };
+  cache[mode] = grid;
+  return grid;
 }
 
 /** Nearest open cell (spiral search), for starts or goals that sit inside a collider. */
@@ -70,9 +76,13 @@ function clear(g: Grid, a: [number, number], b: [number, number]) {
   return true;
 }
 
-/** Shortest walkable route from (fx,fz) to (tx,tz) as world points, or null if there is none. */
-export function findPath(c: CollisionWorld, sceneKey: string, fx: number, fz: number, tx: number, tz: number, reach = 2.2): [number, number][] | null {
-  const g = gridFor(c, sceneKey);
+/**
+ * Shortest walkable route from (fx,fz) to (tx,tz) as world points, or null if there is none.
+ * With `hop`, low obstacles a player can jump over don't block (for players who hopped into a
+ * fenced garden or construction site and have no walking way out).
+ */
+export function findPath(c: CollisionWorld, sceneKey: string, fx: number, fz: number, tx: number, tz: number, reach = 2.2, hop = false): [number, number][] | null {
+  const g = gridFor(c, sceneKey, hop);
   const toCell = (x: number, z: number) => [Math.floor((x - g.x0) / CELL), Math.floor((z - g.z0) / CELL)] as [number, number];
   const s0 = toCell(fx, fz);
   const e0 = toCell(tx, tz);
