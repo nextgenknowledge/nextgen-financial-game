@@ -26,12 +26,12 @@ const KEYS: SkyKey[] = [
   { h: 5, top: '#121a40', hor: '#333a6a', sun: '#8fa6ff', sunI: 0.22, hemi: 0.34 },
   // Blue hour, then a warm, low sunrise
   { h: 5.9, top: '#2c3c78', hor: '#c98a8a', sun: '#ff9a6a', sunI: 0.8, hemi: 0.5 },
-  { h: 6.8, top: '#6a94c9', hor: '#f6c08c', sun: '#ffbb7a', sunI: 1.9, hemi: 0.72 },
-  { h: 9, top: '#5a8fcf', hor: '#d4e2ee', sun: '#fff0d8', sunI: 2.9, hemi: 0.85 },
-  { h: 15, top: '#5a8fcf', hor: '#d9e5ef', sun: '#fff0d8', sunI: 2.9, hemi: 0.85 },
+  { h: 6.8, top: '#6a94c9', hor: '#f6c08c', sun: '#ffbb7a', sunI: 2.2, hemi: 0.58 },
+  { h: 9, top: '#4f86cc', hor: '#cfdeec', sun: '#ffeed2', sunI: 3.3, hemi: 0.64 },
+  { h: 15, top: '#4f86cc', hor: '#d4e1ed', sun: '#ffeed2', sunI: 3.3, hemi: 0.64 },
   // Golden hour: long amber light
-  { h: 16.8, top: '#5f86c0', hor: '#f0cf9c', sun: '#ffc27a', sunI: 2.6, hemi: 0.78 },
-  { h: 17.8, top: '#4f62a0', hor: '#f59e6a', sun: '#ff9550', sunI: 2.1, hemi: 0.66 },
+  { h: 16.8, top: '#5f86c0', hor: '#f0cf9c', sun: '#ffc27a', sunI: 3.0, hemi: 0.68 },
+  { h: 17.8, top: '#4f62a0', hor: '#f59e6a', sun: '#ff9550', sunI: 2.4, hemi: 0.6 },
   // Blue hour after sunset
   { h: 18.7, top: '#24306a', hor: '#7a5a8a', sun: '#c08aa0', sunI: 0.6, hemi: 0.48 },
   { h: 19.6, top: '#141c48', hor: '#34306a', sun: '#8fa6ff', sunI: 0.28, hemi: 0.38 },
@@ -79,18 +79,44 @@ void main() {
 }`;
 const skyFrag = /* glsl */ `
 uniform vec3 top; uniform vec3 hor; uniform vec3 sunDir; uniform vec3 sunCol; uniform float night;
+uniform float cover; uniform float time;
 varying vec3 vDir;
 float hash(vec3 p){ return fract(sin(dot(p, vec3(12.9898,78.233,45.164))) * 43758.5453); }
+float hash2(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+float vnoise(vec2 p){
+  vec2 i = floor(p); vec2 f = fract(p); f = f * f * (3.0 - 2.0 * f);
+  return mix(mix(hash2(i), hash2(i + vec2(1.0, 0.0)), f.x), mix(hash2(i + vec2(0.0, 1.0)), hash2(i + vec2(1.0, 1.0)), f.x), f.y);
+}
+float fbm(vec2 p){
+  float v = 0.0; float a = 0.5;
+  for (int i = 0; i < 5; i++) { v += a * vnoise(p); p = p * 2.03 + vec2(1.7, 9.2); a *= 0.5; }
+  return v;
+}
 void main() {
-  float h = clamp(vDir.y, -0.2, 1.0);
+  vec3 d = normalize(vDir);
+  float h = clamp(d.y, -0.2, 1.0);
   vec3 col = mix(hor, top, smoothstep(-0.05, 0.55, h));
-  float s = max(dot(normalize(vDir), normalize(sunDir)), 0.0);
+  float s = max(dot(d, normalize(sunDir)), 0.0);
   col += sunCol * (pow(s, 600.0) * 1.6 + pow(s, 12.0) * 0.18);
   // Stars at night
   if (night > 0.01 && h > 0.05) {
-    vec3 cell = floor(vDir * 160.0);
+    vec3 cell = floor(d * 160.0);
     float st = step(0.9965, hash(cell));
-    col += vec3(st) * night * 0.9 * smoothstep(0.05, 0.3, h);
+    col += vec3(st) * night * 0.9 * smoothstep(0.05, 0.3, h) * (1.0 - cover);
+  }
+  // Clouds: a drifting layer projected onto a flat ceiling, thicker in bad weather
+  if (h > 0.0) {
+    vec2 uv = d.xz / (d.y + 0.12) * 1.6 + vec2(time * 0.006, time * 0.002);
+    float n = fbm(uv);
+    float thr = mix(0.62, 0.3, cover);
+    float c = smoothstep(thr, thr + 0.2, n) * smoothstep(0.0, 0.18, h);
+    float body = smoothstep(thr, thr + 0.45, n + (vnoise(uv * 3.0 + 4.0) - 0.5) * 0.12);
+    // At night clouds only catch a little city glow from below
+    vec3 lit = mix(vec3(1.0), sunCol, 0.35) * mix(1.0, 0.06, night) + vec3(0.16, 0.13, 0.12) * night;
+    vec3 shade = mix(hor, top, 0.4) * mix(0.82, 0.5, cover);
+    vec3 cc = mix(lit, shade, body * 0.7);
+    cc += sunCol * pow(s, 6.0) * 0.35 * (1.0 - night);
+    col = mix(col, cc, c * mix(0.85, 0.97, cover));
   }
   gl_FragColor = vec4(col, 1.0);
   #include <colorspace_fragment>
@@ -108,6 +134,8 @@ export function SkyAndLights({ interior = false }: { interior?: boolean }) {
       sunDir: { value: new THREE.Vector3(0, 1, 0) },
       sunCol: { value: new THREE.Color() },
       night: { value: 0 },
+      cover: { value: 0.2 },
+      time: { value: 0 },
     }),
     [],
   );
@@ -144,17 +172,20 @@ export function SkyAndLights({ interior = false }: { interior?: boolean }) {
     rt.sunColor.copy(s.sun);
     uniforms.sunCol.value.copy(s.sun);
     uniforms.night.value = nightAmt;
+    uniforms.cover.value = 0.18 + wa * 0.9;
+    uniforms.time.value = performance.now() / 1000;
 
     if (interior) {
       fog.color.set('#f3e8d6');
       fog.near = 40;
       fog.far = 120;
     } else {
-      fog.color.copy(s.hor);
-      const far = quality === 'low' ? 150 : quality === 'medium' ? 220 : 300;
+      // Distance fades into a hazy sky blue rather than the near-white horizon, so the far skyline keeps some depth
+      fog.color.copy(s.hor).lerp(s.top, 0.22);
+      const far = quality === 'low' ? 150 : quality === 'medium' ? 240 : 330;
       const a = rt.weatherAmt;
       if (wl.fog) fog.color.lerp(fogTint.set(wl.fog).multiplyScalar(0.2 + 0.8 * rt.dayLight), Math.min(1, a));
-      fog.near = far * 0.22 * (1 + (wl.near - 1) * a);
+      fog.near = far * 0.3 * (1 + (wl.near - 1) * a);
       fog.far = far * (1 + (wl.far - 1) * a);
     }
     scene.fog = fog;
@@ -171,7 +202,8 @@ export function SkyAndLights({ interior = false }: { interior?: boolean }) {
       sunRef.current.intensity = interior ? 1.2 : s.sunI;
     }
     if (hemiRef.current) {
-      hemiRef.current.color.copy(interior ? cA.set('#fff4e0') : s.top).lerp(cB.set('#ffffff'), 0.5);
+      // Outdoors the fill comes from the blue sky, so shadowed sides read cool against warm sunlight
+      hemiRef.current.color.copy(interior ? cA.set('#fff4e0') : s.top).lerp(cB.set('#ffffff'), interior ? 0.5 : 0.3);
       hemiRef.current.groundColor.set(interior ? '#c9b48a' : '#6b8f4e').lerp(cB.set('#2a2f4a'), 1 - rt.dayLight);
       hemiRef.current.intensity = interior ? 1.5 : s.hemi;
     }
@@ -205,7 +237,7 @@ export function SkyAndLights({ interior = false }: { interior?: boolean }) {
         shadow-bias={-0.0004}
         shadow-normalBias={0.04}
       />
-      <ambientLight intensity={0.15} />
+      <ambientLight intensity={interior ? 0.15 : 0.07} />
     </>
   );
 }
