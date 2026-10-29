@@ -875,6 +875,9 @@ button.item-card { cursor: pointer; }
 .activity-modal.adv .kit-table, .activity-modal.adv .kit-chart, .activity-modal.adv .kit-stat { background: #0f1a2d; border-color: #22314f; color: #dbe5f5; }
 .activity-modal.adv .kit-table th { background: #16223a; color: #8ea0c2; }
 .activity-modal.adv .kit-table td, .activity-modal.adv .kit-table th { border-color: #22314f; }
+.activity-modal.adv .shop-opt { background: #0f1a2d; border-color: #2a3b5e; }
+.activity-modal.adv .shop-opt:hover { border-color: #22d38f; }
+.activity-modal.adv .shop-opt.on { background: #0f2b23; border-color: #22d38f; box-shadow: 0 0 0 2px #22d38f inset; }
 .activity-modal.adv .mono, .activity-modal.adv .kit-stat-value { font-family: ui-monospace, 'SFMono-Regular', Menlo, monospace; }
 
 /* ───────── Pro desks (Advanced) ───────── */
@@ -1901,4 +1904,72 @@ button.item-card { cursor: pointer; }
 }
 @media (min-height: 501px) and (orientation: landscape) {
   .hud.classic:has(.joystick) .quick-apps { top: calc(66px + var(--safe-t, 0px)); }
+}
+
+/* Title screen on phones held sideways: branding on the left, the menu on the right, all on one screen */
+@media (max-height: 500px) and (orientation: landscape) {
+  .start-screen { padding: calc(0.6rem + var(--safe-t)) calc(1rem + var(--safe-r)) calc(0.6rem + var(--safe-b)) calc(1rem + var(--safe-l)); justify-content: center; }
+  .st-content {
+    display: grid; width: min(920px, 100%); margin: auto 0; column-gap: 2rem; row-gap: 0.4rem; align-items: center; justify-items: center;
+    grid-template-columns: 1fr minmax(240px, 340px); grid-template-areas: 'org menu' 'logo menu' 'tag menu';
+  }
+  .st-org { grid-area: org; }
+  .st-org img { height: 40px; }
+  .st-org-name { font-size: 0.95rem; }
+  .st-org-kicker { font-size: 0.6rem; }
+  .st-logo-wrap { grid-area: logo; margin: 0; }
+  .st-logo { height: min(36vh, 150px); }
+  .st-tagline { grid-area: tag; margin: 0; font-size: 0.9rem; }
+  .st-menu { grid-area: menu; margin: 0; gap: 0.6rem; width: 100%; }
+  .st-menu-btn { min-height: 2.5rem; padding: 0.4rem 1rem; font-size: 0.95rem; }
+  .st-words, .start-screen .title-foot { display: none; }
+}
+
+/* Phones held sideways: the quest card stays slim on the left so the player in the middle stays in
+   view, and when Narwhal talks the dialog drops to the free strip between the joystick and the
+   buttons instead of covering the shortcuts */
+@media (pointer: coarse) and (max-height: 500px) and (orientation: landscape) {
+  .hud .narwhal-guide .narwhal-bubble, .hud .narwhal-guide .narwhal-bubble.idle { width: max(220px, min(270px, calc(100vw - 430px))); padding: 0.35rem 0.6rem; }
+  .idle-text { font-size: 0.8rem; }
+  .narwhal-bubble.idle .narwhal-bubble-head { font-size: 0.72rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+  .narwhal-bubble.idle .narwhal-bubble-head img { width: 20px; height: 20px; }
+  .idle-hint { display: none; }
+  .hud.classic:not(.talking) .r-bl { bottom: calc(122px + var(--safe-b)); }
+  .hud .narwhal-guide .narwhal-bubble .dialog-text { font-size: 0.9rem; }
+  .hud.talking .r-bl { left: calc(134px + var(--safe-l)); bottom: calc(10px + var(--safe-b)); }
+  .hud.talking .narwhal-guide .narwhal-bubble { width: min(440px, calc(100vw - 134px - 50px - 150px - var(--safe-l) - var(--safe-r))); }
+}
+
+/* FinPhone on a phone held sideways: turn it sideways too, so apps get the width instead of scrolling */
+@media (max-height: 500px) and (orientation: landscape) {
+  .finphone-dock { right: calc(12px + var(--safe-r)); bottom: calc(8px + var(--safe-b)); }
+  .modal.finphone { width: min(680px, calc(100vw - 40px - var(--safe-l) - var(--safe-r))); height: calc(100dvh - 16px - var(--safe-t) - var(--safe-b)); padding: 6px 8px; }
+  .finphone .fp-top { display: none; }
+  .finphone .app-grid { grid-template-columns: repeat(6, 1fr); gap: 8px 6px; }
+  .finphone .app-tile { width: 48px; height: 48px; font-size: 1.45rem; }
+  .fp-home { margin-top: 4px; }
+  /* Bank note art keeps its normal phone size */
+  .finphone .fb-note { width: 340px; max-width: 100%; }
+}
+
+/* Windows on phones held sideways: a slimmer title bar and edge, so the content gets the height */
+@media (max-height: 500px) and (orientation: landscape) {
+  .modal-backdrop { padding: calc(6px + var(--safe-t)) calc(10px + var(--safe-r)) calc(6px + var(--safe-b)) calc(10px + var(--safe-l)); }
+  .modal-head { padding: 0.35rem 0.7rem; }
+  .modal-head h2 { font-size: 1.1rem; }
+  .modal-head .modal-icon { width: 30px; height: 30px; font-size: 1.1rem; }
+}
+
+/* "Resume" pill on small screens: one short line, and the shortcut buttons move down to make room */
+@media (max-width: 760px), (max-height: 500px) {
+  .resume-run { max-width: min(330px, calc(100vw - 170px - var(--safe-l) - var(--safe-r))); }
+  .resume-go { flex: 1; min-width: 0; gap: 6px; padding: 5px 8px; font-size: 0.8rem; }
+  .resume-go b { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .resume-tag { display: none; }
+}
+@media (pointer: coarse) and (max-width: 760px) {
+  .hud.classic:has(.resume-run) .quick-apps { top: calc(160px + var(--safe-t, 0px)); }
+}
+@media (max-height: 500px) {
+  .hud.classic:has(.resume-run) .quick-apps { top: calc(94px + var(--safe-t, 0px)); }
 }

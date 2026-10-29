@@ -47,6 +47,7 @@ void main() {
 
 export function PostFX({ quality, interior }: { quality: 'medium' | 'high'; interior: boolean }) {
   const { gl, scene, camera, size } = useThree();
+  const dpr = useThree((s) => s.viewport.dpr);
   const fx = useMemo(() => {
     const target = new THREE.WebGLRenderTarget(1, 1, { type: THREE.HalfFloatType, samples: quality === 'high' ? 4 : 2 });
     const composer = new EffectComposer(gl, target);
@@ -61,7 +62,7 @@ export function PostFX({ quality, interior }: { quality: 'medium' | 'high'; inte
   useEffect(() => {
     fx.composer.setPixelRatio(gl.getPixelRatio());
     fx.composer.setSize(size.width, size.height);
-  }, [fx, gl, size]);
+  }, [fx, gl, size, dpr]);
   useEffect(() => () => {
     fx.composer.dispose();
     fx.target.dispose();
