@@ -1,0 +1,475 @@
+{
+  "id": "everyday",
+  "title": "Everyday Money Skills",
+  "icon": "🛒",
+  "topic": "budgeting",
+  "blurb": "Budgets that survive real life, shopping maths, negotiating pay and freelance income",
+  "lessons": [
+    {
+      "id": "adv-banking",
+      "title": "Bank Accounts and Cards",
+      "icon": "🏦",
+      "terms": [
+        {
+          "id": "checking-account",
+          "term": "checking account",
+          "aka": [
+            "checking",
+            "current account",
+            "debit card"
+          ],
+          "def": "An account for everyday money: paychecks go in, bills and card payments come out. It pays little or no interest.",
+          "example": "Rent, groceries and your phone bill come out of checking."
+        },
+        {
+          "id": "savings-account",
+          "term": "savings account",
+          "aka": [
+            "savings",
+            "high-yield savings"
+          ],
+          "def": "An account for money you're keeping rather than spending. It pays interest, and some limit how often you can withdraw.",
+          "example": "An emergency fund earning 4% APY in a high-yield savings account."
+        },
+        {
+          "id": "overdraft",
+          "term": "overdraft",
+          "aka": [
+            "overdraft fee",
+            "overdrawn",
+            "overdraft coverage"
+          ],
+          "def": "Spending more than is in your account. The bank may cover it but charges a fee, often about $35 a time.",
+          "example": "$120 in checking and a $150 purchase: you're overdrawn by $30 and may pay a $35 fee."
+        },
+        {
+          "id": "reconcile",
+          "term": "reconciling",
+          "aka": [
+            "reconcile",
+            "bank statement",
+            "hasn't cleared",
+            "outstanding check",
+            "checkbook"
+          ],
+          "def": "Matching your own records with the bank statement, allowing for payments that haven't cleared yet.",
+          "example": "Statement $900, but a $200 check hasn't cleared: your real balance is $700."
+        },
+        {
+          "id": "deposit-insurance",
+          "term": "deposit insurance",
+          "aka": [
+            "FDIC",
+            "insured deposits"
+          ],
+          "def": "Government protection for bank deposits up to a limit, so savers get their money back even if a bank fails.",
+          "example": "US bank deposits are insured up to $250,000 per depositor per bank."
+        }
+      ],
+      "cards": [
+        {
+          "kind": "idea",
+          "title": "Two accounts, two jobs",
+          "body": "Checking is for money moving in and out every week. Savings is for money that should sit and earn interest. Keeping them apart makes it obvious what you can spend, and stops savings leaking into everyday spending."
+        },
+        {
+          "kind": "example",
+          "title": "Keeping track",
+          "body": "Your app says $520, but you wrote a $180 check yesterday that hasn't cleared and a $60 subscription renews tomorrow. The money you can really spend is $520 − $180 − $60 = $280. Spend $300 and you'd overdraw and might pay a $35 fee."
+        },
+        {
+          "kind": "formula",
+          "title": "The numbers",
+          "body": "Available = balance − payments that haven't cleared − bills due soon. Interest earned ≈ balance × APY. Deposit insurance covers up to $250,000 per person per bank in the US."
+        },
+        {
+          "kind": "mistake",
+          "title": "Common mistake",
+          "body": "Trusting the balance shown without counting pending payments. Overdraft fees on small purchases are some of the most expensive money you'll ever spend."
+        }
+      ],
+      "checks": [
+        {
+          "prompt": "Which account suits money you'll spend this week?",
+          "choices": [
+            "Savings account",
+            "Checking account",
+            "A 5-year CD"
+          ],
+          "answer": 1,
+          "explanation": "Checking is built for everyday spending; savings and CDs are for money you're keeping."
+        },
+        {
+          "prompt": "Your statement shows $900, but a $250 check you wrote hasn't cleared. What can you really spend?",
+          "choices": [
+            "$900",
+            "$650",
+            "$1,150"
+          ],
+          "answer": 1,
+          "explanation": "$900 − $250 = $650 once the check clears."
+        }
+      ],
+      "reward": {
+        "xp": 40,
+        "cash": 10
+      }
+    },
+    {
+      "id": "adv-budgeting",
+      "title": "Budgets That Survive Real Life",
+      "icon": "📝",
+      "terms": [
+        {
+          "id": "budget-50-30-20",
+          "term": "50/30/20 rule",
+          "aka": [
+            "50/30/20",
+            "50-30-20",
+            "50/30/20 budget"
+          ],
+          "def": "A simple budget: 50% of take-home pay for needs, 30% for wants and 20% for saving and paying off debt.",
+          "example": "$3,000 of take-home pay: $1,500 needs, $900 wants, $600 savings."
+        },
+        {
+          "id": "needs-vs-wants",
+          "term": "needs vs wants",
+          "aka": [
+            "needs and wants",
+            "a need",
+            "a want",
+            "needs first"
+          ],
+          "def": "Needs are things you must have to live and work safely (housing, food, transport, basic phone); wants are nice extras. Some items depend on the situation.",
+          "example": "A winter coat is a need; a second designer coat is a want."
+        },
+        {
+          "id": "sinking-fund",
+          "term": "sinking fund",
+          "aka": [
+            "sinking funds",
+            "saving for a known cost",
+            "irregular expenses",
+            "savings goal",
+            "saving goal",
+            "monthly saving"
+          ],
+          "def": "Saving a bit each month for a known future cost, so it isn't a surprise.",
+          "example": "$600 of car insurance is due in 6 months, so put aside $100 a month.",
+          "formula": "monthly amount = upcoming cost ÷ months until due"
+        },
+        {
+          "id": "fixed-expenses",
+          "term": "fixed expenses",
+          "aka": [
+            "flexible expenses",
+            "variable expenses",
+            "fixed bills"
+          ],
+          "def": "Fixed expenses stay the same each month (rent, phone); flexible ones change (food, fun) and are where you cut first.",
+          "example": "Rent of $1,000 is fixed; groceries of $350 to $450 are flexible."
+        },
+        {
+          "id": "pay-yourself-first",
+          "term": "pay yourself first",
+          "aka": [
+            "save first",
+            "saving first"
+          ],
+          "def": "Moving savings out on payday before spending, instead of saving whatever is left over.",
+          "example": "An automatic $200 transfer to savings the day pay arrives."
+        },
+        {
+          "id": "zero-based-budget",
+          "term": "zero-based budget",
+          "aka": [
+            "zero based budget",
+            "every dollar a job"
+          ],
+          "def": "A budget where income minus every planned amount (spending, saving, debt) equals exactly zero, so each dollar has a job.",
+          "example": "$3,000 in: $1,400 needs, $700 wants, $600 savings, $300 debt = $3,000 assigned."
+        },
+        {
+          "id": "lifestyle-creep",
+          "term": "lifestyle creep",
+          "aka": [
+            "small purchases",
+            "subscription",
+            "subscriptions",
+            "habit",
+            "takeout"
+          ],
+          "def": "Spending that quietly grows as income rises, or small regular costs that add up to big yearly amounts.",
+          "example": "A $6 daily coffee is about $2,190 a year; an unused $15 subscription is $540 over 3 years."
+        }
+      ],
+      "cards": [
+        {
+          "kind": "idea",
+          "title": "A plan for take-home pay",
+          "body": "A budget is a plan for take-home pay, not gross pay. Cover needs, save first, then spend on wants with what's left. Build sinking funds for known lumpy costs and an emergency fund for unknown ones, so surprises don't turn into debt."
+        },
+        {
+          "kind": "example",
+          "title": "Six months of real life",
+          "body": "Take-home $2,800. Needs (rent, food, transport, phone) $1,450 = 52%. Savings and debt payments $560 = 20%. Wants $790 = 28%. A $400 car repair in month 3 comes out of the emergency fund, which is topped up over the next two months by trimming wants."
+        },
+        {
+          "kind": "formula",
+          "title": "The numbers",
+          "body": "50/30/20 of net pay. Monthly sinking fund = upcoming cost ÷ months until due. Savings rate = savings ÷ net pay."
+        },
+        {
+          "kind": "mistake",
+          "title": "Common mistake",
+          "body": "Building a budget with no room for irregular costs. Car repairs, gifts and yearly bills always come; plan for them."
+        }
+      ],
+      "checks": [
+        {
+          "prompt": "Take-home pay is $2,000 and you use 50/30/20. How much goes to savings and debt?",
+          "choices": [
+            "$200",
+            "$400",
+            "$600",
+            "$1,000"
+          ],
+          "answer": 1,
+          "explanation": "20% × $2,000 = $400."
+        },
+        {
+          "prompt": "A $900 bill is due in 6 months. How much should go into a sinking fund each month?",
+          "choices": [
+            "$90",
+            "$150",
+            "$900"
+          ],
+          "answer": 1,
+          "explanation": "$900 ÷ 6 = $150."
+        }
+      ],
+      "reward": {
+        "xp": 50,
+        "cash": 10
+      }
+    },
+    {
+      "id": "adv-shopping-math",
+      "title": "Shopping Maths: Unit Prices and Real Discounts",
+      "icon": "🛒",
+      "terms": [
+        {
+          "id": "unit-price",
+          "term": "unit price",
+          "aka": [
+            "unit prices",
+            "price per unit",
+            "per ounce",
+            "per kilo",
+            "per 100 g",
+            "per serving",
+            "membership"
+          ],
+          "def": "Price divided by quantity, so different sizes can be compared fairly.",
+          "example": "$4.50 for 500 g is $0.90 per 100 g; $7.20 for 1 kg is $0.72 per 100 g.",
+          "formula": "unit price = price ÷ quantity"
+        },
+        {
+          "id": "stacked-discounts",
+          "term": "stacked discounts",
+          "aka": [
+            "stacked coupons",
+            "percent off",
+            "% off",
+            "extra off",
+            "coupon",
+            "coupons"
+          ],
+          "def": "Discounts applied one after another multiply rather than add. 20% off and then another 10% off is 28% off, not 30%.",
+          "example": "$100 → 20% off = $80 → 10% off = $72.",
+          "formula": "final price = price × (1 − d1) × (1 − d2)"
+        },
+        {
+          "id": "bogo",
+          "term": "BOGO",
+          "aka": [
+            "buy one get one",
+            "buy one, get one"
+          ],
+          "def": "Buy one, get one free or half off. Free works out to 50% off each, but only if you actually need two.",
+          "example": "BOGO on $6 shampoo is $6 for two, or $3 each."
+        },
+        {
+          "id": "anchoring",
+          "term": "anchoring",
+          "aka": [
+            "original price",
+            "was price",
+            "anchor price",
+            "fake original price"
+          ],
+          "def": "Shops show a high 'original' price so the sale price feels like a bargain, even if the item rarely sold at the higher price.",
+          "example": "'Was $199, now $99' when it has been $99 most of the year."
+        },
+        {
+          "id": "cash-back",
+          "term": "cash back",
+          "aka": [
+            "cash-back",
+            "rewards card",
+            "cashback"
+          ],
+          "def": "A card reward that returns a percent of what you spend. Only worth it if you pay the card in full; interest wipes it out.",
+          "example": "2% back on $400 of monthly groceries is $96 a year."
+        }
+      ],
+      "cards": [
+        {
+          "kind": "idea",
+          "title": "Bigger isn't always cheaper",
+          "body": "Bigger isn't always cheaper and a sale sign doesn't always mean a deal. Compare unit prices, apply discounts one at a time, and ask whether you'd buy it at this price with no sale sign."
+        },
+        {
+          "kind": "example",
+          "title": "Coffee aisle",
+          "body": "300 g for $6.00 is $2.00 per 100 g; 1 kg for $18.00 is $1.80 per 100 g. But a $3 coupon on the small bag makes it $3.00, or $1.00 per 100 g. With the coupon, the small bag wins."
+        },
+        {
+          "kind": "formula",
+          "title": "The formulas",
+          "body": "Unit price = price ÷ quantity. Stacked discounts: price × (1 − d1) × (1 − d2). Apply a coupon and a percent discount in the order the store does."
+        },
+        {
+          "kind": "mistake",
+          "title": "Common mistake",
+          "body": "Adding percentages. 50% off plus an extra 20% off is 60% off in total, not 70%."
+        }
+      ],
+      "checks": [
+        {
+          "prompt": "A $50 item is 30% off, then an extra 10% off the sale price. What is the final price?",
+          "choices": [
+            "$30",
+            "$31.50",
+            "$35"
+          ],
+          "answer": 1,
+          "explanation": "$50 × 0.7 = $35, then × 0.9 = $31.50."
+        },
+        {
+          "prompt": "Which is cheaper per ounce: 12 oz for $3.00 or 20 oz for $4.40?",
+          "choices": [
+            "12 oz",
+            "20 oz"
+          ],
+          "answer": 1,
+          "explanation": "$0.25 vs $0.22 per ounce."
+        }
+      ],
+      "reward": {
+        "xp": 40,
+        "cash": 10
+      }
+    },
+    {
+      "id": "adv-negotiation",
+      "title": "Negotiating Pay and Earning on Your Own",
+      "icon": "🤝",
+      "terms": [
+        {
+          "id": "market-rate",
+          "term": "market rate",
+          "aka": [
+            "market salary",
+            "going rate",
+            "salary range",
+            "pay range"
+          ],
+          "def": "What similar jobs or items typically pay or cost, from salary surveys and listings. Your anchor for a fair ask.",
+          "example": "Junior analysts in the city earn $62,000 to $70,000."
+        },
+        {
+          "id": "walk-away-point",
+          "term": "walk-away point",
+          "aka": [
+            "walk-away number",
+            "walk away",
+            "BATNA",
+            "reservation price"
+          ],
+          "def": "The worst deal you'll accept, set before you start, based on your best alternative.",
+          "example": "Another offer at $64,000 means you can walk away from anything below that."
+        },
+        {
+          "id": "total-compensation",
+          "term": "total compensation",
+          "aka": [
+            "total package",
+            "benefits",
+            "signing bonus"
+          ],
+          "def": "Salary plus everything else: bonus, retirement match, health insurance, stock and time off.",
+          "example": "$60,000 salary + $3,000 match + $6,000 health cover = $69,000 of total compensation."
+        },
+        {
+          "id": "freelance-income",
+          "term": "freelance income",
+          "aka": [
+            "freelance",
+            "freelancer",
+            "freelancing",
+            "gig work"
+          ],
+          "def": "Pay per job instead of a salary. No employer withholds tax, so freelancers set aside money for income tax and self-employment tax.",
+          "example": "A $1,000 freelance job might need $250 to $300 put aside for tax."
+        }
+      ],
+      "cards": [
+        {
+          "kind": "idea",
+          "title": "Three numbers to know",
+          "body": "Before you negotiate, know the market rate, your target and your walk-away point. Ask with reasons (skills, results, market data), stay polite, and remember the whole package can move, not just the salary."
+        },
+        {
+          "kind": "example",
+          "title": "A first offer",
+          "body": "The offer is $58,000. The market range is $60,000 to $68,000 and your other offer pays $61,000. You counter at $66,000, citing the range and your internship results. They come back at $62,500 plus a $2,000 signing bonus, above your walk-away of $61,000, so you accept."
+        },
+        {
+          "kind": "formula",
+          "title": "Rules of thumb",
+          "body": "Counter in the upper part of the market range, backed by evidence. Compare offers by total compensation, not salary alone. Freelancers: set aside roughly 25 to 30% of each payment for tax."
+        },
+        {
+          "kind": "mistake",
+          "title": "Common mistake",
+          "body": "Accepting the first number on the spot, or making ultimatums. A polite, evidence-based counter rarely loses an offer."
+        }
+      ],
+      "checks": [
+        {
+          "prompt": "What should you decide before a negotiation starts?",
+          "choices": [
+            "Your walk-away point",
+            "Nothing, improvise"
+          ],
+          "answer": 0,
+          "explanation": "Knowing your walk-away keeps you from accepting a bad deal under pressure."
+        },
+        {
+          "prompt": "Offer A: $55,000 salary and no retirement match. Offer B: $53,000 with a $3,000 match. Which pays more in total?",
+          "choices": [
+            "Offer A",
+            "Offer B"
+          ],
+          "answer": 1,
+          "explanation": "B is worth $56,000 before other benefits."
+        }
+      ],
+      "reward": {
+        "xp": 40,
+        "cash": 10
+      }
+    }
+  ]
+}

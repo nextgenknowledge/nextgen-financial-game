@@ -1973,3 +1973,80 @@ button.item-card { cursor: pointer; }
 @media (max-height: 500px) {
   .hud.classic:has(.resume-run) .quick-apps { top: calc(94px + var(--safe-t, 0px)); }
 }
+
+/* ═════════ Learning: concept cards, desk briefings, Concept help, tappable terms ═════════ */
+.concept-card { display: flex; flex-direction: column; gap: 4px; padding: 0.6rem 0.75rem; background: var(--px-white, #fff); border: 3px solid var(--px-ink, #14181f); box-shadow: 3px 3px 0 var(--px-ink, #14181f); color: var(--px-ink, #14181f); }
+.concept-card.compact { padding: 0.45rem 0.6rem; box-shadow: 2px 2px 0 var(--px-ink, #14181f); }
+.concept-term { font-size: 1rem; text-transform: capitalize; }
+.concept-def { margin: 0; font-size: 0.9rem; line-height: 1.4; }
+.concept-example { margin: 0; font-size: 0.85rem; line-height: 1.4; color: #3a4252; }
+.concept-label { display: inline-block; margin-right: 4px; padding: 0 5px; background: #e6eefc; border: 2px solid var(--px-ink, #14181f); font-size: 0.66rem; font-weight: 900; letter-spacing: 0.06em; text-transform: uppercase; }
+.concept-formula { padding: 4px 8px; background: #fff6d6; border: 2px dashed #b8860b; color: #4a3600; font-size: 0.85rem; overflow-x: auto; }
+.concept-lesson { align-self: flex-start; font-size: 0.8rem; }
+.concept-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 8px; }
+.concept-fold summary { cursor: pointer; font-weight: 800; padding: 4px 0; text-transform: capitalize; }
+.concept-fold[open] summary { margin-bottom: 4px; }
+
+.desk-briefing { margin-top: 14px; padding: 0.8rem 1rem; background: var(--px-white, #fff); border: 3px solid var(--px-ink, #14181f); box-shadow: 4px 4px 0 var(--px-ink, #14181f); color: var(--px-ink, #14181f); display: flex; flex-direction: column; gap: 8px; }
+.briefing-ideas { margin: 0; padding-left: 1.2rem; display: flex; flex-direction: column; gap: 4px; font-size: 0.92rem; line-height: 1.4; }
+.briefing-lessons { display: flex; flex-direction: column; gap: 4px; }
+.briefing-lesson { cursor: pointer; font-weight: 800; }
+.briefing-lesson:hover { filter: brightness(1.06); }
+
+/* Concept help: a button that floats over the activity, a confirm card, and a side drawer */
+.concept-help-btn {
+  position: fixed; right: calc(18px + var(--safe-r, 0px)); bottom: calc(18px + var(--safe-b, 0px)); z-index: 60;
+  padding: 0.5rem 0.9rem; border: 3px solid #061233; background: #ffd23f; color: #2a1a00; cursor: pointer;
+  font: 900 0.9rem var(--font-body), sans-serif; box-shadow: 3px 3px 0 #061233;
+}
+.concept-help-btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 #061233; }
+.concept-help-btn.used { background: #7ee8ff; color: #002233; }
+.concept-ask {
+  position: fixed; right: calc(18px + var(--safe-r, 0px)); bottom: calc(70px + var(--safe-b, 0px)); z-index: 61; width: min(320px, calc(100vw - 36px));
+  padding: 0.8rem; background: var(--px-white, #fff); color: var(--px-ink, #14181f); border: 3px solid var(--px-ink, #14181f); box-shadow: 4px 4px 0 var(--px-ink, #14181f); display: flex; flex-direction: column; gap: 6px;
+}
+.concept-ask p { margin: 0; }
+.concept-drawer {
+  position: fixed; top: 0; right: 0; bottom: 0; z-index: 62; width: min(420px, 100vw); overflow-y: auto;
+  padding: calc(14px + var(--safe-t, 0px)) calc(14px + var(--safe-r, 0px)) calc(14px + var(--safe-b, 0px)) 14px;
+  background: var(--px-paper, #fff8e7); color: var(--px-ink, #14181f); border-left: 3px solid var(--px-ink, #14181f); box-shadow: -6px 0 0 rgba(6, 18, 51, 0.5);
+  display: flex; flex-direction: column; gap: 12px; animation: drawerIn 0.18s steps(3, end);
+}
+@keyframes drawerIn { from { transform: translateX(40px); opacity: 0; } to { transform: none; opacity: 1; } }
+.concept-drawer-title { font-size: 1.1rem; }
+.concept-drawer .input { width: 100%; }
+
+/* Glossary terms inside question text: dotted underline, tap for a quick definition */
+.term-wrap { position: relative; display: inline; }
+.term { display: inline; padding: 0; border: 0; background: none; color: inherit; font: inherit; cursor: help; text-decoration: underline dotted 2px; text-underline-offset: 3px; text-decoration-color: #3d8bff; }
+.term:hover, .term[aria-expanded='true'] { text-decoration-color: #ffd23f; }
+.term-pop {
+  position: absolute; left: 0; top: calc(100% + 6px); z-index: 30; width: min(300px, 80vw); display: flex; flex-direction: column; gap: 3px;
+  padding: 0.5rem 0.65rem; background: var(--px-white, #fff); color: var(--px-ink, #14181f); border: 3px solid var(--px-ink, #14181f); box-shadow: 3px 3px 0 var(--px-ink, #14181f);
+  font-size: 0.85rem; font-weight: 600; line-height: 1.4; text-align: left; white-space: normal;
+}
+.term-pop b { text-transform: capitalize; }
+.term-formula { font-size: 0.8rem; color: #4a3600; }
+
+/* Advanced lessons hold more text than the basic ones, so a calmer size */
+.learn-modal:not(.entry-mode) .lesson-text { font-size: 1.08rem; font-weight: 700; }
+.lesson-text.formula-text { font-family: var(--font-mono, ui-monospace, monospace); font-size: 1rem; }
+.lesson-card2.card-mistake { border-color: #b3261e; box-shadow: 4px 4px 0 #b3261e; }
+.lesson-card2.card-formula { background: #fffbe8; }
+
+/* The dark Advanced activity theme */
+.activity-modal.adv .desk-briefing, .activity-modal.adv .concept-card { background: #111b2f; border-color: #2a3b5e; color: #dbe5f5; box-shadow: 3px 3px 0 #05080f; }
+.activity-modal.adv .concept-example { color: #a9b8d6; }
+.activity-modal.adv .concept-label { background: #10283a; color: #7fd8ff; border-color: #1d4660; }
+.activity-modal.adv .concept-formula { background: #2a220a; border-color: #8a6a14; color: #ffd25a; }
+.activity-modal.adv .term-pop { background: #111b2f; border-color: #2a3b5e; color: #dbe5f5; box-shadow: 3px 3px 0 #05080f; }
+.activity-modal.adv .term-formula { color: #ffd25a; }
+.activity-modal.adv .concept-drawer { background: #0c1322; color: #dbe5f5; border-left-color: #2a3b5e; box-shadow: -6px 0 0 rgba(0, 0, 0, 0.5); }
+.activity-modal.adv .concept-drawer .learn-kicker.dark { color: #7fd8ff; }
+.activity-modal.adv .concept-ask { background: #111b2f; color: #dbe5f5; border-color: #2a3b5e; box-shadow: 4px 4px 0 #05080f; }
+.activity-modal.adv .concept-lesson { color: #7fd8ff; }
+
+@media (max-height: 500px) and (orientation: landscape) {
+  .concept-help-btn { bottom: calc(8px + var(--safe-b, 0px)); padding: 0.35rem 0.7rem; font-size: 0.8rem; }
+  .concept-ask { bottom: calc(52px + var(--safe-b, 0px)); }
+}

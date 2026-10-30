@@ -1,0 +1,1487 @@
+{
+  "$comment": "Desk briefings: what to know before each activity. ideas/formula/concepts are for Advanced (concept ids come from the lesson terms in src/data/learn/units). entry is a simpler version for Entry players, given for every activity that has an Entry mode. Checked by tests/learn.test.ts.",
+  "briefings": {
+    "night-market": {
+      "ideas": [
+        "Profit = revenue − costs. Every dumpling you make but don't sell is a cost with no revenue.",
+        "Weather and competitors move demand: make fewer on rainy nights, more when the street is busy.",
+        "A lower price sells more, but each sale earns less. Watch the profit, not the number sold.",
+        "An upgrade is worth buying if the extra profit over the remaining nights beats its price."
+      ],
+      "formula": "profit = price × units sold − cost per unit × units made − stall costs",
+      "concepts": [
+        "revenue",
+        "variable-cost",
+        "fixed-cost",
+        "profit-maximizing-price",
+        "supply-and-demand",
+        "payback-period"
+      ],
+      "entry": [
+        "Profit is the money you make minus the money you spend.",
+        "Make enough snacks to sell, but not so many that you waste them.",
+        "If nobody is buying, try a lower price."
+      ]
+    },
+    "harbor-trading": {
+      "ideas": [
+        "Buy where a good is cheap and sell where demand is high: that's arbitrage.",
+        "Selling lots in one port pushes the price down, so spread your sales.",
+        "Count shipping costs: the gap between the two prices must be bigger than the cost of moving the goods."
+      ],
+      "formula": "profit per crate = sell price − buy price − shipping cost",
+      "concepts": [
+        "arbitrage",
+        "supply-and-demand",
+        "elasticity"
+      ],
+      "entry": [
+        "Buy things where they are cheap and sell them where they cost more.",
+        "If you sell too many in one place, the price drops."
+      ]
+    },
+    "cost-sort": {
+      "ideas": [
+        "Fixed costs stay the same however much you sell: rent, salaries, insurance.",
+        "Variable costs rise with every unit: ingredients, packaging, shipping per order.",
+        "Ask: if we sold twice as much next month, would this cost double?"
+      ],
+      "concepts": [
+        "fixed-cost",
+        "variable-cost"
+      ],
+      "entry": [
+        "Some costs stay the same every month, like rent.",
+        "Some costs grow when you sell more, like ingredients."
+      ]
+    },
+    "accounting": {
+      "ideas": [
+        "Income statement: revenue − cost of goods sold = gross profit; minus operating expenses = operating profit; minus taxes = net income.",
+        "The balance sheet must balance: assets = liabilities + equity.",
+        "Ledger errors are often a swapped digit, a missing entry or an entry on the wrong side."
+      ],
+      "formula": "assets = liabilities + equity; net income = revenue − all costs",
+      "concepts": [
+        "income-statement",
+        "revenue",
+        "cogs",
+        "gross-margin",
+        "operating-expenses",
+        "net-income",
+        "balance-sheet",
+        "assets",
+        "liabilities",
+        "equity"
+      ],
+      "entry": [
+        "Add up every receipt carefully, one at a time.",
+        "If the total looks wrong, check each number again to find the mistake."
+      ]
+    },
+    "break-even": {
+      "ideas": [
+        "Each sale first covers its own variable cost; the rest is the contribution margin.",
+        "Break-even is the number of sales where contribution margin covers all fixed costs.",
+        "Higher prices or lower variable costs cut the break-even point; higher fixed costs raise it."
+      ],
+      "formula": "break-even units = fixed costs ÷ (price − variable cost)",
+      "concepts": [
+        "break-even",
+        "contribution-margin",
+        "fixed-cost",
+        "variable-cost",
+        "profit-margin"
+      ],
+      "entry": [
+        "To break even, the money you earn must equal the money you spend.",
+        "Each sale helps pay for things like rent."
+      ]
+    },
+    "dim-sum-delivery": {
+      "ideas": [
+        "Faster deliveries earn bigger tips, but every metre costs fuel: a variable cost per trip.",
+        "Plan the shortest route that hits every order before it goes cold.",
+        "Your real earnings are tips minus fuel."
+      ],
+      "formula": "earnings = tips − fuel cost",
+      "concepts": [
+        "variable-cost",
+        "revenue"
+      ],
+      "entry": [
+        "Deliver the food fast to get bigger tips.",
+        "Driving uses fuel, so pick short routes."
+      ]
+    },
+    "lemonade-story": {
+      "ideas": [
+        "A stand has fixed costs (the stand, a permit) and variable costs (lemons, cups).",
+        "Price for profit, not just for sales.",
+        "Save some profit to grow, instead of spending it all."
+      ],
+      "concepts": [
+        "fixed-cost",
+        "variable-cost",
+        "break-even",
+        "pay-yourself-first"
+      ],
+      "entry": [
+        "Running a stand costs money for lemons and cups.",
+        "Save some of what you earn to make your stand better."
+      ]
+    },
+    "profit-puzzle": {
+      "ideas": [
+        "Profit = revenue − costs. Margin = profit ÷ revenue.",
+        "Gross margin uses only the direct cost of what was sold; profit margin uses every cost.",
+        "Read each question for which costs it counts."
+      ],
+      "formula": "margin = profit ÷ revenue",
+      "concepts": [
+        "revenue",
+        "gross-margin",
+        "profit-margin",
+        "net-income",
+        "break-even"
+      ],
+      "entry": [
+        "Profit is money earned minus money spent.",
+        "Count every cost before working out the profit."
+      ]
+    },
+    "hk-quiz": {
+      "ideas": [
+        "Questions cover running a business, trade and how prices are set.",
+        "Profit = revenue − costs; prices rise when demand beats supply.",
+        "Read each question twice, then eliminate the clearly wrong answers."
+      ],
+      "concepts": [
+        "revenue",
+        "profit-margin",
+        "supply-and-demand",
+        "arbitrage",
+        "exchange-rate"
+      ],
+      "entry": [
+        "These questions are about businesses and buying and selling.",
+        "Take your time and read each answer."
+      ]
+    },
+    "futures-pit": {
+      "ideas": [
+        "First find the exposure: will this business buy the commodity later (hurt if prices rise) or sell it (hurt if prices fall)?",
+        "Hedge in the opposite direction: buyers buy futures, sellers sell futures, a stock portfolio sells index futures.",
+        "Size the hedge: exposure ÷ contract size, or beta × portfolio value ÷ (index level × multiplier) for a fund.",
+        "Gains and losses settle daily, so keep enough cash to meet margin calls."
+      ],
+      "formula": "contracts ≈ exposure ÷ contract size",
+      "concepts": [
+        "futures",
+        "hedge",
+        "hedge-ratio",
+        "margin-call",
+        "daily-settlement",
+        "beta",
+        "spot-price"
+      ]
+    },
+    "franchise-deal": {
+      "ideas": [
+        "Franchise profit = sales − costs − royalty; payback = upfront cost ÷ yearly cash profit.",
+        "Value the rival as a whole business: EBITDA × the multiple similar chains sold for.",
+        "Bridge to what the shares are worth: subtract net debt (debt − cash).",
+        "Set your top bid before bidding and stick to it."
+      ],
+      "formula": "equity value = EBITDA × multiple − (debt − cash)",
+      "concepts": [
+        "franchise",
+        "payback-period",
+        "ebitda",
+        "ev-ebitda",
+        "enterprise-value",
+        "net-debt",
+        "equity-value",
+        "winners-curse"
+      ]
+    },
+    "supply-chain": {
+      "ideas": [
+        "Air is fast and dear, ocean slow and cheap, rail in between.",
+        "Slow shipping ties up the goods' value: carrying cost = value × yearly rate × days ÷ 365.",
+        "Arriving late can lose sales, so add the expected cost of lateness.",
+        "Pick the mode with the lowest landed cost, not the lowest freight."
+      ],
+      "formula": "landed cost = freight + value × rate × days ÷ 365 + chance late × cost of lateness",
+      "concepts": [
+        "freight",
+        "carrying-cost",
+        "lead-time",
+        "landed-cost",
+        "expected-value"
+      ],
+      "entry": [
+        "Planes are fast but cost more. Ships are slow but cheap.",
+        "Pick the way that gets things there in time for the lowest cost."
+      ]
+    },
+    "biz-structure": {
+      "ideas": [
+        "Sole proprietors and general partners are personally liable for the business's debts.",
+        "LLCs protect owners and pass profit through to their personal returns, taxed once.",
+        "Corporations pay corporate tax, then dividends are taxed again, but they can sell shares to investors.",
+        "Self-employed owners pay both halves of FICA: about 15.3%."
+      ],
+      "formula": "owner keeps = profit × (1 − corporate rate) × (1 − dividend rate)",
+      "concepts": [
+        "sole-proprietorship",
+        "partnership",
+        "llc",
+        "corporation",
+        "limited-liability",
+        "double-taxation",
+        "pass-through",
+        "self-employment-tax"
+      ]
+    },
+    "grocery": {
+      "ideas": [
+        "Compare unit prices, not shelf prices: price ÷ size.",
+        "Coupons and multi-buy deals only help if you need the item and quantity.",
+        "Stay under budget first, then pick the best value."
+      ],
+      "formula": "unit price = price ÷ quantity",
+      "concepts": [
+        "unit-price",
+        "stacked-discounts",
+        "bogo",
+        "needs-vs-wants"
+      ],
+      "entry": [
+        "Buy everything on your list without going over your money.",
+        "If two items are the same, pick the cheaper one."
+      ]
+    },
+    "dept-store": {
+      "ideas": [
+        "Stacked discounts multiply: 20% then 10% off is 28% off, not 30%.",
+        "BOGO is 50% off each only if you need two.",
+        "A big 'original price' is an anchor: judge the price you'd actually pay."
+      ],
+      "formula": "final price = price × (1 − d1) × (1 − d2)",
+      "concepts": [
+        "stacked-discounts",
+        "bogo",
+        "anchoring",
+        "unit-price"
+      ],
+      "entry": [
+        "Work out the price after the sale.",
+        "The lower final price is the better deal."
+      ]
+    },
+    "change-counter": {
+      "ideas": [
+        "Change = amount paid − price.",
+        "Count up from the price to the amount paid, biggest notes and coins first.",
+        "Fewest pieces: always use the largest coin or note that still fits."
+      ],
+      "formula": "change = paid − price",
+      "concepts": [],
+      "entry": [
+        "Change is the money you give back.",
+        "Start with the biggest coins and bills you can."
+      ]
+    },
+    "currency-exchange": {
+      "ideas": [
+        "Amount received = amount × rate − fees.",
+        "A 'no commission' booth can still hide its fee in a worse rate.",
+        "Compare what you actually receive from each booth."
+      ],
+      "formula": "amount received = amount × rate − fees",
+      "concepts": [
+        "exchange-rate",
+        "fx-fee",
+        "dcc"
+      ],
+      "entry": [
+        "Each country has its own money.",
+        "Multiply your dollars by the rate to see how many pounds you get."
+      ]
+    },
+    "rent-vs-buy": {
+      "ideas": [
+        "Renting: rent grows each year, but your down payment stays invested.",
+        "Buying: mortgage interest, property tax, insurance and upkeep, but the home may appreciate.",
+        "The down payment's lost investment return is a real cost: opportunity cost.",
+        "Short stays usually favour renting; long stays can favour buying."
+      ],
+      "concepts": [
+        "mortgage",
+        "down-payment",
+        "opportunity-cost",
+        "appreciation",
+        "property-tax",
+        "total-cost-of-ownership"
+      ],
+      "entry": [
+        "Renting means paying to live in someone else's home.",
+        "Buying means you own the home, but it costs a lot upfront."
+      ]
+    },
+    "budget-planner": {
+      "ideas": [
+        "Build the budget from take-home pay, not gross.",
+        "50/30/20: needs, wants, then saving and debt.",
+        "Surprises will come: an emergency fund and sinking funds keep them off a credit card."
+      ],
+      "formula": "needs 50% · wants 30% · saving 20% of net pay",
+      "concepts": [
+        "budget-50-30-20",
+        "net-pay",
+        "needs-vs-wants",
+        "emergency-fund",
+        "sinking-fund"
+      ],
+      "entry": [
+        "A budget is a plan for your money.",
+        "Pay for needs first, then save some, then have fun with the rest."
+      ]
+    },
+    "jars": {
+      "ideas": [
+        "Split money the moment you earn it: pay yourself first.",
+        "Saving is for future goals, spending for now, sharing for others.",
+        "Even small regular amounts add up."
+      ],
+      "concepts": [
+        "pay-yourself-first",
+        "sinking-fund"
+      ],
+      "entry": [
+        "Put some money in each jar: save, spend and share.",
+        "Saving a little every time helps a lot later."
+      ]
+    },
+    "london-quiz": {
+      "ideas": [
+        "Questions cover budgets, prices, deals and currencies.",
+        "Unit price = price ÷ quantity; stacked discounts multiply.",
+        "For currencies: amount × rate − fees."
+      ],
+      "concepts": [
+        "budget-50-30-20",
+        "unit-price",
+        "stacked-discounts",
+        "exchange-rate",
+        "inflation"
+      ],
+      "entry": [
+        "These questions are about budgets, prices and money from other countries.",
+        "Read each answer before you pick."
+      ]
+    },
+    "bond-desk": {
+      "ideas": [
+        "Bond prices move opposite to yields.",
+        "A coupon above market yields means a premium price; below means a discount.",
+        "Duration estimates the price move: −duration × change in yield.",
+        "Credit spread = corporate yield − government yield: the reward for default risk."
+      ],
+      "formula": "% price change ≈ −duration × Δyield",
+      "concepts": [
+        "bond",
+        "coupon-rate",
+        "face-value",
+        "yield-to-maturity",
+        "premium-discount",
+        "duration",
+        "yield-curve",
+        "credit-spread",
+        "credit-rating",
+        "interest-rate-risk"
+      ]
+    },
+    "fx-dealing": {
+      "ideas": [
+        "You quote a bid and an ask: a tight spread wins the client, a wide spread earns more.",
+        "Every deal leaves you holding currency risk: hedge it in the market or carry it.",
+        "Cross rates must agree: A/C = (A/B) × (B/C). If a loop of three trades ends with more money, that's triangular arbitrage."
+      ],
+      "formula": "cross rate A/C = (A/B) × (B/C)",
+      "concepts": [
+        "bid",
+        "ask",
+        "bid-ask-spread",
+        "exchange-rate",
+        "cross-rate",
+        "currency-risk",
+        "hedge",
+        "triangular-arbitrage"
+      ]
+    },
+    "client-plans": {
+      "ideas": [
+        "Start from each client's goal and time horizon: short goals need safety, long ones can take risk.",
+        "Check the expected return meets the goal and the volatility fits how much loss they can bear.",
+        "A retiree living on a portfolio needs a sustainable withdrawal rate, around 4%."
+      ],
+      "formula": "required return ≈ (goal ÷ savings)^(1 ÷ years) − 1",
+      "concepts": [
+        "asset-allocation",
+        "time-horizon",
+        "expected-return",
+        "volatility",
+        "withdrawal-rate",
+        "real-return",
+        "diversification"
+      ]
+    },
+    "commodities": {
+      "ideas": [
+        "Inflation from a basket = sum of (weight × price change).",
+        "Inelastic demand means a small supply shock causes a big price jump.",
+        "Futures above spot is contango; below is backwardation.",
+        "Real return = (1 + nominal) ÷ (1 + inflation) − 1."
+      ],
+      "formula": "real return = (1 + nominal) ÷ (1 + inflation) − 1",
+      "concepts": [
+        "inflation",
+        "cpi",
+        "elasticity",
+        "supply-shock",
+        "contango",
+        "backwardation",
+        "spot-price",
+        "real-return",
+        "nominal-return"
+      ]
+    },
+    "retail-analyst": {
+      "ideas": [
+        "Gross margin shows pricing power: (revenue − COGS) ÷ revenue.",
+        "Inventory turnover = COGS ÷ inventory; days of inventory = 365 ÷ turnover. Faster is usually healthier.",
+        "Same-store sales show whether existing shops are really growing.",
+        "Make the call on the whole picture, not one metric."
+      ],
+      "formula": "turnover = COGS ÷ inventory; days = 365 ÷ turnover",
+      "concepts": [
+        "gross-margin",
+        "inventory-turnover",
+        "days-of-inventory",
+        "same-store-sales",
+        "revenue",
+        "cogs"
+      ]
+    },
+    "candle-predict": {
+      "ideas": [
+        "Each candle shows the open, high, low and close.",
+        "Price above a rising moving average suggests an uptrend; volume shows conviction.",
+        "Real markets are close to unpredictable, so bet small when unsure."
+      ],
+      "concepts": [
+        "candlestick",
+        "moving-average",
+        "trend",
+        "volume",
+        "efficient-market"
+      ],
+      "entry": [
+        "The chart shows if the price went up or down.",
+        "Nobody can always guess right, so think it through."
+      ]
+    },
+    "market-quiz": {
+      "ideas": [
+        "Questions cover stocks, bonds, funds, risk and return.",
+        "Higher expected return comes with higher risk; diversification cuts single-company risk.",
+        "Bond prices fall when rates rise."
+      ],
+      "concepts": [
+        "share",
+        "bond",
+        "index-fund",
+        "diversification",
+        "expected-return",
+        "volatility",
+        "interest-rate-risk"
+      ],
+      "entry": [
+        "These questions are about stocks and saving for the future.",
+        "Take your time with each one."
+      ]
+    },
+    "asset-sort": {
+      "ideas": [
+        "An asset is something you own that has value.",
+        "A liability is something you owe.",
+        "Net worth = assets − liabilities."
+      ],
+      "formula": "net worth = assets − liabilities",
+      "concepts": [
+        "assets",
+        "liabilities",
+        "equity"
+      ],
+      "entry": [
+        "Something you own is an asset.",
+        "Money you owe is a liability."
+      ]
+    },
+    "portfolio-challenge": {
+      "ideas": [
+        "Cash is safe but loses to inflation; stocks swing but grow most over long periods.",
+        "An index fund spreads risk across many companies; hot stocks concentrate it.",
+        "Judge the result in real terms: did it beat inflation?"
+      ],
+      "formula": "real return = (1 + nominal) ÷ (1 + inflation) − 1",
+      "concepts": [
+        "asset-allocation",
+        "index-fund",
+        "diversification",
+        "volatility",
+        "real-return",
+        "inflation",
+        "bond"
+      ],
+      "entry": [
+        "Different baskets grow in different ways.",
+        "Mixing things together is safer than picking just one."
+      ]
+    },
+    "dca-lab": {
+      "ideas": [
+        "Dollar-cost averaging invests a fixed amount each month, so you buy more shares when prices are low.",
+        "Timing the market means guessing tops and bottoms, which almost nobody does reliably.",
+        "Average cost = total invested ÷ total shares."
+      ],
+      "formula": "average cost = total invested ÷ shares bought",
+      "concepts": [
+        "dollar-cost-averaging",
+        "market-timing",
+        "volatility"
+      ],
+      "entry": [
+        "Putting in the same amount every month is a calm way to invest.",
+        "When prices are low, your money buys more."
+      ]
+    },
+    "quiz-tower": {
+      "ideas": [
+        "Questions get harder as you climb: interest, investing and the economy.",
+        "Know the rule of 72, compound interest and how inflation hits real returns.",
+        "Two out of three on each floor gets you up."
+      ],
+      "concepts": [
+        "compound-interest",
+        "rule-of-72",
+        "pe-ratio",
+        "diversification",
+        "inflation",
+        "real-return",
+        "bond"
+      ],
+      "entry": [
+        "Answer questions to climb the tower.",
+        "Get two out of three right to go up."
+      ]
+    },
+    "newsroom": {
+      "ideas": [
+        "Ask which company the news actually touches: the one named, its suppliers, its rivals.",
+        "Prices react to surprises, not to news everyone expected.",
+        "Some headlines barely matter to the stock at all."
+      ],
+      "concepts": [
+        "priced-in",
+        "efficient-market",
+        "share"
+      ],
+      "entry": [
+        "Is this news good or bad for the company?",
+        "Good news often makes a company's price go up."
+      ]
+    },
+    "startup-pitch": {
+      "ideas": [
+        "Most startups fail and a few pay off big, so judge each bet by its expected value.",
+        "Spread small amounts across several startups instead of betting everything on one.",
+        "Only invest money you can afford to lose."
+      ],
+      "concepts": [
+        "expected-value",
+        "diversification",
+        "pre-money",
+        "dilution"
+      ],
+      "entry": [
+        "New businesses are exciting, but many don't work out.",
+        "Only use money you can afford to lose."
+      ]
+    },
+    "hype-check": {
+      "ideas": [
+        "High returns with no risk are a red flag.",
+        "Pressure to act now, secret methods and guaranteed profits signal hype or fraud.",
+        "Reasonable claims talk about risk, time and diversification."
+      ],
+      "concepts": [
+        "too-good-to-be-true",
+        "red-flags",
+        "risk-premium",
+        "diversification"
+      ],
+      "entry": [
+        "If it sounds too good to be true, it probably is.",
+        "Real investing takes time and has ups and downs."
+      ]
+    },
+    "valuation-desk": {
+      "ideas": [
+        "Discount each year's free cash flow at the WACC.",
+        "Add a terminal value for the years after: last cash flow × (1 + g) ÷ (WACC − g), discounted too.",
+        "Enterprise value − net debt = equity value; ÷ shares = fair value per share.",
+        "More than 15% upside is a Buy, more than 15% downside a Sell, otherwise Hold."
+      ],
+      "formula": "fair value per share = (EV − net debt) ÷ shares",
+      "concepts": [
+        "dcf",
+        "free-cash-flow",
+        "wacc",
+        "terminal-value",
+        "present-value",
+        "enterprise-value",
+        "net-debt",
+        "fair-value",
+        "analyst-rating"
+      ]
+    },
+    "balance-sheet": {
+      "ideas": [
+        "Assets are owned, liabilities are owed, equity is what's left for the owners.",
+        "The sheet balances: assets = liabilities + equity.",
+        "Current ratio = current assets ÷ current liabilities (above 1.5 is comfortable).",
+        "Debt-to-equity = total debt ÷ equity (higher is riskier)."
+      ],
+      "formula": "assets = liabilities + equity",
+      "concepts": [
+        "balance-sheet",
+        "assets",
+        "liabilities",
+        "equity",
+        "current-ratio",
+        "debt-to-equity"
+      ]
+    },
+    "short-desk": {
+      "ideas": [
+        "Warning signs: profits that never turn into cash, receivables growing faster than sales, insiders selling.",
+        "Short profit = (sell price − buy-back price) × shares − borrow fee.",
+        "A short's loss is unlimited if the price keeps rising, and squeezes happen."
+      ],
+      "formula": "short profit = (sell − buy back) × shares − borrow fee",
+      "concepts": [
+        "earnings-quality",
+        "cash-flow",
+        "accounts-receivable",
+        "days-sales-outstanding",
+        "insider-selling",
+        "short-selling",
+        "borrow-fee",
+        "short-squeeze"
+      ]
+    },
+    "first-quiz": {
+      "ideas": [
+        "Five warm-up questions on money, needs and wants, saving and banks.",
+        "Narwhal explains every answer, so read the explanations."
+      ],
+      "concepts": [
+        "needs-vs-wants",
+        "compound-interest"
+      ],
+      "entry": [
+        "Five easy questions about money.",
+        "Narwhal will help with every answer."
+      ]
+    },
+    "park-quiz": {
+      "ideas": [
+        "Questions come from every topic: saving, banking, budgeting, earning and interest.",
+        "Answer quickly for a time bonus, but accuracy matters more."
+      ],
+      "concepts": [
+        "compound-interest",
+        "budget-50-30-20",
+        "net-pay",
+        "apr"
+      ],
+      "entry": [
+        "A game show with questions about money.",
+        "Answer quickly for bonus points."
+      ]
+    },
+    "bank-teller": {
+      "ideas": [
+        "Count each deposit carefully: notes first, then coins.",
+        "Every deposit adds to the account balance; keep the records straight."
+      ],
+      "concepts": [],
+      "entry": [
+        "Count the money each customer brings.",
+        "Start with the bills, then the coins."
+      ]
+    },
+    "credit-sim": {
+      "ideas": [
+        "Pay on time every month: payment history is the biggest part of the score.",
+        "Keep credit utilization under 30%, ideally under 10%.",
+        "Avoid lots of new applications, and keep old accounts open.",
+        "Paying in full avoids interest without hurting your score."
+      ],
+      "formula": "utilization = balances ÷ limits",
+      "concepts": [
+        "credit-score",
+        "payment-history",
+        "credit-utilization",
+        "credit-age",
+        "hard-inquiry",
+        "minimum-payment"
+      ],
+      "entry": [
+        "Borrowing is like making a promise to pay back.",
+        "Paying back on time shows people they can trust you."
+      ]
+    },
+    "civics-sort": {
+      "ideas": [
+        "Taxes pay for public goods that serve everyone: roads, schools, police, parks.",
+        "Families pay for their own private things: groceries, phones, holidays.",
+        "Some things are shared, like public transport fares plus tax support."
+      ],
+      "concepts": [
+        "public-goods",
+        "property-tax"
+      ],
+      "entry": [
+        "Taxes pay for things everyone shares, like parks and schools.",
+        "Families pay for their own things, like toys and food."
+      ]
+    },
+    "coin-catcher": {
+      "ideas": [
+        "Catch money, dodge the fees.",
+        "Fees are small but they add up, just like real ones."
+      ],
+      "concepts": [],
+      "entry": [
+        "Catch the falling money!",
+        "Stay away from the red bills."
+      ]
+    },
+    "money-memory": {
+      "ideas": [
+        "Match each money word to its meaning.",
+        "Remember where cards are to make fewer misses."
+      ],
+      "concepts": [],
+      "entry": [
+        "Find the matching pairs.",
+        "Try to remember where each card is."
+      ]
+    },
+    "price-dash": {
+      "ideas": [
+        "Pick the better deal in one second: compare unit prices, not just the sticker.",
+        "Watch for sizes: a bigger pack isn't always cheaper per unit."
+      ],
+      "concepts": [
+        "unit-price"
+      ],
+      "entry": [
+        "Tap the cheaper price as fast as you can.",
+        "Look carefully at both numbers."
+      ]
+    },
+    "pet-budget": {
+      "ideas": [
+        "Needs first: food, vet care and basic supplies.",
+        "Then fun extras with what's left.",
+        "Don't go over the budget."
+      ],
+      "concepts": [
+        "needs-vs-wants",
+        "budget-50-30-20"
+      ],
+      "entry": [
+        "Pay for what your pet needs first, like food.",
+        "Then pick fun extras if there's money left."
+      ]
+    },
+    "car-deal": {
+      "ideas": [
+        "Compare the total cost, not just the monthly payment.",
+        "Loans add interest; leases are cheap monthly but you own nothing at the end.",
+        "Cars lose value as they age, so resale value matters."
+      ],
+      "formula": "total cost = all payments + upfront costs − resale value",
+      "concepts": [
+        "total-cost-of-ownership",
+        "loan-payment",
+        "total-interest",
+        "lease",
+        "depreciation",
+        "apr"
+      ],
+      "entry": [
+        "Look at the price and how much you pay every month.",
+        "The lowest monthly payment isn't always the best deal."
+      ]
+    },
+    "mortgage-math": {
+      "ideas": [
+        "Down payment = price × down payment %; the loan is the rest.",
+        "Monthly payment: PMT = P × i ÷ (1 − (1 + i)^−N) with i = APR ÷ 12.",
+        "Total interest = payment × months − loan. A calculator is allowed."
+      ],
+      "formula": "PMT = P × i ÷ (1 − (1 + i)^−N)",
+      "concepts": [
+        "mortgage",
+        "down-payment",
+        "loan-payment",
+        "total-interest",
+        "amortization",
+        "apr"
+      ],
+      "entry": [
+        "A home loan is paid back a little every month.",
+        "Paying more at the start means borrowing less."
+      ]
+    },
+    "travel-budget": {
+      "ideas": [
+        "Split the trip budget across travel, hotel, food and fun.",
+        "Book the big fixed costs first, then plan daily spending.",
+        "Leave a little for surprises."
+      ],
+      "concepts": [
+        "needs-vs-wants",
+        "sinking-fund",
+        "exchange-rate"
+      ],
+      "entry": [
+        "Plan how much to spend on travel, sleeping, food and fun.",
+        "Keep a little money for surprises."
+      ]
+    },
+    "odd-jobs": {
+      "ideas": [
+        "Do the job well to get paid.",
+        "Earned money is gross pay; in Advanced, taxes come out first."
+      ],
+      "concepts": [
+        "gross-pay",
+        "net-pay"
+      ],
+      "entry": [
+        "Do a good job to earn money.",
+        "Doing it well gets you paid more."
+      ]
+    },
+    "order-book": {
+      "ideas": [
+        "Market orders fill now and pay the spread; limit orders wait in the queue at your price.",
+        "Watch the order book: heavy bids under the price and thin asks above often push it up.",
+        "Stay inside the position limit and finish flat, holding nothing at the end."
+      ],
+      "formula": "spread = ask − bid; profit = (sell − buy) × shares",
+      "concepts": [
+        "bid",
+        "ask",
+        "bid-ask-spread",
+        "market-order",
+        "limit-order",
+        "order-book",
+        "liquidity",
+        "position-limit"
+      ]
+    },
+    "rapid-fire": {
+      "ideas": [
+        "Percent move = (new − old) ÷ old.",
+        "1 basis point = 0.01%; 100 bp = 1%.",
+        "Rule of 72: years to double ≈ 72 ÷ rate. P/E = price ÷ EPS.",
+        "Cross rates: A/C = (A/B) × (B/C)."
+      ],
+      "formula": "percent change = (new − old) ÷ old",
+      "concepts": [
+        "percent-change",
+        "basis-point",
+        "percentage-point",
+        "rule-of-72",
+        "yield-to-maturity",
+        "pe-ratio",
+        "cross-rate"
+      ]
+    },
+    "market-memory": {
+      "ideas": [
+        "Match terms to definitions: P/E, Sharpe, beta, duration, EBITDA and more.",
+        "Read the Glossary first if any term is new.",
+        "Fewer misses and a faster time score more."
+      ],
+      "concepts": [
+        "pe-ratio",
+        "sharpe-ratio",
+        "beta",
+        "duration",
+        "ebitda",
+        "dividend-yield",
+        "market-cap",
+        "volatility"
+      ]
+    },
+    "vet-practice": {
+      "ideas": [
+        "Set prices for profit: price × visits − cost per visit, not the most visits.",
+        "Hire a vet only if the extra profit beats their pay.",
+        "Billing insurers directly can bring more patients, but you wait to be paid: profit isn't cash.",
+        "Keep enough cash to cover wages while receivables come in."
+      ],
+      "formula": "profit = (price − variable cost) × visits − fixed costs",
+      "concepts": [
+        "profit-maximizing-price",
+        "capacity",
+        "marginal-cost",
+        "cash-flow",
+        "accounts-receivable",
+        "working-capital"
+      ]
+    },
+    "placement-test": {
+      "ideas": [
+        "An adaptive test across every topic: right answers move you up a level, wrong ones down.",
+        "Don't guess wildly: the result is used to suggest lessons.",
+        "Use the Glossary afterwards for any terms that came up."
+      ],
+      "concepts": [
+        "budget-50-30-20",
+        "credit-score",
+        "compound-interest",
+        "tax-bracket",
+        "diversification",
+        "break-even"
+      ]
+    },
+    "travel-desk": {
+      "ideas": [
+        "Convert costs with the exchange rate, then add fees.",
+        "Compare cards by foreign transaction fees; always decline dynamic currency conversion.",
+        "Price travel insurance by expected value, but remember the big rare bills."
+      ],
+      "formula": "expected cost = probability × cost",
+      "concepts": [
+        "exchange-rate",
+        "fx-fee",
+        "dcc",
+        "expected-value",
+        "premium",
+        "deductible"
+      ]
+    },
+    "loan-officer": {
+      "ideas": [
+        "Debt-to-income = (existing payments + new loan payment) ÷ monthly income. Above about 36% is a warning.",
+        "Higher credit scores and collateral mean lower default risk and lower losses.",
+        "Approve at prime for strong borrowers, price for risk in the middle, decline the worst.",
+        "Your score is the expected profit of the whole loan book."
+      ],
+      "formula": "expected profit ≈ (1 − PD) × interest margin − PD × loss given default",
+      "concepts": [
+        "debt-to-income",
+        "credit-score",
+        "collateral",
+        "default-probability",
+        "loss-given-default",
+        "risk-based-pricing",
+        "expected-value",
+        "loan-payment"
+      ]
+    },
+    "city-budget": {
+      "ideas": [
+        "Property tax = assessed value × rate: the city's main income.",
+        "Services have diminishing returns: spread money where the next dollar does most.",
+        "Recessions cut revenue while needs rise; plan reserves.",
+        "Borrow with municipal bonds for long-lived projects, not running costs."
+      ],
+      "formula": "property tax = assessed value × rate",
+      "concepts": [
+        "property-tax",
+        "public-goods",
+        "budget-deficit",
+        "recession",
+        "diminishing-returns",
+        "municipal-bond"
+      ]
+    },
+    "job-center": {
+      "ideas": [
+        "Do the skill game well to earn the shift's pay; good shifts lead to promotions.",
+        "Gross pay is before tax; net pay is what you keep.",
+        "In Advanced, FICA and income tax come out of each paycheck."
+      ],
+      "concepts": [
+        "gross-pay",
+        "net-pay",
+        "fica",
+        "withholding"
+      ],
+      "entry": [
+        "Pick a job and try your best.",
+        "Doing well can get you a promotion."
+      ]
+    },
+    "salary-negotiation": {
+      "ideas": [
+        "Research the market rate, set your target and your walk-away point.",
+        "Counter with evidence: skills, results and market data.",
+        "Stay polite and remember benefits and bonuses are negotiable too."
+      ],
+      "concepts": [
+        "market-rate",
+        "walk-away-point",
+        "total-compensation"
+      ],
+      "entry": [
+        "It's OK to ask for fair pay.",
+        "Be polite and explain why you're worth it."
+      ]
+    },
+    "stock-options": {
+      "ideas": [
+        "An option lets you buy shares at the strike price; it's worth share price − strike if that's positive.",
+        "Options vest over time, often with a 1-year cliff.",
+        "If the company doesn't do well, options can be worth nothing while salary is certain."
+      ],
+      "formula": "option value = max(0, share price − strike) × vested options",
+      "concepts": [
+        "stock-option",
+        "strike-price",
+        "vesting",
+        "share",
+        "expected-value"
+      ],
+      "entry": [
+        "Some jobs give you a tiny piece of the company.",
+        "It's worth more if the company does well."
+      ]
+    },
+    "coding-cafe": {
+      "ideas": [
+        "Plan the robot's path before you start.",
+        "Fewer commands means more freelance pay.",
+        "Freelance pay has no tax taken out, so set some aside."
+      ],
+      "concepts": [
+        "freelance-income"
+      ],
+      "entry": [
+        "Give the robot directions to reach the coins.",
+        "Try to use as few steps as you can."
+      ]
+    },
+    "needs-wants": {
+      "ideas": [
+        "Needs keep you safe, healthy and able to work or study.",
+        "Wants are nice extras.",
+        "Some items depend on the situation: a phone may be a need for work."
+      ],
+      "concepts": [
+        "needs-vs-wants"
+      ],
+      "entry": [
+        "A need is something you must have, like food.",
+        "A want is something nice to have, like a new toy."
+      ]
+    },
+    "first-paycheck": {
+      "ideas": [
+        "Your first paycheck is net pay: taxes have already come out.",
+        "Pay yourself first, then plan needs and wants.",
+        "Start an emergency fund before spending on extras."
+      ],
+      "concepts": [
+        "net-pay",
+        "gross-pay",
+        "pay-yourself-first",
+        "emergency-fund"
+      ],
+      "entry": [
+        "Plan what to do with your first pay.",
+        "Save some before you spend."
+      ]
+    },
+    "cyber-lab": {
+      "ideas": [
+        "Check the sender's real address and the real link before clicking.",
+        "Urgency, threats and requests for codes or passwords are red flags.",
+        "Real companies never ask for your password or a code by message."
+      ],
+      "concepts": [
+        "phishing",
+        "red-flags",
+        "password-strength"
+      ],
+      "entry": [
+        "Some messages try to trick you.",
+        "Never share passwords or codes."
+      ]
+    },
+    "password-lab": {
+      "ideas": [
+        "Length beats complexity: a long passphrase is stronger than a short jumble.",
+        "Never reuse passwords across sites.",
+        "Turn on two-factor authentication for important accounts."
+      ],
+      "concepts": [
+        "password-strength"
+      ],
+      "entry": [
+        "Long passwords are stronger.",
+        "Use a different password for each account."
+      ]
+    },
+    "tax-return": {
+      "ideas": [
+        "Taxable income = income − the larger of the standard or itemized deductions.",
+        "Apply the brackets slice by slice, then subtract credits.",
+        "Refund = tax withheld − tax owed (negative means you owe)."
+      ],
+      "formula": "refund = withholding − (bracket tax − credits)",
+      "concepts": [
+        "taxable-income",
+        "standard-deduction",
+        "itemized-deductions",
+        "tax-bracket",
+        "tax-credit",
+        "withholding",
+        "tax-refund",
+        "effective-tax-rate"
+      ],
+      "entry": [
+        "Taxes help pay for things everyone uses.",
+        "Everyone who earns money pays a share."
+      ]
+    },
+    "paycheck-decoder": {
+      "ideas": [
+        "Gross − FICA − income tax − deductions = net pay.",
+        "FICA is 7.65% of gross.",
+        "Effective tax rate = total tax ÷ gross. Check hours × rate to spot payroll mistakes."
+      ],
+      "formula": "net = gross − FICA − income tax − deductions",
+      "concepts": [
+        "gross-pay",
+        "net-pay",
+        "fica",
+        "withholding",
+        "effective-tax-rate",
+        "pre-tax-deduction"
+      ],
+      "entry": [
+        "Your pay before anything is taken out is called gross pay.",
+        "What you actually get to keep is called net pay."
+      ]
+    },
+    "sf-quiz": {
+      "ideas": [
+        "Questions cover jobs, paychecks, taxes and staying safe online.",
+        "Net pay = gross − taxes − deductions.",
+        "Real companies never ask for passwords or codes."
+      ],
+      "concepts": [
+        "gross-pay",
+        "net-pay",
+        "tax-bracket",
+        "phishing",
+        "needs-vs-wants"
+      ],
+      "entry": [
+        "Questions about jobs, pay and staying safe online.",
+        "Read each answer carefully."
+      ]
+    },
+    "venture-round": {
+      "ideas": [
+        "Post-money = pre-money + investment; the investor owns investment ÷ post-money.",
+        "Each round dilutes earlier owners: old % × (1 − new investor %).",
+        "At a sale, preferred investors take the larger of their money back or their share; common holders split the rest."
+      ],
+      "formula": "investor % = investment ÷ (pre-money + investment)",
+      "concepts": [
+        "pre-money",
+        "post-money",
+        "dilution",
+        "cap-table",
+        "liquidation-preference",
+        "share"
+      ]
+    },
+    "fintech-lab": {
+      "ideas": [
+        "Each customer should be worth well over what they cost to win: LTV ÷ CAC of 3 or more.",
+        "LTV ≈ monthly margin ÷ monthly churn; CAC = marketing spend ÷ new customers.",
+        "A free trial lifts sign-ups but delays revenue; watch the conversion rate.",
+        "Runway = cash ÷ monthly burn: don't run out of cash."
+      ],
+      "formula": "LTV ≈ monthly margin ÷ churn; runway = cash ÷ burn",
+      "concepts": [
+        "cac",
+        "ltv",
+        "churn",
+        "conversion-rate",
+        "burn-rate",
+        "runway",
+        "unit-economics",
+        "profit-maximizing-price"
+      ]
+    },
+    "algo-backtest": {
+      "ideas": [
+        "Trend-following works in trending markets; mean reversion in choppy ones.",
+        "Compare against buy-and-hold on Sharpe ratio and maximum drawdown, not raw return.",
+        "Include trading costs, and trust only the out-of-sample test: over-tuned rules fail on new data."
+      ],
+      "formula": "Sharpe = (return − risk-free) ÷ volatility",
+      "concepts": [
+        "backtest",
+        "trend-following",
+        "mean-reversion",
+        "buy-and-hold",
+        "sharpe-ratio",
+        "drawdown",
+        "overfitting",
+        "out-of-sample",
+        "transaction-costs",
+        "moving-average",
+        "cagr"
+      ]
+    },
+    "fraud-ops": {
+      "ideas": [
+        "Block when chance of fraud × amount is bigger than the cost of upsetting a good customer.",
+        "Missed fraud costs the full amount; false alarms cost customer friction.",
+        "Precision = fraud caught ÷ all blocks; recall = fraud caught ÷ all fraud."
+      ],
+      "formula": "block if P(fraud) × amount > P(genuine) × friction cost",
+      "concepts": [
+        "false-positive",
+        "false-negative",
+        "precision",
+        "recall",
+        "red-flags",
+        "expected-value"
+      ]
+    },
+    "savings-garden": {
+      "ideas": [
+        "Compound interest grows faster the longer it runs.",
+        "More frequent compounding and regular top-ups make the tree grow faster.",
+        "Rule of 72: years to double ≈ 72 ÷ rate."
+      ],
+      "formula": "A = P × (1 + r/n)^(n × t)",
+      "concepts": [
+        "compound-interest",
+        "compounding-frequency",
+        "rule-of-72",
+        "future-value",
+        "apy"
+      ],
+      "entry": [
+        "Money in savings grows a little every year.",
+        "The longer you wait, the more it grows."
+      ]
+    },
+    "retirement-tower": {
+      "ideas": [
+        "Starting early beats saving more later, thanks to compounding.",
+        "Always get the full employer match: it's free money.",
+        "Roth if your tax rate is lower now, traditional if it's higher now."
+      ],
+      "concepts": [
+        "starting-early",
+        "compound-interest",
+        "employer-match",
+        "roth",
+        "traditional-account",
+        "future-value"
+      ],
+      "entry": [
+        "Saving early gives money more time to grow.",
+        "The friend who starts first ends up with more."
+      ]
+    },
+    "insurance-sim": {
+      "ideas": [
+        "Premium is paid every month; the deductible is paid when you claim.",
+        "Lower premium usually means a higher deductible.",
+        "Insure disasters you couldn't afford; self-insure small losses."
+      ],
+      "formula": "yearly cost = premiums + deductibles paid",
+      "concepts": [
+        "premium",
+        "deductible",
+        "expected-value",
+        "self-insure"
+      ],
+      "entry": [
+        "Insurance helps pay when something bad happens.",
+        "You pay a little every month to be protected."
+      ]
+    },
+    "emergency-fund": {
+      "ideas": [
+        "Build 3 to 6 months of essential costs in cash.",
+        "Without a fund, surprises go on high-interest cards.",
+        "Top the fund back up after you use it."
+      ],
+      "formula": "months of cover = fund ÷ monthly essentials",
+      "concepts": [
+        "emergency-fund",
+        "high-interest-debt",
+        "pay-yourself-first"
+      ],
+      "entry": [
+        "A rainy-day jar is money saved for surprises.",
+        "Fill it before you need it."
+      ]
+    },
+    "borrowing-booth": {
+      "ideas": [
+        "Monthly payment: PMT = P × i ÷ (1 − (1 + i)^−N), i = APR ÷ 12.",
+        "Total cost = all payments + fees; compare that, not the monthly payment.",
+        "Extra payments go straight to principal and cut the interest."
+      ],
+      "formula": "total cost = payment × months + fees",
+      "concepts": [
+        "loan-payment",
+        "total-interest",
+        "origination-fee",
+        "apr",
+        "extra-payment",
+        "amortization"
+      ],
+      "entry": [
+        "Some loans cost more in the end than others.",
+        "Add up everything you pay back to compare."
+      ]
+    },
+    "charity-check": {
+      "ideas": [
+        "Legit charities are registered and say what they achieve.",
+        "Pressure to give now, cash-only requests and vague goals are red flags.",
+        "A low overhead isn't the same as high impact."
+      ],
+      "concepts": [
+        "red-flags",
+        "overhead-ratio",
+        "cost-per-outcome"
+      ],
+      "entry": [
+        "Real charities tell you what they do with the money.",
+        "Be careful if someone rushes you to give."
+      ]
+    },
+    "sg-quiz": {
+      "ideas": [
+        "Questions cover saving, compounding, retirement, insurance and giving.",
+        "Compound interest and starting early do the heavy lifting.",
+        "Insure disasters, self-insure small losses."
+      ],
+      "concepts": [
+        "compound-interest",
+        "starting-early",
+        "employer-match",
+        "premium",
+        "deductible",
+        "emergency-fund"
+      ],
+      "entry": [
+        "Questions about saving, growing money and helping others.",
+        "Take your time."
+      ]
+    },
+    "portfolio-lab": {
+      "ideas": [
+        "Portfolio return is the weighted average of the assets' returns.",
+        "Portfolio risk depends on correlation: low correlation cuts risk the most.",
+        "The best Sharpe ratio gives the most return per unit of risk."
+      ],
+      "formula": "Sharpe = (return − risk-free) ÷ volatility",
+      "concepts": [
+        "expected-return",
+        "volatility",
+        "correlation",
+        "diversification",
+        "sharpe-ratio",
+        "risk-free-rate",
+        "asset-allocation"
+      ]
+    },
+    "sovereign-fund": {
+      "ideas": [
+        "Keep the fund's real value: payout should be at or below the expected real return.",
+        "Judge the plan on bad scenarios, not just the average: early crashes hurt most.",
+        "Diversify across assets to protect the downside."
+      ],
+      "formula": "real return ≈ (1 + nominal) ÷ (1 + inflation) − 1",
+      "concepts": [
+        "withdrawal-rate",
+        "real-value",
+        "real-return",
+        "monte-carlo",
+        "sequence-risk",
+        "asset-allocation",
+        "diversification"
+      ]
+    },
+    "stress-test": {
+      "ideas": [
+        "Never miss a payment: that's the first goal.",
+        "Cheapest order: cut wants, use emergency cash, then low-cost credit; high-interest debt and selling investments last.",
+        "Selling investments after a crash locks in the loss."
+      ],
+      "formula": "months of cover = savings ÷ monthly essentials",
+      "concepts": [
+        "emergency-fund",
+        "funding-order",
+        "high-interest-debt",
+        "debt-avalanche",
+        "payment-history",
+        "interest-rate-risk"
+      ]
+    },
+    "impact-desk": {
+      "ideas": [
+        "Compare charities by cost per outcome, not overhead.",
+        "A deductible gift really costs gift × (1 − marginal rate).",
+        "Giving appreciated shares also avoids capital gains tax; matching gifts double the impact.",
+        "A donor-advised fund takes the deduction now and grants later."
+      ],
+      "formula": "real cost of a gift = gift × (1 − marginal rate)",
+      "concepts": [
+        "cost-per-outcome",
+        "overhead-ratio",
+        "deduction-value",
+        "marginal-tax-rate",
+        "donating-shares",
+        "capital-gains-tax",
+        "matching-gift",
+        "donor-advised-fund"
+      ]
+    }
+  }
+}

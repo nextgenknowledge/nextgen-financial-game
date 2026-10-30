@@ -1,0 +1,385 @@
+{
+  "id": "markets",
+  "title": "How Markets Trade",
+  "icon": "📈",
+  "topic": "investing",
+  "blurb": "Bids, asks and order books, short selling, charts and how news moves prices",
+  "lessons": [
+    {
+      "id": "adv-order-book",
+      "title": "Bid, Ask and the Order Book",
+      "icon": "📈",
+      "terms": [
+        {
+          "id": "bid",
+          "term": "bid",
+          "aka": [
+            "bids",
+            "bid price",
+            "best bid"
+          ],
+          "def": "The highest price a buyer is currently offering.",
+          "example": "A bid of $50.00 means someone will buy right now at $50.00."
+        },
+        {
+          "id": "ask",
+          "term": "ask price",
+          "aka": [
+            "the ask",
+            "asks",
+            "offer price",
+            "best ask"
+          ],
+          "def": "The lowest price a seller is currently willing to accept.",
+          "example": "An ask of $50.05 means you can buy right now at $50.05."
+        },
+        {
+          "id": "bid-ask-spread",
+          "term": "bid-ask spread",
+          "aka": [
+            "bid/ask spread",
+            "the spread",
+            "spread",
+            "spreads"
+          ],
+          "def": "The gap between the bid and the ask. Buying at the ask and selling at the bid costs you the spread; market makers and dealers earn it.",
+          "example": "Bid $50.00 and ask $50.05: the spread is 5 cents.",
+          "formula": "spread = ask − bid; mid price = (bid + ask) ÷ 2"
+        },
+        {
+          "id": "market-order",
+          "term": "market order",
+          "aka": [
+            "market orders",
+            "market buy",
+            "market sell"
+          ],
+          "def": "An order to buy or sell right away at the best price available. Fast and sure to fill, but you pay the spread.",
+          "example": "A market buy fills at the $50.05 ask."
+        },
+        {
+          "id": "limit-order",
+          "term": "limit order",
+          "aka": [
+            "limit orders",
+            "limit buy",
+            "limit sell"
+          ],
+          "def": "An order to buy or sell only at your price or better. It waits in the order book and might never fill.",
+          "example": "A limit buy at $50.00 waits until a seller comes down to $50.00."
+        },
+        {
+          "id": "order-book",
+          "term": "order book",
+          "aka": [
+            "order flow",
+            "the queue",
+            "market depth"
+          ],
+          "def": "The live list of all waiting limit orders to buy (bids) and sell (asks) at each price.",
+          "example": "Lots of bids stacked just below the price can slow a fall."
+        },
+        {
+          "id": "liquidity",
+          "term": "liquidity",
+          "aka": [
+            "liquid",
+            "illiquid"
+          ],
+          "def": "How easily something can be bought or sold quickly without moving its price. Cash is perfectly liquid; a house is not.",
+          "example": "A big stock with tight spreads is liquid; a tiny one may move 5% on a single large order."
+        },
+        {
+          "id": "position-limit",
+          "term": "position limit",
+          "aka": [
+            "finish flat",
+            "flat position",
+            "inventory risk"
+          ],
+          "def": "The most a trader is allowed to own or owe at once. Traders also aim to finish the day flat, holding nothing, so overnight news can't hurt them.",
+          "example": "With a 500-share limit you can't hold more than 500 shares long or 500 short."
+        }
+      ],
+      "cards": [
+        {
+          "kind": "idea",
+          "title": "Buyers bid, sellers ask",
+          "body": "Every market has buyers bidding and sellers asking. The best bid is always below the best ask, and the gap is the spread. Market orders take the price on offer immediately; limit orders set a price and wait in the queue. Traders who post limit orders earn the spread, and traders who use market orders pay it."
+        },
+        {
+          "kind": "example",
+          "title": "Walking the book",
+          "body": "Bids: $9.98 (500 shares), $9.97 (800). Asks: $10.01 (300), $10.02 (600). A market buy for 500 shares takes 300 at $10.01 and 200 at $10.02, an average of $10.014. A limit buy at $9.99 would sit at the front of the bids and fill only if a seller comes down to it."
+        },
+        {
+          "kind": "formula",
+          "title": "The numbers",
+          "body": "Spread = ask − bid. Mid price = (bid + ask) ÷ 2. The cost of buying and then selling straight away with market orders ≈ the spread × shares. Profit = (sell price − buy price) × shares."
+        },
+        {
+          "kind": "mistake",
+          "title": "Common mistake",
+          "body": "Using big market orders in thin markets. If there isn't much size at the best price, you walk the book and pay worse and worse prices."
+        }
+      ],
+      "checks": [
+        {
+          "prompt": "The bid is $20.10 and the ask is $20.14. What is the spread?",
+          "choices": [
+            "$0.04",
+            "$0.14",
+            "$40.24"
+          ],
+          "answer": 0,
+          "explanation": "$20.14 − $20.10 = $0.04."
+        },
+        {
+          "prompt": "You must buy immediately. Which order do you use?",
+          "choices": [
+            "A limit order",
+            "A market order"
+          ],
+          "answer": 1,
+          "explanation": "A market order fills right away at the best ask."
+        },
+        {
+          "prompt": "Which order might never be filled?",
+          "choices": [
+            "A market order",
+            "A limit order"
+          ],
+          "answer": 1,
+          "explanation": "A limit order only fills if the market reaches your price."
+        }
+      ],
+      "reward": {
+        "xp": 60,
+        "cash": 15
+      }
+    },
+    {
+      "id": "adv-short-selling",
+      "title": "Long, Short and Short Squeezes",
+      "icon": "📉",
+      "terms": [
+        {
+          "id": "long-position",
+          "term": "long position",
+          "aka": [
+            "going long",
+            "go long"
+          ],
+          "def": "Owning an asset so you profit if its price rises. The most you can lose is what you paid.",
+          "example": "Buy 100 shares at $30 and you lose at most $3,000 if it goes to zero."
+        },
+        {
+          "id": "short-selling",
+          "term": "short selling",
+          "aka": [
+            "short sale",
+            "shorting",
+            "short seller",
+            "short sellers",
+            "sell short",
+            "going short",
+            "short position",
+            "a short"
+          ],
+          "def": "Borrowing shares, selling them now and buying them back later, hoping the price falls. The profit is the drop in price, and losses have no limit if the price rises.",
+          "example": "Short at $80 and buy back at $60: $20 profit a share, before fees.",
+          "formula": "short profit = (sell price − buy-back price) × shares − borrow fee"
+        },
+        {
+          "id": "borrow-fee",
+          "term": "borrow fee",
+          "aka": [
+            "borrow cost",
+            "stock loan fee",
+            "cost to borrow",
+            "hard to borrow"
+          ],
+          "def": "The yearly fee paid to whoever lent you the shares you shorted. Popular shorts can cost 20% a year or more.",
+          "example": "A $100,000 short with a 12% borrow fee costs $12,000 a year.",
+          "formula": "borrow fee ≈ position value × yearly rate × years held"
+        },
+        {
+          "id": "short-squeeze",
+          "term": "short squeeze",
+          "def": "A sharp rise in a heavily shorted stock as short sellers rush to buy back, pushing the price even higher.",
+          "example": "Good news lifts a stock 15%, then shorts buying to cover drive it up another 40%."
+        }
+      ],
+      "cards": [
+        {
+          "kind": "idea",
+          "title": "Two directions",
+          "body": "Going long means owning something and hoping it rises. Going short means selling borrowed shares and hoping to buy them back cheaper. A long can at most lose what you paid. A short's loss has no ceiling, because a price can keep rising. Shorts also pay a borrow fee for as long as they hold."
+        },
+        {
+          "kind": "example",
+          "title": "A short, both ways",
+          "body": "You short 1,000 shares at $50 ($50,000) with a 10% yearly borrow fee and hold for 6 months, a $2,500 fee. If the price falls to $35, profit = $15,000 − $2,500 = $12,500. If it rises to $80 instead, the loss = $30,000 + $2,500 = $32,500, more than half the position's starting value."
+        },
+        {
+          "kind": "formula",
+          "title": "The maths",
+          "body": "Short profit = (sell price − buy-back price) × shares − borrow fee. Borrow fee ≈ position value × yearly rate × years held. Long profit = (sell − buy) × shares."
+        },
+        {
+          "kind": "mistake",
+          "title": "Common mistake",
+          "body": "Shorting a company just because it looks overvalued. Overvalued stocks can rise for years, and the borrow fee and squeeze risk keep running while you wait."
+        }
+      ],
+      "checks": [
+        {
+          "prompt": "You short 200 shares at $40 and buy them back at $30. What is the profit before fees?",
+          "choices": [
+            "$2,000",
+            "$6,000",
+            "$8,000"
+          ],
+          "answer": 0,
+          "explanation": "($40 − $30) × 200 = $2,000."
+        },
+        {
+          "prompt": "What is the most a short seller can lose?",
+          "choices": [
+            "What they paid",
+            "Half the position",
+            "There is no limit"
+          ],
+          "answer": 2,
+          "explanation": "The price can keep rising, so the possible loss is unlimited."
+        }
+      ],
+      "reward": {
+        "xp": 60,
+        "cash": 15
+      }
+    },
+    {
+      "id": "adv-charts-news",
+      "title": "Charts, Trends and News",
+      "icon": "📰",
+      "terms": [
+        {
+          "id": "candlestick",
+          "term": "candlestick",
+          "aka": [
+            "candlesticks",
+            "candles",
+            "candle"
+          ],
+          "def": "A chart bar showing a period's open, high, low and close. Green usually means it closed higher than it opened, red lower.",
+          "example": "A long red candle: the price opened high and closed much lower."
+        },
+        {
+          "id": "moving-average",
+          "term": "moving average",
+          "aka": [
+            "moving averages",
+            "SMA",
+            "MA"
+          ],
+          "def": "The average price over the last N periods, redrawn each day. It smooths out noise to show the trend.",
+          "example": "A 20-day moving average of $52 with the price at $55: the price is above its recent trend.",
+          "formula": "moving average = sum of the last N closes ÷ N"
+        },
+        {
+          "id": "trend",
+          "term": "trend",
+          "aka": [
+            "uptrend",
+            "downtrend",
+            "trending"
+          ],
+          "def": "The general direction of prices over a period: up, down or sideways.",
+          "example": "Higher highs and higher lows for three months: an uptrend."
+        },
+        {
+          "id": "volume",
+          "term": "trading volume",
+          "aka": [
+            "volume"
+          ],
+          "def": "How many shares traded in a period. Big moves on high volume are taken more seriously than moves on light volume.",
+          "example": "A breakout on triple the usual volume suggests real buying interest."
+        },
+        {
+          "id": "priced-in",
+          "term": "priced in",
+          "aka": [
+            "already priced in",
+            "expectations",
+            "beat expectations",
+            "missed expectations",
+            "buy the rumor",
+            "sell the news"
+          ],
+          "def": "When the market already expects news, the price adjusts before it's announced. Stocks move on surprises, not on news everyone saw coming.",
+          "example": "A company reports record profits but the stock falls, because investors expected even more."
+        },
+        {
+          "id": "efficient-market",
+          "term": "efficient market",
+          "aka": [
+            "random walk",
+            "unpredictable"
+          ],
+          "def": "The idea that prices quickly reflect public information, so short-term moves are close to unpredictable.",
+          "example": "Most professional fund managers fail to beat a simple index fund over 15 years."
+        }
+      ],
+      "cards": [
+        {
+          "kind": "idea",
+          "title": "What charts can and can't do",
+          "body": "Charts show what the price did, not what it will do. Candles summarise each day, moving averages show the trend and volume shows how much conviction was behind a move. News moves prices only to the extent it surprises the market, and it can override any chart."
+        },
+        {
+          "kind": "example",
+          "title": "Reading a headline",
+          "body": "A stock closes above its 50-day moving average on twice the normal volume: a sign of a possible uptrend. Then a headline says a key supplier's factory is on strike. The company that relies on that supplier may fall; a competitor with other suppliers might barely move, or even rise."
+        },
+        {
+          "kind": "formula",
+          "title": "Tools",
+          "body": "Moving average = sum of the last N closes ÷ N. A stock's reaction to news ≈ actual result − what was expected. Size each bet so being wrong is affordable."
+        },
+        {
+          "kind": "mistake",
+          "title": "Common mistake",
+          "body": "Betting big on a chart pattern. Patterns tilt the odds a little at best, and real markets are far less predictable than they look in hindsight."
+        }
+      ],
+      "checks": [
+        {
+          "prompt": "A company reports a 20% profit rise, but investors expected 30%. What often happens to the stock?",
+          "choices": [
+            "It jumps",
+            "It falls",
+            "Nothing"
+          ],
+          "answer": 1,
+          "explanation": "It missed expectations, which matters more than the headline growth."
+        },
+        {
+          "prompt": "The last 4 closes were $10, $12, $11 and $13. What is the 4-day moving average?",
+          "choices": [
+            "$11",
+            "$11.50",
+            "$12"
+          ],
+          "answer": 1,
+          "explanation": "($10 + $12 + $11 + $13) ÷ 4 = $11.50."
+        }
+      ],
+      "reward": {
+        "xp": 50,
+        "cash": 10
+      }
+    }
+  ]
+}

@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useMemo, useState } from 'react';
+import { TermText } from '@/ui/learn/LearnBits';
 import type { RuntimeQuestion, Response } from '@/game/questions/engine';
 import { grade, correctAnswerText } from '@/game/questions/engine';
 import { Button, ReadAloud } from '@/ui/common';
@@ -205,7 +206,7 @@ export function QuestionView({
       <div className="q-card">
         <div className="q-prompt">
           {q.icon && <span className="q-icon">{q.icon}</span>}
-          <span className="grow">{q.prompt}</span>
+          <span className="grow">{entry ? q.prompt : <TermText text={q.prompt} />}</span>
           <ReadAloud text={`${q.prompt} ${q.type === 'mc' || q.type === 'tf' ? q.choices.join('. ') : ''}`} />
         </div>
         {q.media && <MediaView m={q.media} />}

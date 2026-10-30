@@ -1,0 +1,636 @@
+{
+  "id": "economics",
+  "title": "Economics and Global Markets",
+  "icon": "🌍",
+  "topic": "economics",
+  "blurb": "Inflation and real returns, elasticity, currencies, futures and hedging, and public budgets",
+  "lessons": [
+    {
+      "id": "adv-inflation",
+      "title": "Inflation, CPI and Real Returns",
+      "icon": "🛒",
+      "terms": [
+        {
+          "id": "inflation",
+          "term": "inflation",
+          "aka": [
+            "inflation rate",
+            "rising prices",
+            "prices rise"
+          ],
+          "def": "The general rise in prices over time, which means each dollar buys less.",
+          "example": "With 3% inflation, a $100 basket costs $103 next year."
+        },
+        {
+          "id": "cpi",
+          "term": "CPI",
+          "aka": [
+            "consumer price index",
+            "price basket",
+            "basket of goods",
+            "price index"
+          ],
+          "def": "An index tracking the cost of a typical basket of goods and services. Items people spend more on get bigger weights. Its yearly change is the headline inflation rate.",
+          "example": "A basket costing $250 last year and $260 this year means 4% inflation.",
+          "formula": "inflation = sum of (weight × price change)"
+        },
+        {
+          "id": "real-return",
+          "term": "real return",
+          "aka": [
+            "real returns",
+            "real interest rate",
+            "real rate",
+            "beat inflation"
+          ],
+          "def": "Your return after inflation: the actual gain in buying power.",
+          "example": "An 8% return with 3% inflation is about a 4.9% real return.",
+          "formula": "real return = (1 + nominal) ÷ (1 + inflation) − 1"
+        },
+        {
+          "id": "nominal-return",
+          "term": "nominal return",
+          "aka": [
+            "nominal",
+            "nominal returns"
+          ],
+          "def": "The return in plain dollars, before adjusting for inflation.",
+          "example": "A savings account paying 4% has a nominal return of 4%."
+        }
+      ],
+      "cards": [
+        {
+          "kind": "idea",
+          "title": "Measuring rising prices",
+          "body": "Inflation is measured by pricing the same basket of goods every year. Items people spend more on count for more. To know whether you're really getting richer, compare your return with inflation: that's the real return."
+        },
+        {
+          "kind": "example",
+          "title": "Build an inflation rate",
+          "body": "A basket is food 50%, fuel 30% and rent 20%. This year food is up 4%, fuel up 10% and rent up 2%. Inflation = 0.5 × 4% + 0.3 × 10% + 0.2 × 2% = 5.4%. A savings account paying 3% is losing about 2.3% a year in real terms."
+        },
+        {
+          "kind": "formula",
+          "title": "The formulas",
+          "body": "Inflation from a basket = sum of (weight × price change). Real return = (1 + nominal) ÷ (1 + inflation) − 1, roughly nominal minus inflation."
+        },
+        {
+          "kind": "mistake",
+          "title": "Common mistake",
+          "body": "Feeling richer because a balance grew. A 2% raise during 5% inflation is a pay cut in real terms."
+        }
+      ],
+      "checks": [
+        {
+          "prompt": "Nominal return 7% and inflation 3%. Approximate real return?",
+          "choices": [
+            "10%",
+            "4%",
+            "2.3%"
+          ],
+          "answer": 1,
+          "explanation": "Roughly 7% − 3% = 4% (exactly 3.9%)."
+        },
+        {
+          "prompt": "A basket is 60% food (up 5%) and 40% transport (up 10%). What is inflation?",
+          "choices": [
+            "7.5%",
+            "7%",
+            "15%"
+          ],
+          "answer": 1,
+          "explanation": "0.6 × 5% + 0.4 × 10% = 7%."
+        }
+      ],
+      "reward": {
+        "xp": 50,
+        "cash": 10
+      }
+    },
+    {
+      "id": "adv-elasticity",
+      "title": "Supply, Demand and Elasticity",
+      "icon": "🌽",
+      "terms": [
+        {
+          "id": "supply-and-demand",
+          "term": "supply and demand",
+          "aka": [
+            "demand",
+            "supply",
+            "high demand",
+            "low demand"
+          ],
+          "def": "Prices rise when buyers want more than sellers offer, and fall when there's more on offer than buyers want.",
+          "example": "A bumper harvest floods the market and corn prices fall."
+        },
+        {
+          "id": "elasticity",
+          "term": "elasticity",
+          "aka": [
+            "price elasticity",
+            "elastic",
+            "inelastic"
+          ],
+          "def": "How much the amount people buy changes when the price changes. Inelastic goods like fuel and medicine barely change; elastic goods like snacks and luxuries change a lot.",
+          "example": "Price up 10% and sales down 20%: elasticity −2, which is elastic.",
+          "formula": "elasticity = % change in quantity ÷ % change in price"
+        },
+        {
+          "id": "supply-shock",
+          "term": "supply shock",
+          "aka": [
+            "supply shocks",
+            "shortage"
+          ],
+          "def": "A sudden change in how much of something can be produced, like a drought or a closed pipeline. With inelastic demand, prices swing hard.",
+          "example": "A war cuts 5% of world oil supply and the price jumps 30%."
+        },
+        {
+          "id": "arbitrage",
+          "term": "arbitrage",
+          "aka": [
+            "buy low, sell high",
+            "buy low and sell high",
+            "buy low sell high"
+          ],
+          "def": "Buying where something is cheap and selling where it's dear, locking in the gap. Doing it pushes the two prices back together.",
+          "example": "Tea costs $2 in Hong Kong and sells for $3.50 in London with $0.80 of shipping: $0.70 profit a crate."
+        },
+        {
+          "id": "diminishing-returns",
+          "term": "diminishing returns",
+          "aka": [
+            "diminishing return"
+          ],
+          "def": "Each extra dollar or worker adds less than the one before.",
+          "example": "The first $1M on road repairs fixes the worst potholes; the tenth $1M improves things much less."
+        },
+        {
+          "id": "tariff",
+          "term": "tariff",
+          "aka": [
+            "tariffs",
+            "import tax"
+          ],
+          "def": "A tax on imported goods. It raises prices for buyers and protects local producers from foreign competition.",
+          "example": "A 10% tariff on a $200 imported gadget, passed on fully, makes it $220."
+        },
+        {
+          "id": "market-structure",
+          "term": "competition",
+          "aka": [
+            "perfect competition",
+            "monopoly",
+            "monopolies",
+            "competitors"
+          ],
+          "def": "With many sellers offering the same thing, nobody can set the price: the market does. A monopoly, the only seller, can charge more and offer less.",
+          "example": "Dozens of identical noodle stalls must match each other's prices; the only stall on an island can charge double."
+        },
+        {
+          "id": "gdp",
+          "term": "GDP",
+          "aka": [
+            "gross domestic product",
+            "economic growth"
+          ],
+          "def": "The total value of all goods and services a country produces in a year. Its growth rate is the main measure of how the economy is doing.",
+          "example": "GDP growing 2% a year means the economy produced 2% more than the year before."
+        }
+      ],
+      "cards": [
+        {
+          "kind": "idea",
+          "title": "Where buyers and sellers meet",
+          "body": "Prices settle where buyers and sellers meet. How strongly buyers react to a price change is the elasticity. For necessities demand barely moves, so a small supply cut can cause a huge price jump. For luxuries, a price rise sends buyers away."
+        },
+        {
+          "kind": "example",
+          "title": "Coffee frost",
+          "body": "A frost cuts coffee supply 10%. Demand is inelastic, with an elasticity of about −0.25, so the price must rise about 10% ÷ 0.25 = 40% to cut demand by 10%. And if you sell too much in one port, you push the local price down yourself: supply and demand working against you."
+        },
+        {
+          "kind": "formula",
+          "title": "The formulas",
+          "body": "Elasticity = % change in quantity ÷ % change in price. Price change after a supply shock ≈ % supply change ÷ the size of the elasticity. A price rise increases revenue only if demand is inelastic (elasticity between 0 and −1)."
+        },
+        {
+          "kind": "mistake",
+          "title": "Common mistake",
+          "body": "Assuming you can sell any amount at today's price. Flood a market and the price falls."
+        }
+      ],
+      "checks": [
+        {
+          "prompt": "Price rises 10% and the quantity sold falls 5%. What is the elasticity?",
+          "choices": [
+            "−0.5",
+            "−2",
+            "−5"
+          ],
+          "answer": 0,
+          "explanation": "−5% ÷ 10% = −0.5, which is inelastic."
+        },
+        {
+          "prompt": "Demand for a good is inelastic. If you raise the price, revenue…",
+          "choices": [
+            "Rises",
+            "Falls"
+          ],
+          "answer": 0,
+          "explanation": "Sales drop by a smaller percent than the price rises."
+        }
+      ],
+      "reward": {
+        "xp": 50,
+        "cash": 10
+      }
+    },
+    {
+      "id": "adv-fx",
+      "title": "Currencies and Exchange Rates",
+      "icon": "💱",
+      "terms": [
+        {
+          "id": "exchange-rate",
+          "term": "exchange rate",
+          "aka": [
+            "exchange rates",
+            "FX rate",
+            "currency",
+            "currencies",
+            "FX",
+            "convert",
+            "strengthens",
+            "weakens",
+            "US$"
+          ],
+          "def": "The price of one currency in another.",
+          "example": "GBP/USD 1.25 means £1 buys $1.25."
+        },
+        {
+          "id": "cross-rate",
+          "term": "cross rate",
+          "aka": [
+            "cross rates",
+            "currency cross",
+            "currency crosses"
+          ],
+          "def": "An exchange rate between two currencies worked out through a third, usually the US dollar.",
+          "example": "USD/JPY 150 and USD/HKD 7.8 imply HKD/JPY = 150 ÷ 7.8 ≈ 19.2.",
+          "formula": "A/C = (A/B) × (B/C)"
+        },
+        {
+          "id": "fx-fee",
+          "term": "currency exchange fee",
+          "aka": [
+            "commission",
+            "commissions",
+            "flat fee",
+            "exchange fee",
+            "exchange fees",
+            "foreign transaction fee"
+          ],
+          "def": "What a booth or card charges to convert money: a worse rate, a flat fee, a percentage commission, or all three. Compare what you actually receive.",
+          "example": "Booth A: rate 0.78, no fee. Booth B: 0.80 with a £5 fee. On $100, A gives £78 and B gives £75.",
+          "formula": "amount received = amount × rate − fees"
+        },
+        {
+          "id": "dcc",
+          "term": "dynamic currency conversion",
+          "aka": [
+            "DCC",
+            "pay in your home currency",
+            "pay in dollars"
+          ],
+          "def": "When a card machine abroad offers to charge you in your home currency. It uses a poor rate, often 3 to 7% worse, so pay in the local currency.",
+          "example": "A €100 meal charged as $115 through DCC instead of $108 at your card's rate."
+        },
+        {
+          "id": "triangular-arbitrage",
+          "term": "triangular arbitrage",
+          "def": "Converting through three currencies and ending up with more than you started, because the cross rates don't line up. Such gaps close within seconds.",
+          "example": "$1 → €0.92 → £0.80 → $1.003: a 0.3% riskless profit."
+        },
+        {
+          "id": "currency-risk",
+          "term": "currency risk",
+          "aka": [
+            "FX risk",
+            "exchange-rate risk",
+            "exchange rate risk"
+          ],
+          "def": "The chance that a move in exchange rates changes what money is worth to you.",
+          "example": "A US firm owed £1M loses if the pound falls before it's paid."
+        }
+      ],
+      "cards": [
+        {
+          "kind": "idea",
+          "title": "A price like any other",
+          "body": "An exchange rate is just a price. Booths and banks make money by quoting a worse rate than the market (the spread) and by adding fees. To compare offers, work out what you actually end up with. Rates between any two currencies must be consistent; when they're not, traders arbitrage the gap away."
+        },
+        {
+          "kind": "example",
+          "title": "Three booths",
+          "body": "You change $500 to pounds and the market rate is 0.80. Booth A: 0.76 with no fee, so £380. Booth B: 0.79 with 2% commission, so £395 × 0.98 = £387.10. Booth C: 0.80 with a £10 fee, so £390. Booth C wins."
+        },
+        {
+          "kind": "formula",
+          "title": "The formulas",
+          "body": "Amount received = amount × rate − fees. Cross rate A/C = (A/B) × (B/C). Cost of a booth = 1 − what you get ÷ what you'd get at the market rate."
+        },
+        {
+          "kind": "mistake",
+          "title": "Common mistake",
+          "body": "Choosing the booth that advertises no commission. The fee is often hidden in a bad rate. Abroad, always pay in the local currency."
+        }
+      ],
+      "checks": [
+        {
+          "prompt": "£1 = $1.25. How many pounds is $500?",
+          "choices": [
+            "£625",
+            "£400",
+            "£500"
+          ],
+          "answer": 1,
+          "explanation": "$500 ÷ 1.25 = £400."
+        },
+        {
+          "prompt": "A card machine abroad asks whether to charge you in the local currency or in dollars. Which should you pick?",
+          "choices": [
+            "Dollars",
+            "The local currency"
+          ],
+          "answer": 1,
+          "explanation": "Paying in your home currency triggers dynamic currency conversion with a worse rate."
+        }
+      ],
+      "reward": {
+        "xp": 60,
+        "cash": 15
+      }
+    },
+    {
+      "id": "adv-futures",
+      "title": "Futures, Hedging and Margin",
+      "icon": "✈",
+      "terms": [
+        {
+          "id": "futures",
+          "term": "futures",
+          "aka": [
+            "futures contract",
+            "futures contracts",
+            "futures price"
+          ],
+          "def": "An agreement to buy or sell something at a set price on a future date. Used to lock in prices or to bet on them.",
+          "example": "An airline buys oil futures to fix its fuel cost for next year."
+        },
+        {
+          "id": "hedge",
+          "term": "hedge",
+          "aka": [
+            "hedging",
+            "hedged",
+            "hedges",
+            "short hedge",
+            "long hedge"
+          ],
+          "def": "Taking an opposite position to protect against a price move you're exposed to. If you'll buy something later, buy futures; if you'll sell something later, sell futures.",
+          "example": "A farmer sells wheat futures now, so a price crash before harvest is offset by a futures gain."
+        },
+        {
+          "id": "hedge-ratio",
+          "term": "hedge ratio",
+          "aka": [
+            "number of contracts",
+            "contract size"
+          ],
+          "def": "How many contracts to use. For a simple hedge it's exposure ÷ contract size; for a stock portfolio it's beta × portfolio value ÷ (index level × contract multiplier).",
+          "example": "1,000,000 gallons of fuel ÷ 42,000 gallons per contract ≈ 24 contracts.",
+          "formula": "contracts ≈ exposure ÷ contract size"
+        },
+        {
+          "id": "margin-call",
+          "term": "margin call",
+          "aka": [
+            "initial margin",
+            "maintenance margin",
+            "variation margin",
+            "margin calls"
+          ],
+          "def": "Futures need a cash deposit called margin. If daily losses push your account below the maintenance level, you must add cash: a margin call.",
+          "example": "Post $10,000 of margin; a $7,000 loss leaves $3,000, below the $8,000 maintenance level, so you must top up."
+        },
+        {
+          "id": "daily-settlement",
+          "term": "daily settlement",
+          "aka": [
+            "mark-to-market",
+            "marked to market",
+            "marking to market",
+            "settles daily"
+          ],
+          "def": "Futures gains and losses are paid in cash every day, not just at the end.",
+          "example": "Your contract rises $2 today, so $2 × the contract size is credited to your account tonight."
+        },
+        {
+          "id": "contango",
+          "term": "contango",
+          "def": "When futures prices are higher than today's spot price, often because of storage costs. Holding long futures in contango loses a little each time they're rolled.",
+          "example": "Oil at $70 today and $74 for delivery in 6 months."
+        },
+        {
+          "id": "backwardation",
+          "term": "backwardation",
+          "def": "When futures prices are below the spot price, usually because supplies are tight right now.",
+          "example": "Spot $90 during a shortage and $84 for delivery in 6 months."
+        },
+        {
+          "id": "spot-price",
+          "term": "spot price",
+          "def": "The price to buy something for immediate delivery today.",
+          "example": "Gold's spot price is $2,300 an ounce today; the 1-year futures price is $2,380."
+        }
+      ],
+      "cards": [
+        {
+          "kind": "idea",
+          "title": "Locking in a price",
+          "body": "Businesses use futures to lock in prices they care about. First work out your exposure: will you be buying (hurt if prices rise) or selling (hurt if prices fall)? Then take the opposite futures position, sized to match. Because gains and losses settle daily, keep enough cash for margin calls along the way."
+        },
+        {
+          "kind": "example",
+          "title": "A farm's hedge",
+          "body": "A farm will sell 50,000 bushels of corn in 3 months. Contracts are 5,000 bushels, so it sells 10 contracts at $4.50. If corn falls to $4.00, the crop is worth $25,000 less, but the futures gain 10 × 5,000 × $0.50 = $25,000. The price was locked in."
+        },
+        {
+          "kind": "formula",
+          "title": "Sizing and P&L",
+          "body": "Contracts ≈ exposure ÷ contract size. Stock portfolio hedge: contracts ≈ beta × portfolio value ÷ (index level × multiplier). Futures P&L = (exit − entry) × contract size × contracts, reversed for a short."
+        },
+        {
+          "kind": "mistake",
+          "title": "Common mistake",
+          "body": "Hedging in the wrong direction. If you will buy fuel later, selling fuel futures doubles your risk instead of cancelling it."
+        }
+      ],
+      "checks": [
+        {
+          "prompt": "An airline is worried jet fuel will get more expensive. Which hedge?",
+          "choices": [
+            "Sell fuel futures",
+            "Buy fuel futures"
+          ],
+          "answer": 1,
+          "explanation": "Buying futures gains when prices rise, offsetting the higher fuel bill."
+        },
+        {
+          "prompt": "A farmer will sell 40,000 bushels and each contract is 5,000 bushels. How many contracts?",
+          "choices": [
+            "4",
+            "8",
+            "20",
+            "40"
+          ],
+          "answer": 1,
+          "explanation": "40,000 ÷ 5,000 = 8 contracts."
+        },
+        {
+          "prompt": "Futures prices above the spot price is called…",
+          "choices": [
+            "Backwardation",
+            "Contango"
+          ],
+          "answer": 1,
+          "explanation": "Contango means futures above spot."
+        }
+      ],
+      "reward": {
+        "xp": 70,
+        "cash": 20
+      }
+    },
+    {
+      "id": "adv-public-finance",
+      "title": "Government Budgets and Taxes",
+      "icon": "🏙",
+      "terms": [
+        {
+          "id": "property-tax",
+          "term": "property tax",
+          "aka": [
+            "property taxes"
+          ],
+          "def": "A yearly tax on the value of land and buildings, often the main way cities pay for services.",
+          "example": "A 1.2% rate on a $300,000 home is $3,600 a year.",
+          "formula": "property tax = assessed value × rate"
+        },
+        {
+          "id": "public-goods",
+          "term": "public goods",
+          "aka": [
+            "public services",
+            "public service"
+          ],
+          "def": "Things that serve everyone and are hard to charge for one person at a time, like streetlights, parks and police, so taxes pay for them.",
+          "example": "One family can't easily buy its own fire department, so the city funds one."
+        },
+        {
+          "id": "budget-deficit",
+          "term": "budget deficit",
+          "aka": [
+            "deficit",
+            "surplus",
+            "balanced budget",
+            "balance the budget"
+          ],
+          "def": "Spending more than you collect in a year. A surplus is the reverse; a balanced budget matches them.",
+          "example": "Revenue $90M and spending $100M is a $10M deficit."
+        },
+        {
+          "id": "recession",
+          "term": "recession",
+          "aka": [
+            "recessions",
+            "downturn"
+          ],
+          "def": "A broad fall in economic activity, usually with rising unemployment. Tax revenue falls just as demand for help rises.",
+          "example": "Sales and income taxes drop 10% while unemployment claims double."
+        },
+        {
+          "id": "sales-tax",
+          "term": "sales tax",
+          "aka": [
+            "VAT",
+            "GST"
+          ],
+          "def": "A tax added to the price of things you buy, as a percent of the price.",
+          "example": "$40 of shopping with 6% sales tax costs $42.40 at checkout.",
+          "formula": "total = price × (1 + tax rate)"
+        },
+        {
+          "id": "mandatory-saving",
+          "term": "mandatory retirement saving",
+          "aka": [
+            "CPF",
+            "pension",
+            "social insurance"
+          ],
+          "def": "Government systems that require workers and employers to put part of each paycheck aside for retirement, health or housing.",
+          "example": "Singapore's CPF takes a share of wages into accounts for retirement, housing and healthcare."
+        }
+      ],
+      "cards": [
+        {
+          "kind": "idea",
+          "title": "Balancing a city",
+          "body": "A government budget balances tax revenue against spending on services. Spending has diminishing returns, so spreading money across services often helps more than pouring it into one. Borrowing through bonds makes sense for long-lived projects like bridges, not for everyday costs."
+        },
+        {
+          "kind": "example",
+          "title": "A hard year",
+          "body": "A city collects $120M, mostly property tax. A recession cuts revenue to $110M while needs rise. Options: raise the property tax rate, trim the services where the last dollar does least, or use reserves. A collapsed bridge costing $40M that will last 50 years is a sensible case for a municipal bond repaid over decades."
+        },
+        {
+          "kind": "formula",
+          "title": "The numbers",
+          "body": "Property tax = assessed value × rate. Balance = revenue − spending; a negative number is a deficit. A bond-funded project's yearly cost ≈ the loan payment over the bond's term."
+        },
+        {
+          "kind": "mistake",
+          "title": "Common mistake",
+          "body": "Borrowing to pay this year's running costs. It pushes today's bills onto future taxpayers with nothing lasting to show for it."
+        }
+      ],
+      "checks": [
+        {
+          "prompt": "A home is assessed at $250,000 and the property tax rate is 1.5%. What is the yearly tax?",
+          "choices": [
+            "$375",
+            "$3,750",
+            "$37,500"
+          ],
+          "answer": 1,
+          "explanation": "$250,000 × 1.5% = $3,750."
+        },
+        {
+          "prompt": "Which is the better use of a 30-year municipal bond?",
+          "choices": [
+            "Paying this year's salaries",
+            "Building a bridge that lasts 50 years"
+          ],
+          "answer": 1,
+          "explanation": "Long-lived projects match long-term borrowing."
+        }
+      ],
+      "reward": {
+        "xp": 50,
+        "cash": 10
+      }
+    }
+  ]
+}

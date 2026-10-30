@@ -1,0 +1,620 @@
+{
+  "id": "taxes",
+  "title": "Taxes",
+  "icon": "🧾",
+  "topic": "taxes",
+  "blurb": "Brackets, deductions and credits, pay stubs, business structures and retirement accounts",
+  "lessons": [
+    {
+      "id": "adv-brackets",
+      "title": "Tax Brackets: Marginal vs Effective",
+      "icon": "🧾",
+      "terms": [
+        {
+          "id": "tax-bracket",
+          "term": "tax bracket",
+          "aka": [
+            "tax brackets",
+            "bracket",
+            "brackets",
+            "bracket tax"
+          ],
+          "def": "A range of income taxed at one rate. In a progressive system each slice of income is taxed at its own bracket's rate.",
+          "example": "The first $11,000 might be taxed at 10%, the next slice at 12%, and so on."
+        },
+        {
+          "id": "marginal-tax-rate",
+          "term": "marginal tax rate",
+          "aka": [
+            "marginal rate",
+            "top rate"
+          ],
+          "def": "The rate on your next dollar of income: the rate of the highest bracket you reach.",
+          "example": "If your top slice falls in the 22% bracket, a $1,000 raise costs $220 in income tax."
+        },
+        {
+          "id": "effective-tax-rate",
+          "term": "effective tax rate",
+          "aka": [
+            "effective rate",
+            "average tax rate"
+          ],
+          "def": "Your total tax divided by your income: the average rate you really pay. It is always lower than your top marginal rate.",
+          "example": "$7,000 of tax on $60,000 of income is an effective rate of 11.7%.",
+          "formula": "effective rate = total tax ÷ total income"
+        },
+        {
+          "id": "taxable-income",
+          "term": "taxable income",
+          "def": "Income left after deductions. Tax brackets apply to this number, not to your total pay.",
+          "example": "$60,000 of income − a $14,600 standard deduction = $45,400 of taxable income.",
+          "formula": "taxable income = income − deductions"
+        },
+        {
+          "id": "progressive-tax",
+          "term": "progressive tax",
+          "aka": [
+            "progressive"
+          ],
+          "def": "A tax where higher income is taxed at higher rates, slice by slice.",
+          "example": "Income tax in most countries is progressive; a flat sales tax is not."
+        }
+      ],
+      "cards": [
+        {
+          "kind": "idea",
+          "title": "Slices, not jumps",
+          "body": "Moving into a higher bracket only raises the tax on the dollars inside that bracket. Every earlier dollar is still taxed at the lower rates. So a raise can never leave you with less money after income tax."
+        },
+        {
+          "kind": "example",
+          "title": "Taxing $50,000 with simple brackets",
+          "body": "Say the brackets are 10% on the first $10,000, 20% from $10,001 to $40,000 and 30% above $40,000. Tax = $1,000 + $6,000 + $3,000 = $10,000. The marginal rate is 30%. The effective rate is $10,000 ÷ $50,000 = 20%."
+        },
+        {
+          "kind": "formula",
+          "title": "Putting it together",
+          "body": "Taxable income = income − deductions. Tax = the sum of each slice × its bracket rate. Effective rate = total tax ÷ income. Marginal rate = the rate of the top slice you reach."
+        },
+        {
+          "kind": "mistake",
+          "title": "Common mistake",
+          "body": "Turning down a raise because it moves you into a higher bracket. Only the extra dollars are taxed at the higher rate, so you always keep more than before."
+        }
+      ],
+      "checks": [
+        {
+          "prompt": "Brackets: 10% up to $10,000 and 20% above that. How much tax is due on $30,000 of taxable income?",
+          "choices": [
+            "$3,000",
+            "$5,000",
+            "$6,000",
+            "$4,000"
+          ],
+          "answer": 1,
+          "explanation": "$10,000 × 10% = $1,000, plus $20,000 × 20% = $4,000. Total $5,000."
+        },
+        {
+          "prompt": "In that example, what is the effective tax rate on $30,000?",
+          "choices": [
+            "10%",
+            "16.7%",
+            "20%",
+            "30%"
+          ],
+          "answer": 1,
+          "explanation": "$5,000 ÷ $30,000 = 16.7%."
+        },
+        {
+          "prompt": "A raise moves part of your income into a higher bracket. What happens?",
+          "choices": [
+            "All your income is taxed at the higher rate",
+            "Only the income above the bracket line is taxed at the higher rate"
+          ],
+          "answer": 1,
+          "explanation": "Brackets apply slice by slice."
+        }
+      ],
+      "reward": {
+        "xp": 60,
+        "cash": 15
+      }
+    },
+    {
+      "id": "adv-deductions",
+      "title": "Deductions, Credits and Refunds",
+      "icon": "📋",
+      "terms": [
+        {
+          "id": "standard-deduction",
+          "term": "standard deduction",
+          "def": "A fixed amount everyone can subtract from income before tax, with no receipts needed.",
+          "example": "With a $14,600 standard deduction, $50,000 of income becomes $35,400 of taxable income."
+        },
+        {
+          "id": "itemized-deductions",
+          "term": "itemized deductions",
+          "aka": [
+            "itemize",
+            "itemized deduction",
+            "itemizing",
+            "itemized"
+          ],
+          "def": "Adding up specific deductible costs, like mortgage interest or charity, instead of taking the standard deduction. Only worth it if the total is bigger.",
+          "example": "$9,000 of itemized deductions loses to a $14,600 standard deduction."
+        },
+        {
+          "id": "tax-credit",
+          "term": "tax credit",
+          "aka": [
+            "tax credits"
+          ],
+          "def": "An amount subtracted straight from your tax bill, dollar for dollar. Worth far more than a deduction of the same size.",
+          "example": "A $1,000 credit cuts tax by $1,000; a $1,000 deduction in the 22% bracket cuts it by $220."
+        },
+        {
+          "id": "deduction-value",
+          "term": "tax deduction",
+          "aka": [
+            "deduction",
+            "deductions",
+            "deductible donation",
+            "tax-deductible",
+            "write-off"
+          ],
+          "def": "An amount subtracted from income before tax. It saves your marginal tax rate times the amount deducted.",
+          "example": "A $500 deductible donation in the 24% bracket saves $120 of tax, so it really costs $380.",
+          "formula": "tax saved = deduction × marginal rate"
+        },
+        {
+          "id": "withholding",
+          "term": "withholding",
+          "aka": [
+            "withheld",
+            "W-2"
+          ],
+          "def": "Tax your employer takes out of each paycheck and sends to the government in advance. Your tax return settles up at the end of the year.",
+          "example": "If $6,000 was withheld but you only owe $5,200, you get an $800 refund."
+        },
+        {
+          "id": "tax-refund",
+          "term": "tax refund",
+          "aka": [
+            "refund",
+            "amount owed",
+            "balance due",
+            "owe tax"
+          ],
+          "def": "Money returned when more tax was withheld than you owed. If too little was withheld, you owe the difference.",
+          "example": "A refund isn't a bonus: it's your own money that was overpaid during the year.",
+          "formula": "refund = tax withheld − tax owed"
+        }
+      ],
+      "cards": [
+        {
+          "kind": "idea",
+          "title": "Two ways to cut tax",
+          "body": "Deductions shrink the income that gets taxed. Credits shrink the tax itself. You take the larger of the standard deduction or your itemized total. Then the tax withheld during the year is compared with what you owe to find your refund or bill."
+        },
+        {
+          "kind": "example",
+          "title": "A simple return",
+          "body": "Wages $48,000. The standard deduction is $14,600, so taxable income is $33,400. Say the bracket tax on that is $3,800 and you qualify for a $500 credit: tax owed is $3,300. Your employer withheld $4,000 during the year, so your refund is $700."
+        },
+        {
+          "kind": "formula",
+          "title": "The steps",
+          "body": "Taxable income = income − the larger of the standard or itemized deduction. Tax owed = bracket tax − credits. Refund = withholding − tax owed (a negative number means you owe). A deduction is worth the amount × your marginal rate."
+        },
+        {
+          "kind": "mistake",
+          "title": "Common mistake",
+          "body": "Treating a deduction like a discount. Spending $1,000 to get a $1,000 deduction still leaves you about $780 poorer in the 22% bracket. Never spend money just for a deduction."
+        }
+      ],
+      "checks": [
+        {
+          "prompt": "Your itemized deductions total $9,000 and the standard deduction is $14,600. Which do you take?",
+          "choices": [
+            "Itemized",
+            "Standard",
+            "Both"
+          ],
+          "answer": 1,
+          "explanation": "You take whichever is larger, here the standard deduction."
+        },
+        {
+          "prompt": "Which saves more tax in the 22% bracket: a $1,000 credit or a $1,000 deduction?",
+          "choices": [
+            "The credit",
+            "The deduction",
+            "They save the same"
+          ],
+          "answer": 0,
+          "explanation": "The credit saves $1,000. The deduction saves $1,000 × 22% = $220."
+        },
+        {
+          "prompt": "Tax owed is $2,500 and $3,100 was withheld. What happens?",
+          "choices": [
+            "You owe $600",
+            "You get a $600 refund",
+            "Nothing"
+          ],
+          "answer": 1,
+          "explanation": "More was withheld than owed, so the $600 difference comes back to you."
+        }
+      ],
+      "reward": {
+        "xp": 60,
+        "cash": 15
+      }
+    },
+    {
+      "id": "adv-paycheck",
+      "title": "Reading a Pay Stub",
+      "icon": "💵",
+      "terms": [
+        {
+          "id": "gross-pay",
+          "term": "gross pay",
+          "aka": [
+            "gross wages",
+            "gross income",
+            "gross salary",
+            "salary",
+            "paycheck",
+            "paychecks",
+            "hourly",
+            "per hour"
+          ],
+          "def": "Your pay before anything is taken out.",
+          "example": "40 hours × $20 = $800 of gross pay."
+        },
+        {
+          "id": "net-pay",
+          "term": "net pay",
+          "aka": [
+            "take-home pay",
+            "take-home",
+            "net income from a paycheck"
+          ],
+          "def": "What lands in your account after taxes and deductions.",
+          "example": "$800 gross − $61 FICA − $70 income tax − $40 retirement = $629 net.",
+          "formula": "net pay = gross − taxes − deductions"
+        },
+        {
+          "id": "fica",
+          "term": "FICA",
+          "aka": [
+            "Social Security",
+            "Medicare",
+            "payroll tax",
+            "payroll taxes"
+          ],
+          "def": "US payroll taxes for Social Security (6.2%) and Medicare (1.45%), 7.65% of pay in total, which your employer matches.",
+          "example": "On $1,000 of pay, FICA takes $76.50.",
+          "formula": "FICA = gross × 7.65%"
+        },
+        {
+          "id": "pre-tax-deduction",
+          "term": "pre-tax deduction",
+          "aka": [
+            "pre-tax",
+            "401(k)",
+            "401k"
+          ],
+          "def": "Money taken out before income tax is worked out, such as traditional retirement contributions, which lowers taxable pay.",
+          "example": "Putting $100 into a traditional 401(k) in the 12% bracket only lowers take-home pay by about $88."
+        }
+      ],
+      "cards": [
+        {
+          "kind": "idea",
+          "title": "From gross to net",
+          "body": "Gross pay is the headline number. From it come payroll taxes (FICA), income tax withholding and deductions such as retirement or health insurance. What is left is net pay. Your effective tax rate on the stub is total tax divided by gross."
+        },
+        {
+          "kind": "example",
+          "title": "One paycheck",
+          "body": "A $1,200 paycheck: FICA at 7.65% is $91.80, income tax withheld is $96 and a 5% retirement contribution is $60 (pre-tax). Net pay = $1,200 − $91.80 − $96 − $60 = $952.20."
+        },
+        {
+          "kind": "formula",
+          "title": "Pay stub maths",
+          "body": "Net = gross − FICA − income tax − other deductions. FICA = 7.65% of gross (6.2% Social Security + 1.45% Medicare). Effective tax rate = (FICA + income tax) ÷ gross. Gross = hours × hourly rate, or yearly salary ÷ pay periods."
+        },
+        {
+          "kind": "mistake",
+          "title": "Common mistake",
+          "body": "Budgeting from gross pay. Rent and bills are paid from net pay, which can be 20 to 30% smaller. And check every stub: payroll mistakes like wrong hours or a wrong rate do happen."
+        }
+      ],
+      "checks": [
+        {
+          "prompt": "Gross pay is $2,000. What is FICA at 7.65%?",
+          "choices": [
+            "$76.50",
+            "$153",
+            "$200",
+            "$15.30"
+          ],
+          "answer": 1,
+          "explanation": "$2,000 × 0.0765 = $153."
+        },
+        {
+          "prompt": "Which number should you build a budget around?",
+          "choices": [
+            "Gross pay",
+            "Net pay"
+          ],
+          "answer": 1,
+          "explanation": "Net pay is what you actually have to spend."
+        }
+      ],
+      "reward": {
+        "xp": 50,
+        "cash": 10
+      }
+    },
+    {
+      "id": "adv-business-tax",
+      "title": "Business Structures and Tax",
+      "icon": "🏢",
+      "terms": [
+        {
+          "id": "sole-proprietorship",
+          "term": "sole proprietorship",
+          "aka": [
+            "sole proprietor",
+            "sole trader"
+          ],
+          "def": "A one-person business that isn't a separate legal entity. Simple and cheap, but the owner is personally liable for all its debts.",
+          "example": "A freelance designer working under their own name is usually a sole proprietor."
+        },
+        {
+          "id": "partnership",
+          "term": "partnership",
+          "aka": [
+            "general partnership"
+          ],
+          "def": "Two or more owners sharing the profits and, in a general partnership, sharing unlimited personal liability.",
+          "example": "Two friends who open a cafe together without forming a company."
+        },
+        {
+          "id": "llc",
+          "term": "LLC",
+          "aka": [
+            "limited liability company"
+          ],
+          "def": "A business form that protects the owners' personal assets from business debts and lets profits pass through to the owners' own tax returns.",
+          "example": "If an LLC bakery is sued, the owners' homes are normally safe."
+        },
+        {
+          "id": "corporation",
+          "term": "corporation",
+          "aka": [
+            "C corporation",
+            "C-corp",
+            "corporations",
+            "incorporate"
+          ],
+          "def": "A separate legal entity owned by shareholders. It can sell shares to investors, which is why startups seeking venture capital usually form one.",
+          "example": "A tech startup raising money from investors forms a corporation and issues shares."
+        },
+        {
+          "id": "limited-liability",
+          "term": "limited liability",
+          "aka": [
+            "personal liability",
+            "liability protection",
+            "personally liable"
+          ],
+          "def": "Owners can lose only what they put into the business, not their personal savings or home.",
+          "example": "A failed LLC's debts stay with the LLC."
+        },
+        {
+          "id": "double-taxation",
+          "term": "double taxation",
+          "aka": [
+            "taxed twice"
+          ],
+          "def": "Corporate profits are taxed once at the company level, then again when paid to the owners as dividends.",
+          "example": "$100 of profit with 21% corporate tax leaves $79; a 15% dividend tax then leaves the owner $67.15.",
+          "formula": "owner keeps = profit × (1 − corporate rate) × (1 − dividend rate)"
+        },
+        {
+          "id": "pass-through",
+          "term": "pass-through",
+          "aka": [
+            "pass-through income",
+            "pass through"
+          ],
+          "def": "Business profit that skips company-level tax and is taxed once on the owners' personal returns, as with sole proprietors, partnerships and most LLCs.",
+          "example": "An LLC earning $80,000 reports it on its owners' returns; the LLC itself pays no income tax."
+        },
+        {
+          "id": "self-employment-tax",
+          "term": "self-employment tax",
+          "aka": [
+            "SE tax",
+            "self employment tax"
+          ],
+          "def": "The self-employed pay both halves of FICA themselves, about 15.3% of net earnings.",
+          "example": "$40,000 of freelance profit owes roughly $5,650 of self-employment tax before income tax.",
+          "formula": "SE tax ≈ 15.3% × (profit × 92.35%)"
+        }
+      ],
+      "cards": [
+        {
+          "kind": "idea",
+          "title": "A trade-off of four things",
+          "body": "Choosing a structure trades off protection, paperwork, taxes and how you raise money. Sole proprietors and general partners are personally on the hook. LLCs and corporations shield the owners. Corporations face double taxation but can sell shares to investors."
+        },
+        {
+          "kind": "example",
+          "title": "One profit, three structures",
+          "body": "$100,000 of profit. Sole proprietor: taxed once on the owner's return plus self-employment tax, and the owner's house is at risk. LLC: the same tax, but the owner's personal assets are protected. Corporation: 21% corporate tax, then dividends taxed again, but it can raise venture capital by selling shares."
+        },
+        {
+          "kind": "formula",
+          "title": "The numbers",
+          "body": "Double taxation: owner keeps profit × (1 − corporate rate) × (1 − dividend rate). Self-employment tax ≈ 15.3% × (profit × 92.35%). Pass-through profit is simply added to the owner's other income."
+        },
+        {
+          "kind": "mistake",
+          "title": "Common mistake",
+          "body": "Thinking an LLC lowers your taxes. By default it is taxed just like a sole proprietorship. Its main benefit is limited liability."
+        }
+      ],
+      "checks": [
+        {
+          "prompt": "Which structure leaves the owner personally liable for all the business's debts?",
+          "choices": [
+            "LLC",
+            "Corporation",
+            "Sole proprietorship"
+          ],
+          "answer": 2,
+          "explanation": "A sole proprietorship isn't separate from its owner, so creditors can go after personal assets."
+        },
+        {
+          "prompt": "A corporation earns $100, pays 20% corporate tax and pays the rest out as a dividend taxed at 15%. What does the owner keep?",
+          "choices": [
+            "$65",
+            "$68",
+            "$80",
+            "$85"
+          ],
+          "answer": 1,
+          "explanation": "$100 × 0.80 = $80, then $80 × 0.85 = $68."
+        },
+        {
+          "prompt": "Why do startups seeking venture capital usually form corporations?",
+          "choices": [
+            "They pay no tax",
+            "They can issue shares to investors",
+            "There is no paperwork"
+          ],
+          "answer": 1,
+          "explanation": "Investors buy shares, often preferred stock, which a corporation is built to issue."
+        }
+      ],
+      "reward": {
+        "xp": 60,
+        "cash": 15
+      }
+    },
+    {
+      "id": "adv-retirement-accounts",
+      "title": "Retirement Accounts: Roth, Traditional and Matches",
+      "icon": "🏖️",
+      "terms": [
+        {
+          "id": "traditional-account",
+          "term": "traditional account",
+          "aka": [
+            "traditional 401(k)",
+            "traditional IRA",
+            "traditional"
+          ],
+          "def": "A retirement account funded with pre-tax money: tax is lower now, but withdrawals in retirement are taxed.",
+          "example": "Put in $5,000, save about $1,100 of tax this year, and pay tax when you withdraw later."
+        },
+        {
+          "id": "roth",
+          "term": "Roth",
+          "aka": [
+            "Roth IRA",
+            "Roth 401(k)",
+            "tax rate in retirement"
+          ],
+          "def": "A retirement account funded with after-tax money: no tax break now, but qualified withdrawals in retirement are tax-free.",
+          "example": "Often best for young savers, who expect a higher tax rate later in their careers."
+        },
+        {
+          "id": "employer-match",
+          "term": "employer match",
+          "aka": [
+            "matching contribution",
+            "matching contributions",
+            "401(k) match",
+            "employer matches",
+            "employer adds"
+          ],
+          "def": "Money your employer adds to your retirement account when you contribute. It is an instant return, so contribute enough to get all of it.",
+          "example": "A 50% match up to 6% of a $50,000 salary adds $1,500 a year when you put in $3,000."
+        },
+        {
+          "id": "starting-early",
+          "term": "starting early",
+          "aka": [
+            "start early",
+            "starts early",
+            "starting late",
+            "start late"
+          ],
+          "def": "Because of compounding, money saved in your teens and twenties can end up worth more than larger amounts saved later.",
+          "example": "$200 a month from 22 to 32 at 7% can end up worth more than $200 a month from 32 to 65."
+        },
+        {
+          "id": "early-withdrawal-penalty",
+          "term": "early withdrawal penalty",
+          "aka": [
+            "early-withdrawal penalty",
+            "withdraw early"
+          ],
+          "def": "An extra tax, usually 10%, on taking money out of a retirement account before the allowed age. It keeps retirement money for retirement.",
+          "example": "Taking $5,000 out at 30 can cost a $500 penalty plus income tax."
+        }
+      ],
+      "cards": [
+        {
+          "kind": "idea",
+          "title": "Tax breaks for patience",
+          "body": "Governments give tax breaks for retirement saving. Traditional accounts cut your tax now and tax you later. Roth accounts tax you now and let the growth come out tax-free. On top of that, many employers add free money through a match."
+        },
+        {
+          "kind": "example",
+          "title": "Start at 16 vs start at 30",
+          "body": "Ava invests $100 a month from 16 to 65 at 7%: about $500,000. Ben invests $200 a month from 30 to 65: about $360,000. Ava put in less money ($58,800 vs $84,000) but ended with more, because her money had 14 extra years to compound."
+        },
+        {
+          "kind": "formula",
+          "title": "Choosing",
+          "body": "Roth vs traditional: compare your tax rate now with your expected rate in retirement. Lower now means Roth wins; higher now means traditional wins. Match value = salary × match % up to the limit, an immediate return on what you put in."
+        },
+        {
+          "kind": "mistake",
+          "title": "Common mistake",
+          "body": "Not contributing enough to get the full match. Skipping a 50% match is like turning down a 50% instant return."
+        }
+      ],
+      "checks": [
+        {
+          "prompt": "Your employer matches 100% of contributions up to 4% of a $40,000 salary. What is the most free money you can get a year?",
+          "choices": [
+            "$400",
+            "$1,600",
+            "$4,000",
+            "$800"
+          ],
+          "answer": 1,
+          "explanation": "4% × $40,000 = $1,600 matched."
+        },
+        {
+          "prompt": "You expect your tax rate to be higher in retirement than now. Which account usually wins?",
+          "choices": [
+            "Traditional",
+            "Roth"
+          ],
+          "answer": 1,
+          "explanation": "With a Roth you pay tax at today's lower rate and withdraw tax-free later."
+        }
+      ],
+      "reward": {
+        "xp": 50,
+        "cash": 10
+      }
+    }
+  ]
+}

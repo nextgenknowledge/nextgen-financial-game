@@ -1,0 +1,551 @@
+{
+  "id": "valuation",
+  "title": "Valuing a Company",
+  "icon": "💹",
+  "topic": "investing",
+  "blurb": "P/E, EBITDA and enterprise value, discounted cash flow, startup rounds and stock options",
+  "lessons": [
+    {
+      "id": "adv-pe",
+      "title": "Price-to-Earnings and Market Value",
+      "icon": "💹",
+      "terms": [
+        {
+          "id": "eps",
+          "term": "earnings per share",
+          "aka": [
+            "EPS"
+          ],
+          "def": "Net income divided by the number of shares: the profit belonging to each share.",
+          "example": "$10M of net income ÷ 5M shares = $2 of EPS.",
+          "formula": "EPS = net income ÷ shares outstanding"
+        },
+        {
+          "id": "pe-ratio",
+          "term": "P/E ratio",
+          "aka": [
+            "P/E",
+            "price-to-earnings",
+            "price to earnings",
+            "PE ratio",
+            "earnings multiple"
+          ],
+          "def": "Share price divided by earnings per share: how many dollars investors pay for each $1 of yearly profit. A high P/E usually means investors expect fast growth.",
+          "example": "A $60 stock with $3 of EPS has a P/E of 20.",
+          "formula": "P/E = price ÷ EPS"
+        },
+        {
+          "id": "market-cap",
+          "term": "market capitalization",
+          "aka": [
+            "market cap",
+            "market value of equity"
+          ],
+          "def": "Share price times the number of shares: what the market values the whole company's equity at.",
+          "example": "$50 × 20M shares = a $1B market cap.",
+          "formula": "market cap = price × shares outstanding"
+        },
+        {
+          "id": "dividend-yield",
+          "term": "dividend yield",
+          "aka": [
+            "dividend",
+            "dividends"
+          ],
+          "def": "The yearly dividend per share divided by the price: the cash return from dividends alone.",
+          "example": "$2 a year on a $50 stock is a 4% dividend yield.",
+          "formula": "dividend yield = annual dividend ÷ price"
+        },
+        {
+          "id": "share",
+          "term": "share",
+          "aka": [
+            "shares",
+            "stock",
+            "stocks",
+            "shareholder",
+            "shareholders",
+            "equities"
+          ],
+          "def": "A small piece of ownership in a company. Shareholders share in its profits and in changes in its value.",
+          "example": "Owning 100 of a company's 1,000,000 shares means owning 0.01% of it."
+        }
+      ],
+      "cards": [
+        {
+          "kind": "idea",
+          "title": "Price vs profit",
+          "body": "A share is a slice of a company. Earnings per share tells you how much profit each slice earns. The P/E ratio compares the price with that profit: a quick way to see whether a stock is cheap or expensive relative to its earnings, and how much growth investors are expecting."
+        },
+        {
+          "kind": "example",
+          "title": "Two companies",
+          "body": "Company A: price $40, EPS $4, so a P/E of 10. Company B: price $90, EPS $3, so a P/E of 30. B is priced for much faster growth. If B's profits stall, its price can fall hard even though the company stays profitable."
+        },
+        {
+          "kind": "formula",
+          "title": "The ratios",
+          "body": "EPS = net income ÷ shares. P/E = price ÷ EPS. Market cap = price × shares. Dividend yield = annual dividend ÷ price. Earnings yield, the flip side of P/E, = EPS ÷ price."
+        },
+        {
+          "kind": "mistake",
+          "title": "Common mistake",
+          "body": "Calling a low-P/E stock automatically cheap. Sometimes the P/E is low because profits are about to fall."
+        }
+      ],
+      "checks": [
+        {
+          "prompt": "A stock trades at $75 and earns $5 a share. What is its P/E?",
+          "choices": [
+            "5",
+            "15",
+            "70",
+            "375"
+          ],
+          "answer": 1,
+          "explanation": "$75 ÷ $5 = 15."
+        },
+        {
+          "prompt": "Net income is $24M and there are 8M shares. What is EPS?",
+          "choices": [
+            "$0.33",
+            "$3",
+            "$32",
+            "$192"
+          ],
+          "answer": 1,
+          "explanation": "$24M ÷ 8M = $3 a share."
+        },
+        {
+          "prompt": "A higher P/E usually means investors expect…",
+          "choices": [
+            "Slower growth",
+            "Faster growth",
+            "Bankruptcy"
+          ],
+          "answer": 1,
+          "explanation": "They pay more per dollar of today's profit because they expect profits to grow."
+        }
+      ],
+      "reward": {
+        "xp": 60,
+        "cash": 15
+      }
+    },
+    {
+      "id": "adv-ev-ebitda",
+      "title": "EBITDA, Enterprise Value and Deals",
+      "icon": "🤝",
+      "terms": [
+        {
+          "id": "ebitda",
+          "term": "EBITDA",
+          "def": "Earnings before interest, taxes, depreciation and amortization: a rough measure of operating profit before financing and accounting choices.",
+          "example": "Operating profit of $8M + depreciation of $2M = $10M of EBITDA."
+        },
+        {
+          "id": "enterprise-value",
+          "term": "enterprise value",
+          "aka": [
+            "firm value",
+            "value of the business"
+          ],
+          "def": "The value of the whole business, equity plus debt minus cash: roughly what a buyer pays to own it outright.",
+          "example": "Market cap $80M + debt $30M − cash $10M = $100M of enterprise value.",
+          "formula": "EV = market cap + debt − cash"
+        },
+        {
+          "id": "net-debt",
+          "term": "net debt",
+          "def": "Debt minus cash. It is the bridge between the value of the business and the value of its shares.",
+          "example": "$30M of loans and $10M of cash is $20M of net debt.",
+          "formula": "net debt = debt − cash"
+        },
+        {
+          "id": "equity-value",
+          "term": "equity value",
+          "aka": [
+            "value of the shares",
+            "bridge to equity"
+          ],
+          "def": "What the shareholders own: enterprise value minus net debt.",
+          "example": "A $100M business with $20M of net debt has $80M of equity value.",
+          "formula": "equity value = enterprise value − net debt"
+        },
+        {
+          "id": "ev-ebitda",
+          "term": "EBITDA multiple",
+          "aka": [
+            "EV/EBITDA",
+            "multiple of EBITDA",
+            "valuation multiple"
+          ],
+          "def": "Enterprise value divided by EBITDA. Buyers often price whole companies at a multiple of EBITDA, based on what similar companies sold for.",
+          "example": "A chain with $12M of EBITDA bought at 8x is valued at $96M.",
+          "formula": "EV = EBITDA × multiple"
+        },
+        {
+          "id": "payback-period",
+          "term": "payback period",
+          "aka": [
+            "payback"
+          ],
+          "def": "How long an investment takes to earn back what it cost.",
+          "example": "A $300,000 franchise earning $75,000 a year pays back in 4 years.",
+          "formula": "payback = upfront cost ÷ yearly cash profit"
+        },
+        {
+          "id": "franchise",
+          "term": "franchise",
+          "aka": [
+            "franchisee",
+            "franchises",
+            "royalty"
+          ],
+          "def": "Running a business under another company's brand and system, paying an upfront fee and usually a royalty on sales.",
+          "example": "A franchisee pays $50,000 upfront and 6% of sales to run a branded tea shop."
+        },
+        {
+          "id": "winners-curse",
+          "term": "winner's curse",
+          "aka": [
+            "top bid",
+            "walk-away price",
+            "overpay",
+            "overpaying"
+          ],
+          "def": "In auctions the winner is often the bidder who most overestimated the value. Setting a walk-away price before bidding avoids overpaying.",
+          "example": "Bidding $120M for a business you valued at $100M just to win the deal destroys $20M of value."
+        }
+      ],
+      "cards": [
+        {
+          "kind": "idea",
+          "title": "Buying the whole business",
+          "body": "When one company buys another, it buys the whole business, debts included. So deal makers value the business first (enterprise value), often as a multiple of EBITDA, then subtract net debt to see what the shares are worth. Discipline matters: decide your top price before the bidding starts."
+        },
+        {
+          "kind": "example",
+          "title": "Valuing a rival chain",
+          "body": "The rival's EBITDA is $15M and similar chains sold for 7x. Enterprise value = $15M × 7 = $105M. It has $35M of debt and $5M of cash, so net debt is $30M. Equity value = $105M − $30M = $75M. That's the most you'd pay for the shares, before any savings from combining the two."
+        },
+        {
+          "kind": "formula",
+          "title": "The bridge",
+          "body": "EV = EBITDA × multiple. Net debt = debt − cash. Equity value = EV − net debt. Payback = upfront cost ÷ yearly cash profit. Franchise profit = sales − costs − royalty (royalty % × sales)."
+        },
+        {
+          "kind": "mistake",
+          "title": "Common mistake",
+          "body": "Paying the enterprise value for the shares. If you buy the shares you also take on the debt, so it must be subtracted."
+        }
+      ],
+      "checks": [
+        {
+          "prompt": "EBITDA is $20M and the multiple is 6x. What is the enterprise value?",
+          "choices": [
+            "$26M",
+            "$120M",
+            "$3.3M"
+          ],
+          "answer": 1,
+          "explanation": "$20M × 6 = $120M."
+        },
+        {
+          "prompt": "Enterprise value $120M, debt $40M, cash $10M. What is the equity value?",
+          "choices": [
+            "$90M",
+            "$150M",
+            "$80M",
+            "$170M"
+          ],
+          "answer": 0,
+          "explanation": "Net debt = $40M − $10M = $30M. $120M − $30M = $90M."
+        },
+        {
+          "prompt": "A $200,000 franchise earns $50,000 a year in cash. What is the payback period?",
+          "choices": [
+            "2 years",
+            "4 years",
+            "10 years"
+          ],
+          "answer": 1,
+          "explanation": "$200,000 ÷ $50,000 = 4 years."
+        }
+      ],
+      "reward": {
+        "xp": 70,
+        "cash": 20
+      }
+    },
+    {
+      "id": "adv-dcf",
+      "title": "Discounted Cash Flow Valuation",
+      "icon": "📐",
+      "terms": [
+        {
+          "id": "dcf",
+          "term": "discounted cash flow",
+          "aka": [
+            "DCF"
+          ],
+          "def": "Valuing a company as the present value of all the cash it is expected to produce in the future.",
+          "example": "Project five years of free cash flow, add a terminal value and discount everything back to today."
+        },
+        {
+          "id": "terminal-value",
+          "term": "terminal value",
+          "def": "The value of all cash flows beyond the forecast years, usually assuming steady growth forever. It is often most of a DCF's value.",
+          "example": "Year-5 cash of $10M growing 2% forever at a 9% discount rate: $10M × 1.02 ÷ 0.07 ≈ $146M.",
+          "formula": "TV = final cash flow × (1 + g) ÷ (r − g)"
+        },
+        {
+          "id": "wacc",
+          "term": "WACC",
+          "aka": [
+            "weighted average cost of capital",
+            "cost of capital"
+          ],
+          "def": "The blended return a company's lenders and shareholders expect. It is used as the discount rate in a DCF.",
+          "example": "A stable utility might use 6%; a young tech company 11%."
+        },
+        {
+          "id": "fair-value",
+          "term": "fair value",
+          "aka": [
+            "intrinsic value",
+            "price target",
+            "value per share"
+          ],
+          "def": "What an analyst thinks a share is really worth based on its cash flows, as opposed to its market price.",
+          "example": "The DCF says $48 a share and the stock trades at $40: 20% upside."
+        },
+        {
+          "id": "analyst-rating",
+          "term": "Buy, Hold or Sell",
+          "aka": [
+            "upside",
+            "buy rating",
+            "sell rating",
+            "rating"
+          ],
+          "def": "An analyst's call based on the gap between fair value and price. In Fin City, more than 15% upside is a Buy, more than 15% downside is a Sell, otherwise Hold.",
+          "example": "Fair value $60 and price $50 is 20% upside: a Buy.",
+          "formula": "upside = fair value ÷ price − 1"
+        }
+      ],
+      "cards": [
+        {
+          "kind": "idea",
+          "title": "A company is its future cash",
+          "body": "A DCF forecasts free cash flow for a few years, adds a terminal value for everything after, and discounts it all at the WACC to get enterprise value. Subtract net debt for equity value and divide by shares for a value per share."
+        },
+        {
+          "kind": "example",
+          "title": "A five-year DCF",
+          "body": "Free cash flow next year is $10M, growing 5% a year for 5 years; the WACC is 9% and growth after that is 2%. The five years are worth about $43M today. Terminal value ≈ $12.2M × 1.02 ÷ 0.07 ≈ $177M, worth about $115M today. Enterprise value ≈ $158M. Net debt $18M leaves $140M of equity; with 10M shares that's $14 a share."
+        },
+        {
+          "kind": "formula",
+          "title": "The steps",
+          "body": "PV of each year = cash flow ÷ (1 + WACC)^t. TV = last cash flow × (1 + g) ÷ (WACC − g). EV = sum of the PVs + PV of the TV. Value per share = (EV − net debt) ÷ shares. Upside = fair value ÷ price − 1."
+        },
+        {
+          "kind": "mistake",
+          "title": "Common mistake",
+          "body": "Trusting a DCF's precision. Small changes in the growth rate or WACC swing the answer a lot, especially through the terminal value. Treat the result as a range."
+        }
+      ],
+      "checks": [
+        {
+          "prompt": "What happens to a DCF value if the WACC rises?",
+          "choices": [
+            "It rises",
+            "It falls",
+            "No change"
+          ],
+          "answer": 1,
+          "explanation": "Future cash is discounted more heavily, so it's worth less today."
+        },
+        {
+          "prompt": "Fair value is $55 and the price is $50. What is the upside, and the Fin City rating?",
+          "choices": [
+            "10%, Hold",
+            "10%, Buy",
+            "5%, Hold"
+          ],
+          "answer": 0,
+          "explanation": "$55 ÷ $50 − 1 = 10%, below the 15% needed for a Buy, so Hold."
+        },
+        {
+          "prompt": "Equity value is $300M and there are 20M shares. What is the value per share?",
+          "choices": [
+            "$15",
+            "$6.67",
+            "$320"
+          ],
+          "answer": 0,
+          "explanation": "$300M ÷ 20M = $15."
+        }
+      ],
+      "reward": {
+        "xp": 70,
+        "cash": 20
+      }
+    },
+    {
+      "id": "adv-venture",
+      "title": "Startups: Rounds, Dilution and Options",
+      "icon": "🚀",
+      "terms": [
+        {
+          "id": "pre-money",
+          "term": "pre-money valuation",
+          "aka": [
+            "pre-money"
+          ],
+          "def": "What a startup is valued at just before new investment comes in.",
+          "example": "$8M pre-money, and it raises $2M."
+        },
+        {
+          "id": "post-money",
+          "term": "post-money valuation",
+          "aka": [
+            "post-money"
+          ],
+          "def": "The pre-money value plus the new money raised. The investor's stake is their investment divided by the post-money.",
+          "example": "$8M + $2M = $10M post-money, so the investor owns 20%.",
+          "formula": "post-money = pre-money + investment; investor % = investment ÷ post-money"
+        },
+        {
+          "id": "dilution",
+          "term": "dilution",
+          "aka": [
+            "diluted",
+            "dilutes",
+            "dilute"
+          ],
+          "def": "When a company issues new shares, existing owners' percentages shrink, even if their shares become more valuable.",
+          "example": "A founder with 60% sells 20% of the company to an investor and now owns 48%."
+        },
+        {
+          "id": "cap-table",
+          "term": "cap table",
+          "aka": [
+            "capitalization table",
+            "capitalisation table"
+          ],
+          "def": "A table of who owns how many shares and what percent of the company.",
+          "example": "Founders 70%, seed investors 20%, employee option pool 10%."
+        },
+        {
+          "id": "liquidation-preference",
+          "term": "liquidation preference",
+          "aka": [
+            "liquidation preferences",
+            "preferred stock",
+            "preferred shares",
+            "waterfall"
+          ],
+          "def": "Investors with preferred shares are paid first when the company is sold. With a 1x non-participating preference they take the larger of their money back or their share as if converted.",
+          "example": "An investor put in $5M for 25%. The company sells for $12M: 25% would be $3M, so they take their $5M back and common shareholders split $7M."
+        },
+        {
+          "id": "stock-option",
+          "term": "stock option",
+          "aka": [
+            "stock options",
+            "employee options"
+          ],
+          "def": "The right to buy company shares later at a fixed strike price. Valuable only if the share price ends up above the strike.",
+          "example": "Options with a $2 strike when shares are worth $10 are worth $8 each."
+        },
+        {
+          "id": "strike-price",
+          "term": "strike price",
+          "aka": [
+            "strike",
+            "exercise price",
+            "exercise"
+          ],
+          "def": "The fixed price at which an option lets you buy the shares.",
+          "example": "Strike $5 and share price $12: each option is worth $7 if exercised.",
+          "formula": "option value at exercise = max(0, share price − strike)"
+        },
+        {
+          "id": "vesting",
+          "term": "vesting",
+          "aka": [
+            "vesting schedule",
+            "vest",
+            "vested",
+            "vests",
+            "cliff"
+          ],
+          "def": "Earning your options or shares over time. A typical plan vests over 4 years with a 1-year cliff: nothing until the first anniversary, then 25%, then monthly.",
+          "example": "Leave after 10 months with a 1-year cliff and you keep none of the options."
+        }
+      ],
+      "cards": [
+        {
+          "kind": "idea",
+          "title": "Selling slices of the future",
+          "body": "Startups raise money by selling new shares. The price is set by the pre-money valuation; new money plus pre-money gives the post-money. Each round dilutes earlier owners. When the company is sold, preferred investors are paid by their liquidation preferences before common shareholders and employees with options."
+        },
+        {
+          "kind": "example",
+          "title": "Two rounds and a sale",
+          "body": "Founders own 100%. Seed: $2M at $8M pre-money, so post-money is $10M, the investor gets 20% and the founders 80%. Series A: $10M at $30M pre, post $40M, the new investor gets 25% and everyone else is scaled by 0.75: founders 60%, seed 15%. A sale for $200M gives the founders' 60% $120M."
+        },
+        {
+          "kind": "formula",
+          "title": "Round maths",
+          "body": "Post-money = pre-money + investment. New investor % = investment ÷ post-money. Everyone else's % after = old % × (1 − new investor %). Option payoff = max(0, price − strike) × vested options."
+        },
+        {
+          "kind": "mistake",
+          "title": "Common mistake",
+          "body": "Thinking dilution always hurts. Owning 60% of a $40M company beats 100% of a $5M one. What matters is the value of your stake, not the percent."
+        }
+      ],
+      "checks": [
+        {
+          "prompt": "An investor puts $3M into a startup at a $9M pre-money valuation. What percent do they own?",
+          "choices": [
+            "25%",
+            "33%",
+            "30%",
+            "3%"
+          ],
+          "answer": 0,
+          "explanation": "Post-money is $12M. $3M ÷ $12M = 25%."
+        },
+        {
+          "prompt": "You own 40% before a round that sells 20% of the company to a new investor. What is your new stake?",
+          "choices": [
+            "20%",
+            "32%",
+            "40%",
+            "48%"
+          ],
+          "answer": 1,
+          "explanation": "40% × (1 − 0.20) = 32%."
+        },
+        {
+          "prompt": "Options with a $4 strike when the shares are worth $3. What are they worth if exercised now?",
+          "choices": [
+            "$1 each",
+            "$0",
+            "$7 each"
+          ],
+          "answer": 1,
+          "explanation": "You'd pay $4 for a $3 share, so you wouldn't exercise: they're worth $0."
+        }
+      ],
+      "reward": {
+        "xp": 70,
+        "cash": 20
+      }
+    }
+  ]
+}

@@ -1,0 +1,618 @@
+{
+  "id": "portfolios",
+  "title": "Risk and Portfolios",
+  "icon": "🎯",
+  "topic": "investing",
+  "blurb": "Diversification, Sharpe ratio and drawdown, honest backtests, asset allocation and living off a portfolio",
+  "lessons": [
+    {
+      "id": "adv-risk-return",
+      "title": "Risk, Return and Diversification",
+      "icon": "🧺",
+      "terms": [
+        {
+          "id": "expected-return",
+          "term": "expected return",
+          "aka": [
+            "expected returns",
+            "average return"
+          ],
+          "def": "The average yearly return you'd expect over many years. It is not a promise for any one year.",
+          "example": "Stocks have historically averaged roughly 7% a year after inflation, with big swings.",
+          "formula": "expected return of a mix = weighted average of each asset's return"
+        },
+        {
+          "id": "volatility",
+          "term": "volatility",
+          "aka": [
+            "standard deviation",
+            "volatile",
+            "risk level"
+          ],
+          "def": "How much returns swing around their average, usually measured by standard deviation. Higher volatility means a bumpier ride.",
+          "example": "A fund averaging 7% with 20% volatility might easily be up 27% or down 13% in a given year."
+        },
+        {
+          "id": "diversification",
+          "term": "diversification",
+          "aka": [
+            "diversify",
+            "diversified",
+            "eggs in one basket"
+          ],
+          "def": "Spreading money across many investments so one failure can't sink you. It cuts risk without necessarily cutting expected return.",
+          "example": "One stock can go to zero; an index of 500 companies almost can't."
+        },
+        {
+          "id": "correlation",
+          "term": "correlation",
+          "aka": [
+            "correlated",
+            "uncorrelated",
+            "correlations"
+          ],
+          "def": "How closely two investments move together, from −1 (opposite) to +1 (in lockstep). Mixing low-correlation assets reduces risk the most.",
+          "example": "Stocks and government bonds have often had low correlation, so a mix of both swings less than either alone."
+        },
+        {
+          "id": "risk-premium",
+          "term": "risk premium",
+          "aka": [
+            "equity risk premium"
+          ],
+          "def": "The extra return investors demand for taking more risk.",
+          "example": "If safe bonds pay 4% and stocks are expected to return 9%, the equity risk premium is about 5%.",
+          "formula": "risk premium = expected return − risk-free rate"
+        },
+        {
+          "id": "index-fund",
+          "term": "index fund",
+          "aka": [
+            "index funds",
+            "ETF",
+            "ETFs",
+            "S&P 500"
+          ],
+          "def": "A low-cost fund that simply owns everything in a market index, like the S&P 500, instead of picking stocks.",
+          "example": "An S&P 500 index fund owns a slice of 500 large US companies."
+        },
+        {
+          "id": "expense-ratio",
+          "term": "expense ratio",
+          "aka": [
+            "management fee",
+            "fund fees",
+            "fund fee"
+          ],
+          "def": "The yearly fee a fund charges as a percent of your money. Small differences compound into large sums over decades.",
+          "example": "0.05% vs 1% a year on $100,000 over 30 years at 7% is a gap of over $100,000."
+        },
+        {
+          "id": "too-good-to-be-true",
+          "term": "too good to be true",
+          "aka": [
+            "guaranteed returns",
+            "guaranteed return",
+            "get-rich-quick",
+            "no risk",
+            "can't lose",
+            "pump and dump"
+          ],
+          "def": "Promises of high returns with no risk are a classic sign of hype or fraud. Higher return always comes with higher risk.",
+          "example": "'Guaranteed 3% a week' is about 366% a year. No honest investment promises that."
+        }
+      ],
+      "cards": [
+        {
+          "kind": "idea",
+          "title": "The only free lunch",
+          "body": "Higher expected return almost always comes with higher risk. You can't remove that trade-off, but diversification removes risk you don't get paid for: the risk of one company or one sector blowing up. The less two investments move together, the more mixing them smooths the ride."
+        },
+        {
+          "kind": "example",
+          "title": "Mixing two stocks",
+          "body": "Two stocks each average 8% with 30% volatility. If they are perfectly correlated, a 50/50 mix still has 30% volatility. If their correlation is 0, the mix's volatility drops to about 21% while the expected return stays 8%."
+        },
+        {
+          "kind": "formula",
+          "title": "Portfolio maths",
+          "body": "Expected return of a mix = weighted average of the returns. Two-asset volatility = √(w₁²σ₁² + w₂²σ₂² + 2·w₁·w₂·ρ·σ₁·σ₂), where w is the weight, σ the volatility and ρ the correlation. Risk premium = expected return − risk-free rate."
+        },
+        {
+          "kind": "mistake",
+          "title": "Common mistake",
+          "body": "Thinking 10 tech stocks are diversified. If they all move together, you still have one big bet. And any claim of high returns with no risk is a red flag."
+        }
+      ],
+      "checks": [
+        {
+          "prompt": "Mixing two assets with which correlation reduces risk the most?",
+          "choices": [
+            "+1",
+            "0",
+            "−1"
+          ],
+          "answer": 2,
+          "explanation": "Assets that move opposite each other cancel out each other's swings."
+        },
+        {
+          "prompt": "A portfolio is 60% in an asset expected to return 10% and 40% in one expected to return 5%. Expected return?",
+          "choices": [
+            "7.5%",
+            "8%",
+            "15%"
+          ],
+          "answer": 1,
+          "explanation": "0.6 × 10% + 0.4 × 5% = 8%."
+        },
+        {
+          "prompt": "Which risk can diversification remove?",
+          "choices": [
+            "The whole market falling",
+            "One company going bust"
+          ],
+          "answer": 1,
+          "explanation": "Single-company risk spreads away across many holdings; market-wide risk can't be diversified away."
+        }
+      ],
+      "reward": {
+        "xp": 60,
+        "cash": 15
+      }
+    },
+    {
+      "id": "adv-sharpe",
+      "title": "Sharpe Ratio, Beta and Drawdown",
+      "icon": "🎯",
+      "terms": [
+        {
+          "id": "risk-free-rate",
+          "term": "risk-free rate",
+          "aka": [
+            "risk free rate",
+            "Treasury bills",
+            "T-bills"
+          ],
+          "def": "The return on the safest investment, usually short-term government bills. Anything riskier should beat it.",
+          "example": "If Treasury bills pay 4%, that's the risk-free rate."
+        },
+        {
+          "id": "sharpe-ratio",
+          "term": "Sharpe ratio",
+          "aka": [
+            "Sharpe"
+          ],
+          "def": "Return above the risk-free rate per unit of volatility. Higher means more reward for each unit of risk taken.",
+          "example": "10% return, 4% risk-free and 15% volatility: Sharpe = 0.06 ÷ 0.15 = 0.4.",
+          "formula": "Sharpe = (return − risk-free rate) ÷ volatility"
+        },
+        {
+          "id": "beta",
+          "term": "beta",
+          "def": "How much an investment tends to move when the whole market moves. A beta of 1.5 means about 1.5% for each 1% market move.",
+          "example": "A stock with a beta of 1.2 might fall 12% when the market falls 10%."
+        },
+        {
+          "id": "drawdown",
+          "term": "drawdown",
+          "aka": [
+            "max drawdown",
+            "maximum drawdown",
+            "drawdowns"
+          ],
+          "def": "The fall from a peak to a later low. The maximum drawdown is the worst such fall over the period.",
+          "example": "Grows to $15,000, then falls to $9,000: a 40% drawdown.",
+          "formula": "drawdown = low ÷ previous peak − 1"
+        },
+        {
+          "id": "cagr",
+          "term": "CAGR",
+          "aka": [
+            "compound annual growth rate",
+            "annualized return",
+            "annualised return"
+          ],
+          "def": "The steady yearly growth rate that would turn the starting value into the ending value.",
+          "example": "$10,000 growing to $20,000 in 10 years is a CAGR of about 7.2%.",
+          "formula": "CAGR = (end ÷ start)^(1 ÷ years) − 1"
+        }
+      ],
+      "cards": [
+        {
+          "kind": "idea",
+          "title": "Return per unit of pain",
+          "body": "Return alone doesn't tell you if a strategy is good. A 12% return with wild swings may be worse than 9% with calm ones. The Sharpe ratio scores return per unit of risk, beta tells you how tied you are to the market and drawdown shows the worst fall you'd have had to sit through."
+        },
+        {
+          "kind": "example",
+          "title": "Two strategies",
+          "body": "A: 12% a year, 25% volatility, worst drawdown −45%. B: 9% a year, 10% volatility, worst drawdown −15%. With a 3% risk-free rate, A's Sharpe = 0.09 ÷ 0.25 = 0.36 and B's = 0.06 ÷ 0.10 = 0.6. B is the better strategy for each unit of risk."
+        },
+        {
+          "kind": "formula",
+          "title": "The measures",
+          "body": "Sharpe = (return − risk-free) ÷ volatility. CAGR = (end ÷ start)^(1 ÷ years) − 1. Max drawdown = the worst (low ÷ prior peak − 1). Some desks set the risk-free rate to zero to keep the maths quick."
+        },
+        {
+          "kind": "mistake",
+          "title": "Common mistake",
+          "body": "Picking whatever had the highest past return. A strategy that made 40% while dropping 60% along the way is one most people would have abandoned at the bottom."
+        }
+      ],
+      "checks": [
+        {
+          "prompt": "Return 11%, risk-free rate 3%, volatility 16%. What is the Sharpe ratio?",
+          "choices": [
+            "0.5",
+            "0.69",
+            "0.19"
+          ],
+          "answer": 0,
+          "explanation": "(11% − 3%) ÷ 16% = 0.5."
+        },
+        {
+          "prompt": "A portfolio rises to $50,000 then falls to $40,000. What is the drawdown?",
+          "choices": [
+            "−10%",
+            "−20%",
+            "−25%"
+          ],
+          "answer": 1,
+          "explanation": "$40,000 ÷ $50,000 − 1 = −20%."
+        },
+        {
+          "prompt": "The market falls 10%. Roughly what does a stock with a beta of 0.5 do?",
+          "choices": [
+            "Falls 5%",
+            "Falls 10%",
+            "Falls 20%"
+          ],
+          "answer": 0,
+          "explanation": "A beta of 0.5 means about half the market's move."
+        }
+      ],
+      "reward": {
+        "xp": 60,
+        "cash": 15
+      }
+    },
+    {
+      "id": "adv-backtest",
+      "title": "Backtesting Without Fooling Yourself",
+      "icon": "🔁",
+      "terms": [
+        {
+          "id": "backtest",
+          "term": "backtest",
+          "aka": [
+            "backtesting",
+            "backtested",
+            "backtests"
+          ],
+          "def": "Testing a trading rule on past prices to see how it would have done.",
+          "example": "Run 'buy when the price crosses above its 50-day average' on the last 10 years of data."
+        },
+        {
+          "id": "overfitting",
+          "term": "overfitting",
+          "aka": [
+            "overfit",
+            "curve fitting",
+            "data mining"
+          ],
+          "def": "Tuning a strategy so closely to past data that it captures random noise. It looks brilliant on the past and fails on new data.",
+          "example": "Testing 1,000 settings and keeping the best one almost guarantees a great-looking backtest."
+        },
+        {
+          "id": "out-of-sample",
+          "term": "out-of-sample",
+          "aka": [
+            "out of sample",
+            "in-sample",
+            "in sample"
+          ],
+          "def": "Data the strategy was not built or tuned on. Performance there is the honest test.",
+          "example": "Tune on 2010 to 2019, then test once on 2020 to 2024."
+        },
+        {
+          "id": "trend-following",
+          "term": "trend-following",
+          "aka": [
+            "trend following",
+            "momentum"
+          ],
+          "def": "Buying what has been rising and selling what has been falling, betting moves continue. Works in trending markets, suffers in choppy ones.",
+          "example": "Hold the stock only while it is above its 100-day moving average."
+        },
+        {
+          "id": "mean-reversion",
+          "term": "mean reversion",
+          "aka": [
+            "mean-reversion",
+            "mean reverting",
+            "mean-reverting"
+          ],
+          "def": "Betting that prices that moved far from their average will snap back. Works in choppy markets, suffers in strong trends.",
+          "example": "Buy after a 5% drop in a day and sell when it recovers."
+        },
+        {
+          "id": "buy-and-hold",
+          "term": "buy-and-hold",
+          "aka": [
+            "buy and hold"
+          ],
+          "def": "Buying and simply holding through ups and downs. It is the benchmark any trading strategy has to beat after costs.",
+          "example": "A strategy returning 8% a year with lots of trading loses to buy-and-hold returning 9%."
+        },
+        {
+          "id": "transaction-costs",
+          "term": "transaction costs",
+          "aka": [
+            "trading costs",
+            "trading cost",
+            "slippage"
+          ],
+          "def": "What each trade costs: commissions, the spread and the price impact. Strategies that trade a lot need a big edge to cover them.",
+          "example": "0.1% per trade × 200 trades a year is about 20% a year in costs."
+        }
+      ],
+      "cards": [
+        {
+          "kind": "idea",
+          "title": "The honest process",
+          "body": "A backtest shows what would have happened, which is easy to make look amazing. The honest process: choose a simple idea, fix its rules, include trading costs, compare it with buy-and-hold on risk-adjusted terms, and then test it once on data you never touched."
+        },
+        {
+          "kind": "example",
+          "title": "When the magic fades",
+          "body": "A trend rule tuned on 2015 to 2019 returns 18% a year with a Sharpe of 1.4. Out of sample, from 2020 to 2023, it makes 4% with a Sharpe of 0.3 while buy-and-hold made 9%. The in-sample result was mostly overfitting."
+        },
+        {
+          "kind": "formula",
+          "title": "Rules of thumb",
+          "body": "Net return ≈ gross return − (trades × cost per trade). Compare strategies by Sharpe ratio and maximum drawdown, not raw return. Trust only out-of-sample results."
+        },
+        {
+          "kind": "mistake",
+          "title": "Common mistake",
+          "body": "Testing many variations and reporting the best. With enough tries, random rules look like genius."
+        }
+      ],
+      "checks": [
+        {
+          "prompt": "A strategy is tuned on 2010 to 2020 data. Where is the honest test?",
+          "choices": [
+            "2010 to 2020 again",
+            "2021 onward",
+            "A random year inside 2010 to 2020"
+          ],
+          "answer": 1,
+          "explanation": "Only data it was never tuned on is out-of-sample."
+        },
+        {
+          "prompt": "Which strategy usually does best in a choppy, sideways market?",
+          "choices": [
+            "Trend-following",
+            "Mean reversion"
+          ],
+          "answer": 1,
+          "explanation": "Prices keep snapping back toward the average, which is what mean reversion bets on."
+        }
+      ],
+      "reward": {
+        "xp": 60,
+        "cash": 15
+      }
+    },
+    {
+      "id": "adv-allocation",
+      "title": "Asset Allocation and Goals",
+      "icon": "🧭",
+      "terms": [
+        {
+          "id": "asset-allocation",
+          "term": "asset allocation",
+          "aka": [
+            "allocation",
+            "allocations",
+            "portfolio mix"
+          ],
+          "def": "How your money is split between stocks, bonds, cash and other assets. It drives most of a portfolio's risk and return.",
+          "example": "60% stocks, 30% bonds and 10% cash."
+        },
+        {
+          "id": "time-horizon",
+          "term": "time horizon",
+          "aka": [
+            "horizon"
+          ],
+          "def": "How long until you need the money. Longer horizons can ride out more ups and downs, so they can hold more stock.",
+          "example": "Retirement in 40 years: mostly stocks. A house deposit in 2 years: mostly cash."
+        },
+        {
+          "id": "rebalancing",
+          "term": "rebalancing",
+          "aka": [
+            "rebalance"
+          ],
+          "def": "Selling some of what grew and buying what lagged to get back to your target mix.",
+          "example": "Stocks rally so a 60/40 mix becomes 70/30; you sell some stock and buy bonds."
+        },
+        {
+          "id": "dollar-cost-averaging",
+          "term": "dollar-cost averaging",
+          "aka": [
+            "dollar cost averaging",
+            "DCA",
+            "lump sum"
+          ],
+          "def": "Investing a fixed amount on a regular schedule, so you automatically buy more shares when prices are low.",
+          "example": "$200 a month buys 4 shares at $50 and 5 shares at $40.",
+          "formula": "average cost = total invested ÷ total shares bought"
+        },
+        {
+          "id": "market-timing",
+          "term": "market timing",
+          "aka": [
+            "timing the market",
+            "time the market"
+          ],
+          "def": "Trying to jump in and out before rises and falls. Missing just a few of the best days can cut long-run returns sharply.",
+          "example": "Missing the 10 best days of a 20-year period can roughly halve the result."
+        }
+      ],
+      "cards": [
+        {
+          "kind": "idea",
+          "title": "Start from the goal",
+          "body": "How much, by when, and how big a loss could you stand? Money needed soon belongs in cash or short-term bonds. Money needed in decades can be mostly stocks. Then invest steadily, rebalance once or twice a year and resist trying to time the market."
+        },
+        {
+          "kind": "example",
+          "title": "Three clients",
+          "body": "A house deposit in 5 years needs safety: mostly bonds and cash, a little stock. Retirement in 20 years can take swings: perhaps 80% stocks. A retiree living on her savings needs income and stability: maybe 40% stocks, 50% bonds and 10% cash, with a withdrawal she can sustain."
+        },
+        {
+          "kind": "formula",
+          "title": "Planning numbers",
+          "body": "Required yearly return ≈ (goal ÷ current savings)^(1 ÷ years) − 1, ignoring new savings. Average cost with dollar-cost averaging = total invested ÷ total shares bought."
+        },
+        {
+          "kind": "mistake",
+          "title": "Common mistake",
+          "body": "Putting money you need next year into stocks. A 30% drop right before you need it can't be waited out."
+        }
+      ],
+      "checks": [
+        {
+          "prompt": "Which goal suits a mostly-stock portfolio best?",
+          "choices": [
+            "A car next year",
+            "Retirement in 35 years",
+            "An emergency fund"
+          ],
+          "answer": 1,
+          "explanation": "A long horizon gives time to recover from falls."
+        },
+        {
+          "prompt": "You invest $100 at $20 a share and another $100 at $10 a share. What is your average cost per share?",
+          "choices": [
+            "$15",
+            "$13.33",
+            "$10"
+          ],
+          "answer": 1,
+          "explanation": "5 + 10 = 15 shares for $200: $13.33 a share."
+        }
+      ],
+      "reward": {
+        "xp": 50,
+        "cash": 10
+      }
+    },
+    {
+      "id": "adv-withdrawals",
+      "title": "Living Off a Portfolio",
+      "icon": "🌴",
+      "terms": [
+        {
+          "id": "withdrawal-rate",
+          "term": "withdrawal rate",
+          "aka": [
+            "payout",
+            "spending rate",
+            "payout rate",
+            "yearly payout",
+            "withdrawals",
+            "4% rule",
+            "nest egg",
+            "withdrawing"
+          ],
+          "def": "The share of a portfolio taken out each year to spend. Around 4% has historically lasted 30 years; much higher risks running out.",
+          "example": "$1,000,000 at 4% gives $40,000 a year."
+        },
+        {
+          "id": "real-value",
+          "term": "real value",
+          "aka": [
+            "purchasing power",
+            "in real terms",
+            "real terms"
+          ],
+          "def": "Value after adjusting for inflation: what the money can actually buy.",
+          "example": "$100,000 growing 3% while prices rise 3% keeps the same real value."
+        },
+        {
+          "id": "monte-carlo",
+          "term": "Monte Carlo",
+          "aka": [
+            "simulated futures",
+            "simulations",
+            "scenarios"
+          ],
+          "def": "Running hundreds of random future market paths to see the range of outcomes, not just the average.",
+          "example": "In 300 simulations, the fund kept its real value in 230 of them (77%)."
+        },
+        {
+          "id": "sequence-risk",
+          "term": "sequence of returns risk",
+          "aka": [
+            "sequence risk",
+            "bad case",
+            "bad cases",
+            "downside"
+          ],
+          "def": "The danger that big losses come early while you are withdrawing. The same average return can end very differently depending on the order.",
+          "example": "A 30% crash in the first year of retirement hurts far more than the same crash in year 20."
+        }
+      ],
+      "cards": [
+        {
+          "kind": "idea",
+          "title": "Spend, but keep growing",
+          "body": "A fund that pays out every year has to balance two things: spending enough to be useful and little enough to keep growing in real terms. Because markets are random, judge a plan by its range of outcomes, especially the bad ones, not by the average."
+        },
+        {
+          "kind": "example",
+          "title": "A national fund",
+          "body": "A $1B fund expects 6% a year with 2.5% inflation, a real return of about 3.4%. Paying out 3% a year keeps its real value on average. Paying out 6% shrinks it, and in bad scenarios, with a crash in the early years, it can lose half its real value."
+        },
+        {
+          "kind": "formula",
+          "title": "Rules of thumb",
+          "body": "Sustainable payout ≈ expected real return, a bit less to protect the bad cases. Real return ≈ (1 + nominal) ÷ (1 + inflation) − 1. Judge plans by the median and a bad outcome, such as the worst 10%."
+        },
+        {
+          "kind": "mistake",
+          "title": "Common mistake",
+          "body": "Planning on the average return. Half the time you get less, and early losses while withdrawing can't be undone."
+        }
+      ],
+      "checks": [
+        {
+          "prompt": "A $500,000 portfolio uses a 4% withdrawal rate. What is the yearly spending?",
+          "choices": [
+            "$4,000",
+            "$20,000",
+            "$40,000"
+          ],
+          "answer": 1,
+          "explanation": "4% × $500,000 = $20,000."
+        },
+        {
+          "prompt": "Why does a crash early in retirement hurt more than the same crash later?",
+          "choices": [
+            "Taxes are higher",
+            "You sell more shares at low prices while the balance is largest"
+          ],
+          "answer": 1,
+          "explanation": "Withdrawing during the crash locks in losses on a big balance."
+        }
+      ],
+      "reward": {
+        "xp": 50,
+        "cash": 10
+      }
+    }
+  ]
+}

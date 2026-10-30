@@ -19,6 +19,8 @@ export interface ActivityResult {
   noCash?: boolean;
   summary?: string;
   stats?: Record<string, number>;
+  /** Highest star rating this run can earn (Concept help during play caps it at 2). */
+  maxStars?: number;
 }
 
 export interface RewardOutcome {
@@ -44,7 +46,7 @@ export function repeatFactor(w: WorldState, id: string): number {
 }
 
 export function finishActivity(w: WorldState, fx: Fx, def: ActivityDef, result: ActivityResult): RewardOutcome {
-  const stars = starsFor(def, result.score);
+  const stars = Math.min(starsFor(def, result.score), result.maxStars ?? 3);
   const st = (w.progress.activities[def.id] ??= { best: 0, stars: 0, plays: 0, last: 0 });
   const firstTime = st.plays === 0;
   const newBest = result.score > st.best;
