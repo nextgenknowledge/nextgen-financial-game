@@ -875,6 +875,9 @@ button.item-card { cursor: pointer; }
 .activity-modal.adv .kit-table, .activity-modal.adv .kit-chart, .activity-modal.adv .kit-stat { background: #0f1a2d; border-color: #22314f; color: #dbe5f5; }
 .activity-modal.adv .kit-table th { background: #16223a; color: #8ea0c2; }
 .activity-modal.adv .kit-table td, .activity-modal.adv .kit-table th { border-color: #22314f; }
+.activity-modal.adv .shop-opt { background: #0f1a2d; border-color: #2a3b5e; }
+.activity-modal.adv .shop-opt:hover { border-color: #22d38f; }
+.activity-modal.adv .shop-opt.on { background: #0f2b23; border-color: #22d38f; box-shadow: 0 0 0 2px #22d38f inset; }
 .activity-modal.adv .mono, .activity-modal.adv .kit-stat-value { font-family: ui-monospace, 'SFMono-Regular', Menlo, monospace; }
 
 /* ───────── Pro desks (Advanced) ───────── */
@@ -1565,6 +1568,19 @@ button.item-card { cursor: pointer; }
 /* Compass, arrival card and messages stack under the map */
 .hud.classic .hud-compass { border-radius: 0; padding: 0.15rem 0.5rem; font-size: 0.8rem; background: rgba(11, 26, 58, 0.85); }
 .hud.classic .hud-compass .arrow { font-size: 1.1rem; }
+/* Long place names shorten with an ellipsis instead of widening the top-right column on phones
+   (which squeezed and clipped Save & Exit and the wallet) */
+.hud .hud-compass { max-width: 100%; min-width: 0; }
+.hud .hud-compass .compass-label { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.hud .hud-compass .compass-dist { flex-shrink: 0; white-space: nowrap; margin-left: -4px; }
+@media (max-width: 760px) {
+  .hud.classic .hud-compass { max-width: 150px; }
+}
+/* Narrow phones: wallet pills drop their icons so both fit beside the minimap */
+@media (max-width: 420px) {
+  .wallet-icon, .wallet-pill > svg { display: none; }
+  .wallet-pill { padding: 0 9px; }
+}
 .hud.classic .arrival-banner { text-align: right; background: rgba(11, 26, 58, 0.85); border: 2px solid #3d8bff; padding: 0.3rem 0.6rem; }
 .hud.classic .arrival-name { font-size: 1.15rem; }
 .hud.classic .arrival-kicker { font-size: 0.62rem; }
@@ -1703,6 +1719,8 @@ button.item-card { cursor: pointer; }
 /* Phones held upright: the FinPhone goes under the minimap so Narwhal's bubble has the width */
 @media (pointer: coarse) and (max-width: 760px) {
   .hud.classic .r-br, .hud.classic.talking .r-br { bottom: auto; top: calc(150px + var(--safe-t)); right: calc(12px + var(--safe-r)); }
+  /* ...and below the "next place" pill when a goal is set */
+  .hud.classic:has(.hud-compass) .r-br { top: calc(194px + var(--safe-t)); }
   .hud .narwhal-guide .narwhal-bubble { width: min(300px, calc(100vw - 120px - var(--safe-l) - var(--safe-r))); }
 }
 /* Short landscape phones */
@@ -1898,3 +1916,148 @@ button.item-card { cursor: pointer; }
 .rating-actions a.btn { text-decoration: none; display: inline-flex; align-items: center; }
 .pause-panel a.btn, .modal a.btn.small { text-decoration: none; display: inline-flex; align-items: center; }
 .map-section { margin-top: 0.5rem; color: #4a5672; text-transform: uppercase; letter-spacing: 0.06em; font-size: 0.72rem; }
+
+/* Title screen on phones held sideways: branding on the left, the menu on the right, all on one screen */
+@media (max-height: 500px) and (orientation: landscape) {
+  .start-screen { padding: calc(0.6rem + var(--safe-t)) calc(1rem + var(--safe-r)) calc(0.6rem + var(--safe-b)) calc(1rem + var(--safe-l)); justify-content: center; }
+  .st-content {
+    display: grid; width: min(920px, 100%); margin: auto 0; column-gap: 2rem; row-gap: 0.4rem; align-items: center; justify-items: center;
+    grid-template-columns: 1fr minmax(240px, 340px); grid-template-areas: 'org menu' 'logo menu' 'tag menu';
+  }
+  .st-org { grid-area: org; }
+  .st-org img { height: 40px; }
+  .st-org-name { font-size: 0.95rem; }
+  .st-org-kicker { font-size: 0.6rem; }
+  .st-logo-wrap { grid-area: logo; margin: 0; }
+  .st-logo { height: min(36vh, 150px); }
+  .st-tagline { grid-area: tag; margin: 0; font-size: 0.9rem; }
+  .st-menu { grid-area: menu; margin: 0; gap: 0.6rem; width: 100%; }
+  .st-menu-btn { min-height: 2.5rem; padding: 0.4rem 1rem; font-size: 0.95rem; }
+  .st-words, .start-screen .title-foot { display: none; }
+}
+
+/* Phones held sideways: the quest card stays slim on the left so the player in the middle stays in
+   view, and when Narwhal talks the dialog drops to the free strip between the joystick and the
+   buttons instead of covering the shortcuts */
+@media (pointer: coarse) and (max-height: 500px) and (orientation: landscape) {
+  .hud .narwhal-guide .narwhal-bubble, .hud .narwhal-guide .narwhal-bubble.idle { width: max(220px, min(270px, calc(100vw - 430px))); padding: 0.35rem 0.6rem; }
+  .idle-text { font-size: 0.8rem; }
+  .narwhal-bubble.idle .narwhal-bubble-head { font-size: 0.72rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+  .narwhal-bubble.idle .narwhal-bubble-head img { width: 20px; height: 20px; }
+  .idle-hint { display: none; }
+  .hud.classic:not(.talking) .r-bl { bottom: calc(122px + var(--safe-b)); }
+  .hud .narwhal-guide .narwhal-bubble .dialog-text { font-size: 0.9rem; }
+  .hud.talking .r-bl { left: calc(134px + var(--safe-l)); bottom: calc(10px + var(--safe-b)); }
+  .hud.talking .narwhal-guide .narwhal-bubble { width: min(440px, calc(100vw - 134px - 50px - 150px - var(--safe-l) - var(--safe-r))); }
+}
+
+/* FinPhone on a phone held sideways: turn it sideways too, so apps get the width instead of scrolling */
+@media (max-height: 500px) and (orientation: landscape) {
+  .finphone-dock { right: calc(12px + var(--safe-r)); bottom: calc(8px + var(--safe-b)); }
+  .modal.finphone { width: min(680px, calc(100vw - 40px - var(--safe-l) - var(--safe-r))); height: calc(100dvh - 16px - var(--safe-t) - var(--safe-b)); padding: 6px 8px; }
+  .finphone .fp-top { display: none; }
+  .finphone .app-grid { grid-template-columns: repeat(6, 1fr); gap: 8px 6px; }
+  .finphone .app-tile { width: 48px; height: 48px; font-size: 1.45rem; }
+  .fp-home { margin-top: 4px; }
+  /* Bank note art keeps its normal phone size */
+  .finphone .fb-note { width: 340px; max-width: 100%; }
+}
+
+/* Windows on phones held sideways: a slimmer title bar and edge, so the content gets the height */
+@media (max-height: 500px) and (orientation: landscape) {
+  .modal-backdrop { padding: calc(6px + var(--safe-t)) calc(10px + var(--safe-r)) calc(6px + var(--safe-b)) calc(10px + var(--safe-l)); }
+  .modal-head { padding: 0.35rem 0.7rem; }
+  .modal-head h2 { font-size: 1.1rem; }
+  .modal-head .modal-icon { width: 30px; height: 30px; font-size: 1.1rem; }
+}
+
+/* "Resume" pill on small screens: one short line, and the shortcut buttons move down to make room */
+@media (max-width: 760px), (max-height: 500px) {
+  .resume-run { max-width: min(330px, calc(100vw - 170px - var(--safe-l) - var(--safe-r))); }
+  .resume-go { flex: 1; min-width: 0; gap: 6px; padding: 5px 8px; font-size: 0.8rem; }
+  .resume-go b { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .resume-tag { display: none; }
+}
+@media (pointer: coarse) and (max-width: 760px) {
+  .hud.classic:has(.resume-run) .quick-apps { top: calc(160px + var(--safe-t, 0px)); }
+}
+@media (max-height: 500px) {
+  .hud.classic:has(.resume-run) .quick-apps { top: calc(94px + var(--safe-t, 0px)); }
+}
+
+/* ═════════ Learning: concept cards, desk briefings, Concept help, tappable terms ═════════ */
+.concept-card { display: flex; flex-direction: column; gap: 4px; padding: 0.6rem 0.75rem; background: var(--px-white, #fff); border: 3px solid var(--px-ink, #14181f); box-shadow: 3px 3px 0 var(--px-ink, #14181f); color: var(--px-ink, #14181f); }
+.concept-card.compact { padding: 0.45rem 0.6rem; box-shadow: 2px 2px 0 var(--px-ink, #14181f); }
+.concept-term { font-size: 1rem; text-transform: capitalize; }
+.concept-def { margin: 0; font-size: 0.9rem; line-height: 1.4; }
+.concept-example { margin: 0; font-size: 0.85rem; line-height: 1.4; color: #3a4252; }
+.concept-label { display: inline-block; margin-right: 4px; padding: 0 5px; background: #e6eefc; border: 2px solid var(--px-ink, #14181f); font-size: 0.66rem; font-weight: 900; letter-spacing: 0.06em; text-transform: uppercase; }
+.concept-formula { padding: 4px 8px; background: #fff6d6; border: 2px dashed #b8860b; color: #4a3600; font-size: 0.85rem; overflow-x: auto; }
+.concept-lesson { align-self: flex-start; font-size: 0.8rem; }
+.concept-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 8px; }
+.concept-fold summary { cursor: pointer; font-weight: 800; padding: 4px 0; text-transform: capitalize; }
+.concept-fold[open] summary { margin-bottom: 4px; }
+
+.desk-briefing { margin-top: 14px; padding: 0.8rem 1rem; background: var(--px-white, #fff); border: 3px solid var(--px-ink, #14181f); box-shadow: 4px 4px 0 var(--px-ink, #14181f); color: var(--px-ink, #14181f); display: flex; flex-direction: column; gap: 8px; }
+.briefing-ideas { margin: 0; padding-left: 1.2rem; display: flex; flex-direction: column; gap: 4px; font-size: 0.92rem; line-height: 1.4; }
+.briefing-lessons { display: flex; flex-direction: column; gap: 4px; }
+.briefing-lesson { cursor: pointer; font-weight: 800; }
+.briefing-lesson:hover { filter: brightness(1.06); }
+
+/* Concept help: a button that floats over the activity, a confirm card, and a side drawer */
+.concept-help-btn {
+  position: fixed; right: calc(18px + var(--safe-r, 0px)); bottom: calc(18px + var(--safe-b, 0px)); z-index: 60;
+  padding: 0.5rem 0.9rem; border: 3px solid #061233; background: #ffd23f; color: #2a1a00; cursor: pointer;
+  font: 900 0.9rem var(--font-body), sans-serif; box-shadow: 3px 3px 0 #061233;
+}
+.concept-help-btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 #061233; }
+.concept-help-btn.used { background: #7ee8ff; color: #002233; }
+.concept-ask {
+  position: fixed; right: calc(18px + var(--safe-r, 0px)); bottom: calc(70px + var(--safe-b, 0px)); z-index: 61; width: min(320px, calc(100vw - 36px));
+  padding: 0.8rem; background: var(--px-white, #fff); color: var(--px-ink, #14181f); border: 3px solid var(--px-ink, #14181f); box-shadow: 4px 4px 0 var(--px-ink, #14181f); display: flex; flex-direction: column; gap: 6px;
+}
+.concept-ask p { margin: 0; }
+.concept-drawer {
+  position: fixed; top: 0; right: 0; bottom: 0; z-index: 62; width: min(420px, 100vw); overflow-y: auto;
+  padding: calc(14px + var(--safe-t, 0px)) calc(14px + var(--safe-r, 0px)) calc(14px + var(--safe-b, 0px)) 14px;
+  background: var(--px-paper, #fff8e7); color: var(--px-ink, #14181f); border-left: 3px solid var(--px-ink, #14181f); box-shadow: -6px 0 0 rgba(6, 18, 51, 0.5);
+  display: flex; flex-direction: column; gap: 12px; animation: drawerIn 0.18s steps(3, end);
+}
+@keyframes drawerIn { from { transform: translateX(40px); opacity: 0; } to { transform: none; opacity: 1; } }
+.concept-drawer-title { font-size: 1.1rem; }
+.concept-drawer .input { width: 100%; }
+
+/* Glossary terms inside question text: dotted underline, tap for a quick definition */
+.term-wrap { position: relative; display: inline; }
+.term { display: inline; padding: 0; border: 0; background: none; color: inherit; font: inherit; cursor: help; text-decoration: underline dotted 2px; text-underline-offset: 3px; text-decoration-color: #3d8bff; }
+.term:hover, .term[aria-expanded='true'] { text-decoration-color: #ffd23f; }
+.term-pop {
+  position: absolute; left: 0; top: calc(100% + 6px); z-index: 30; width: min(300px, 80vw); display: flex; flex-direction: column; gap: 3px;
+  padding: 0.5rem 0.65rem; background: var(--px-white, #fff); color: var(--px-ink, #14181f); border: 3px solid var(--px-ink, #14181f); box-shadow: 3px 3px 0 var(--px-ink, #14181f);
+  font-size: 0.85rem; font-weight: 600; line-height: 1.4; text-align: left; white-space: normal;
+}
+.term-pop b { text-transform: capitalize; }
+.term-formula { font-size: 0.8rem; color: #4a3600; }
+
+/* Advanced lessons hold more text than the basic ones, so a calmer size */
+.learn-modal:not(.entry-mode) .lesson-text { font-size: 1.08rem; font-weight: 700; }
+.lesson-text.formula-text { font-family: var(--font-mono, ui-monospace, monospace); font-size: 1rem; }
+.lesson-card2.card-mistake { border-color: #b3261e; box-shadow: 4px 4px 0 #b3261e; }
+.lesson-card2.card-formula { background: #fffbe8; }
+
+/* The dark Advanced activity theme */
+.activity-modal.adv .desk-briefing, .activity-modal.adv .concept-card { background: #111b2f; border-color: #2a3b5e; color: #dbe5f5; box-shadow: 3px 3px 0 #05080f; }
+.activity-modal.adv .concept-example { color: #a9b8d6; }
+.activity-modal.adv .concept-label { background: #10283a; color: #7fd8ff; border-color: #1d4660; }
+.activity-modal.adv .concept-formula { background: #2a220a; border-color: #8a6a14; color: #ffd25a; }
+.activity-modal.adv .term-pop { background: #111b2f; border-color: #2a3b5e; color: #dbe5f5; box-shadow: 3px 3px 0 #05080f; }
+.activity-modal.adv .term-formula { color: #ffd25a; }
+.activity-modal.adv .concept-drawer { background: #0c1322; color: #dbe5f5; border-left-color: #2a3b5e; box-shadow: -6px 0 0 rgba(0, 0, 0, 0.5); }
+.activity-modal.adv .concept-drawer .learn-kicker.dark { color: #7fd8ff; }
+.activity-modal.adv .concept-ask { background: #111b2f; color: #dbe5f5; border-color: #2a3b5e; box-shadow: 4px 4px 0 #05080f; }
+.activity-modal.adv .concept-lesson { color: #7fd8ff; }
+
+@media (max-height: 500px) and (orientation: landscape) {
+  .concept-help-btn { bottom: calc(8px + var(--safe-b, 0px)); padding: 0.35rem 0.7rem; font-size: 0.8rem; }
+  .concept-ask { bottom: calc(52px + var(--safe-b, 0px)); }
+}

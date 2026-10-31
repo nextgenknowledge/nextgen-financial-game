@@ -18,6 +18,8 @@ import { TOPIC_INFO } from '@/game/topics';
 import { LESSONS } from '@/game/progress/lessons';
 import { FinBucks } from '@/ui/FinBucks';
 import { ActivityPaused } from './paused';
+import { ConceptHelp, DeskBriefing, openLesson } from '@/ui/learn/LearnBits';
+import { BRIEFINGS, conceptsIn, lessonsFor } from '@/game/learn';
 
 type Phase = 'intro' | 'play' | 'done';
 
@@ -57,6 +59,10 @@ export function ActivityHost({ id, hidden = false }: { id: string; hidden?: bool
   const [result, setResult] = useState<{ r: ActivityResult; out: RewardOutcome } | null>(null);
   const [seed, setSeed] = useState(randomSeed());
   const review = useRef<ReviewItem[]>([]);
+  const playRef = useRef<HTMLDivElement>(null);
+  // Concept help used this run: caps the stars at 2
+  const [helpUsed, setHelpUsed] = useState(false);
+  const helpRef = useRef(false);
   const location = useScene((s) => s.location);
   const interior = useScene((s) => s.interior);
 
@@ -65,11 +71,12 @@ export function ActivityHost({ id, hidden = false }: { id: string; hidden?: bool
     (r: ActivityResult) => {
       if (finished.current || !def) return;
       finished.current = true;
+      if (helpRef.current) r = { ...r, maxStars: 2 };
       let out: RewardOutcome | null = null;
       act((d, fx) => {
         out = finishActivity(d, fx, def, r);
       });
-      playSfx(starsFor(def, r.score) >= 2 ? 'levelup' : 'star');
+      playSfx(Math.min(starsFor(def, r.score), r.maxStars ?? 3) >= 2 ? 'levelup' : 'star');
       setResult({ r, out: out! });
       setPhase('done');
       useUI.getState().setRun(null);
@@ -121,6 +128,8 @@ export function ActivityHost({ id, hidden = false }: { id: string; hidden?: bool
     }
     review.current = [];
     finished.current = false;
+    helpRef.current = false;
+    setHelpUsed(false);
     setSeed(randomSeed());
     setPhase('play');
     setRun({ id: def.id, name: def.name });
@@ -187,9 +196,10 @@ export function ActivityHost({ id, hidden = false }: { id: string; hidden?: bool
               <span className="ai-stat-value">{def.tickets ? `🎟️ ${def.tickets[2]}` : `+${def.rewards.xp[2]} XP`}</span>
             </div>
           </div>
+          <DeskBriefing def={def} entry={entry} />
           <div className="row wrap" style={{ justifyContent: 'center', marginTop: 18, gap: 12 }}>
-            {lessonFor && (
-              <Button size="big" onClick={() => useUI.getState().open({ type: 'learn', lesson: lessonFor.id })}>
+            {entry && lessonFor && (
+              <Button size="big" onClick={() => openLesson(lessonFor.id)}>
                 📖 Brush up: {lessonFor.title}
               </Button>
             )}
@@ -203,15 +213,28 @@ export function ActivityHost({ id, hidden = false }: { id: string; hidden?: bool
         <ActivityBoundary onClose={() => (setRun(null), close())}>
           <Suspense fallback={<p>Loading…</p>}>
             <ActivityPaused.Provider value={hidden}>
-              <div className="activity-play">
+              <div className="activity-play" ref={playRef}>
                 <Kind key={seed} def={def} params={params} difficulty={w.difficulty} onFinish={onFinish} addReview={(r) => review.current.push(r)} seed={seed} />
               </div>
+              {BRIEFINGS[def.id] && (
+                <ConceptHelp
+                  key={seed}
+                  def={def}
+                  entry={entry}
+                  used={helpUsed}
+                  screen={playRef}
+                  onUse={() => {
+                    helpRef.current = true;
+                    setHelpUsed(true);
+                  }}
+                />
+              )}
             </ActivityPaused.Provider>
           </Suspense>
         </ActivityBoundary>
       )}
       {phase === 'play' && !Kind && <p>Unknown activity type: {kind}</p>}
-      {phase === 'done' && result && <Results def={def} result={result} review={review.current} onAgain={start} onLeave={leave} />}
+      {phase === 'done' && result && <Results def={def} result={result} review={review.current} helpUsed={helpUsed} onAgain={start} onLeave={leave} />}
     </Modal>
   );
 }
@@ -220,7 +243,7 @@ function ScoreRing({ score, stars }: { score: number; stars: number }) {
   return <PixelMeter pct={score} label="score" tone={stars >= 3 ? 'green' : stars >= 2 ? 'teal' : stars >= 1 ? 'gold' : 'red'} />;
 }
 
-function Results({ def, result, review, onAgain, onLeave }: { def: { name: string; tickets?: number[]; topics: string[] }; result: { r: ActivityResult; out: RewardOutcome }; review: ReviewItem[]; onAgain: () => void; onLeave: () => void }) {
+function Results({ def, result, review, helpUsed, onAgain, onLeave }: { def: { id: string; name: string; tickets?: number[]; topics: string[] }; result: { r: ActivityResult; out: RewardOutcome }; review: ReviewItem[]; helpUsed: boolean; onAgain: () => void; onLeave: () => void }) {
   const { r, out } = result;
   const w = useGame((s) => s.world!);
   const entry = w.difficulty === 'entry';
@@ -232,8 +255,19 @@ function Results({ def, result, review, onAgain, onLeave }: { def: { name: strin
     return entry ? "That was tricky! Let's look at the answers together and try again." : 'Tough one. Read the explanations, then give it another shot!';
   }, [out.stars, entry]);
   const wrong = review.filter((x) => !x.ok);
-  // Point to the lesson that covers what was missed
-  const lesson = wrong.length ? LESSONS.find((l) => def.topics.includes(l.topic)) : undefined;
+  // Point to the lesson that covers what was missed: Advanced finds the exact concepts in the
+  // missed questions, Entry uses the topic
+  const lesson = entry && wrong.length ? LESSONS.find((l) => def.topics.includes(l.topic)) : undefined;
+  const advLessons = useMemo(() => {
+    if (entry || out.stars >= 3) return [];
+    const missed = conceptsIn(wrong.map((x) => `${x.q} ${x.answer} ${x.explanation}`).join(' ')).map((c) => c.id);
+    const desk = BRIEFINGS[def.id]?.concepts ?? [];
+    // Rank by how many missed ideas a lesson covers, favouring this desk's own lessons
+    const score = (l: { concepts: string[] }) => l.concepts.filter((c) => missed.includes(c)).length + (l.concepts.some((c) => desk.includes(c)) ? 2 : 0);
+    return lessonsFor([...missed, ...desk])
+      .sort((a, b) => score(b) - score(a) || Number(w.progress.lessons.includes(a.id)) - Number(w.progress.lessons.includes(b.id)))
+      .slice(0, 3);
+  }, [entry, out.stars, wrong, def.id, w.progress.lessons]);
   return (
     <div className="activity-results">
       <div className="ar-hero">
@@ -250,6 +284,7 @@ function Results({ def, result, review, onAgain, onLeave }: { def: { name: strin
               </span>
             )}
             {out.newBest && <span className="chip gold">🏆 New best</span>}
+            {helpUsed && <span className="chip">💡 Concept help used: up to 2 stars</span>}
             {r.earned !== undefined && r.earned !== 0 && <span className={`chip ${r.earned > 0 ? 'good' : 'bad'}`}>Earned {money(r.earned, { sign: true })}</span>}
           </div>
           {r.summary && <p className="small" style={{ margin: 0 }}>{r.summary}</p>}
@@ -274,6 +309,18 @@ function Results({ def, result, review, onAgain, onLeave }: { def: { name: strin
           </div>
         )}
       </div>
+      {advLessons.length > 0 && (
+        <div className="card tint-blue col" style={{ gap: 8, marginTop: 12 }}>
+          <b>{wrong.length ? 'Learn what came up here' : 'Go for 3 stars: learn the ideas behind this desk'}</b>
+          <div className="row wrap" style={{ gap: 8 }}>
+            {advLessons.map((l) => (
+              <Button key={l.id} variant={w.progress.lessons.includes(l.id) ? undefined : 'primary'} onClick={() => openLesson(l.id)}>
+                {w.progress.lessons.includes(l.id) ? '✓' : '📖'} {l.title}
+              </Button>
+            ))}
+          </div>
+        </div>
+      )}
       {lesson && (
         <div className="card tint-blue row wrap" style={{ gap: 10, marginTop: 12 }}>
           <span style={{ fontSize: '1.6rem' }}>{lesson.icon}</span>
@@ -281,7 +328,7 @@ function Results({ def, result, review, onAgain, onLeave }: { def: { name: strin
             <b>Learn it properly: {lesson.title}</b>
             <span className="small muted">A two-minute lesson on what came up here. Finish it for XP and a perk.</span>
           </div>
-          <Button variant="primary" onClick={() => useUI.getState().open({ type: 'learn', lesson: lesson.id })}>
+          <Button variant="primary" onClick={() => openLesson(lesson.id)}>
             📖 Open lesson
           </Button>
         </div>

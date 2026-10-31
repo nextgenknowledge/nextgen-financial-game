@@ -1,0 +1,343 @@
+{
+  "id": "interest",
+  "title": "Interest and Time",
+  "icon": "⏳",
+  "topic": "interest",
+  "blurb": "Compounding, APR vs APY, basis points and what future money is worth today",
+  "lessons": [
+    {
+      "id": "adv-compound",
+      "title": "Compound Interest and the Rule of 72",
+      "icon": "📈",
+      "terms": [
+        {
+          "id": "compound-interest",
+          "term": "compound interest",
+          "aka": [
+            "compounding",
+            "compounded",
+            "compounds",
+            "compound"
+          ],
+          "def": "Interest earned on your interest as well as on the money you put in, so growth speeds up over time.",
+          "example": "$1,000 at 10% a year becomes $1,100 after year 1, then $1,210 after year 2. The extra $10 is interest on interest.",
+          "formula": "A = P × (1 + r/n)^(n × t)"
+        },
+        {
+          "id": "simple-interest",
+          "term": "simple interest",
+          "def": "Interest paid only on the original amount, never on interest already earned.",
+          "example": "$1,000 at 5% simple interest earns $50 a year, $150 over 3 years.",
+          "formula": "I = P × r × t"
+        },
+        {
+          "id": "rule-of-72",
+          "term": "rule of 72",
+          "def": "A shortcut: divide 72 by the yearly rate to estimate how many years money takes to double.",
+          "example": "At 8% a year, money doubles in about 72 ÷ 8 = 9 years.",
+          "formula": "years to double ≈ 72 ÷ rate in %"
+        },
+        {
+          "id": "compounding-frequency",
+          "term": "compounding frequency",
+          "aka": [
+            "compounded monthly",
+            "compounded daily",
+            "compounded quarterly",
+            "compounded yearly",
+            "compounded annually"
+          ],
+          "def": "How often interest is added to the balance. More frequent compounding earns slightly more at the same rate.",
+          "example": "12% compounded monthly adds 1% each month and ends the year up about 12.68%, not 12%."
+        }
+      ],
+      "cards": [
+        {
+          "kind": "idea",
+          "title": "Interest on interest",
+          "body": "With simple interest you earn the same amount every year. With compound interest each year's interest joins the balance, so next year you earn interest on a bigger number. The gap is small at first and huge after a few decades."
+        },
+        {
+          "kind": "example",
+          "title": "Watch it snowball",
+          "body": "Put $1,000 in at 10% a year. Year 1: $1,000 × 1.10 = $1,100. Year 2: $1,100 × 1.10 = $1,210. Year 3: $1,331. After 30 years it is about $17,449. Simple interest would give only $1,000 + 30 × $100 = $4,000."
+        },
+        {
+          "kind": "formula",
+          "title": "The formulas",
+          "body": "Compound amount: A = P × (1 + r/n)^(n × t), where P is the starting amount, r the yearly rate as a decimal, n how many times a year interest is added and t the number of years. Quick estimate: years to double ≈ 72 ÷ rate in %. At 6% that is 12 years, at 9% it is 8."
+        },
+        {
+          "kind": "mistake",
+          "title": "Common mistake",
+          "body": "Adding the rate up year by year (10% for 3 years = 30%) is simple-interest thinking. Compounded, 10% for 3 years is 1.1 × 1.1 × 1.1 − 1 = 33.1%. The longer the time, the bigger this error gets."
+        }
+      ],
+      "checks": [
+        {
+          "prompt": "Using the rule of 72, about how long does money take to double at 6% a year?",
+          "choices": [
+            "6 years",
+            "12 years",
+            "18 years",
+            "72 years"
+          ],
+          "answer": 1,
+          "explanation": "72 ÷ 6 = 12 years."
+        },
+        {
+          "prompt": "$2,000 earns 5% a year, compounded yearly. What is it worth after 2 years?",
+          "choices": [
+            "$2,200",
+            "$2,205",
+            "$2,100",
+            "$2,250"
+          ],
+          "answer": 1,
+          "explanation": "$2,000 × 1.05 = $2,100, then $2,100 × 1.05 = $2,205. The extra $5 is interest earned on the first year's interest."
+        },
+        {
+          "prompt": "Which earns more in a year: 12% compounded yearly or 12% compounded monthly?",
+          "choices": [
+            "Compounded yearly",
+            "Compounded monthly",
+            "They are the same"
+          ],
+          "answer": 1,
+          "explanation": "Monthly adds 1% twelve times, so interest starts earning interest sooner. It ends the year up about 12.68%."
+        }
+      ],
+      "reward": {
+        "xp": 60,
+        "cash": 15
+      }
+    },
+    {
+      "id": "adv-apr-apy",
+      "title": "APR, APY and Basis Points",
+      "icon": "🏦",
+      "terms": [
+        {
+          "id": "apr",
+          "term": "APR",
+          "aka": [
+            "annual percentage rate",
+            "comparing loans"
+          ],
+          "def": "The yearly interest rate on a loan or account before compounding. On loans it often includes some fees.",
+          "example": "A card with a 24% APR charges about 2% interest each month."
+        },
+        {
+          "id": "apy",
+          "term": "APY",
+          "aka": [
+            "annual percentage yield",
+            "effective annual rate",
+            "EAR"
+          ],
+          "def": "What you really earn or pay in a year once compounding is included.",
+          "example": "5% APR compounded monthly is an APY of about 5.12%.",
+          "formula": "APY = (1 + APR/n)^n − 1"
+        },
+        {
+          "id": "basis-point",
+          "term": "basis point",
+          "aka": [
+            "basis points",
+            "bps",
+            "bp"
+          ],
+          "def": "One hundredth of a percentage point (0.01%). Traders use it so rate changes are never ambiguous.",
+          "example": "A rate going from 4.25% to 4.50% rose 25 basis points.",
+          "formula": "1 bp = 0.01%, so 100 bp = 1%"
+        },
+        {
+          "id": "percentage-point",
+          "term": "percentage point",
+          "aka": [
+            "percentage points"
+          ],
+          "def": "The plain difference between two percentages, which is not the same as a percent change.",
+          "example": "A rate rising from 2% to 3% is up 1 percentage point, but up 50% in percent terms."
+        },
+        {
+          "id": "percent-change",
+          "term": "percent change",
+          "aka": [
+            "percentage change",
+            "percent move",
+            "percentage move",
+            "percentage moves"
+          ],
+          "def": "How much something grew or shrank compared with where it started.",
+          "example": "A stock going from $40 to $46 rose 6 ÷ 40 = 15%.",
+          "formula": "percent change = (new − old) ÷ old"
+        }
+      ],
+      "cards": [
+        {
+          "kind": "idea",
+          "title": "Two numbers for one rate",
+          "body": "Banks quote the APR, a simple yearly rate. Because interest can be added monthly or daily, what you actually earn or owe in a year is a bit higher: that is the APY. Savings accounts like to advertise the APY because it looks bigger; loans often show the APR because it looks smaller."
+        },
+        {
+          "kind": "example",
+          "title": "Turning APR into APY",
+          "body": "A savings account pays 6% APR, compounded monthly. Each month you earn 6% ÷ 12 = 0.5%. Over a year: 1.005^12 − 1 = 6.17% APY. A loan at 18% APR compounded monthly really costs about 19.56% a year."
+        },
+        {
+          "kind": "formula",
+          "title": "Speaking trader",
+          "body": "One basis point (bp) is 0.01%, so 25 bp = 0.25% and 100 bp = 1%. Percent change = (new − old) ÷ old. A rate moving from 2% to 3% is +1 percentage point, or +100 bp, but a 50% increase in percent terms."
+        },
+        {
+          "kind": "mistake",
+          "title": "Common mistake",
+          "body": "Mixing up percentage points and percent. If a rate goes from 4% to 5%, it rose 1 percentage point, which is a 25% rise in relative terms. Another trap: a 50% drop needs a 100% gain to get back to even."
+        }
+      ],
+      "checks": [
+        {
+          "prompt": "A central bank raises rates from 4.50% to 4.75%. How many basis points is that?",
+          "choices": [
+            "0.25",
+            "2.5",
+            "25",
+            "250"
+          ],
+          "answer": 2,
+          "explanation": "0.25 percentage points × 100 = 25 basis points."
+        },
+        {
+          "prompt": "A stock falls 50%. How much does it then need to rise to get back to where it started?",
+          "choices": [
+            "50%",
+            "75%",
+            "100%",
+            "150%"
+          ],
+          "answer": 2,
+          "explanation": "$100 falls to $50. Getting from $50 back to $100 means doubling, a 100% gain."
+        },
+        {
+          "prompt": "For the same account, which is higher: the APR or the APY?",
+          "choices": [
+            "The APR",
+            "The APY",
+            "They are always equal"
+          ],
+          "answer": 1,
+          "explanation": "The APY includes compounding, so it is equal to or higher than the APR."
+        }
+      ],
+      "reward": {
+        "xp": 60,
+        "cash": 15
+      }
+    },
+    {
+      "id": "adv-time-value",
+      "title": "Present Value: Money Now vs Later",
+      "icon": "⏱",
+      "terms": [
+        {
+          "id": "time-value-of-money",
+          "term": "time value of money",
+          "def": "A dollar today is worth more than a dollar later, because today's dollar can be invested and earn a return.",
+          "example": "$100 today invested at 5% becomes about $128 in five years, so $100 in five years is worth less than $100 now."
+        },
+        {
+          "id": "present-value",
+          "term": "present value",
+          "aka": [
+            "PV",
+            "worth today",
+            "today's money"
+          ],
+          "def": "What a future amount is worth in today's money, after allowing for the return you could have earned in the meantime.",
+          "example": "$1,100 a year from now, at a 10% rate, is worth $1,000 today.",
+          "formula": "PV = FV ÷ (1 + r)^t"
+        },
+        {
+          "id": "future-value",
+          "term": "future value",
+          "aka": [
+            "FV"
+          ],
+          "def": "What money today, or a stream of regular savings, grows to by a future date.",
+          "example": "$500 a month for 30 years at 7% grows to about $610,000.",
+          "formula": "FV = P × (1 + r)^t, or for monthly saving C: FV = C × ((1 + i)^N − 1) ÷ i"
+        },
+        {
+          "id": "discount-rate",
+          "term": "discount rate",
+          "aka": [
+            "required return",
+            "hurdle rate"
+          ],
+          "def": "The yearly return used to shrink future money back to today's value. Riskier cash flows get a higher discount rate.",
+          "example": "A safe government payment might be discounted at 4%, a risky startup's profits at 30%."
+        }
+      ],
+      "cards": [
+        {
+          "kind": "idea",
+          "title": "Why later money is worth less",
+          "body": "If you can earn 5% a year, then $100 today becomes $105 in a year. So $105 a year from now is only worth $100 today. Turning future money into today's money is called discounting, and the rate you use is the discount rate."
+        },
+        {
+          "kind": "example",
+          "title": "Discounting step by step",
+          "body": "A friend promises you $1,210 in two years. You could earn 10% a year elsewhere. Present value = $1,210 ÷ 1.10 ÷ 1.10 = $1,000. If they offer you $950 today instead, wait for the $1,210, because it is worth $1,000 to you."
+        },
+        {
+          "kind": "formula",
+          "title": "The formulas",
+          "body": "Future value: FV = PV × (1 + r)^t. Present value: PV = FV ÷ (1 + r)^t. A bigger discount rate or a longer wait makes the present value smaller."
+        },
+        {
+          "kind": "mistake",
+          "title": "Common mistake",
+          "body": "Comparing money at different times as if it were the same. A $30,000 prize paid as $1,000 a year for 30 years is worth far less than $30,000 handed over today."
+        }
+      ],
+      "checks": [
+        {
+          "prompt": "You will receive $1,000 in one year. If the discount rate is 10%, what is it worth today?",
+          "choices": [
+            "$900",
+            "$909",
+            "$1,000",
+            "$1,100"
+          ],
+          "answer": 1,
+          "explanation": "$1,000 ÷ 1.10 = $909.09."
+        },
+        {
+          "prompt": "What happens to the present value of a future payment if the discount rate goes up?",
+          "choices": [
+            "It goes up",
+            "It goes down",
+            "It stays the same"
+          ],
+          "answer": 1,
+          "explanation": "You divide by a bigger number, so its value today shrinks."
+        },
+        {
+          "prompt": "At a 5% rate, which is worth more today: $1,000 now or $1,050 in two years?",
+          "choices": [
+            "$1,000 now",
+            "$1,050 in two years",
+            "They are equal"
+          ],
+          "answer": 0,
+          "explanation": "$1,050 ÷ 1.05² = $952, which is less than $1,000 now."
+        }
+      ],
+      "reward": {
+        "xp": 60,
+        "cash": 15
+      }
+    }
+  ]
+}

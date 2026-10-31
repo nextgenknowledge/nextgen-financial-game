@@ -4,6 +4,7 @@ import type { WorldState } from '../types';
 import type { Fx } from '../effects';
 import { grantXp } from './xp';
 import { recordEvent } from './events';
+import { ADV_LESSON_BY_ID } from '../learn';
 
 export interface LessonDef {
   id: string;
@@ -36,8 +37,16 @@ export function perkBoost(w: WorldState, activityId: string, city: string): numb
   return b;
 }
 
+/** A lesson from either course, in the shape completeLesson needs. */
+function findLesson(id: string): Pick<LessonDef, 'topic' | 'title' | 'icon' | 'reward' | 'perk'> | undefined {
+  const basic = LESSONS.find((x) => x.id === id);
+  if (basic) return basic;
+  const adv = ADV_LESSON_BY_ID.get(id);
+  return adv && { topic: adv.unit.topic, title: adv.title, icon: adv.icon, reward: adv.reward };
+}
+
 export function completeLesson(w: WorldState, fx: Fx, id: string, correct: boolean) {
-  const l = LESSONS.find((x) => x.id === id);
+  const l = findLesson(id);
   if (!l) return;
   const first = !w.progress.lessons.includes(id);
   recordEvent(w, fx, { type: 'answer', correct, topic: l.topic });

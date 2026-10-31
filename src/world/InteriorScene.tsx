@@ -18,6 +18,7 @@ import npcs from '@/data/npcs.json';
 import { shade } from './builders/buildings';
 import { makeRng, type Rng } from '@/game/rng';
 import { DEFAULT_AVATAR } from '@/game/world';
+import { HAIR_STYLES } from '@/game/look';
 import { plant, type Actor, type InteriorKind, type Kit } from './interiors/furnish';
 import { kindFor, layoutFor, zoneFor, type Layout } from './interiors/plan';
 import { worldUniforms } from '@/engine/atlas';
@@ -42,17 +43,31 @@ const DRESS: Record<Actor['dress'], { top: string[]; bottom: string[]; feet: str
   chef: { top: ['apron'], bottom: ['jeans-black', 'cargo'], feet: ['sneakers'], acc: [null] },
 };
 
+/** Extra pieces women on staff wear alongside the shared lists above. */
+const DRESS_F: Partial<Record<Actor['dress'], { top?: string[]; bottom?: string[]; feet?: string[]; acc?: (string | null)[] }>> = {
+  office: { top: ['skirt-suit', 'work-dress', 'blouse', 'trench'], bottom: ['pencil-skirt', 'wide-trousers'], feet: ['pumps', 'flats', 'ankle-boots'], acc: ['pearls', 'tote'] },
+  smart: { top: ['blouse', 'trench', 'work-dress'], bottom: ['pleated-skirt', 'wide-trousers'], feet: ['flats', 'ankle-boots'], acc: ['tote'] },
+  casual: { bottom: ['leggings', 'pleated-skirt'], feet: ['ankle-boots', 'flats'] },
+  tech: { bottom: ['leggings'], feet: ['ankle-boots'] },
+};
+const MALE_ONLY = new Set(['tux', 'three-piece', 'trousers']);
+
 function dressLook(rng: Rng, dress: Actor['dress']): AvatarConfig {
   const d = DRESS[dress];
+  const body = rng.chance(0.5) ? 'female' : 'male';
+  const extra = body === 'female' ? DRESS_F[dress] : undefined;
+  const pick = (base: (string | null)[], more?: (string | null)[]) => rng.pick([...base, ...(more ?? [])].filter((id) => body === 'male' || !id || !MALE_ONLY.has(id)));
   return {
     ...DEFAULT_AVATAR,
+    body,
+    build: rng.int(0, 2),
     skin: rng.pick(SKINS),
     hair: rng.pick(HAIRS),
-    hairStyle: rng.int(0, 5),
-    top: rng.pick(d.top),
-    bottom: rng.pick(d.bottom),
-    feet: rng.pick(d.feet),
-    accessory: rng.pick(d.acc),
+    hairStyle: rng.pick(HAIR_STYLES[body]).id,
+    top: pick(d.top, extra?.top),
+    bottom: pick(d.bottom, extra?.bottom),
+    feet: pick(d.feet, extra?.feet),
+    accessory: pick(d.acc, extra?.acc),
     hat: null,
   };
 }

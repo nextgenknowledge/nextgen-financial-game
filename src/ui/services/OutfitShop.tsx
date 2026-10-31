@@ -16,6 +16,7 @@ import { addGoal, available } from '@/game/finance/accounts';
 import type { OutfitSlot, WorldState } from '@/game/types';
 import { starterPrice } from '@/game/starter';
 import { StarterTag } from './StarterTag';
+import { bodyOf, fitsBody } from '@/game/look';
 
 interface Item {
   id: string;
@@ -28,6 +29,7 @@ interface Item {
   need?: boolean;
   blurb?: string;
   happiness: number;
+  for?: string;
 }
 // Prize-only pieces come from Legendary quests and never appear on the shelves
 const ITEMS = (outfits.items as (Item & { prize?: boolean })[]).filter((i) => !i.prize);
@@ -51,6 +53,9 @@ export function OutfitShop({ w, method }: { w: WorldState; method: 'auto' | 'car
   const [filter, setFilter] = useState<Filter>('all');
   const [tryOn, setTryOn] = useState<string | null>(null);
   const [warned, setWarned] = useState<string | null>(null);
+  // Shelves show the pieces cut for your body; everything can still be bought with "Show all styles"
+  const [allStyles, setAllStyles] = useState(false);
+  const body = bodyOf(w.avatar);
   const entry = w.difficulty === 'entry';
   // Only spending money (cash + checking) pays at the till; savings has to be moved to checking first
   const spendable = available(w);
@@ -61,7 +66,7 @@ export function OutfitShop({ w, method }: { w: WorldState; method: 'auto' | 'car
 
   // The starter deal (if still unused) comes first
   const isDeal = (id: string) => starterPrice(w, 'outfit', id) !== null;
-  const list = ITEMS.filter((i) => filter === 'all' || i.slot === filter).sort(
+  const list = ITEMS.filter((i) => (filter === 'all' || i.slot === filter) && (allStyles || fitsBody(i, body) || owned.has(i.id))).sort(
     (a, b) => Number(isDeal(b.id)) - Number(isDeal(a.id)) || TIER_ORDER.indexOf(a.tier) - TIER_ORDER.indexOf(b.tier) || a.price - b.price,
   );
 
@@ -91,6 +96,10 @@ export function OutfitShop({ w, method }: { w: WorldState; method: 'auto' | 'car
 
       <div className="col grow" style={{ minWidth: 300, gap: 8 }}>
         <Tabs tabs={FILTERS} value={filter} onChange={setFilter} />
+        <label className="tiny row" style={{ gap: 6, alignItems: 'center' }}>
+          <input type="checkbox" checked={allStyles} onChange={(e) => setAllStyles(e.target.checked)} />
+          Show all styles
+        </label>
         <div className="item-grid">
           {list.map((o) => {
             const own = owned.has(o.id);

@@ -1,0 +1,279 @@
+{
+  "id": "bonds",
+  "title": "Bonds and Rates",
+  "icon": "📜",
+  "topic": "investing",
+  "blurb": "Bond prices and yields, duration, the yield curve, credit spreads and ratings",
+  "lessons": [
+    {
+      "id": "adv-bond-basics",
+      "title": "Bond Prices and Yields",
+      "icon": "📜",
+      "terms": [
+        {
+          "id": "bond",
+          "term": "bond",
+          "aka": [
+            "bonds",
+            "gilt",
+            "gilts",
+            "Treasury",
+            "Treasuries",
+            "corporate bond",
+            "corporate bonds"
+          ],
+          "def": "A loan you make to a government or company. It pays regular interest (coupons) and repays the face value at maturity.",
+          "example": "A 10-year $1,000 bond with a 4% coupon pays $40 a year and $1,000 at the end."
+        },
+        {
+          "id": "coupon-rate",
+          "term": "coupon rate",
+          "aka": [
+            "bond coupon",
+            "coupon payment",
+            "coupon payments"
+          ],
+          "def": "The yearly interest a bond pays, as a percent of its face value.",
+          "example": "A 5% coupon on $1,000 of face value pays $50 a year.",
+          "formula": "coupon payment = face value × coupon rate"
+        },
+        {
+          "id": "face-value",
+          "term": "face value",
+          "aka": [
+            "par value",
+            "par",
+            "maturity",
+            "matures"
+          ],
+          "def": "The amount a bond repays at maturity, usually $1,000, or £100 for gilts.",
+          "example": "Buy at $950 and receive $1,000 at maturity."
+        },
+        {
+          "id": "yield-to-maturity",
+          "term": "yield to maturity",
+          "aka": [
+            "YTM",
+            "yield",
+            "yields",
+            "current yield"
+          ],
+          "def": "The total yearly return if you buy at today's price and hold to the end, counting the coupons and the gain or loss to face value.",
+          "example": "Buying a 4% coupon bond below face value gives a yield above 4%."
+        },
+        {
+          "id": "premium-discount",
+          "term": "premium and discount bonds",
+          "aka": [
+            "trades at a premium",
+            "trades at a discount",
+            "above par",
+            "below par",
+            "discount bond",
+            "premium bond",
+            "at a premium",
+            "at a discount"
+          ],
+          "def": "A bond trades above face value (at a premium) when its coupon beats current yields, and below face value (at a discount) when its coupon is lower.",
+          "example": "A 6% coupon bond when similar bonds yield 4% trades at a premium."
+        },
+        {
+          "id": "interest-rate-risk",
+          "term": "interest rate risk",
+          "aka": [
+            "rates rise",
+            "rate rise",
+            "rising rates",
+            "rate hike"
+          ],
+          "def": "The risk that rising interest rates push down the price of bonds you already own.",
+          "example": "Rates jump from 3% to 4%: an existing 3% bond is less attractive, so its price drops."
+        }
+      ],
+      "cards": [
+        {
+          "kind": "idea",
+          "title": "A seesaw",
+          "body": "When rates rise, new bonds pay more, so older bonds with lower coupons must get cheaper to compete. Prices and yields move in opposite directions. A bond priced below face value yields more than its coupon; one priced above face value yields less."
+        },
+        {
+          "kind": "example",
+          "title": "Pricing a 2-year bond",
+          "body": "$1,000 face, 5% coupon, so $50 a year. If market yields are 5%, it's worth $1,000. If yields jump to 7%: price = $50 ÷ 1.07 + $1,050 ÷ 1.07² ≈ $963.84. If yields fall to 3%, it's worth about $1,038.27."
+        },
+        {
+          "kind": "formula",
+          "title": "The formulas",
+          "body": "Price = the sum of each coupon ÷ (1 + y)^t, plus face value ÷ (1 + y)^N. Coupon payment = face value × coupon rate. Current yield = annual coupon ÷ price."
+        },
+        {
+          "kind": "mistake",
+          "title": "Common mistake",
+          "body": "Thinking bonds can't lose money. A long bond can drop 15% or more when rates rise sharply, even with no risk of default."
+        }
+      ],
+      "checks": [
+        {
+          "prompt": "Interest rates rise. What happens to the price of a bond you already own?",
+          "choices": [
+            "It rises",
+            "It falls",
+            "Nothing until maturity"
+          ],
+          "answer": 1,
+          "explanation": "New bonds pay more, so yours must get cheaper to compete."
+        },
+        {
+          "prompt": "A bond's coupon is 3% and similar bonds now yield 5%. It trades…",
+          "choices": [
+            "At a premium",
+            "At face value",
+            "At a discount"
+          ],
+          "answer": 2,
+          "explanation": "Its coupon is lower than the market yield, so it sells below face value."
+        },
+        {
+          "prompt": "A $1,000 bond pays a 6% coupon. What is the yearly interest?",
+          "choices": [
+            "$6",
+            "$60",
+            "$600"
+          ],
+          "answer": 1,
+          "explanation": "6% × $1,000 = $60."
+        }
+      ],
+      "reward": {
+        "xp": 60,
+        "cash": 15
+      }
+    },
+    {
+      "id": "adv-duration",
+      "title": "Duration, the Yield Curve and Spreads",
+      "icon": "⌚",
+      "terms": [
+        {
+          "id": "duration",
+          "term": "duration",
+          "aka": [
+            "modified duration",
+            "Macaulay duration"
+          ],
+          "def": "A measure of how sensitive a bond's price is to interest rates. A duration of 7 means about a 7% price fall for each 1 percentage point rise in yields.",
+          "example": "Duration 7 and yields up 0.5 points: the price falls about 3.5%.",
+          "formula": "% price change ≈ −duration × change in yield"
+        },
+        {
+          "id": "yield-curve",
+          "term": "yield curve",
+          "aka": [
+            "inverted yield curve",
+            "inverted curve",
+            "curve inversion",
+            "steep curve",
+            "flat curve"
+          ],
+          "def": "A chart of yields for bonds of different maturities. Normally it slopes upward; an inverted curve, with short yields above long ones, has often come before recessions.",
+          "example": "2-year yield 4.8% and 10-year yield 4.1%: an inverted curve."
+        },
+        {
+          "id": "credit-spread",
+          "term": "credit spread",
+          "aka": [
+            "credit spreads",
+            "spread over government bonds"
+          ],
+          "def": "The extra yield a company bond pays over a government bond of the same maturity, to make up for its default risk.",
+          "example": "Corporate yield 6.2% and government 4.0%: a 220 basis point spread.",
+          "formula": "credit spread = corporate yield − government yield"
+        },
+        {
+          "id": "credit-rating",
+          "term": "credit rating",
+          "aka": [
+            "investment grade",
+            "junk bond",
+            "junk bonds",
+            "high yield",
+            "AAA",
+            "BBB"
+          ],
+          "def": "A grade from agencies, from AAA down to D, for how likely a borrower is to repay. Below BBB− is called high yield, or junk.",
+          "example": "A BB-rated company pays a much wider spread than an AA one."
+        },
+        {
+          "id": "municipal-bond",
+          "term": "municipal bond",
+          "aka": [
+            "municipal bonds",
+            "muni",
+            "munis",
+            "city bond"
+          ],
+          "def": "A bond issued by a city or state to pay for projects like bridges and schools, repaid from taxes or the project's revenue.",
+          "example": "A city borrows $20M for a bridge and repays it over 20 years."
+        }
+      ],
+      "cards": [
+        {
+          "kind": "idea",
+          "title": "How much a bond swings",
+          "body": "Duration turns rate moves into price moves: the longer the bond and the lower its coupon, the higher its duration and the bigger the swings. The yield curve shows what markets expect for rates. Credit spreads show how much extra investors want for lending to riskier borrowers."
+        },
+        {
+          "kind": "example",
+          "title": "Rates and risk",
+          "body": "A bond fund has a duration of 6. If yields rise 1.5 points, it falls about 6 × 1.5 = 9%. A company bond yields 7.5% when the matching government bond yields 4.5%: a credit spread of 3 points, or 300 basis points, a sign markets see real default risk."
+        },
+        {
+          "kind": "formula",
+          "title": "The approximations",
+          "body": "% price change ≈ −modified duration × change in yield. Credit spread = corporate yield − government yield. Longer maturity and lower coupon mean higher duration."
+        },
+        {
+          "kind": "mistake",
+          "title": "Common mistake",
+          "body": "Chasing the highest yield. A wide spread is the market warning you about default risk."
+        }
+      ],
+      "checks": [
+        {
+          "prompt": "A bond has a duration of 5. Yields rise 2 percentage points. Approximate price change?",
+          "choices": [
+            "−2%",
+            "−5%",
+            "−10%",
+            "+10%"
+          ],
+          "answer": 2,
+          "explanation": "−5 × 2 = −10%."
+        },
+        {
+          "prompt": "A company bond yields 6.5% and a government bond of the same length yields 4%. Credit spread?",
+          "choices": [
+            "2.5 points (250 bp)",
+            "10.5 points",
+            "1.6 points"
+          ],
+          "answer": 0,
+          "explanation": "6.5% − 4% = 2.5 points, which is 250 basis points."
+        },
+        {
+          "prompt": "Which bond is most sensitive to interest-rate changes?",
+          "choices": [
+            "2-year, high coupon",
+            "30-year, low coupon"
+          ],
+          "answer": 1,
+          "explanation": "Longer maturity and a lower coupon mean higher duration."
+        }
+      ],
+      "reward": {
+        "xp": 60,
+        "cash": 15
+      }
+    }
+  ]
+}

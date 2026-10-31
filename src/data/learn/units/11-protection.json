@@ -1,0 +1,502 @@
+{
+  "id": "protection",
+  "title": "Protection and Safety",
+  "icon": "🛡",
+  "topic": "insurance",
+  "blurb": "Insurance and expected value, handling money shocks, fraud detection and giving effectively",
+  "lessons": [
+    {
+      "id": "adv-insurance",
+      "title": "Insurance and Expected Value",
+      "icon": "⛑",
+      "terms": [
+        {
+          "id": "expected-value",
+          "term": "expected value",
+          "aka": [
+            "expected cost",
+            "expected loss",
+            "expected losses",
+            "expected profit",
+            "expected payout"
+          ],
+          "def": "The average result if a choice were repeated many times: each outcome times its probability, added up.",
+          "example": "A 10% chance of losing $1,000 is an expected loss of $100.",
+          "formula": "expected value = sum of (probability × outcome)"
+        },
+        {
+          "id": "premium",
+          "term": "insurance premium",
+          "aka": [
+            "premium",
+            "premiums"
+          ],
+          "def": "What you pay for insurance, monthly or yearly, whether or not you make a claim.",
+          "example": "$120 a month of health insurance is $1,440 a year in premiums."
+        },
+        {
+          "id": "deductible",
+          "term": "deductible",
+          "aka": [
+            "deductibles",
+            "excess"
+          ],
+          "def": "The amount you pay yourself on a claim before insurance pays. Higher deductibles mean lower premiums.",
+          "example": "A $1,000 deductible on a $4,000 repair: you pay $1,000 and the insurer pays $3,000."
+        },
+        {
+          "id": "self-insure",
+          "term": "self-insure",
+          "aka": [
+            "self-insuring",
+            "skip the insurance",
+            "extended warranty",
+            "warranty"
+          ],
+          "def": "Covering small risks from your own savings instead of buying insurance for them. Fine for losses you can afford; never for ones that could ruin you.",
+          "example": "Skipping phone insurance and keeping $200 aside for a repair."
+        },
+        {
+          "id": "insurance-types",
+          "term": "term life insurance",
+          "aka": [
+            "life insurance",
+            "renters insurance",
+            "renter's insurance",
+            "homeowner's insurance",
+            "homeowners insurance"
+          ],
+          "def": "Term life pays your family if you die during the term, replacing your income. Renters insurance covers your belongings and liability; homeowner's insurance also covers the building.",
+          "example": "A parent with young children buys 20-year term life cover worth ten times their salary."
+        }
+      ],
+      "cards": [
+        {
+          "kind": "idea",
+          "title": "Trading a small cost for safety",
+          "body": "Insurance swaps a small certain cost (the premium) for protection from a large uncertain one. On average insurers take in more than they pay out, so insurance is a good deal for disasters you couldn't survive and usually a poor deal for small, affordable losses."
+        },
+        {
+          "kind": "example",
+          "title": "Two policies",
+          "body": "Travel insurance costs $60 and covers a $3,000 medical emergency with a 1% chance: an expected payout of $30. It loses $30 on average, but a $3,000 bill could wreck the trip, so it can still be worth it. Phone insurance at $10 a month for a $150 repair that happens once every 3 years costs $360 for $150 of expected repairs: skip it."
+        },
+        {
+          "kind": "formula",
+          "title": "Comparing plans",
+          "body": "Expected value = sum of probability × outcome. Yearly cost of a plan = premiums + expected out-of-pocket costs (deductibles and co-pays). A higher deductible lowers the premium; choose it if your savings can cover it."
+        },
+        {
+          "kind": "mistake",
+          "title": "Common mistake",
+          "body": "Picking the lowest premium without checking the deductible, or insuring every small item."
+        }
+      ],
+      "checks": [
+        {
+          "prompt": "There's a 2% chance of a $5,000 loss. What is the expected loss?",
+          "choices": [
+            "$10",
+            "$100",
+            "$5,000"
+          ],
+          "answer": 1,
+          "explanation": "2% × $5,000 = $100."
+        },
+        {
+          "prompt": "Plan A: premium $1,200, deductible $500. Plan B: premium $800, deductible $2,000. With one $3,000 claim, what does each cost you?",
+          "choices": [
+            "A $1,700, B $2,800",
+            "A $1,200, B $800",
+            "A $4,200, B $3,800"
+          ],
+          "answer": 0,
+          "explanation": "A: $1,200 + $500 = $1,700. B: $800 + $2,000 = $2,800."
+        }
+      ],
+      "reward": {
+        "xp": 60,
+        "cash": 15
+      }
+    },
+    {
+      "id": "adv-money-shock",
+      "title": "Handling a Money Shock",
+      "icon": "🌧",
+      "terms": [
+        {
+          "id": "emergency-fund",
+          "term": "emergency fund",
+          "aka": [
+            "rainy day fund",
+            "rainy-day fund",
+            "rainy day",
+            "rainy-day"
+          ],
+          "def": "Cash set aside for surprises like job loss or repairs, usually 3 to 6 months of essential costs, kept somewhere safe and easy to reach.",
+          "example": "Essentials of $2,000 a month means a $6,000 to $12,000 fund.",
+          "formula": "months of cover = emergency fund ÷ monthly essentials"
+        },
+        {
+          "id": "high-interest-debt",
+          "term": "high-interest debt",
+          "aka": [
+            "credit card debt",
+            "payday loan",
+            "payday loans",
+            "high interest debt"
+          ],
+          "def": "Debt costing well above what savings earn, like credit cards at 20% or more, or payday loans. Avoiding and clearing it beats almost any investment.",
+          "example": "Paying off a 24% card is like earning a guaranteed 24%."
+        },
+        {
+          "id": "debt-avalanche",
+          "term": "avalanche method",
+          "aka": [
+            "debt avalanche",
+            "snowball method",
+            "debt snowball"
+          ],
+          "def": "Paying extra on the highest-rate debt first while paying the minimum on the rest. It costs the least interest. The snowball method pays the smallest balance first instead, for quick wins.",
+          "example": "Pay down the 24% card before the 7% car loan."
+        },
+        {
+          "id": "funding-order",
+          "term": "funding order",
+          "aka": [
+            "what to cut",
+            "cut spending",
+            "which money to use first"
+          ],
+          "def": "In a crisis the cheapest order is usually: cut wants, use emergency cash, then low-cost credit, and only then sell investments or use high-interest debt. Selling investments after a crash locks in losses.",
+          "example": "Use savings before a 25% card, and avoid selling stocks right after a 30% fall."
+        }
+      ],
+      "cards": [
+        {
+          "kind": "idea",
+          "title": "Getting through without damage",
+          "body": "A shock like a job loss, a medical bill and a rate rise arriving together tests the whole plan. The goal is to never miss a payment while keeping the long-run cost lowest: cut wants first, use emergency cash, keep high-interest debt as a last resort and avoid selling investments at the bottom."
+        },
+        {
+          "kind": "example",
+          "title": "Three months without pay",
+          "body": "Essentials cost $2,500 a month and wants $800. The emergency fund holds $6,000. Cutting wants to $100 means drawing $2,600 a month, so the fund covers about 2.3 months. A cheap credit line covers the rest instead of a 26% card or selling shares that are down 20%."
+        },
+        {
+          "kind": "formula",
+          "title": "The numbers",
+          "body": "Months of cover = emergency fund ÷ monthly essentials. Cost of using credit ≈ balance × rate × years. Pay extra on the highest rate first (avalanche) to save the most interest."
+        },
+        {
+          "kind": "mistake",
+          "title": "Common mistake",
+          "body": "Keeping no cash because investments earn more. When a shock hits you'd be forced to sell at a bad time or borrow at a high rate."
+        }
+      ],
+      "checks": [
+        {
+          "prompt": "Essential costs are $1,800 a month and the emergency fund holds $7,200. How many months of cover?",
+          "choices": [
+            "2",
+            "4",
+            "6"
+          ],
+          "answer": 1,
+          "explanation": "$7,200 ÷ $1,800 = 4 months."
+        },
+        {
+          "prompt": "Which debt does the avalanche method pay off first?",
+          "choices": [
+            "The smallest balance",
+            "The highest interest rate",
+            "The newest"
+          ],
+          "answer": 1,
+          "explanation": "Highest rate first saves the most interest."
+        }
+      ],
+      "reward": {
+        "xp": 50,
+        "cash": 10
+      }
+    },
+    {
+      "id": "adv-fraud",
+      "title": "Fraud, Scams and Security",
+      "icon": "🕵",
+      "terms": [
+        {
+          "id": "false-positive",
+          "term": "false positive",
+          "aka": [
+            "false alarm",
+            "false alarms",
+            "false positives",
+            "blocked good customers"
+          ],
+          "def": "Flagging something as bad when it was fine, like blocking a real customer's purchase.",
+          "example": "A traveller's card is declined at the airport."
+        },
+        {
+          "id": "false-negative",
+          "term": "false negative",
+          "aka": [
+            "false negatives",
+            "missed fraud"
+          ],
+          "def": "Missing something bad, like letting a fraudulent purchase through.",
+          "example": "A stolen card buys $900 of gift cards and nobody stops it."
+        },
+        {
+          "id": "precision",
+          "term": "precision",
+          "def": "Of everything you flagged, the share that really was fraud.",
+          "example": "Flag 50 transactions and 40 are fraud: precision is 80%.",
+          "formula": "precision = caught fraud ÷ everything flagged"
+        },
+        {
+          "id": "recall",
+          "term": "recall",
+          "def": "Of all the real fraud, the share you caught.",
+          "example": "60 frauds happened and you caught 40: recall is 67%.",
+          "formula": "recall = caught fraud ÷ all actual fraud"
+        },
+        {
+          "id": "red-flags",
+          "term": "red flags",
+          "aka": [
+            "red flag",
+            "warning signs",
+            "risk signals",
+            "risk signal",
+            "unfamiliar charge"
+          ],
+          "def": "Clues that raise the chance of fraud or a scam: urgent pressure, mismatched addresses, new devices, unusual places or amounts, requests for gift cards, codes or passwords.",
+          "example": "A first-time card used at 3 a.m. abroad for $2,000 of electronics."
+        },
+        {
+          "id": "phishing",
+          "term": "phishing",
+          "aka": [
+            "scam",
+            "scams",
+            "scammer",
+            "scammers",
+            "spoofed",
+            "fake link",
+            "website address",
+            "fake website",
+            "look-alike"
+          ],
+          "def": "Fake messages pretending to be a trusted company to steal passwords, codes or money.",
+          "example": "A text saying your bank account is locked, with a link to a look-alike site."
+        },
+        {
+          "id": "password-strength",
+          "term": "password strength",
+          "aka": [
+            "passphrase",
+            "two-factor",
+            "2FA",
+            "password",
+            "passwords"
+          ],
+          "def": "Long passwords, or passphrases of several random words, are far harder to crack than short complex ones. Turn on two-factor authentication for important accounts.",
+          "example": "'correct-horse-battery-staple' is much stronger than 'P@ss1!'."
+        },
+        {
+          "id": "credit-freeze",
+          "term": "credit freeze",
+          "aka": [
+            "freeze your credit",
+            "security freeze"
+          ],
+          "def": "Locking your credit report so nobody can open new credit in your name. It doesn't affect your score and you can lift it when you apply.",
+          "example": "After a data breach, freezing your credit stops a thief opening a card as you."
+        },
+        {
+          "id": "money-mule",
+          "term": "money mule",
+          "aka": [
+            "deposit checks and wire",
+            "wire the money"
+          ],
+          "def": "Someone who moves stolen money for criminals, often recruited through fake job offers. It's illegal even if you were tricked.",
+          "example": "A 'job' paying you to deposit checks and wire 80% elsewhere is a money mule scam."
+        }
+      ],
+      "cards": [
+        {
+          "kind": "idea",
+          "title": "Two kinds of mistake",
+          "body": "Every fraud filter trades two mistakes against each other: blocking good customers (false positives) and letting fraud through (false negatives). Precision measures how clean your blocks are; recall measures how much fraud you catch. The right balance depends on what each mistake costs."
+        },
+        {
+          "kind": "example",
+          "title": "Block or approve?",
+          "body": "A $1,200 purchase with a 30% chance of fraud: approving it has an expected fraud loss of $360. Blocking it upsets a good customer 70% of the time, say $40 × 70% = $28. Block it. A $15 purchase with the same 30% chance: an expected loss of $4.50 against $28 of friction, so approve it."
+        },
+        {
+          "kind": "formula",
+          "title": "The measures",
+          "body": "Precision = caught fraud ÷ everything flagged. Recall = caught fraud ÷ all fraud. Block when chance of fraud × amount is bigger than chance it's genuine × the cost of a false alarm."
+        },
+        {
+          "kind": "mistake",
+          "title": "Common mistake",
+          "body": "Blocking everything slightly unusual. You'd catch more fraud but anger so many customers that it costs more than the fraud. For your own accounts: never share codes, and check the sender before you click."
+        }
+      ],
+      "checks": [
+        {
+          "prompt": "You flagged 20 transactions and 15 were fraud. What is your precision?",
+          "choices": [
+            "15%",
+            "75%",
+            "133%"
+          ],
+          "answer": 1,
+          "explanation": "15 ÷ 20 = 75%."
+        },
+        {
+          "prompt": "There were 30 frauds in total and you caught 15. What is your recall?",
+          "choices": [
+            "50%",
+            "75%",
+            "15%"
+          ],
+          "answer": 0,
+          "explanation": "15 ÷ 30 = 50%."
+        }
+      ],
+      "reward": {
+        "xp": 60,
+        "cash": 15
+      }
+    },
+    {
+      "id": "adv-giving",
+      "title": "Giving Effectively",
+      "icon": "💝",
+      "terms": [
+        {
+          "id": "cost-per-outcome",
+          "term": "cost per outcome",
+          "aka": [
+            "cost-effectiveness",
+            "cost per life",
+            "cost per child",
+            "cost per result",
+            "impact"
+          ],
+          "def": "How much a charity spends to achieve one result, like one child vaccinated or one family housed. The best measure of value for money.",
+          "example": "Charity A spends $50 per child taught to read; Charity B spends $400. A does 8 times more per dollar."
+        },
+        {
+          "id": "overhead-ratio",
+          "term": "overhead ratio",
+          "aka": [
+            "overhead",
+            "admin costs",
+            "program ratio",
+            "spends on programs"
+          ],
+          "def": "The share of spending on administration and fundraising. A low overhead isn't the same as high impact; good staff and measurement cost money.",
+          "example": "A charity with 25% overhead can still do more good per dollar than one with 5%."
+        },
+        {
+          "id": "donating-shares",
+          "term": "donating appreciated shares",
+          "aka": [
+            "giving shares",
+            "donate shares",
+            "appreciated stock",
+            "gift of shares"
+          ],
+          "def": "Giving investments that have risen in value instead of cash. You skip the capital gains tax and can still deduct the full value.",
+          "example": "Shares bought for $1,000 are now worth $5,000: give them and avoid tax on the $4,000 gain."
+        },
+        {
+          "id": "capital-gains-tax",
+          "term": "capital gains tax",
+          "aka": [
+            "capital gains",
+            "capital gain"
+          ],
+          "def": "Tax on the profit when you sell an investment for more than you paid. Investments held longer usually get a lower rate.",
+          "example": "Buy at $2,000 and sell at $5,000: tax is due on the $3,000 gain."
+        },
+        {
+          "id": "matching-gift",
+          "term": "matching gift",
+          "aka": [
+            "matching gifts",
+            "gift match",
+            "matched donation"
+          ],
+          "def": "An employer or donor adds money to your donation, often dollar for dollar, doubling its effect.",
+          "example": "You give $100 and your company matches $100: the charity gets $200."
+        },
+        {
+          "id": "donor-advised-fund",
+          "term": "donor-advised fund",
+          "aka": [
+            "DAF",
+            "donor advised fund",
+            "donor-advised funds"
+          ],
+          "def": "An account you give to now, taking the deduction this year, then recommend grants to charities later.",
+          "example": "Put in $5,000 during a high-income year and grant it out over five years."
+        }
+      ],
+      "cards": [
+        {
+          "kind": "idea",
+          "title": "Good per dollar",
+          "body": "Effective giving asks how much good each dollar does. Compare charities by cost per outcome, not by how low their overhead is. Then make the money go further: tax deductions, giving appreciated shares instead of cash, and matching gifts all stretch the same budget."
+        },
+        {
+          "kind": "example",
+          "title": "Stretching $1,000",
+          "body": "You're in the 24% bracket. A $1,000 cash gift saves $240 of tax, so it costs you $760. Giving $1,000 of shares you bought for $400 also avoids tax on the $600 gain, about $90 at 15%, so it costs about $670. Add a dollar-for-dollar employer match and the charity gets $2,000."
+        },
+        {
+          "kind": "formula",
+          "title": "The maths",
+          "body": "Real cost of a deductible gift = gift × (1 − marginal tax rate). Shares also save the capital gains rate × the gain. Results delivered = money reaching the charity ÷ cost per outcome."
+        },
+        {
+          "kind": "mistake",
+          "title": "Common mistake",
+          "body": "Picking charities by lowest overhead or the most emotional story. Ask for the cost per result, and check a charity is registered before you give."
+        }
+      ],
+      "checks": [
+        {
+          "prompt": "In the 22% bracket, what does a $500 deductible donation really cost you?",
+          "choices": [
+            "$500",
+            "$390",
+            "$110"
+          ],
+          "answer": 1,
+          "explanation": "$500 × (1 − 0.22) = $390."
+        },
+        {
+          "prompt": "Charity A helps one person for $200 and Charity B for $1,000. With the same budget, which helps more people?",
+          "choices": [
+            "Charity A",
+            "Charity B"
+          ],
+          "answer": 0,
+          "explanation": "A helps 5 times as many people per dollar."
+        }
+      ],
+      "reward": {
+        "xp": 50,
+        "cash": 10
+      }
+    }
+  ]
+}

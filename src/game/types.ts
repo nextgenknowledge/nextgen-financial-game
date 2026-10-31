@@ -29,7 +29,12 @@ export type Topic =
 export interface AvatarConfig {
   skin: string;
   hair: string;
-  hairStyle: number; // 0 short, 1 long, 2 curly, 3 buzz, 4 bun, 5 spiky
+  /** See HAIR_STYLES in src/game/look.ts: 0 short, 1 long, 2 curly, 3 buzz, 4 bun, 5 spiky, 6 side part, 7 fade, 8 ponytail, 9 bob, 10 braids, 11 pixie. */
+  hairStyle: number;
+  /** Body shape. Older saves have none and count as male. */
+  body?: Body;
+  /** 0 slim, 1 regular (default), 2 athletic. */
+  build?: number;
   eyes: string;
   shirt: string;
   pants: string;
@@ -40,6 +45,8 @@ export interface AvatarConfig {
   bottom?: string | null; // outfit item id overriding pants
   feet?: string | null; // outfit item id overriding shoes
 }
+
+export type Body = 'male' | 'female';
 
 export type OutfitSlot = 'hat' | 'top' | 'bottom' | 'feet' | 'accessory';
 

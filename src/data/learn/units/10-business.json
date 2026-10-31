@@ -1,0 +1,323 @@
+{
+  "id": "business",
+  "title": "Running a Business",
+  "icon": "🏪",
+  "topic": "business",
+  "blurb": "Pricing and capacity, startup unit economics and supply chains",
+  "lessons": [
+    {
+      "id": "adv-pricing-capacity",
+      "title": "Pricing, Demand and Capacity",
+      "icon": "🏷",
+      "terms": [
+        {
+          "id": "profit-maximizing-price",
+          "term": "profit-maximizing price",
+          "aka": [
+            "best price",
+            "set prices",
+            "set the price",
+            "pricing",
+            "price it"
+          ],
+          "def": "Higher prices earn more per sale but bring fewer customers. The best price balances the two to make the most total profit, not the most sales.",
+          "example": "Check-ups at $60 bring 300 visits; at $80 they bring 240. Revenue rises from $18,000 to $19,200 and fewer visits means lower costs."
+        },
+        {
+          "id": "capacity",
+          "term": "capacity",
+          "aka": [
+            "capacity limit",
+            "fully booked",
+            "turned away"
+          ],
+          "def": "The most a business can serve in a period. Demand above capacity is lost; capacity well above demand wastes money.",
+          "example": "Two vets can see 400 patients a month, so demand of 500 means 100 are turned away."
+        },
+        {
+          "id": "marginal-cost",
+          "term": "marginal cost",
+          "aka": [
+            "marginal revenue",
+            "marginal benefit",
+            "extra cost"
+          ],
+          "def": "The extra cost of producing one more unit; marginal revenue is the extra money it brings in. Keep expanding while marginal revenue beats marginal cost.",
+          "example": "A third vet costs $9,000 a month and adds 180 visits worth $12,600 of profit before her pay: worth hiring."
+        },
+        {
+          "id": "working-capital",
+          "term": "working capital",
+          "def": "Current assets minus current liabilities: the cash cushion that keeps a business running while it waits to be paid.",
+          "example": "Bills of $30,000 due now and $50,000 in cash and receivables: $20,000 of working capital.",
+          "formula": "working capital = current assets − current liabilities"
+        }
+      ],
+      "cards": [
+        {
+          "kind": "idea",
+          "title": "Every choice is a trade-off",
+          "body": "Running a business is a series of trade-offs: price against volume, capacity against cost, profit against the timing of cash. Each time, ask what the extra dollar spent or charged brings back."
+        },
+        {
+          "kind": "example",
+          "title": "A vet clinic's prices",
+          "body": "Check-ups at $70 bring 280 a month; at $90 they bring 200. Revenue is $19,600 vs $18,000, but each visit costs $25 in supplies and time, so profit is $12,600 vs $13,000. The higher price wins slightly and frees capacity for surgeries."
+        },
+        {
+          "kind": "formula",
+          "title": "The maths",
+          "body": "Profit = (price − variable cost) × quantity − fixed costs. Add capacity when the extra profit beats its cost. Working capital = current assets − current liabilities."
+        },
+        {
+          "kind": "mistake",
+          "title": "Common mistake",
+          "body": "Maximising revenue instead of profit. Discounts that fill the calendar can leave you busier and poorer."
+        }
+      ],
+      "checks": [
+        {
+          "prompt": "A third vet costs $8,000 a month and would add $6,500 a month of profit. Hire?",
+          "choices": [
+            "Yes",
+            "No"
+          ],
+          "answer": 1,
+          "explanation": "The extra profit is less than the cost."
+        },
+        {
+          "prompt": "At $50 you sell 400; at $60 you sell 320. The variable cost is $20. Which price makes more profit, ignoring fixed costs?",
+          "choices": [
+            "$50",
+            "$60"
+          ],
+          "answer": 1,
+          "explanation": "($50 − $20) × 400 = $12,000. ($60 − $20) × 320 = $12,800. The higher price earns more."
+        }
+      ],
+      "reward": {
+        "xp": 50,
+        "cash": 10
+      }
+    },
+    {
+      "id": "adv-unit-economics",
+      "title": "Startup Unit Economics",
+      "icon": "📱",
+      "terms": [
+        {
+          "id": "cac",
+          "term": "customer acquisition cost",
+          "aka": [
+            "CAC",
+            "cost per customer"
+          ],
+          "def": "Marketing and sales spending divided by the number of new customers won.",
+          "example": "$50,000 of ads bringing 1,000 users is a CAC of $50.",
+          "formula": "CAC = marketing spend ÷ new customers"
+        },
+        {
+          "id": "ltv",
+          "term": "lifetime value",
+          "aka": [
+            "LTV",
+            "customer lifetime value",
+            "CLV"
+          ],
+          "def": "The total profit a customer brings over the whole time they stay.",
+          "example": "$8 a month of profit and customers staying 20 months on average gives an LTV of $160.",
+          "formula": "LTV ≈ monthly profit per customer ÷ monthly churn"
+        },
+        {
+          "id": "churn",
+          "term": "churn",
+          "aka": [
+            "churn rate",
+            "cancellations"
+          ],
+          "def": "The share of customers who cancel each period.",
+          "example": "5% monthly churn means the average customer stays about 20 months."
+        },
+        {
+          "id": "conversion-rate",
+          "term": "conversion rate",
+          "aka": [
+            "conversion",
+            "converts",
+            "free trial",
+            "free trials"
+          ],
+          "def": "The share of people who take the next step, like free-trial users who start paying.",
+          "example": "1,000 trials and 120 paying customers is a 12% conversion rate."
+        },
+        {
+          "id": "burn-rate",
+          "term": "burn rate",
+          "aka": [
+            "cash burn",
+            "burning cash",
+            "burn"
+          ],
+          "def": "How much cash a company loses each month.",
+          "example": "Spending $200,000 a month with $80,000 of revenue burns $120,000."
+        },
+        {
+          "id": "runway",
+          "term": "runway",
+          "aka": [
+            "runs out of cash",
+            "run out of cash",
+            "cash runs out"
+          ],
+          "def": "How many months until the money runs out at the current burn rate.",
+          "example": "$1.5M in the bank ÷ $120,000 burn = 12.5 months.",
+          "formula": "runway = cash ÷ monthly burn"
+        },
+        {
+          "id": "unit-economics",
+          "term": "unit economics",
+          "def": "The profit or loss on a single customer or sale. Good unit economics means each customer is worth more than they cost to win and serve.",
+          "example": "LTV $160 against a CAC of $40: strong unit economics."
+        }
+      ],
+      "cards": [
+        {
+          "kind": "idea",
+          "title": "Worth more than they cost",
+          "body": "A startup works when each customer is worth more than they cost to win (LTV well above CAC, often 3x or more) and it gets there before the cash runs out. Price, trial length and marketing spend all move these numbers."
+        },
+        {
+          "kind": "example",
+          "title": "A budgeting app",
+          "body": "It charges $6 a month and keeps $5 after costs. Monthly churn is 4%, so customers stay 25 months and LTV = $125. Ads cost $40 per paying customer: LTV ÷ CAC = 3.1, healthy. But with $1.5M in the bank burning $100,000 a month, it has 15 months to grow into profit."
+        },
+        {
+          "kind": "formula",
+          "title": "The formulas",
+          "body": "CAC = spend ÷ new customers. LTV ≈ monthly margin ÷ monthly churn. Runway = cash ÷ burn. Rule of thumb: LTV ÷ CAC of 3 or more."
+        },
+        {
+          "kind": "mistake",
+          "title": "Common mistake",
+          "body": "Buying growth at any cost. If each customer costs $80 to win but is worth $60, faster growth just loses money faster."
+        }
+      ],
+      "checks": [
+        {
+          "prompt": "Customers bring $10 a month of profit and churn is 5% a month. What is the LTV?",
+          "choices": [
+            "$50",
+            "$200",
+            "$500"
+          ],
+          "answer": 1,
+          "explanation": "$10 ÷ 0.05 = $200."
+        },
+        {
+          "prompt": "$900,000 in the bank and burning $75,000 a month. What is the runway?",
+          "choices": [
+            "9 months",
+            "12 months",
+            "75 months"
+          ],
+          "answer": 1,
+          "explanation": "$900,000 ÷ $75,000 = 12 months."
+        }
+      ],
+      "reward": {
+        "xp": 60,
+        "cash": 15
+      }
+    },
+    {
+      "id": "adv-supply-chain",
+      "title": "Supply Chains and Shipping",
+      "icon": "🚢",
+      "terms": [
+        {
+          "id": "freight",
+          "term": "freight",
+          "aka": [
+            "freight cost",
+            "freight costs",
+            "shipping cost",
+            "shipping costs",
+            "air freight",
+            "ocean freight"
+          ],
+          "def": "The price of moving goods. Air is fastest and dearest, ocean cheapest and slowest, rail in between.",
+          "example": "Air at $9 a kilo in 3 days; ocean at $1 a kilo in 30 days."
+        },
+        {
+          "id": "lead-time",
+          "term": "lead time",
+          "aka": [
+            "transit time",
+            "arriving late",
+            "late delivery"
+          ],
+          "def": "How long it takes from ordering until goods arrive. Longer lead times tie up cash in goods in transit and risk arriving late.",
+          "example": "A 35-day ocean voyage for goods needed in 30 days risks lost sales."
+        },
+        {
+          "id": "landed-cost",
+          "term": "landed cost",
+          "aka": [
+            "total landed cost",
+            "cheapest overall"
+          ],
+          "def": "Everything it costs to get goods to where they're sold: freight, plus carrying cost while in transit, plus expected losses from lateness.",
+          "example": "Ocean freight $2,000 + carrying $1,200 + expected lost sales $1,500 = $4,700.",
+          "formula": "landed cost = freight + value × carrying rate × days ÷ 365 + chance late × cost of lateness"
+        }
+      ],
+      "cards": [
+        {
+          "kind": "idea",
+          "title": "Cheap freight isn't cheap shipping",
+          "body": "The cheapest freight isn't always the cheapest choice. Slow shipping ties up the goods' value for longer (carrying cost), and arriving late can lose sales. Valuable or urgent goods often justify air; bulky low-value goods go by sea."
+        },
+        {
+          "kind": "example",
+          "title": "Shipping phones",
+          "body": "$200,000 of phones. Ocean: $3,000 freight and 30 days, so carrying cost at 25% a year is $200,000 × 0.25 × 30 ÷ 365 ≈ $4,100. Air: $15,000 and 3 days, carrying about $400. Ocean is still cheaper, unless being late risks more than about $7,500 of lost sales."
+        },
+        {
+          "kind": "formula",
+          "title": "Landed cost",
+          "body": "Landed cost = freight + value × carrying rate × days ÷ 365 + chance of being late × cost of being late."
+        },
+        {
+          "kind": "mistake",
+          "title": "Common mistake",
+          "body": "Comparing freight quotes only. Time is money when you're carrying expensive stock."
+        }
+      ],
+      "checks": [
+        {
+          "prompt": "Goods worth $100,000, a carrying cost of 30% a year and 73 days in transit. What is the carrying cost?",
+          "choices": [
+            "$3,000",
+            "$6,000",
+            "$30,000"
+          ],
+          "answer": 1,
+          "explanation": "$100,000 × 0.30 × 73 ÷ 365 = $6,000."
+        },
+        {
+          "prompt": "Which goods most often justify air freight?",
+          "choices": [
+            "Bulky, cheap goods",
+            "Valuable, urgent goods"
+          ],
+          "answer": 1,
+          "explanation": "High value and urgency make speed worth paying for."
+        }
+      ],
+      "reward": {
+        "xp": 50,
+        "cash": 10
+      }
+    }
+  ]
+}

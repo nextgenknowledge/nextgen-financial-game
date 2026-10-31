@@ -1,5 +1,5 @@
 'use client';
-import { Suspense, useEffect, useRef } from 'react';
+import { Suspense, useEffect, useRef, useState } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import { useGame, act, getWorld } from '@/store/game';
@@ -8,6 +8,7 @@ import { useSettings } from '@/store/settings';
 import { isPaused, useUI } from '@/store/ui';
 import { SkyAndLights } from '@/engine/Sky';
 import { PostFX } from '@/engine/PostFX';
+import { AdaptiveResolution, pickDpr } from '@/engine/Resolution';
 import { PlayerController } from '@/engine/Player';
 import { OutdoorScene } from '@/world/OutdoorScene';
 import { InteriorScene } from '@/world/InteriorScene';
@@ -33,10 +34,9 @@ import { getOff } from '@/world/ParkedVehicles';
 import { WorldActivityRunner } from '@/activities/world/WorldActivityRunner';
 import { PlayerPets } from '@/world/Pets';
 
-const DPR = { low: 0.75, medium: 1, high: Math.min(2, typeof window !== 'undefined' ? window.devicePixelRatio : 1) };
-
 export default function GameView() {
   const quality = useSettings((s) => s.quality);
+  const [dpr, setDpr] = useState(() => (typeof window === 'undefined' ? 1 : pickDpr(quality, window.innerWidth, window.innerHeight, window.devicePixelRatio || 1)));
   const narwhalFollow = useSettings((s) => s.narwhalFollow);
   const location = useScene((s) => s.location);
   const interior = useScene((s) => s.interior);
@@ -148,7 +148,7 @@ export default function GameView() {
       <Canvas
         key={quality}
         shadows={quality !== 'low'}
-        dpr={DPR[quality]}
+        dpr={dpr}
         camera={{ fov: 55, near: 0.1, far: 1200, position: [0, 6, 10] }}
         gl={{ antialias: quality !== 'low', powerPreference: 'high-performance', preserveDrawingBuffer: false }}
         onCreated={({ gl }) => {
@@ -169,6 +169,8 @@ export default function GameView() {
             )}
           </group>
           <PlayerController />
+          <PortraitView />
+          <AdaptiveResolution quality={quality} onDpr={setDpr} />
           {narwhalFollow && <NarwhalGuide />}
           <PlayerPets />
           <GoalBeacon />
@@ -184,6 +186,20 @@ export default function GameView() {
       <HudTour />
     </div>
   );
+}
+
+/**
+ * A phone held upright sees only a sliver of the world at the normal 55° view (the player fills
+ * the screen and hides the guide trail), so narrow screens get a wider view.
+ */
+function PortraitView() {
+  const camera = useThree((s) => s.camera) as THREE.PerspectiveCamera;
+  const aspect = useThree((s) => s.size.width / s.size.height);
+  useEffect(() => {
+    camera.fov = aspect < 1 ? Math.min(78, 55 + (1 - aspect) * 45) : 55;
+    camera.updateProjectionMatrix();
+  }, [camera, aspect]);
+  return null;
 }
 
 /** Runs game systems: time, market, walking stats, goal markers, performance. */

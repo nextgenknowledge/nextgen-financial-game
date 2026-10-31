@@ -5,6 +5,7 @@ import type { AvatarConfig, Difficulty } from '@/game/types';
 import { playSfx } from '@/engine/audio';
 import { AvatarPreview } from '../AvatarPreview';
 import outfits from '@/data/shop/outfits.json';
+import { BODIES, BUILDS, HAIR_STYLES, bodyOf, buildOf, withBody } from '@/game/look';
 
 /*
  * Starting a new game, in three steps on the title screen:
@@ -312,28 +313,36 @@ function AdvancedIcon() {
 export function AvatarOptions({ avatar, onChange, dark }: { avatar: AvatarConfig; onChange: (a: AvatarConfig) => void; dark?: boolean }) {
   const C = outfits.colors;
   const patch = (p: Partial<AvatarConfig>) => onChange({ ...avatar, ...p });
+  const body = bodyOf(avatar);
+  const chips = (label: string, opts: { id: string | number; label: string }[], value: string | number, pick: (id: string | number) => void) => (
+    <div className="field">
+      {label}
+      <div className="row wrap" role="radiogroup" aria-label={label}>
+        {opts.map((o) => (
+          <button
+            key={o.id}
+            type="button"
+            role="radio"
+            aria-checked={value === o.id}
+            className={`st-chip ${value === o.id ? 'on' : ''}`}
+            onClick={() => {
+              playSfx('click');
+              pick(o.id);
+            }}
+          >
+            {o.label}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
   return (
     <div className={`col ${dark ? 'st-swatch-dark' : ''}`} style={{ gap: '0.7rem' }}>
+      {chips('Body', BODIES, body, (id) => onChange(withBody(avatar, id as 'male' | 'female')))}
+      {chips('Build', BUILDS.map((label, id) => ({ id, label })), buildOf(avatar), (id) => patch({ build: id as number }))}
       <SwatchRow label="Skin" colors={C.skin} value={avatar.skin} onPick={(c) => patch({ skin: c })} />
       <SwatchRow label="Hair color" colors={C.hair} value={avatar.hair} onPick={(c) => patch({ hair: c })} />
-      <div className="field">
-        Hair style
-        <div className="row wrap">
-          {['Short', 'Long', 'Curly', 'Buzz', 'Bun', 'Spiky'].map((h, i) => (
-            <button
-              key={h}
-              type="button"
-              className={`st-chip ${avatar.hairStyle === i ? 'on' : ''}`}
-              onClick={() => {
-                playSfx('click');
-                patch({ hairStyle: i });
-              }}
-            >
-              {h}
-            </button>
-          ))}
-        </div>
-      </div>
+      {chips('Hair style', HAIR_STYLES[body], avatar.hairStyle, (id) => patch({ hairStyle: id as number }))}
       <SwatchRow label="Shirt" colors={C.shirt} value={avatar.shirt} onPick={(c) => patch({ shirt: c })} />
       <SwatchRow label="Pants" colors={C.pants} value={avatar.pants} onPick={(c) => patch({ pants: c })} />
       <SwatchRow label="Shoes" colors={C.shoes} value={avatar.shoes} onPick={(c) => patch({ shoes: c })} />

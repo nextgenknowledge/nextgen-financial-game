@@ -11,8 +11,10 @@ import tips from '@/data/tips.json';
 import { playSfx } from '@/engine/audio';
 import { cls } from '../format';
 import { FinBucks } from '../FinBucks';
+import { ADV_LESSONS, ADV_LESSON_BY_ID, glossaryFormulas, type AdvLesson } from '@/game/learn';
+import { AdvLessonReader, AdvancedCourse, Glossary } from '../learn/AdvancedCourse';
 
-type Tab = 'course' | 'tips' | 'tutorials' | 'formulas' | 'narwhal';
+type Tab = 'advanced' | 'course' | 'glossary' | 'tips' | 'tutorials' | 'formulas' | 'narwhal';
 
 /** Lessons grouped into course units by topic, in course order. */
 function units(topic?: string) {
@@ -29,25 +31,52 @@ function units(topic?: string) {
 export function LearnPanel({ topic, tab: initial, lessonId }: { topic?: string; tab?: Tab; lessonId?: string }) {
   const close = useUI((s) => s.close);
   const w = useGame((s) => s.world!);
-  const [tab, setTab] = useState<Tab>(initial ?? 'course');
-  const [lesson, setLesson] = useState<LessonDef | null>(() => LESSONS.find((l) => l.id === lessonId) ?? null);
   const entry = w.difficulty === 'entry';
+  // Advanced players start on the Advanced course; the basics stay one tab away
+  const [tab, setTab] = useState<Tab>(initial ?? (entry ? 'course' : 'advanced'));
+  const [lesson, setLesson] = useState<LessonDef | null>(() => LESSONS.find((l) => l.id === lessonId) ?? null);
+  const [advLesson, setAdvLesson] = useState<AdvLesson | null>(() => (lessonId ? (ADV_LESSON_BY_ID.get(lessonId) ?? null) : null));
   const done = w.progress.lessons;
+  const course = entry ? LESSONS : ADV_LESSONS;
+  const doneHere = course.filter((l) => done.includes(l.id)).length;
   const next = LESSONS.find((l) => !done.includes(l.id));
-  const pctDone = Math.round((done.length / LESSONS.length) * 100);
+  const nextAdv = ADV_LESSONS.find((l) => !done.includes(l.id));
+  const pctDone = Math.round((doneHere / course.length) * 100);
   return (
     <Modal
       onClose={close}
       title="📚 Learn"
-      subtitle={`Your money course · ${done.length} of ${LESSONS.length} lessons complete`}
+      subtitle={`${entry ? 'Your money course' : 'Advanced course'} · ${doneHere} of ${course.length} lessons complete`}
       size="wide"
       accent="teal"
       className={entry ? 'entry-mode learn-modal' : 'learn-modal'}
     >
-      {lesson ? (
+      {advLesson ? (
+        <AdvLessonReader key={advLesson.id} lesson={advLesson} onDone={() => setAdvLesson(null)} onNext={(l) => setAdvLesson(l)} />
+      ) : lesson ? (
         <LessonReader lesson={lesson} onDone={() => setLesson(null)} onNext={(l) => setLesson(l)} />
       ) : (
         <>
+          {!entry && (
+            <div className="learn-hero">
+              <PixelMeter pct={pctDone} label="course" />
+              <div className="col grow" style={{ gap: 6, minWidth: 220 }}>
+                <span className="learn-kicker">{nextAdv ? 'Up next in the Advanced course' : 'Advanced course complete'}</span>
+                <b className="learn-next-title">{nextAdv ? `${nextAdv.icon} ${nextAdv.title}` : 'You finished every Advanced lesson. Legend!'}</b>
+                {nextAdv && (
+                  <span className="small" style={{ opacity: 0.85 }}>
+                    {nextAdv.unit.title} · {nextAdv.cards.length} cards · +{nextAdv.reward.xp} XP · Every desk links here from its briefing
+                  </span>
+                )}
+              </div>
+              {nextAdv && (
+                <Button variant="gold" size="big" onClick={() => (playSfx('pop'), setAdvLesson(nextAdv))}>
+                  ▶ {doneHere ? 'Continue' : 'Start learning'}
+                </Button>
+              )}
+            </div>
+          )}
+          {entry && (
           <div className="learn-hero">
             <PixelMeter pct={pctDone} label="course" />
             <div className="col grow" style={{ gap: 6, minWidth: 220 }}>
@@ -75,17 +104,26 @@ export function LearnPanel({ topic, tab: initial, lessonId }: { topic?: string; 
               </Button>
             )}
           </div>
+          )}
           <Tabs
             value={tab}
             onChange={setTab}
             tabs={[
-              { id: 'course', label: '📖 Course' },
+              ...(entry
+                ? [{ id: 'course' as Tab, label: '📖 Course' }]
+                : [
+                    { id: 'advanced' as Tab, label: '🎓 Advanced course' },
+                    { id: 'course' as Tab, label: '📖 Basics' },
+                    { id: 'glossary' as Tab, label: '🔍 Glossary' },
+                  ]),
               { id: 'tips', label: "💡 Narwhal's tips" },
               ...(entry ? [] : [{ id: 'formulas' as Tab, label: '📐 Formula sheet' }]),
               { id: 'tutorials', label: '🔁 Tutorials' },
               { id: 'narwhal', label: '💙 Meet Narwhal' },
             ]}
           />
+          {tab === 'advanced' && <AdvancedCourse onOpen={setAdvLesson} />}
+          {tab === 'glossary' && <Glossary onOpen={setAdvLesson} />}
           {tab === 'course' && (
             <div className="course">
               {units(topic).map((u) => {
@@ -331,10 +369,13 @@ export function FormulaSheet() {
     ['Credit utilization', 'card balance ÷ credit limit'],
     ['Net worth', 'assets − liabilities'],
   ];
+  // Every formula from the Advanced glossary too, without repeating the core ones
+  const have = new Set(rows.map(([a]) => a.toLowerCase()));
+  const all = [...rows, ...glossaryFormulas().filter(([a]) => !have.has(a.toLowerCase()))];
   return (
     <table className="kit-table">
       <tbody>
-        {rows.map(([a, b]) => (
+        {all.map(([a, b]) => (
           <tr key={a}>
             <td className="bold">{a}</td>
             <td className="mono">{b}</td>

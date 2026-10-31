@@ -503,8 +503,28 @@ export function buildBackdrop(def: CityDef, b: Builders, rng: Rng, inWater: (x: 
         const h = (rng.range(18, 40) + ring * rng.range(8, 26) + (rng.chance(0.15) ? rng.range(30, 70) : 0)) * scale;
         // Aerial perspective: farther rings are lighter and bluer
         const col = new THREE.Color(rng.pick(walls)).lerp(new THREE.Color('#b9c6d3'), 0.18 + ring * 0.16);
-        b.solid.box(jx, h / 2, jz, w, h, d, col, { tex: rng.pick(facades), topTex: 'roof-gravel', worldTop: false });
-        if (h > 60 && rng.chance(0.6)) b.solid.box(jx, h + 3, jz, 0.5, 6, 0.5, '#8d939c');
+        const tex = rng.pick(facades);
+        // Taller towers step back once or twice and finish with a crown, so the skyline has a real silhouette
+        if (h > 36 && rng.chance(0.7)) {
+          const base = h * rng.range(0.45, 0.65);
+          b.solid.box(jx, base / 2, jz, w, base, d, col, { tex, topTex: 'roof-gravel', worldTop: false });
+          const w2 = w * rng.range(0.6, 0.78);
+          const d2 = d * rng.range(0.6, 0.78);
+          let top = h;
+          if (h > 70 && rng.chance(0.5)) {
+            const mid = base + (h - base) * 0.6;
+            b.solid.box(jx, (base + mid) / 2, jz, w2, mid - base, d2, col, { tex, topTex: 'roof-gravel', worldTop: false });
+            b.solid.box(jx, (mid + h) / 2, jz, w2 * 0.7, h - mid, d2 * 0.7, col, { tex, topTex: 'roof-gravel', worldTop: false });
+          } else b.solid.box(jx, (base + h) / 2, jz, w2, h - base, d2, col, { tex, topTex: 'roof-gravel', worldTop: false });
+          if (rng.chance(0.5)) {
+            b.solid.box(jx, top + 1.2, jz, w2 * 0.45, 2.4, d2 * 0.45, new THREE.Color(col).multiplyScalar(0.8));
+            top += 2.4;
+          }
+          if (h > 60 && rng.chance(0.6)) b.solid.box(jx, top + 3, jz, 0.5, 6, 0.5, '#8d939c');
+        } else {
+          b.solid.box(jx, h / 2, jz, w, h, d, col, { tex, topTex: 'roof-gravel', worldTop: false });
+          if (h > 60 && rng.chance(0.6)) b.solid.box(jx, h + 3, jz, 0.5, 6, 0.5, '#8d939c');
+        }
       }
   }
 }

@@ -833,8 +833,11 @@ if (uGrime < 0.001) {
   } else if (fcIs(FC_GRASS)) {
     // Worn, sun-bleached and lush patches
     float fcW = fcNoise(fcP * 0.18);
-    diffuseColor.rgb = mix(diffuseColor.rgb, diffuseColor.rgb * vec3(1.12, 1.05, 0.78), smoothstep(0.55, 0.85, fcW) * 0.5);
-    diffuseColor.rgb *= 0.92 + 0.12 * fcNoise(fcP * 0.9);
+    diffuseColor.rgb = mix(diffuseColor.rgb, diffuseColor.rgb * vec3(1.18, 1.08, 0.72), smoothstep(0.55, 0.85, fcW) * 0.6);
+    diffuseColor.rgb = mix(diffuseColor.rgb, diffuseColor.rgb * vec3(0.78, 0.9, 0.84), smoothstep(0.6, 0.85, fcNoise(fcP * 0.07 + 11.0)) * 0.7);
+    diffuseColor.rgb *= 0.9 + 0.16 * fcNoise(fcP * 0.9);
+    // Mowing stripes, the way groundskeepers cut a formal lawn
+    diffuseColor.rgb *= 1.0 + 0.05 * (step(0.5, fract(fcP.x / 6.0)) * 2.0 - 1.0);
   }
 }
 diffuseColor.rgb = mix(diffuseColor.rgb, diffuseColor.rgb * vec3(0.8, 0.76, 0.7), clamp(fcDirt * uGrime * 4.0, 0.0, 1.0) * 0.6) * (1.0 - clamp(fcDirt * uGrime, 0.0, 0.3) * 0.5);

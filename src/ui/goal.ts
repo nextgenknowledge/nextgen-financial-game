@@ -28,6 +28,33 @@ const EVENT_SERVICE: Record<string, string | string[]> = {
 };
 
 /** First building with a matching station, looking in the city you're in before anywhere else. */
+/**
+ * Progress goals ("Have $500 in savings") have no place of their own, so the trail leads to where
+ * that progress is made.
+ */
+const STAT_SERVICE: Record<string, string> = {
+  savingsBalance: 'bank',
+  holdingsCount: 'brokerage',
+  propertiesOwned: 'shop:property',
+  businessesOwned: 'business',
+  lessonsRead: 'learn',
+};
+
+/** Closest building door in this city that passes `pred` (by building id). */
+function nearestDoor(pred: (buildingId: string) => boolean) {
+  let best: (typeof rt.triggers)[number] | null = null;
+  let bd = Infinity;
+  for (const t of rt.triggers) {
+    if (!t.id.startsWith('door:') || !pred(t.id.slice(5))) continue;
+    const d = Math.hypot(t.x - rt.player.x, t.z - rt.player.z);
+    if (d < bd) {
+      bd = d;
+      best = t;
+    }
+  }
+  return best;
+}
+
 function findBuilding(pred: (st: { activity?: string; service?: string }) => boolean): { city: LocationId; building: string } | null {
   const here = useScene.getState().location;
   const order = [CITIES[here], ...Object.values(CITIES).filter((c) => c.id !== here)].filter(Boolean);
@@ -70,7 +97,15 @@ export function updateGoalMarker() {
   const now = performance.now();
   const moved = Math.hypot(rt.player.x - planned.x, rt.player.z - planned.z);
   if (key === planned.goal && rt.sceneKey === planned.scene && rt.guidePath && moved < 8 && now - planned.at < 5000) return;
-  rt.guidePath = findPath(rt.collision, rt.sceneKey, rt.player.x, rt.player.z, g.x, g.z);
+  const { x, z } = rt.player;
+  // No walking route (the player hopped into a fenced garden or site): allow hopping the low
+  // fence, and failing that point straight at the goal, so the trail never just disappears
+  rt.guidePath =
+    findPath(rt.collision, rt.sceneKey, x, z, g.x, g.z) ??
+    findPath(rt.collision, rt.sceneKey, x, z, g.x, g.z, 2.2, true) ?? [
+      [x, z],
+      [g.x, g.z],
+    ];
   planned = { goal: key, scene: rt.sceneKey, x: rt.player.x, z: rt.player.z, at: now };
 }
 
@@ -134,14 +169,24 @@ function setGoal() {
       if (t) rt.goal = { id: t.id, x: t.x, z: t.z, label: g.target === 'enterHome' ? 'Your home' : t.label };
       return;
     }
-  } else if (g.type === 'event' && g.target && EVENT_SERVICE[g.target]) {
-    const svcs = ([] as string[]).concat(EVENT_SERVICE[g.target]);
+  } else if ((g.type === 'event' && g.target && EVENT_SERVICE[g.target]) || (g.type === 'stat' && g.target && STAT_SERVICE[g.target])) {
+    const svcs = ([] as string[]).concat(g.type === 'stat' ? STAT_SERVICE[g.target!] : EVENT_SERVICE[g.target!]);
     const f = findBuilding((s) => !!s.service && svcs.includes(s.service));
     if (f) {
       const b = CITIES[f.city].buildings.find((x) => x.id === f.building)!;
       const st = [...b.stations, ...(b.entryStations ?? [])].find((s) => s.service && svcs.includes(s.service));
       dest = { ...f, service: st?.service };
     }
+  } else if ((g.type === 'stat' && (g.target === 'buildingsVisited' || g.target === 'threeStarRuns')) || g.type === 'netWorth') {
+    // Exploring: the closest building not yet visited. Stars and net worth: the closest place
+    // with activities to play (that is where money and stars are earned).
+    if (inside) return pointToExit();
+    const city = CITIES[here];
+    const seen = new Set(w.progress.seenBuildings);
+    const playable = (id: string) => !!city?.buildings.find((b) => b.id === id && [...b.stations, ...(b.entryStations ?? [])].some((st) => st.activity));
+    const t = g.target === 'buildingsVisited' ? (nearestDoor((id) => !seen.has(id)) ?? nearestDoor(playable)) : nearestDoor(playable);
+    if (t) rt.goal = { id: t.id, x: t.x, z: t.z, label: t.label };
+    return;
   } else if (g.type === 'travel' && g.target) {
     dest = { city: 'park', portal: g.target as LocationId };
     if (here === g.target) dest = null;

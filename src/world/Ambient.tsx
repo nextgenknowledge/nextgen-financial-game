@@ -109,7 +109,8 @@ const WORKER = { ...DEFAULT_AVATAR, shirt: '#f2a72e', pants: '#2b3346', shoes: '
 
 function Worker({ x, z, rot, i }: { x: number; z: number; rot: number; i: number }) {
   const anim = useRef<AnimState>({ speed: 0, grounded: true, busy: i % 2 === 0 });
-  const look = useMemo(() => ({ ...WORKER, skin: ['#e8b48f', '#a96e48', '#f2c39c', '#7d4f33'][i % 4] }), [i]);
+  // Every third crew member is a woman, ponytail under the cap
+  const look = useMemo(() => ({ ...WORKER, skin: ['#e8b48f', '#a96e48', '#f2c39c', '#7d4f33'][i % 4], ...(i % 3 === 1 ? { body: 'female' as const, hairStyle: 8 } : {}) }), [i]);
   return (
     <group position={[x, 0.14, z]} rotation={[0, rot, 0]}>
       <LitePerson config={look} anim={anim} />

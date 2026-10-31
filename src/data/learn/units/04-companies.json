@@ -1,0 +1,603 @@
+{
+  "id": "companies",
+  "title": "Reading a Company",
+  "icon": "📊",
+  "topic": "business",
+  "blurb": "Income statements, break-even, balance sheets, cash flow and retail metrics",
+  "lessons": [
+    {
+      "id": "adv-income-statement",
+      "title": "The Income Statement",
+      "icon": "📄",
+      "terms": [
+        {
+          "id": "income-statement",
+          "term": "income statement",
+          "aka": [
+            "profit and loss",
+            "P&L"
+          ],
+          "def": "A report of revenue, costs and profit over a period, like a quarter or a year.",
+          "example": "It answers the question: did the company make money this year?"
+        },
+        {
+          "id": "revenue",
+          "term": "revenue",
+          "aka": [
+            "revenues",
+            "top line",
+            "total sales"
+          ],
+          "def": "All the money a business takes in from selling, before any costs.",
+          "example": "Selling 1,000 dumplings at $3 is $3,000 of revenue.",
+          "formula": "revenue = price × quantity sold"
+        },
+        {
+          "id": "cogs",
+          "term": "cost of goods sold",
+          "aka": [
+            "COGS",
+            "cost of sales"
+          ],
+          "def": "The direct cost of the products sold: ingredients, materials or wholesale cost.",
+          "example": "Dumplings that cost $1.20 each in ingredients: 1,000 sold means $1,200 of COGS."
+        },
+        {
+          "id": "gross-margin",
+          "term": "gross margin",
+          "aka": [
+            "gross profit margin",
+            "gross profit"
+          ],
+          "def": "Revenue minus cost of goods sold, as a share of revenue. It shows how much each sale leaves to pay everything else.",
+          "example": "($3,000 − $1,200) ÷ $3,000 = 60% gross margin.",
+          "formula": "gross margin = (revenue − COGS) ÷ revenue"
+        },
+        {
+          "id": "operating-expenses",
+          "term": "operating expenses",
+          "aka": [
+            "opex",
+            "running costs"
+          ],
+          "def": "Costs of running the business that aren't tied to each unit sold: rent, salaries, marketing.",
+          "example": "Stall rent of $400, wages of $600 and ads of $100 are $1,100 of operating expenses."
+        },
+        {
+          "id": "net-income",
+          "term": "net income",
+          "aka": [
+            "net profit",
+            "bottom line",
+            "earnings",
+            "profit",
+            "profits"
+          ],
+          "def": "What is left after every cost, including interest and taxes.",
+          "example": "Revenue $3,000 − COGS $1,200 − opex $1,100 − tax $140 = $560 of net income."
+        },
+        {
+          "id": "profit-margin",
+          "term": "profit margin",
+          "aka": [
+            "net margin",
+            "operating margin",
+            "profit margins",
+            "margins"
+          ],
+          "def": "Profit divided by revenue: how many cents of each dollar of sales the business keeps.",
+          "example": "$560 ÷ $3,000 = 18.7% profit margin.",
+          "formula": "profit margin = net income ÷ revenue"
+        },
+        {
+          "id": "markup",
+          "term": "markup",
+          "aka": [
+            "marked up",
+            "markup on cost",
+            "mark-up"
+          ],
+          "def": "The amount added to cost to set a price, as a percent of the cost. Different from margin, which is a percent of the price.",
+          "example": "Cost $20 and price $30: a 50% markup but a 33% margin.",
+          "formula": "markup = (price − cost) ÷ cost"
+        }
+      ],
+      "cards": [
+        {
+          "kind": "idea",
+          "title": "Reading top to bottom",
+          "body": "Revenue minus the direct cost of what was sold (COGS) gives gross profit. Minus operating expenses gives operating profit. Minus interest and taxes gives net income. Margins turn each line into a percent of revenue, so companies of different sizes can be compared."
+        },
+        {
+          "kind": "example",
+          "title": "One month at a market stall",
+          "body": "Sales $10,000. COGS $4,000, so gross profit is $6,000 (60% gross margin). Rent, wages and ads $4,500, so operating profit is $1,500. Tax $300, so net income is $1,200 (12% profit margin)."
+        },
+        {
+          "kind": "formula",
+          "title": "The lines",
+          "body": "Gross profit = revenue − COGS. Gross margin = gross profit ÷ revenue. Operating profit = gross profit − operating expenses. Net income = operating profit − interest − taxes. Profit margin = net income ÷ revenue."
+        },
+        {
+          "kind": "mistake",
+          "title": "Common mistake",
+          "body": "Judging a business by revenue alone. A company with $1 billion of sales can still lose money if its costs are higher than that."
+        }
+      ],
+      "checks": [
+        {
+          "prompt": "Revenue is $50,000 and COGS is $30,000. What is the gross margin?",
+          "choices": [
+            "30%",
+            "40%",
+            "60%",
+            "20%"
+          ],
+          "answer": 1,
+          "explanation": "($50,000 − $30,000) ÷ $50,000 = 40%."
+        },
+        {
+          "prompt": "Which line comes last on an income statement?",
+          "choices": [
+            "Revenue",
+            "Gross profit",
+            "Net income"
+          ],
+          "answer": 2,
+          "explanation": "Net income is the bottom line, after every cost."
+        }
+      ],
+      "reward": {
+        "xp": 50,
+        "cash": 10
+      }
+    },
+    {
+      "id": "adv-break-even",
+      "title": "Fixed Costs, Variable Costs and Break-Even",
+      "icon": "⚖️",
+      "terms": [
+        {
+          "id": "fixed-cost",
+          "term": "fixed cost",
+          "aka": [
+            "fixed costs"
+          ],
+          "def": "A cost that stays the same however much you sell, at least in the short run: rent, salaries, insurance.",
+          "example": "A stall's $500 monthly rent is the same whether it sells 10 or 1,000 dumplings."
+        },
+        {
+          "id": "variable-cost",
+          "term": "variable cost",
+          "aka": [
+            "variable costs",
+            "cost per unit",
+            "unit cost"
+          ],
+          "def": "A cost that rises with each unit sold: ingredients, packaging, fuel per delivery.",
+          "example": "Each dumpling needs $1.20 of ingredients."
+        },
+        {
+          "id": "contribution-margin",
+          "term": "contribution margin",
+          "aka": [
+            "unit margin",
+            "margin per unit"
+          ],
+          "def": "Price minus variable cost per unit: what each sale contributes toward fixed costs and then profit.",
+          "example": "Sell at $3 with a $1.20 variable cost and each sale contributes $1.80.",
+          "formula": "contribution margin = price − variable cost per unit"
+        },
+        {
+          "id": "break-even",
+          "term": "break-even",
+          "aka": [
+            "break even",
+            "break-even point",
+            "breakeven"
+          ],
+          "def": "The sales level where total revenue equals total cost, so profit is exactly zero.",
+          "example": "$900 of fixed costs ÷ $1.80 per unit = 500 units to break even.",
+          "formula": "break-even units = fixed costs ÷ (price − variable cost)"
+        }
+      ],
+      "cards": [
+        {
+          "kind": "idea",
+          "title": "Covering costs one sale at a time",
+          "body": "Some costs you pay no matter what (fixed), others you pay per item (variable). Each sale first covers its own variable cost; what's left, the contribution margin, chips away at fixed costs. Once fixed costs are covered, every further sale is profit."
+        },
+        {
+          "kind": "example",
+          "title": "A lemonade stand",
+          "body": "Fixed costs are $60 for the stand, sign and permit. Each cup costs $0.40 to make and sells for $1.00, a contribution margin of $0.60. Break-even = $60 ÷ $0.60 = 100 cups. From cup 101 on, each cup earns $0.60 of profit."
+        },
+        {
+          "kind": "formula",
+          "title": "The formulas",
+          "body": "Contribution margin = price − variable cost. Break-even units = fixed costs ÷ contribution margin. Profit = units × contribution margin − fixed costs. Break-even revenue = break-even units × price."
+        },
+        {
+          "kind": "mistake",
+          "title": "Common mistake",
+          "body": "Cutting the price to sell more without checking the margin. Dropping a $1.00 cup to $0.70 halves the margin to $0.30, so you need 200 cups, double the sales, just to break even."
+        }
+      ],
+      "checks": [
+        {
+          "prompt": "Fixed costs are $1,200, the price is $10 and the variable cost is $6. How many units to break even?",
+          "choices": [
+            "120",
+            "200",
+            "300",
+            "600"
+          ],
+          "answer": 2,
+          "explanation": "$1,200 ÷ ($10 − $6) = 300 units."
+        },
+        {
+          "prompt": "Which is a variable cost for a pizza shop?",
+          "choices": [
+            "Monthly rent",
+            "Cheese for each pizza",
+            "The manager's salary"
+          ],
+          "answer": 1,
+          "explanation": "Cheese rises with every pizza made; rent and salary don't."
+        }
+      ],
+      "reward": {
+        "xp": 50,
+        "cash": 10
+      }
+    },
+    {
+      "id": "adv-balance-sheet",
+      "title": "The Balance Sheet",
+      "icon": "📒",
+      "terms": [
+        {
+          "id": "balance-sheet",
+          "term": "balance sheet",
+          "aka": [
+            "balance sheets"
+          ],
+          "def": "A snapshot on one date of what a company owns, what it owes and what's left for the owners.",
+          "example": "It answers the question: how strong is the company's financial position today?",
+          "formula": "assets = liabilities + equity"
+        },
+        {
+          "id": "assets",
+          "term": "assets",
+          "aka": [
+            "asset",
+            "current assets"
+          ],
+          "def": "What a company or person owns that has value: cash, inventory, buildings, money owed by customers.",
+          "example": "A shop's cash, the stock on its shelves and its delivery van are assets."
+        },
+        {
+          "id": "liabilities",
+          "term": "liabilities",
+          "aka": [
+            "liability",
+            "current liabilities"
+          ],
+          "def": "What is owed to others: loans, unpaid bills, wages due.",
+          "example": "A bank loan and $3,000 owed to suppliers are liabilities."
+        },
+        {
+          "id": "equity",
+          "term": "equity",
+          "aka": [
+            "shareholders' equity",
+            "owner's equity",
+            "owners' equity"
+          ],
+          "def": "What would be left for the owners if all assets were sold and all liabilities paid.",
+          "example": "Assets of $50,000 − liabilities of $30,000 = $20,000 of equity.",
+          "formula": "equity = assets − liabilities"
+        },
+        {
+          "id": "current-ratio",
+          "term": "current ratio",
+          "def": "Current assets divided by current liabilities: can the company pay the bills due within a year? Above about 1.5 is comfortable; below 1 is a warning.",
+          "example": "$300,000 of current assets ÷ $200,000 of current liabilities = 1.5.",
+          "formula": "current ratio = current assets ÷ current liabilities"
+        },
+        {
+          "id": "debt-to-equity",
+          "term": "debt-to-equity",
+          "aka": [
+            "D/E",
+            "debt to equity",
+            "leverage"
+          ],
+          "def": "Total debt divided by equity: how much the business relies on borrowed money. Higher means more risk if things go wrong.",
+          "example": "$600,000 of debt on $400,000 of equity is a debt-to-equity of 1.5.",
+          "formula": "debt-to-equity = total debt ÷ equity"
+        }
+      ],
+      "cards": [
+        {
+          "kind": "idea",
+          "title": "A snapshot that must balance",
+          "body": "The balance sheet shows on one day what the company owns (assets), what it owes (liabilities) and what's left for the owners (equity). It always balances: assets = liabilities + equity. Ratios then tell you how safe it is."
+        },
+        {
+          "kind": "example",
+          "title": "A bakery's balance sheet",
+          "body": "It owns cash $20,000, flour and stock $5,000 and ovens $75,000: assets $100,000. It owes a $50,000 loan and $10,000 to suppliers: liabilities $60,000. Equity = $40,000. Current ratio = ($20,000 + $5,000) ÷ $10,000 = 2.5. Debt-to-equity = $50,000 ÷ $40,000 = 1.25."
+        },
+        {
+          "kind": "formula",
+          "title": "The rules",
+          "body": "Assets = liabilities + equity. Current ratio = current assets ÷ current liabilities. Debt-to-equity = total debt ÷ equity. 'Current' means due, or usable as cash, within a year."
+        },
+        {
+          "kind": "mistake",
+          "title": "Common mistake",
+          "body": "Thinking equity is cash. Equity is just the gap between assets and liabilities. A company can have lots of equity tied up in buildings and still run out of cash."
+        }
+      ],
+      "checks": [
+        {
+          "prompt": "Assets are $80,000 and liabilities are $50,000. What is equity?",
+          "choices": [
+            "$130,000",
+            "$30,000",
+            "$50,000"
+          ],
+          "answer": 1,
+          "explanation": "$80,000 − $50,000 = $30,000."
+        },
+        {
+          "prompt": "A company's current ratio is 0.8. What does that suggest?",
+          "choices": [
+            "It is very safe",
+            "It may struggle to pay the bills due this year",
+            "It has no debt"
+          ],
+          "answer": 1,
+          "explanation": "Its current assets don't cover its current liabilities."
+        },
+        {
+          "prompt": "Which of these is a liability?",
+          "choices": [
+            "Inventory",
+            "A bank loan",
+            "Cash"
+          ],
+          "answer": 1,
+          "explanation": "A loan is money owed, so it's a liability."
+        }
+      ],
+      "reward": {
+        "xp": 60,
+        "cash": 15
+      }
+    },
+    {
+      "id": "adv-cash-flow",
+      "title": "Profit Is Not Cash",
+      "icon": "💸",
+      "terms": [
+        {
+          "id": "cash-flow",
+          "term": "cash flow",
+          "aka": [
+            "cash flows",
+            "operating cash flow",
+            "cash from operations"
+          ],
+          "def": "The cash actually coming in and going out over a period. A profitable business can still run out of cash.",
+          "example": "You book a $10,000 sale today, but the customer pays in 90 days: profit now, cash later."
+        },
+        {
+          "id": "accounts-receivable",
+          "term": "accounts receivable",
+          "aka": [
+            "receivables",
+            "receivable"
+          ],
+          "def": "Money customers owe for things already sold on credit.",
+          "example": "A clinic that has billed insurers $40,000 that hasn't been paid yet has $40,000 of receivables."
+        },
+        {
+          "id": "days-sales-outstanding",
+          "term": "days sales outstanding",
+          "aka": [
+            "DSO",
+            "days to collect",
+            "slow-paying customers"
+          ],
+          "def": "How many days, on average, customers take to pay. A rising number can mean customers are struggling or sales are being stretched.",
+          "example": "$90,000 receivable on $365,000 of yearly sales is 90 days.",
+          "formula": "DSO = receivables ÷ yearly revenue × 365"
+        },
+        {
+          "id": "free-cash-flow",
+          "term": "free cash flow",
+          "aka": [
+            "FCF"
+          ],
+          "def": "Cash from operations minus spending on equipment and buildings: the cash a business could hand to its owners.",
+          "example": "Operating cash flow $5M − capital spending $2M = $3M of free cash flow.",
+          "formula": "FCF = operating cash flow − capital expenditures"
+        },
+        {
+          "id": "earnings-quality",
+          "term": "quality of earnings",
+          "aka": [
+            "earnings quality",
+            "profits that never turn into cash"
+          ],
+          "def": "How well reported profit is backed by real cash. Profit that never turns into cash is a warning sign.",
+          "example": "Profits up 40% while operating cash flow is negative: low quality earnings."
+        },
+        {
+          "id": "insider-selling",
+          "term": "insider selling",
+          "aka": [
+            "insiders selling",
+            "insider sales",
+            "insiders sold"
+          ],
+          "def": "Executives and directors selling their own company's shares. Heavy selling during hype can be a warning, though insiders also sell for ordinary reasons.",
+          "example": "The CEO sells 60% of their shares the month after announcing record results."
+        }
+      ],
+      "cards": [
+        {
+          "kind": "idea",
+          "title": "Two different scoreboards",
+          "body": "Accounting records a sale when it happens, even if the customer pays months later, so profit and cash can drift apart. Healthy companies turn profit into cash. Companies that show profits but burn cash, with receivables piling up, are the ones short sellers look at."
+        },
+        {
+          "kind": "example",
+          "title": "Profitable and nearly broke",
+          "body": "A vet clinic earns $50,000 of profit this month, but $45,000 of its bills are owed by insurers who pay in 60 days. It still has to pay wages and rent now. Without enough cash in the bank, it could miss payroll despite being profitable."
+        },
+        {
+          "kind": "formula",
+          "title": "Checks to run",
+          "body": "Free cash flow = operating cash flow − capital expenditures. Days sales outstanding = receivables ÷ annual revenue × 365. Compare net income with operating cash flow: big, lasting gaps need explaining."
+        },
+        {
+          "kind": "mistake",
+          "title": "Common mistake",
+          "body": "Celebrating profits while the bank account shrinks. Staff, suppliers and lenders are paid in cash, not profit."
+        }
+      ],
+      "checks": [
+        {
+          "prompt": "A company reports rising profits, but its operating cash flow is negative and receivables keep growing. What's the concern?",
+          "choices": [
+            "Nothing, profit is what matters",
+            "Customers may not be paying, so the earnings may be low quality"
+          ],
+          "answer": 1,
+          "explanation": "Profit that never arrives as cash is a classic warning sign."
+        },
+        {
+          "prompt": "Operating cash flow is $8M and capital expenditures are $3M. What is free cash flow?",
+          "choices": [
+            "$11M",
+            "$5M",
+            "$3M"
+          ],
+          "answer": 1,
+          "explanation": "$8M − $3M = $5M."
+        }
+      ],
+      "reward": {
+        "xp": 50,
+        "cash": 10
+      }
+    },
+    {
+      "id": "adv-retail-metrics",
+      "title": "Inventory and Retail Metrics",
+      "icon": "🛍",
+      "terms": [
+        {
+          "id": "inventory-turnover",
+          "term": "inventory turnover",
+          "aka": [
+            "stock turnover",
+            "inventory turns",
+            "turns"
+          ],
+          "def": "How many times a year a business sells through its average inventory. Higher usually means fresher stock and less cash tied up.",
+          "example": "COGS of $1.2M ÷ average inventory of $200,000 = 6 turns a year.",
+          "formula": "inventory turnover = COGS ÷ average inventory"
+        },
+        {
+          "id": "days-of-inventory",
+          "term": "days of inventory",
+          "aka": [
+            "days inventory",
+            "DIO",
+            "days in inventory"
+          ],
+          "def": "How many days the average item sits before it's sold.",
+          "example": "6 turns a year means 365 ÷ 6 ≈ 61 days of inventory.",
+          "formula": "days of inventory = 365 ÷ inventory turnover"
+        },
+        {
+          "id": "same-store-sales",
+          "term": "same-store sales",
+          "aka": [
+            "like-for-like sales",
+            "comparable sales",
+            "comp sales"
+          ],
+          "def": "Sales growth at stores open at least a year, ignoring new stores. It shows whether existing shops are really selling more.",
+          "example": "Total sales up 10% but same-store sales down 3%: growth only comes from opening new stores."
+        },
+        {
+          "id": "carrying-cost",
+          "term": "carrying cost",
+          "aka": [
+            "holding cost",
+            "carrying costs",
+            "inventory carrying"
+          ],
+          "def": "The cost of holding stock: storage, insurance, spoilage and the cash tied up. Often 20 to 30% of the stock's value a year.",
+          "example": "$100,000 of goods held for a year at a 25% carrying cost costs $25,000.",
+          "formula": "carrying cost = value × yearly rate × days ÷ 365"
+        }
+      ],
+      "cards": [
+        {
+          "kind": "idea",
+          "title": "Cash sitting on shelves",
+          "body": "For shops and suppliers, cash sits on the shelves as inventory. The faster it sells, the less it costs to hold and the smaller the risk it goes out of fashion. Turnover and days of inventory measure that speed; same-store sales show whether the core business is growing."
+        },
+        {
+          "kind": "example",
+          "title": "Two chains",
+          "body": "Chain A: COGS $600M, inventory $100M, so 6 turns, about 61 days. Chain B: COGS $600M, inventory $200M, so 3 turns, about 122 days. Chain B ties up twice the cash in stock and faces more markdowns."
+        },
+        {
+          "kind": "formula",
+          "title": "The ratios",
+          "body": "Inventory turnover = COGS ÷ average inventory. Days of inventory = 365 ÷ turnover. Carrying cost ≈ inventory value × yearly carrying rate × years held."
+        },
+        {
+          "kind": "mistake",
+          "title": "Common mistake",
+          "body": "Comparing total sales growth across chains without checking same-store sales. Opening lots of new stores can hide a shrinking core business."
+        }
+      ],
+      "checks": [
+        {
+          "prompt": "COGS is $900,000 and average inventory is $150,000. What is inventory turnover?",
+          "choices": [
+            "1.5",
+            "6",
+            "9",
+            "60"
+          ],
+          "answer": 1,
+          "explanation": "$900,000 ÷ $150,000 = 6 times a year."
+        },
+        {
+          "prompt": "With 4 turns a year, about how many days does stock sit?",
+          "choices": [
+            "4",
+            "30",
+            "91",
+            "365"
+          ],
+          "answer": 2,
+          "explanation": "365 ÷ 4 ≈ 91 days."
+        }
+      ],
+      "reward": {
+        "xp": 50,
+        "cash": 10
+      }
+    }
+  ]
+}
