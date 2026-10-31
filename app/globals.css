@@ -2073,3 +2073,10 @@ button.item-card { cursor: pointer; }
 .lb-name { font-weight: 800; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .lb-level { color: #4a5672; font-size: 0.76rem; font-weight: 800; }
 .lb-nw { font-weight: 800; color: #2f8a4a; }
+.rating-stars { display: flex; gap: 4px; }
+.rating-star { padding: 2px 4px; background: none; border: 0; cursor: pointer; font-size: 2rem; line-height: 1; filter: grayscale(1); opacity: 0.35; transition: transform 0.08s; }
+.rating-star.on { filter: none; opacity: 1; }
+.rating-star:hover { transform: translateY(-2px); }
+.rating-star:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+.rating-review { display: flex; flex-direction: column; align-items: stretch; gap: 4px; width: 100%; text-align: left; }
+.rating-review textarea { width: 100%; resize: vertical; font-family: var(--font-body); font-size: 0.95rem; }

@@ -69,6 +69,8 @@ export interface UIStore {
   /** "Show me the way": a place the player picked (a building door or their home) that the guide
    * trail, beacon and Narwhal lead to, through portals if needed, until they arrive. */
   guide: { city: LocationId; trigger?: string; pos?: [number, number]; label: string } | null;
+  /** The rating and review form is open (asked for, or chosen from Pause). */
+  rating: boolean;
   setGuide: (g: UIStore['guide']) => void;
   setDecor: (d: UIStore['decor']) => void;
   setRun: (r: UIStore['run']) => void;
@@ -109,6 +111,7 @@ export const useUI = create<UIStore>((set, get) => ({
   tour: false,
   decor: null,
   guide: null,
+  rating: false,
   setGuide: (guide) => set({ guide }),
   setDecor: (decor) => set({ decor }),
   setRun: (run) => set({ run }),
