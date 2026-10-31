@@ -5,7 +5,8 @@ import { useGame, act } from '@/store/game';
 import { Button, Confirm, Modal, Toggle } from '../common';
 import { SettingsModal } from '../SettingsModal';
 import { quitToWorlds, saveNow } from '../startWorld';
-import { downloadText } from '@/save/db';
+import { downloadText, setGlobal } from '@/save/db';
+import { FEEDBACK_FORM } from '../hud/RatingPrompt';
 import { exportFileName, serializeWorld } from '@/save/format';
 import { capture } from '../startWorld';
 import { buildTeacherReport } from '@/game/progress/report';
@@ -83,6 +84,9 @@ export function PausePanel() {
             >
               🍎 Teacher/parent report
             </Button>
+            <a className="btn small gold" href={FEEDBACK_FORM} target="_blank" rel="noopener noreferrer" onClick={() => setGlobal('ratingPrompt', 'rated').catch(() => {})}>
+              ⭐ Rate & review
+            </a>
             <label className="tiny row" style={{ gap: 4, alignItems: 'center' }}>
               <input type="checkbox" checked={withNick} onChange={(e) => setWithNick(e.target.checked)} /> include nickname in report
             </label>
