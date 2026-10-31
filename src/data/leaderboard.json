@@ -1,0 +1,4 @@
+{
+  "_readme": "Paste the Google Sheet web app link (ends in /exec) between the quotes below. See docs/LEADERBOARD.md. Leave it empty to keep the leaderboard switched off.",
+  "url": ""
+}

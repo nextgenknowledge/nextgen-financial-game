@@ -17,6 +17,7 @@ import { CreditApp } from './apps/CreditApp';
 import { TaxesApp } from './apps/TaxesApp';
 import { NewsApp } from './apps/NewsApp';
 import { CalculatorApp } from './apps/CalculatorApp';
+import { LeaderboardApp } from './apps/LeaderboardApp';
 import { xpForLevel } from '@/game/progress/xp';
 import { netWorth } from '@/game/finance/netWorth';
 import { monthLabel } from '@/game/world';
@@ -40,6 +41,7 @@ export const APPS: AppDef[] = [
   { id: 'bag', name: 'My Stuff', icon: '🎒', color: '#8a5cf6' },
   { id: 'quests', name: 'Quests', icon: '📜', color: '#ff8a3d' },
   { id: 'badges', name: 'Badges', icon: '🏅', color: '#f06aa8' },
+  { id: 'leaderboard', name: 'Leaderboard', icon: '🏆', color: '#c9952a' },
   { id: 'news', name: 'News', icon: '📰', color: '#4a5672' },
   { id: 'credit', name: 'Credit', icon: '💳', color: '#1f4fae', advanced: true },
   { id: 'taxes', name: 'Taxes', icon: '🏛️', color: '#3a6b4a', advanced: true },
@@ -135,6 +137,7 @@ export function Phone({ app, arg }: { app?: string; arg?: string }) {
         {app === 'taxes' && <TaxesApp />}
         {app === 'news' && <NewsApp />}
         {app === 'calc' && <CalculatorApp />}
+        {app === 'leaderboard' && <LeaderboardApp />}
       </div>
         <button className="fp-home" onClick={() => (playSfx('click'), app ? open({ type: 'phone' }) : close())} aria-label={app ? 'Home' : 'Close FinPhone'} />
       </div>

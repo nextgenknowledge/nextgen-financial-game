@@ -2061,3 +2061,15 @@ button.item-card { cursor: pointer; }
   .concept-help-btn { bottom: calc(8px + var(--safe-b, 0px)); padding: 0.35rem 0.7rem; font-size: 0.8rem; }
   .concept-ask { bottom: calc(52px + var(--safe-b, 0px)); }
 }
+
+/* Leaderboard app */
+.lb-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.lb-row { display: grid; grid-template-columns: 2rem 1fr auto auto; align-items: center; gap: 0.5rem; padding: 0.35rem 0.5rem; background: #fbf6ea; border: 2px solid #0b1a3a; box-shadow: 2px 2px 0 #061233; font-size: 0.86rem; }
+.lb-row.me { background: #fff1b8; border-color: #c9952a; }
+.lb-rank { display: flex; align-items: center; justify-content: center; width: 1.7rem; height: 1.7rem; background: #0b1a3a; color: #fff; font-family: var(--font-pixel); font-weight: 700; }
+.lb-rank.r1 { background: #ffcf3f; color: #0b1a3a; }
+.lb-rank.r2 { background: #c9ced6; color: #0b1a3a; }
+.lb-rank.r3 { background: #c98a4a; color: #fff; }
+.lb-name { font-weight: 800; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lb-level { color: #4a5672; font-size: 0.76rem; font-weight: 800; }
+.lb-nw { font-weight: 800; color: #2f8a4a; }
