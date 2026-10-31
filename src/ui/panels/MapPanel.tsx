@@ -11,7 +11,8 @@ import { showTheWay } from '../goal';
 import { CITY_IDS, type LocationId } from '@/game/types';
 import { getCityMap } from '@/world/builders/sceneBuilder';
 import { playSfx } from '@/engine/audio';
-import { baseMap, buildingsPois, drawPin, worldToMap, type Poi } from '../map/pixelMap';
+import { baseMap, buildingsPois, drawPin, landmarkPois, worldToMap, type Poi } from '../map/pixelMap';
+import { mapContext, ownedHomes } from '../map/context';
 
 const ZOOM = 1; // canvas pixels per base-map pixel
 
@@ -40,6 +41,12 @@ export function MapPanel() {
   const data = useMemo(() => getCityMap(def, difficulty), [def, difficulty]);
   const pois = useMemo(() => buildingsPois(def), [def]);
   const here = view === location && !interior;
+  // Landmarks, building sites and the player's own homes
+  const world = useGame((s) => s.world!);
+  const myHomes = useMemo(() => ownedHomes(world, location), [world, location]);
+  const ctx = useMemo(() => mapContext(world, myHomes, view), [world, myHomes, view]);
+  const extras = useMemo(() => landmarkPois(def, ctx), [def, ctx]);
+  const allPois = useMemo(() => [...extras, ...pois], [extras, pois]);
 
   useEffect(() => {
     const c = ref.current;
@@ -58,13 +65,17 @@ export function MapPanel() {
       const v = P(pt.pos[0], pt.pos[1]);
       drawPin(g, 'portal', '#6a3fd0', v.x, v.y, 1.5);
     }
-    // Points of interest
+    // Landmarks and homes (a little smaller), then buildings on top
+    for (const poi of extras) {
+      const v = P(poi.x, poi.z);
+      drawPin(g, poi.glyph, poi.color, v.x, v.y, hover === poi.id ? 1.8 : poi.id.startsWith('home:') ? 1.5 : 1.2);
+    }
     for (const poi of pois) {
       const v = P(poi.x, poi.z);
       drawPin(g, poi.glyph, poi.color, v.x, v.y, hover === poi.id ? 2 : 1.5);
     }
     // Labels for the hovered place, in the pixel font on a dark tag
-    const hp = pois.find((p) => p.id === hover);
+    const hp = allPois.find((p) => p.id === hover);
     if (hp) {
       const v = P(hp.x, hp.z);
       g.font = "800 17px 'Montserrat', 'Nunito', sans-serif";
@@ -111,7 +122,7 @@ export function MapPanel() {
         g.fillRect(gv.x - 6, gv.y - 6, 12, 12);
       }
     }
-  }, [def, data, pois, hover, here]);
+  }, [def, data, pois, extras, allPois, hover, here]);
 
   const poiAt = (e: React.MouseEvent<HTMLCanvasElement>) => {
     const c = ref.current!;
@@ -120,7 +131,7 @@ export function MapPanel() {
     const py = ((e.clientY - rect.top) / rect.height) * c.height;
     let best: Poi | null = null;
     let bd = 22;
-    for (const p of pois) {
+    for (const p of allPois) {
       const m = worldToMap(data, p.x, p.z);
       const d = Math.hypot(m.x * ZOOM - px, m.y * ZOOM - py);
       if (d < bd) {
@@ -133,13 +144,37 @@ export function MapPanel() {
 
   const goTo = (id: string) => {
     if (!here) return;
-    const t = rt.triggers.find((x) => x.id === `door:${id}`);
-    if (t) {
+    // A building's door, your home's door, or just beside a landmark
+    const t = rt.triggers.find((x) => x.id === (id.startsWith('home:') ? id : `door:${id}`));
+    const lm = extras.find((p) => p.id === id);
+    if (t || lm) {
       playSfx('whoosh');
-      rt.teleport(t.x, t.z);
+      if (t) rt.teleport(t.x, t.z);
+      else if (lm) rt.teleport(lm.x, lm.z + 5);
       close();
     }
   };
+  /** Where Show the way should lead for a pin. */
+  const target = (p: Poi): string | [number, number] => (p.id.startsWith('home:') ? p.id : p.id.startsWith('lm:') ? [p.x, p.z + 5] : `door:${p.id}`);
+  const row = (p: Poi, blurb?: string) => (
+    <div key={p.id} className="map-place-row">
+      <button className={`map-place ${hover === p.id ? 'on' : ''}`} onMouseEnter={() => setHover(p.id)} onMouseLeave={() => setHover(null)} onClick={() => goTo(p.id)} disabled={!here} title={here ? 'Jump straight there' : undefined}>
+        <GlyphIcon poi={p} />
+        <span className="col" style={{ alignItems: 'flex-start', minWidth: 0 }}>
+          <b className="small">{p.name}</b>
+          {blurb && <span className="muted tiny">{blurb}</span>}
+        </span>
+      </button>
+      {unlocked.includes(view) && (
+        <Button size="small" onClick={() => showTheWay(view, target(p), p.name.replace(/^Your home: /, ''))} title="Narwhal and the gold trail lead you there">
+          🧭 Show the way
+        </Button>
+      )}
+    </div>
+  );
+  const homesHere = extras.filter((p) => p.id.startsWith('home:'));
+  const homesElsewhere = myHomes.filter((h) => h.city === view && h.x === undefined);
+  const sights = extras.filter((p) => !p.id.startsWith('home:'));
 
   return (
     <Modal onClose={close} title="🗺️ City Map" size="full">
@@ -174,29 +209,40 @@ export function MapPanel() {
           </h3>
           <span className="muted small">{CITY_META[view].theme}</span>
           <span className="small">
-            {here ? 'Click a place to jump straight to its door, or pick Show the way and follow the gold trail.' : 'Pick Show the way and Narwhal leads you there, through the portal.'}
+            {here ? 'Click a place to jump straight there, or pick Show the way and follow the gold trail.' : 'Pick Show the way and Narwhal leads you there, through the portal.'}
           </span>
-          <div className="col" style={{ gap: '0.3rem' }}>
-            {pois.map((p) => {
-              const b = def.buildings.find((x) => x.id === p.id)!;
-              return (
-                <div key={p.id} className="map-place-row">
-                  <button className={`map-place ${hover === p.id ? 'on' : ''}`} onMouseEnter={() => setHover(p.id)} onMouseLeave={() => setHover(null)} onClick={() => goTo(p.id)} disabled={!here} title={here ? 'Jump straight to the door' : undefined}>
-                    <GlyphIcon poi={p} />
+          {(homesHere.length > 0 || homesElsewhere.length > 0) && (
+            <div className="col" style={{ gap: '0.3rem' }}>
+              <b className="small map-section">Your homes</b>
+              {homesHere.map((p) => row(p, 'Its front door says Go home.'))}
+              {homesElsewhere.map((h) => (
+                <div key={h.uid} className="map-place-row">
+                  <span className="map-place">
+                    <GlyphIcon poi={{ glyph: 'key', color: '#c9952a' }} />
                     <span className="col" style={{ alignItems: 'flex-start', minWidth: 0 }}>
-                      <b className="small">{p.name}</b>
-                      <span className="muted tiny">{b.blurb}</span>
+                      <b className="small">Your home: {h.name}</b>
+                      <span className="muted tiny">Its door appears on the map once you are in {CITY_META[view].name}.</span>
                     </span>
-                  </button>
+                  </span>
                   {unlocked.includes(view) && (
-                    <Button size="small" onClick={() => showTheWay(view, `door:${p.id}`, p.name)} title="Narwhal and the gold trail lead you there">
+                    <Button size="small" onClick={() => showTheWay(view, `home:${h.uid}`, h.name)}>
                       🧭 Show the way
                     </Button>
                   )}
                 </div>
-              );
-            })}
+              ))}
+            </div>
+          )}
+          <div className="col" style={{ gap: '0.3rem' }}>
+            <b className="small map-section">Buildings</b>
+            {pois.map((p) => row(p, def.buildings.find((x) => x.id === p.id)?.blurb))}
           </div>
+          {sights.length > 0 && (
+            <div className="col" style={{ gap: '0.3rem' }}>
+              <b className="small map-section">Landmarks and places</b>
+              {sights.map((p) => row(p))}
+            </div>
+          )}
           {view !== location && (
             <Button variant="gold" size="big" disabled={!unlocked.includes(view)} onClick={() => travelTo(view)}>
               {unlocked.includes(view) ? `🌀 Travel to ${CITY_META[view].name}` : '🔒 Locked, follow Narwhal’s quests'}

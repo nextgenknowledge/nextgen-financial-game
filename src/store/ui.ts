@@ -68,7 +68,7 @@ export interface UIStore {
   decor: { home: string; carrying: string | null; rot: number } | null;
   /** "Show me the way": a place the player picked (a building door or their home) that the guide
    * trail, beacon and Narwhal lead to, through portals if needed, until they arrive. */
-  guide: { city: LocationId; trigger: string; label: string } | null;
+  guide: { city: LocationId; trigger?: string; pos?: [number, number]; label: string } | null;
   setGuide: (g: UIStore['guide']) => void;
   setDecor: (d: UIStore['decor']) => void;
   setRun: (r: UIStore['run']) => void;

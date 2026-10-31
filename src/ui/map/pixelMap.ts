@@ -17,6 +17,7 @@ import type { CityMapData } from '@/world/builders/sceneBuilder';
 import { footprint } from '@/world/builders/sceneBuilder';
 import { streetName } from '@/world/builders/cityKit';
 import { drawIcon, type IconName } from '../icons/pixelIcons';
+import property from '@/data/shop/property.json';
 
 export const PPM = 3; // map pixels per world metre
 const MARGIN = 14; // metres of border around the playable area
@@ -272,6 +273,27 @@ export function baseMap(def: CityDef, data: CityMapData) {
         }
   }
 
+  // ── The park's home neighbourhood: its street, the house lots and their picket fences ──
+  const hood = def.landmarks?.find((l) => l.type === 'neighborhood');
+  if (hood) {
+    const [hx, hz] = hood.pos;
+    g.fillStyle = st.road;
+    rect(hx - 4, hz - 42, hx + 4, hz + 42);
+    g.fillStyle = 'rgba(255,255,255,0.7)';
+    for (let z = hz - 40; z < hz + 40; z += 4) rect(hx - 0.15, z, hx + 0.15, z + 2);
+    for (const pl of property.plots) {
+      const x = hx + pl.pos[0];
+      const z = hz + pl.pos[1];
+      g.fillStyle = '#8fd06a';
+      rect(x - 8, z - 8, x + 8, z + 8);
+      g.fillStyle = '#f4f1ea';
+      rect(x - 8, z - 8, x + 8, z - 7.6);
+      rect(x - 8, z + 7.6, x + 8, z + 8);
+      const back = x > hx ? x + 7.6 : x - 8;
+      rect(back, z - 8, back + 0.4, z + 8);
+    }
+  }
+
   // ── Paths and plazas ──
   for (const p of data.paths) {
     g.strokeStyle = data.isCity ? '#cfc4ac' : '#dccca6';
@@ -518,6 +540,72 @@ export function worldToMap(data: CityMapData, x: number, z: number) {
 
 export function buildingsPois(def: CityDef) {
   return def.buildings.map(poiFor);
+}
+
+/**
+ * Landmarks worth finding on the map, with fictional names. Small street props (benches,
+ * billboards, phone boxes, flowerbeds, food carts) are left off so the map stays readable.
+ */
+const LANDMARK_POI: Record<string, { name: string; glyph: IconName; color: string }> = {
+  fountain: { name: 'Fountain Plaza', glyph: 'star', color: '#2a7a9a' },
+  'narwhal-statue': { name: 'Narwhal Statue', glyph: 'trophy', color: '#2a7a9a' },
+  'hall-of-fame-board': { name: 'Hall of Fame Board', glyph: 'trophy', color: '#c9952a' },
+  'job-board': { name: 'Odd Jobs Board', glyph: 'briefcase', color: '#3f4a5a' },
+  bandstand: { name: 'Bandstand', glyph: 'mic', color: '#c93b8a' },
+  playground: { name: 'Playground', glyph: 'star', color: '#c96a2a' },
+  garden: { name: 'Flower Garden', glyph: 'flower', color: '#3f7a3a' },
+  'ferris-wheel': { name: 'Ferris Wheel', glyph: 'star', color: '#c93b8a' },
+  dock: { name: 'Boat Dock', glyph: 'pin', color: '#2b5ba8' },
+  neighborhood: { name: 'Maple Lane & Oak Street Homes', glyph: 'house', color: '#7a5a3a' },
+  'liberty-torch': { name: 'Harbor Torch Statue', glyph: 'trophy', color: '#2f8a6a' },
+  'deco-spire': { name: 'Deco Spire Tower', glyph: 'office', color: '#5a5f66' },
+  'bull-bear': { name: 'Bull and Bear Statues', glyph: 'chart_up', color: '#2f8a4a' },
+  bridge: { name: 'Harbor Bridge', glyph: 'pin', color: '#5a5f66' },
+  'clock-tower': { name: 'Clock Tower', glyph: 'office', color: '#8a6a3a' },
+  'big-wheel': { name: 'Big Wheel', glyph: 'star', color: '#c93b8a' },
+  'tower-bridge': { name: 'Twin Tower Bridge', glyph: 'pin', color: '#5a5f66' },
+  'double-decker': { name: 'Bus Stop', glyph: 'truck', color: '#b3261e' },
+  statue: { name: 'Plaza Statue', glyph: 'trophy', color: '#5a5f66' },
+  'triangle-tower': { name: 'Triangle Tower', glyph: 'office', color: '#5a5f66' },
+  gate: { name: 'Lantern Gate', glyph: 'lantern', color: '#b3261e' },
+  'lantern-street': { name: 'Lantern Street', glyph: 'lantern', color: '#b3261e' },
+  'peak-hill': { name: 'Peak Lookout', glyph: 'tree', color: '#3f7a3a' },
+  'pyramid-tower': { name: 'Pyramid Tower', glyph: 'office', color: '#5a5f66' },
+  'cable-car': { name: 'Cable Car Line', glyph: 'truck', color: '#b3261e' },
+  'marina-towers': { name: 'Marina Towers', glyph: 'office', color: '#2a6a8a' },
+  supertrees: { name: 'Supertree Grove', glyph: 'tree', color: '#3f7a3a' },
+  'lionfish-fountain': { name: 'Lionfish Fountain', glyph: 'star', color: '#2a7a9a' },
+  'hawker-center': { name: 'Hawker Centre', glyph: 'bowl', color: '#c96a2a' },
+};
+
+/** Small props deliberately left off the map (tests check every landmark is in one list or the other). */
+export const MAP_SKIPPED_LANDMARKS = new Set(['bench', 'billboard', 'phone-box', 'flowerbeds', 'food-cart', 'cable-car-track', 'construction']);
+export const MAP_LANDMARKS = new Set(Object.keys(LANDMARK_POI));
+
+/** Community projects that show as building sites until funded at Town Hall. */
+export interface MapContext {
+  /** Landmark types still under construction (not yet funded). */
+  building: Set<string>;
+  /** Homes the player owns in this city, with where their front door is. */
+  homes: { uid: string; name: string; x: number; z: number }[];
+}
+
+export function landmarkPois(def: CityDef, ctx: MapContext): Poi[] {
+  const out: Poi[] = [];
+  const seen = new Set<string>();
+  for (const lm of def.landmarks ?? []) {
+    const info = LANDMARK_POI[lm.type];
+    if (!info) continue;
+    // One pin per kind (two lantern streets read as one place)
+    if (seen.has(lm.type) && lm.type !== 'statue') continue;
+    seen.add(lm.type);
+    const name = lm.type === 'bridge' && lm.label === 'golden' ? 'Golden Strait Bridge' : lm.type === 'job-board' && lm.label ? `${lm.label} Board` : info.name;
+    const site = ctx.building.has(lm.type);
+    out.push({ id: `lm:${lm.type}:${lm.pos[0]},${lm.pos[1]}`, name: site ? `${name} (being built)` : name, glyph: site ? 'construction' : info.glyph, color: site ? '#c96a2a' : info.color, x: lm.pos[0], z: lm.pos[1] });
+  }
+  if (def.garage) out.push({ id: 'lm:garage', name: 'Car Parking', glyph: 'car', color: '#b3261e', x: def.garage[0], z: def.garage[1] });
+  for (const h of ctx.homes) out.push({ id: `home:${h.uid}`, name: `Your home: ${h.name}`, glyph: 'key', color: '#c9952a', x: h.x, z: h.z });
+  return out;
 }
 
 export { footprint };

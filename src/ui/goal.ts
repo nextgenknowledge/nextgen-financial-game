@@ -44,9 +44,9 @@ function trigger(id: string) {
 }
 
 /** Point the guide trail, beacon and Narwhal at a place until the player gets there. */
-export function showTheWay(city: LocationId, triggerId: string, label: string) {
+export function showTheWay(city: LocationId, target: string | [number, number], label: string) {
   const ui = useUI.getState();
-  ui.setGuide({ city, trigger: triggerId, label });
+  ui.setGuide(typeof target === 'string' ? { city, trigger: target, label } : { city, pos: target, label });
   ui.closeAll();
   ui.pushToast({ text: `Follow the gold trail to ${label}`, icon: '🧭', tone: 'gold' });
   updateGoalMarker();
@@ -82,9 +82,11 @@ function guideGoal(): boolean {
   const scene = useScene.getState();
   const here = scene.location;
   const inside = scene.interior;
-  // Arrived: inside that building or home, or standing at its door
-  const t = here === g.city ? trigger(g.trigger) : null;
-  if ((inside && (g.trigger === `door:${inside}` || g.trigger === inside)) || (t && !inside && Math.hypot(t.x - rt.player.x, t.z - rt.player.z) < 3.5)) {
+  // Arrived: inside that building or home, or standing at its door (or near a landmark)
+  const tr = here === g.city && g.trigger ? trigger(g.trigger) : null;
+  const t = tr ?? (here === g.city && g.pos ? { id: 'guide', x: g.pos[0], z: g.pos[1] } : null);
+  const reach = tr ? 3.5 : 8;
+  if ((inside && g.trigger && (g.trigger === `door:${inside}` || g.trigger === inside)) || (t && !inside && Math.hypot(t.x - rt.player.x, t.z - rt.player.z) < reach)) {
     ui.setGuide(null);
     return false;
   }

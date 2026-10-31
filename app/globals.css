@@ -1897,3 +1897,4 @@ button.item-card { cursor: pointer; }
 .rating-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; }
 .rating-actions a.btn { text-decoration: none; display: inline-flex; align-items: center; }
 .pause-panel a.btn, .modal a.btn.small { text-decoration: none; display: inline-flex; align-items: center; }
+.map-section { margin-top: 0.5rem; color: #4a5672; text-transform: uppercase; letter-spacing: 0.06em; font-size: 0.72rem; }

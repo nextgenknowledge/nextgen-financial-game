@@ -6,7 +6,9 @@ import { useGame } from '@/store/game';
 import { rt } from '@/engine/runtime';
 import { CITIES } from '@/world/cities';
 import { getCityMap } from '@/world/builders/sceneBuilder';
-import { baseMap, buildingsPois, drawPin, worldToMap } from '../map/pixelMap';
+import { baseMap, buildingsPois, drawPin, landmarkPois, worldToMap } from '../map/pixelMap';
+import { mapContext, ownedHomes } from '../map/context';
+import { getWorld } from '@/store/game';
 
 const VIEW = 198; // base-map pixels shown across the minimap (≈66 m)
 
@@ -38,10 +40,13 @@ export function Minimap() {
         const m = worldToMap(data, x, z);
         return { x: (m.x - p.x) * k + W / 2, y: (m.y - p.y) * k + W / 2 };
       };
-      for (const poi of pois) {
+      // Landmarks and your homes, then buildings on top
+      const w = getWorld();
+      const extras = w ? landmarkPois(def, mapContext(w, ownedHomes(w, location), location)) : [];
+      for (const poi of [...extras, ...pois]) {
         const v = toView(poi.x, poi.z);
         if (v.x < -10 || v.y < -10 || v.x > W + 10 || v.y > W + 10) continue;
-        drawPin(g, poi.glyph, poi.color, v.x, v.y, 0.8);
+        drawPin(g, poi.glyph, poi.color, v.x, v.y, poi.id.startsWith('lm:') ? 0.65 : 0.8);
       }
       for (const pt of def.portals) {
         const v = toView(pt.pos[0], pt.pos[1]);
