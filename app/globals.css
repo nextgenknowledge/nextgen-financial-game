@@ -1887,3 +1887,13 @@ button.item-card { cursor: pointer; }
 @media (min-height: 501px) and (orientation: landscape) {
   .hud.classic:has(.joystick) .quick-apps { top: calc(66px + var(--safe-t, 0px)); }
 }
+
+/* "Having fun?" rating pop-up */
+.modal.rating-prompt { max-width: 440px; }
+.rating-body { display: flex; flex-direction: column; align-items: center; gap: 0.6rem; text-align: center; }
+.rating-body p { margin: 0; font-size: 1.02rem; font-weight: 700; color: var(--ink); }
+.rating-face { width: 72px; height: 72px; image-rendering: pixelated; }
+.rating-stars { font-size: 1.7rem; letter-spacing: 0.15em; }
+.rating-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; }
+.rating-actions a.btn { text-decoration: none; display: inline-flex; align-items: center; }
+.pause-panel a.btn, .modal a.btn.small { text-decoration: none; display: inline-flex; align-items: center; }
