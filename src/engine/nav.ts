@@ -87,7 +87,11 @@ export function findPath(c: CollisionWorld, sceneKey: string, fx: number, fz: nu
   const s0 = toCell(fx, fz);
   const e0 = toCell(tx, tz);
   const s = nearestOpen(g, s0[0], s0[1]);
-  const e = e0;
+  // A goal inside something solid (a pet's spot behind a player standing on the fountain or a
+  // garden bed) is moved to the nearest open cell; otherwise the search could never end there
+  // and would scan the whole city.
+  const inside = e0[0] >= 0 && e0[1] >= 0 && e0[0] < g.nx && e0[1] < g.nz && g.blocked[e0[1] * g.nx + e0[0]];
+  const e = (inside && nearestOpen(g, e0[0], e0[1])) || e0;
   if (!s) return null;
   // Arriving anywhere within `reach` of the target counts (doors and counters trigger from a distance)
   const R = reach / CELL;
@@ -141,7 +145,9 @@ export function findPath(c: CollisionWorld, sceneKey: string, fx: number, fz: nu
   let found = false;
   let steps = 0;
   const closed = new Uint8Array(N);
-  while (hn.length && steps++ < N * 2) {
+  // Hard cap: a route that needs more than this is not worth a frame hitch (a few ms at most)
+  const maxSteps = Math.min(N * 2, 60000);
+  while (hn.length && steps++ < maxSteps) {
     const n = pop();
     if (closed[n]) continue;
     closed[n] = 1;

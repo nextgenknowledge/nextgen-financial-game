@@ -14,11 +14,16 @@ import { recordAnswer } from '@/game/progress/activities';
 export default function Startups({ params, onFinish, addReview, seed }: KindProps<{ pitches: number; real: boolean }>) {
   const w = useGame((s) => s.world!);
   const pitches = useMemo(() => makeRng(seed).shuffle([...STARTUPS]).slice(0, params.pitches), [seed, params.pitches]);
-  const budget = params.real ? Math.min(500, Math.floor(available(w))) : 100;
+  // Real money needs at least $50 of cash; with less, the round uses practice coins so it can
+  // still be played (new players start with $20, which couldn't buy even one $25 stake)
+  const [cashAtStart] = useState(() => Math.floor(available(w)));
+  const real = params.real && cashAtStart >= 50;
+  const practice = params.real && !real;
+  const budget = real ? Math.min(500, cashAtStart) : 100;
   const [alloc, setAlloc] = useState<Record<string, number>>({});
   const [done, setDone] = useState<null | { results: { id: string; mult: number }[]; score: number }>(null);
   const used = Object.values(alloc).reduce((a, b) => a + b, 0);
-  const step = params.real ? 25 : 10;
+  const step = real ? 25 : 10;
 
   const submit = () => {
     const rng = makeRng(seed + 99);
@@ -35,7 +40,7 @@ export default function Startups({ params, onFinish, addReview, seed }: KindProp
       addReview?.({ q: `${p.icon} ${p.name}: ${p.pitch}`, ok: q >= 0.5 ? v > 0 : v === 0, answer: q >= 0.5 ? 'Promising fundamentals' : q < 0.1 ? 'Red flags, likely a scam or fad' : 'Weak fundamentals', explanation: p.facts.join(' · ') });
       act((d, fx) => recordAnswer(d, fx, { id: `startup:${p.id}`, topic: 'investing' }, q >= 0.5 ? v > 0 : v === 0));
     }
-    if (params.real) {
+    if (real) {
       act((d, fx) => {
         const r = makeRng(seed + 5);
         for (const [id, v] of picks) investStartup(d, fx, id, v, r);
@@ -77,12 +82,13 @@ export default function Startups({ params, onFinish, addReview, seed }: KindProp
     <div className="col" style={{ gap: 10 }}>
       <div className="row between wrap">
         <b>
-          {params.real ? `Invest real money (up to ${money(budget, { cents: false })})` : 'You have 100 play-coins to invest'}
+          {real ? `Invest real money (up to ${money(budget, { cents: false })})` : 'You have 100 play-coins to invest'}
         </b>
         <span className={`bold ${used > budget ? 'bad' : ''}`}>
-          Used: {params.real ? money(used, { cents: false }) : used} / {params.real ? money(budget, { cents: false }) : budget}
+          Used: {real ? money(used, { cents: false }) : used} / {real ? money(budget, { cents: false }) : budget}
         </span>
       </div>
+      {practice && <div className="card flat small">You need at least $50 of cash to back startups for real, so this round uses 100 practice coins. Earn more at a job and come back to invest for real!</div>}
       <div className="item-grid" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(230px, 1fr))' }}>
         {pitches.map((p) => (
           <div key={p.id} className="item-card" style={{ alignItems: 'stretch', textAlign: 'left' }}>
@@ -101,7 +107,7 @@ export default function Startups({ params, onFinish, addReview, seed }: KindProp
               <Button size="small" onClick={() => setAlloc({ ...alloc, [p.id]: Math.max(0, (alloc[p.id] ?? 0) - step) })}>
                 −
               </Button>
-              <b className="mono">{params.real ? money(alloc[p.id] ?? 0, { cents: false }) : alloc[p.id] ?? 0}</b>
+              <b className="mono">{real ? money(alloc[p.id] ?? 0, { cents: false }) : alloc[p.id] ?? 0}</b>
               <Button size="small" disabled={used + step > budget} onClick={() => setAlloc({ ...alloc, [p.id]: (alloc[p.id] ?? 0) + step })}>
                 +
               </Button>
@@ -110,7 +116,7 @@ export default function Startups({ params, onFinish, addReview, seed }: KindProp
         ))}
       </div>
       <Button variant="gold" size="big" disabled={used > budget} onClick={submit}>
-        {used === 0 ? 'Skip all pitches' : params.real ? 'Invest for real 💸' : 'Invest! 🚀'}
+        {used === 0 ? 'Skip all pitches' : real ? 'Invest for real 💸' : 'Invest! 🚀'}
       </Button>
     </div>
   );

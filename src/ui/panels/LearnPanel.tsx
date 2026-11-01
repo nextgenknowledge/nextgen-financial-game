@@ -54,7 +54,7 @@ export function LearnPanel({ topic, tab: initial, lessonId }: { topic?: string; 
       {advLesson ? (
         <AdvLessonReader key={advLesson.id} lesson={advLesson} onDone={() => setAdvLesson(null)} onNext={(l) => setAdvLesson(l)} />
       ) : lesson ? (
-        <LessonReader lesson={lesson} onDone={() => setLesson(null)} onNext={(l) => setLesson(l)} />
+        <LessonReader key={lesson.id} lesson={lesson} onDone={() => setLesson(null)} onNext={(l) => setLesson(l)} />
       ) : (
         <>
           {!entry && (

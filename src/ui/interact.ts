@@ -99,6 +99,9 @@ export function enterHome(propUid: string) {
 
 export function exitBuilding() {
   const scene = useScene.getState();
+  // Already outside (e.g. a delivery resumed from the HUD in the street): nothing to leave, and
+  // starting the loading screen here would never be cleared, freezing the game
+  if (!scene.interior) return;
   const spawn = scene.spawn;
   playSfx('door');
   const ui = useUI.getState();
