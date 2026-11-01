@@ -9,6 +9,7 @@ import { currentStep } from '@/game/progress/quests';
 import { recordEvent } from '@/game/progress/events';
 import { hourOf } from '@/engine/Sky';
 import { rt } from '@/engine/runtime';
+import { isTyping } from '@/engine/input';
 import { virtual } from '@/engine/input';
 import { forDevice, isTouch } from '../touch';
 import { interact } from '../interact';
@@ -372,7 +373,7 @@ function NarwhalDialog() {
   useEffect(() => {
     if (!line) return;
     const h = (e: KeyboardEvent) => {
-      if ((e.code === 'Enter' || e.code === 'Space') && !useUI.getState().panel) {
+      if ((e.code === 'Enter' || e.code === 'Space') && !useUI.getState().panel && !isTyping(e)) {
         if (shown.length < line.text.length) setShown(line.text);
         else {
           stopSpeaking();

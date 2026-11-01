@@ -17,7 +17,7 @@ import { decorAction } from './hud/DecorPanel';
 import { NarwhalGuide, GoalBeacon, GuideTrail } from '@/world/Narwhal';
 import { CITIES, applyDifficulty, buildingById } from '@/world/cities';
 import { rt } from '@/engine/runtime';
-import { onAction } from '@/engine/input';
+import { isTyping, onAction } from '@/engine/input';
 import { playMusic } from '@/engine/audio';
 import { startAmbience, stopAmbience } from '@/engine/ambience';
 import { advanceTime } from '@/game/sim/time';
@@ -106,7 +106,7 @@ export default function GameView() {
   // L opens the Learn hub
   useEffect(() => {
     const h = (e: KeyboardEvent) => {
-      if (e.key.toLowerCase() !== 'l' || e.repeat || (e.target as HTMLElement)?.tagName === 'INPUT') return;
+      if (e.key.toLowerCase() !== 'l' || e.repeat || isTyping(e)) return;
       const ui = useUI.getState();
       if (ui.screen !== 'game' || ui.loading.active || ui.tour) return;
       if (ui.panel?.type === 'learn') ui.close();

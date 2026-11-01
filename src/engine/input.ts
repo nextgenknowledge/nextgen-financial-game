@@ -15,7 +15,7 @@ const ALT: Partial<Record<KeyAction, string[]>> = {
   interact: ['Enter'],
 };
 
-function isTyping(e: KeyboardEvent) {
+export function isTyping(e: KeyboardEvent) {
   const t = e.target as HTMLElement | null;
   return !!t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.tagName === 'SELECT' || t.isContentEditable);
 }
