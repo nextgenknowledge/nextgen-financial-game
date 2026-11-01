@@ -295,7 +295,9 @@ function Pet({ pet, slot, low }: { pet: OwnedPet; slot: number; low: boolean }) 
       else {
         s.repath -= dt;
         const moved = Math.hypot(s.pathFor.x - tx, s.pathFor.y - tz) > 1.2;
-        if (!s.path || (s.repath <= 0 && moved)) {
+        // Re-plan when the spot has moved, but never more often than the cooldown, even when the
+        // last search found nothing (that used to retry every frame and stall the game)
+        if (s.repath <= 0 && (!s.path || moved)) {
           s.repath = low ? 1.4 : 0.7;
           s.pathFor.set(tx, tz);
           s.path = findPath(rt.collision, rt.sceneKey, s.pos.x, s.pos.z, tx, tz, 0.6);
