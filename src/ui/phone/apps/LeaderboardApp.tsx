@@ -20,7 +20,8 @@ export function LeaderboardApp() {
   const [load, setLoad] = useState<Load>({ state: 'loading' });
   const [posting, setPosting] = useState(false);
   const mine = useMemo(() => scoreEntry(w), [w]);
-  const problem = nicknameProblem(w.nickname);
+  // Checks the name as posted: scoreEntry shortens long nicknames (the game allows 20) to fit the board
+  const problem = nicknameProblem(mine.nickname);
   const posted = !!w.progress.flags.leaderboardPosted;
 
   const refresh = useCallback(() => {
