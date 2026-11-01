@@ -52,7 +52,7 @@ export function RatingPrompt() {
       if (ui.screen !== 'game' || ui.loading.active || document.visibilityState !== 'visible') return;
       played += dt;
       // Wait for a calm moment: no menu, tour, activity, Narwhal speech or furniture moving
-      if (played < ASK_AFTER || ui.panel || ui.tour || ui.run || ui.decor || ui.narwhal.length || ui.worldActivity) return;
+      if (played < ASK_AFTER || ui.panel || ui.tour || ui.run || ui.decor || ui.narwhal.length || ui.worldActivity || ui.leaderboardAsk) return;
       askedThisSession = true;
       playSfx('pop');
       openRating();

@@ -164,7 +164,7 @@ export function TitleScreen() {
         <a className="title-foot-logo" href={ORG_SITE} target="_blank" rel="noopener noreferrer" title="nextgenknowledge.org">
           <img src={ORG_LOGO} alt="NextGen Knowledge" />
         </a>
-        <span>A NextGen Knowledge game · Everything stays on this device</span>
+        <span>A NextGen Knowledge game · Your game saves on this device</span>
       </div>
       {newGame && (
         <NewGameFlow
@@ -225,7 +225,7 @@ export function CreditsScreen() {
               </span>
               <b style={{ marginTop: '0.6rem' }}>Privacy</b>
               <span className="muted small">
-                No accounts, no ads, no analytics, no chat. Your worlds are saved only in this browser.
+                No accounts, no ads, no analytics, no chat. Your worlds are saved only in this browser. If you choose to share your score, your nickname, level and net worth go to the online leaderboard as you play. You can stop any time in the FinPhone Leaderboard app.
               </span>
             </div>
           </div>

@@ -71,6 +71,8 @@ export interface UIStore {
   guide: { city: LocationId; trigger?: string; pos?: [number, number]; label: string } | null;
   /** The rating and review form is open (asked for, or chosen from Pause). */
   rating: boolean;
+  /** Asking whether to share this world's score on the leaderboard. */
+  leaderboardAsk: boolean;
   setGuide: (g: UIStore['guide']) => void;
   setDecor: (d: UIStore['decor']) => void;
   setRun: (r: UIStore['run']) => void;
@@ -112,6 +114,7 @@ export const useUI = create<UIStore>((set, get) => ({
   decor: null,
   guide: null,
   rating: false,
+  leaderboardAsk: false,
   setGuide: (guide) => set({ guide }),
   setDecor: (decor) => set({ decor }),
   setRun: (run) => set({ run }),

@@ -3,8 +3,9 @@
  * from. Paste this whole file into the sheet's Extensions > Apps Script editor and deploy it as a
  * web app (see docs/LEADERBOARD.md).
  *
- * Each player's world has one row, updated when they post again. To remove someone from the
- * board, put an x in their Hidden column (deleting the row works too, but they could post again).
+ * Each player's world has one row, updated as they play. To remove someone from the board, put
+ * an x in their Hidden column (deleting the row works too, but they would come back next time
+ * they play).
  */
 
 var SHEET_NAME = 'Scores';
@@ -53,7 +54,27 @@ function json_(obj) {
   return ContentService.createTextOutput(JSON.stringify(obj)).setMimeType(ContentService.MimeType.JSON);
 }
 
-/** The game posts { id, nickname, level, netWorth, difficulty } as plain text. */
+/** A player hiding themselves: their row goes, unless a teacher has hidden it (that must stick). */
+function remove_(id) {
+  if (!/^[A-Za-z0-9_-]{4,64}$/.test(id)) return json_({ ok: false, error: 'rejected' });
+  var lock = LockService.getScriptLock();
+  lock.waitLock(10000);
+  try {
+    var sh = sheet_();
+    var values = sh.getDataRange().getValues();
+    for (var r = 1; r < values.length; r++) {
+      if (String(values[r][0]) === id && !String(values[r][6]).trim()) {
+        sh.deleteRow(r + 1);
+        break;
+      }
+    }
+    return json_({ ok: true });
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+/** The game posts { id, nickname, level, netWorth, difficulty }, or { id, remove }, as plain text. */
 function doPost(e) {
   var s;
   try {
@@ -62,6 +83,7 @@ function doPost(e) {
     return json_({ ok: false, error: 'bad json' });
   }
   var id = String(s.id || '');
+  if (s.remove === true) return remove_(id);
   var level = Math.round(Number(s.level));
   var nw = Math.round(Number(s.netWorth));
   var mode = s.difficulty === 'advanced' ? 'advanced' : s.difficulty === 'entry' ? 'entry' : '';

@@ -6,10 +6,18 @@ the app doesn't appear on the phone and the game makes no requests.
 
 ## What gets shared
 
-Only when a player taps **Post my score**: their nickname, level, net worth, Entry/Advanced, and
-the random id of their world (so posting again updates their row instead of adding a new one).
-Never real names, world names or quiz answers. Rude nicknames are refused by the game and by the
-sheet.
+Each world is asked once, about 30 seconds into play, whether to share its score, with a disclaimer
+explaining what that means. Nothing is sent unless the player says yes, and they can change their
+mind in the FinPhone Leaderboard app (saying no removes their row).
+
+After a yes, scores send by themselves on fincity.dev: when a game opens, at most every 10 minutes
+during play if the score changed, and when they leave. Saves live on each device, so the sheet can't
+collect scores on its own: a player's row is as fresh as the last time they played.
+
+What goes out: their nickname, level, net worth, Entry/Advanced, and the random id of their world
+(so their row updates instead of a new one being added). Never real names, world names or quiz
+answers. Rude nicknames are refused by the game and by the sheet. Local and preview builds never
+send, so testing can't add players to the real board.
 
 ## Set it up (about 5 minutes)
 

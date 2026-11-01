@@ -21,6 +21,7 @@ import { CITY_META } from '@/world/cities';
 import { useRide, getOff } from '@/world/ParkedVehicles';
 import { Minimap } from './Minimap';
 import { RatingPrompt } from './RatingPrompt';
+import { LeaderboardPrompt } from './LeaderboardPrompt';
 import { APPS } from '../phone/Phone';
 import { condoDef } from '@/game/sim/catalog';
 import { DecorPanel } from './DecorPanel';
@@ -70,6 +71,7 @@ export function HUD() {
       <QuickApps />
       <NavTips />
       <RatingPrompt />
+      <LeaderboardPrompt />
       <TouchControls />
     </div>
   );

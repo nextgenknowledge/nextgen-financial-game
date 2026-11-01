@@ -18,6 +18,7 @@ import { NarwhalGuide, GoalBeacon, GuideTrail } from '@/world/Narwhal';
 import { CITIES, applyDifficulty, buildingById } from '@/world/cities';
 import { rt } from '@/engine/runtime';
 import { isTyping, onAction } from '@/engine/input';
+import { sendScore } from './leaderboard';
 import { playMusic } from '@/engine/audio';
 import { startAmbience, stopAmbience } from '@/engine/ambience';
 import { advanceTime } from '@/game/sim/time';
@@ -127,8 +128,16 @@ export default function GameView() {
     // Autosave every 30 s; the save-slot screenshot (a full extra render plus a JPEG encode, a
     // visible hitch on slow Chromebooks) is only retaken every 5 minutes
     let n = 0;
-    const id = setInterval(() => saveNow(++n % 10 === 0), 30000);
-    const vis = () => document.visibilityState === 'hidden' && saveNow(false);
+    sendScore();
+    const id = setInterval(() => {
+      saveNow(++n % 10 === 0);
+      sendScore();
+    }, 30000);
+    const vis = () => {
+      if (document.visibilityState !== 'hidden') return;
+      saveNow(false);
+      sendScore(true);
+    };
     document.addEventListener('visibilitychange', vis);
     window.addEventListener('beforeunload', vis);
     return () => {

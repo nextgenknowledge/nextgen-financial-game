@@ -6,6 +6,7 @@ import { useScene } from '@/store/scene';
 import { rt } from '@/engine/runtime';
 import { saveWorld, storageMode } from '@/save/db';
 import { stopSpeaking } from './speech';
+import { sendScore } from './leaderboard';
 import { clearKeys } from '@/engine/input';
 import { updateHallOfFame } from '@/save/fame';
 import { loadSignFonts } from '@/world/signage';
@@ -87,6 +88,7 @@ export function warnIfNotSaving() {
 
 export async function quitToWorlds() {
   await saveNow(true);
+  sendScore(true);
   stopSpeaking();
   clearKeys();
   rt.vehicle = null;

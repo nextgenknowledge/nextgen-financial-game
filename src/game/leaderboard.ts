@@ -1,8 +1,8 @@
 /**
- * Leaderboard rules shared by the game and its tests. Scores go to the team's Google Sheet
- * (see docs/LEADERBOARD.md) only when a player taps "Post my score": the nickname, level, net
- * worth and Entry/Advanced, keyed by a random world id so posting again updates the same row.
- * Never real names, world names or answers.
+ * Leaderboard rules shared by the game and its tests. Once a player chooses to share, scores go
+ * to the team's Google Sheet (see docs/LEADERBOARD.md) by themselves as they play: the
+ * nickname, level, net worth and Entry/Advanced, keyed by a random world id so each send updates
+ * the same row. Never real names, world names or answers.
  */
 import type { Difficulty, WorldState } from './types';
 import { netWorth } from './finance/netWorth';
@@ -63,6 +63,28 @@ export function scoreEntry(w: WorldState): ScoreEntry {
     netWorth: Math.max(0, Math.round(netWorth(w).total)),
     difficulty: w.difficulty,
   };
+}
+
+/** Only a yes counts: a world that hasn't been asked, or said no, never sends. */
+export function sharesScore(w: WorldState): boolean {
+  return w.progress.flags.leaderboardShare === true;
+}
+
+/** How often a score can go out during play, and when the player is leaving. */
+export const SEND_GAP = 10 * 60_000;
+export const LEAVING_GAP = 60_000;
+
+export interface LastSend {
+  entry: ScoreEntry;
+  at: number;
+}
+
+/** Whether this score should go out now: the name is allowed, it changed, and it isn't too soon. */
+export function shouldSend(entry: ScoreEntry, last: LastSend | undefined, now: number, leaving = false): boolean {
+  if (nicknameProblem(entry.nickname)) return false;
+  if (!last) return true;
+  if (last.entry.level === entry.level && last.entry.netWorth === entry.netWorth && last.entry.nickname === entry.nickname) return false;
+  return now - last.at >= (leaving ? LEAVING_GAP : SEND_GAP);
 }
 
 /** Reads the sheet's reply into ranked rows (richest first), dropping anything malformed. */
