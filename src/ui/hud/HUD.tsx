@@ -20,7 +20,7 @@ import type { Mood } from '@/game/effects';
 import { CITY_META } from '@/world/cities';
 import { useRide, getOff } from '@/world/ParkedVehicles';
 import { Minimap } from './Minimap';
-import { RatingPrompt } from './RatingPrompt';
+import { RatingPrompt, openRating } from './RatingPrompt';
 import { LeaderboardPrompt } from './LeaderboardPrompt';
 import { APPS } from '../phone/Phone';
 import { condoDef } from '@/game/sim/catalog';
@@ -252,6 +252,20 @@ function QuickApps() {
           {a.id === 'quests' && claimable > 0 && <span className="dock-badge">{claimable}</span>}
         </button>
       ))}
+      <button
+        className="qa-btn qa-review"
+        title="Leave a Review"
+        aria-label="Leave a Review"
+        onClick={() => {
+          playSfx('pop');
+          openRating();
+        }}
+      >
+        <span className="qa-icon" style={{ background: '#c9952a' }}>
+          ⭐
+        </span>
+        <span className="qa-name">Leave a Review</span>
+      </button>
     </nav>
   );
 }

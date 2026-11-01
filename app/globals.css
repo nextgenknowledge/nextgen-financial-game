@@ -2087,6 +2087,16 @@ button.item-card { cursor: pointer; }
   .rating-actions .btn { padding: 0.35rem 0.7rem; font-size: 0.82rem; white-space: nowrap; }
 }
 
+/* Small phones held sideways: the shortcut row has to stop before the minimap */
+@media (pointer: coarse) and (max-height: 500px) and (max-width: 720px) {
+  .qa-btn.qa-review { padding-right: 3px; }
+  .qa-btn.qa-review .qa-name { display: none; }
+}
+@media (pointer: coarse) and (max-height: 500px) and (max-width: 600px) {
+  .qa-btn { padding-right: 3px; }
+  .qa-btn .qa-name { display: none; }
+}
+
 /* Leaderboard app */
 .lb-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
 .lb-row { display: grid; grid-template-columns: 2rem 1fr auto auto; align-items: center; gap: 0.5rem; padding: 0.35rem 0.5rem; background: #fbf6ea; border: 2px solid #0b1a3a; box-shadow: 2px 2px 0 #061233; font-size: 0.86rem; }
