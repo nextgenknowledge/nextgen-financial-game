@@ -475,7 +475,7 @@
         },
         {
           "service": "hall-of-fame",
-          "label": "Hall of Fame",
+          "label": "Leaderboard",
           "icon": "🏆"
         }
       ],
@@ -499,7 +499,7 @@
         },
         {
           "service": "hall-of-fame",
-          "label": "Hall of Fame",
+          "label": "Leaderboard",
           "icon": "🏆"
         }
       ]

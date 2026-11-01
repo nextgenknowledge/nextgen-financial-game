@@ -549,7 +549,7 @@ export function buildingsPois(def: CityDef) {
 const LANDMARK_POI: Record<string, { name: string; glyph: IconName; color: string }> = {
   fountain: { name: 'Fountain Plaza', glyph: 'star', color: '#2a7a9a' },
   'narwhal-statue': { name: 'Narwhal Statue', glyph: 'trophy', color: '#2a7a9a' },
-  'hall-of-fame-board': { name: 'Hall of Fame Board', glyph: 'trophy', color: '#c9952a' },
+  'hall-of-fame-board': { name: 'Leaderboard', glyph: 'trophy', color: '#c9952a' },
   'job-board': { name: 'Odd Jobs Board', glyph: 'briefcase', color: '#3f4a5a' },
   bandstand: { name: 'Bandstand', glyph: 'mic', color: '#c93b8a' },
   playground: { name: 'Playground', glyph: 'star', color: '#c96a2a' },

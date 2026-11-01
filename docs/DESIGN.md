@@ -286,7 +286,7 @@ check the FPS overlay.
 10. **Formula sheet + calculator** in Advanced, and a **"show me how"** worked solution after
     every computational question.
 11. **Money Tree** — each CD you open appears as a tree in the Singapore Savings Garden that grows as it accrues.
-12. **Hall of Fame** board in the park showing the best net worth across your worlds.
+12. **Leaderboard** board in the park showing the online leaderboard (the FinPhone Badges app keeps a Hall of Fame of the best net worth across your worlds).
 13. **Tax preparer option** — pay $60 to have taxes filed for you, a real-world trade-off.
 
 ---

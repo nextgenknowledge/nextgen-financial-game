@@ -63,7 +63,7 @@ export function DynamicLandmark({ d }: { d: Dyn }) {
     case 'cable-car':
       return <CableCar d={d} />;
     case 'hall-of-fame-board':
-      return <Board d={d} title="Hall of Fame" />;
+      return <Board d={d} title="Leaderboard" />;
     case 'job-board':
       return <Board d={d} title={d.label ?? 'Odd Jobs'} />;
     case 'neighborhood':

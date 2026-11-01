@@ -7,7 +7,7 @@ import { Section, AmountPicker, Stat, StatGrid, Explain, Empty, LineChart, Tabs 
 import { money, pct } from '../format';
 import { AccountsSummary, OpenAccounts, TransferForm, CDsPanel, LoansPanel, CardPanel, LedgerList } from './bankParts';
 import { CreditReport } from '../phone/apps/CreditApp';
-import { HallOfFame } from '../phone/apps/BadgesApp';
+import { LeaderboardApp } from '../phone/apps/LeaderboardApp';
 import { TradePanel } from './TradePanel';
 import { GoalsApp } from '../phone/apps/GoalsApp';
 import { LearnPanel } from '../panels/LearnPanel';
@@ -30,7 +30,7 @@ const TITLES: Record<string, string> = {
   credit: '📊 Credit Bureau',
   style: '🪞 Style Studio',
   townhall: '🏛️ Town Hall · Community Projects',
-  'hall-of-fame': '🏆 Hall of Fame',
+  'hall-of-fame': '🏆 Leaderboard',
   'arcade-prizes': '🎟️ Prize Counter',
   garage: '🔑 My Garage',
   brokerage: '💹 Brokerage',
@@ -62,7 +62,7 @@ export function ServicePanel({ id }: { id: string; arg?: string }) {
       {id === 'credit' && <CreditReport />}
       {id === 'style' && <StyleStudio />}
       {id === 'townhall' && <TownHall />}
-      {id === 'hall-of-fame' && <HallOfFame />}
+      {id === 'hall-of-fame' && <LeaderboardApp />}
       {id === 'arcade-prizes' && <PrizeCounter />}
       {id === 'garage' && <BagApp tab="vehicles" />}
       {id === 'brokerage' && <TradePanel />}

@@ -295,7 +295,7 @@ export function buildOutdoor(def: CityDef, difficulty: Difficulty): SceneBuild {
       triggers.push({ id: 'board:jobs', kind: 'board', x: lm.pos[0], z: lm.pos[1], r: 3.2, label: 'Odd Jobs Board', icon: '📌', data: { activity: 'odd-jobs' } });
     }
     if (lm.type === 'hall-of-fame-board') {
-      triggers.push({ id: 'board:fame', kind: 'board', x: lm.pos[0], z: lm.pos[1], r: 3.2, label: 'Hall of Fame', icon: '🏆', data: { service: 'hall-of-fame' } });
+      triggers.push({ id: 'board:fame', kind: 'board', x: lm.pos[0], z: lm.pos[1], r: 3.2, label: 'Leaderboard', icon: '🏆', data: { service: 'hall-of-fame' } });
     }
     if (lm.type === 'neighborhood') {
       reserved.push({ minX: lm.pos[0] - 26, maxX: lm.pos[0] + 26, minZ: lm.pos[1] - 40, maxZ: lm.pos[1] + 40 });
