@@ -38,7 +38,13 @@ export const metadata: Metadata = {
     images: [{ url: '/share.jpg', width: 1200, height: 630, alt: 'Fin City, a free financial literacy game by NextGen Knowledge' }],
   },
   twitter: { card: 'summary_large_image', title: 'Fin City | Free Financial Literacy Game', description: DESCRIPTION, images: ['/share.jpg'] },
-  icons: { icon: `${process.env.NEXT_PUBLIC_BASE_PATH ?? ''}/brand/fin-city-logo.webp` },
+  icons: {
+    icon: [
+      { url: `${process.env.NEXT_PUBLIC_BASE_PATH ?? ''}/favicon.ico`, sizes: '48x48' },
+      { url: `${process.env.NEXT_PUBLIC_BASE_PATH ?? ''}/brand/fin-city-logo.webp`, type: 'image/webp' },
+    ],
+    apple: `${process.env.NEXT_PUBLIC_BASE_PATH ?? ''}/apple-touch-icon.png`,
+  },
 };
 
 /** Tells search engines what Fin City is (a free educational browser game) and who makes it. */
