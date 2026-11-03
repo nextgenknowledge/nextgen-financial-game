@@ -54,7 +54,8 @@ describe('starter deals', () => {
 
   it('the starter-pack quest follows the first job in the tutorial', () => {
     const byId = new Map(quests.quests.map((q) => [q.id, q]));
-    expect(byId.get('q3-job')!.next).toEqual(['q3b-starter']);
+    expect(byId.get('q2-bank')!.next).toEqual(['q3b-starter']);
+    expect(byId.get('q3-job')!.next).toEqual(['q3b-starter']); // saves that were already on it
     expect(byId.get('q3b-starter')!.next).toEqual(['q4-sf']);
   });
 });

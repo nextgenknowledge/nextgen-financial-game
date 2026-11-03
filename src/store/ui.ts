@@ -3,6 +3,7 @@ import { create } from 'zustand';
 import type { Mood } from '@/game/effects';
 import type { LocationId } from '@/game/types';
 import { forDevice } from '@/ui/touch';
+import type { CostSummary } from '@/game/finance/costSummary';
 
 export type Screen = 'intro' | 'title' | 'worlds' | 'game' | 'credits';
 
@@ -64,6 +65,8 @@ export interface UIStore {
   run: { id: string; name: string } | null;
   /** The first-play screen tour is showing; the game is paused under it. */
   tour: boolean;
+  /** "What this really cost" card after a financed purchase or a pet adoption. */
+  costSummary: CostSummary | null;
   /** Arranging furniture at home: which home, and the piece being carried (item uid) if any. */
   decor: { home: string; carrying: string | null; rot: number } | null;
   /** "Show me the way": a place the player picked (a building door or their home) that the guide
@@ -111,6 +114,7 @@ export const useUI = create<UIStore>((set, get) => ({
   worldActivity: null,
   run: null,
   tour: false,
+  costSummary: null,
   decor: null,
   guide: null,
   rating: false,

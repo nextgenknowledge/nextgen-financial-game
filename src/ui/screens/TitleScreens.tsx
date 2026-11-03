@@ -225,7 +225,7 @@ export function CreditsScreen() {
               </span>
               <b style={{ marginTop: '0.6rem' }}>Privacy</b>
               <span className="muted small">
-                No accounts, no ads, no analytics, no chat. Your worlds are saved only in this browser. If you choose to share your score, your nickname, level and net worth go to the online leaderboard as you play. You can stop any time in the FinPhone Leaderboard app.
+                No accounts, no ads, no chat. Your worlds are saved only in this browser. The live site uses Google Analytics to count visits and game milestones, like finishing a first quiz, but never your nickname, world name or answers. If you choose to share your score, your nickname, level and net worth go to the online leaderboard as you play. You can stop any time in the FinPhone Leaderboard app.
               </span>
             </div>
           </div>

@@ -19,7 +19,7 @@ unspecified, the decision we made is recorded under **Decision log** at the bott
 4. **Data-driven.** Cities, buildings, activities, questions, shop items, events, quests, tips, lessons
    and Narwhal's lines all live in `src/data/**`. Teachers can add content without touching the engine.
 5. **Runs on a school Chromebook.** Merged/instanced low-poly geometry, simple materials, Low/Med/High.
-6. **Private by design.** No accounts, no network calls, no analytics. Fonts are bundled. Nicknames only.
+6. **Private by design.** No accounts or game network calls beyond the exceptions listed in CLAUDE.md, including Google Analytics page views and learning milestones on the live site. Fonts are bundled. Nicknames only.
 
 ---
 

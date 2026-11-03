@@ -9,6 +9,7 @@ import { questsOnEvent } from './quests';
 import { challengesOnEvent } from './challenges';
 import { checkAchievements } from './achievements';
 import { seasonalOnEvent } from './seasonal';
+import { milestonesOnEvent } from './milestones';
 
 export interface GameEvent {
   type: string;
@@ -45,6 +46,7 @@ export function recordEvent(w: WorldState, fx: Fx, ev: GameEvent) {
       if (ev.city) addStat(w, `city:${ev.city}`);
       break;
   }
+  milestonesOnEvent(w, fx, ev);
   questsOnEvent(w, fx, ev);
   challengesOnEvent(w, fx, ev);
   seasonalOnEvent(w, fx, ev);

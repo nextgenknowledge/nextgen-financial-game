@@ -5,6 +5,7 @@ import { useSettings } from '@/store/settings';
 import { useGame } from '@/store/game';
 import { playSfx } from '@/engine/audio';
 import { speak } from './speech';
+import { trackEvent } from './analytics';
 
 /** Plays rule-function effects in the UI: toasts, Narwhal lines, confetti and sounds. */
 export function playEffects(fx: Effect[]) {
@@ -46,6 +47,12 @@ export function playEffects(fx: Effect[]) {
         ui.pushToast({ text: `Quest complete: ${e.title}`, icon: '✅', tone: 'good' });
         break;
       case 'monthSummary':
+        break;
+      case 'costSummary':
+        useUI.setState({ costSummary: e.summary });
+        break;
+      case 'track':
+        trackEvent(e.name, e.params);
         break;
     }
   }

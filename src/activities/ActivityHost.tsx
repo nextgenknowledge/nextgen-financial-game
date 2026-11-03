@@ -6,6 +6,7 @@ import { Button, Modal, ReadAloud, Stars, PixelMeter } from '@/ui/common';
 import { ACTIVITY_BY_ID } from '@/game/activities';
 import { finishActivity, starsFor, repeatFactor, type ActivityResult, type RewardOutcome } from '@/game/progress/activities';
 import { spend } from '@/game/finance/accounts';
+import { JOBS } from '@/game/finance/jobs';
 import { KINDS } from './registry';
 import type { ReviewItem } from './types';
 import { money } from '@/ui/format';
@@ -114,6 +115,9 @@ export function ActivityHost({ id, hidden = false }: { id: string; hidden?: bool
   const entry = w.difficulty === 'entry';
   const blurb = entry && def.entryBlurb ? def.entryBlurb : def.blurb;
   const rf = repeatFactor(w, def.id);
+  // Jobs pay through the paycheck, not the activity reward, so show what a shift can pay.
+  const board = def.kind === 'job' ? (def.entry as { board?: string } | undefined)?.board : undefined;
+  const shiftPay = board ? Math.max(...JOBS.filter((j) => j.board === board && !j.level).map((j) => j.pay)) : 0;
   // A lesson on this activity's topic, preferring one the player hasn't finished
   const lessonFor = LESSONS.filter((l) => def.topics.includes(l.topic as never)).sort((a, b) => Number(w.progress.lessons.includes(a.id)) - Number(w.progress.lessons.includes(b.id)))[0];
 
@@ -181,12 +185,12 @@ export function ActivityHost({ id, hidden = false }: { id: string; hidden?: bool
               </span>
             </div>
             <div className="ai-stat">
-              <span className="ai-stat-label">{def.tickets ? 'Costs' : 'Reward up to'}</span>
+              <span className="ai-stat-label">{def.tickets ? 'Costs' : shiftPay ? 'Pay per shift up to' : 'Reward up to'}</span>
               <span className="ai-stat-value">
                 {def.tickets ? (
                   <FinBucks value={def.fee ?? 1} />
                 ) : (
-                  <FinBucks value={def.rewards.cash[2] * (w.difficulty === 'advanced' ? 1.25 : 1) * rf * w.market.priceIndex} cents={false} />
+                  <FinBucks value={shiftPay ? shiftPay * w.market.priceIndex : def.rewards.cash[2] * (w.difficulty === 'advanced' ? 1.25 : 1) * rf * w.market.priceIndex} cents={false} />
                 )}
               </span>
               {rf < 1 && <span className="tiny muted">Reduced for repeat plays today</span>}
@@ -294,10 +298,12 @@ function Results({ def, result, review, helpUsed, onAgain, onLeave }: { def: { i
         </div>
       </div>
       <div className="ar-rewards">
-        <div className="ar-reward">
-          <span className="ai-stat-label">FinBucks</span>
-          <FinBucks value={out.cash} sign />
-        </div>
+        {ACTIVITY_BY_ID.get(def.id)?.kind !== 'job' && (
+          <div className="ar-reward">
+            <span className="ai-stat-label">FinBucks</span>
+            <FinBucks value={out.cash} sign />
+          </div>
+        )}
         <div className="ar-reward">
           <span className="ai-stat-label">Experience</span>
           <b>+{out.xp} XP</b>

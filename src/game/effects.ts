@@ -2,6 +2,8 @@
  * Rule functions never touch the UI directly. They push Effects, and the UI layer plays them
  * (toasts, Narwhal lines, confetti, sounds). This keeps all game rules pure and testable.
  */
+import type { CostSummary } from './finance/costSummary';
+
 export type Mood = 'confident' | 'talking' | 'skeptical' | 'shocked' | 'hyped' | 'disappointed';
 
 export type SfxName =
@@ -33,7 +35,9 @@ export type Effect =
   | { type: 'achievement'; id: string; name: string; icon: string }
   | { type: 'unlock'; location: string }
   | { type: 'questComplete'; title: string }
-  | { type: 'monthSummary'; month: number };
+  | { type: 'monthSummary'; month: number }
+  | { type: 'costSummary'; summary: CostSummary }
+  | { type: 'track'; name: string; params?: Record<string, string | number> };
 
 export type Fx = Effect[];
 

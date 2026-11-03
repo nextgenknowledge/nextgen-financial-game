@@ -601,7 +601,7 @@ export function landmarkPois(def: CityDef, ctx: MapContext): Poi[] {
     seen.add(lm.type);
     const name = lm.type === 'bridge' && lm.label === 'golden' ? 'Golden Strait Bridge' : lm.type === 'job-board' && lm.label ? `${lm.label} Board` : info.name;
     const site = ctx.building.has(lm.type);
-    out.push({ id: `lm:${lm.type}:${lm.pos[0]},${lm.pos[1]}`, name: site ? `${name} (being built)` : name, glyph: site ? 'construction' : info.glyph, color: site ? '#c96a2a' : info.color, x: lm.pos[0], z: lm.pos[1] });
+    out.push({ id: `lm:${lm.type}:${lm.pos[0]},${lm.pos[1]}`, name: site ? `${name} (fund it at Town Hall)` : name, glyph: site ? 'construction' : info.glyph, color: site ? '#c96a2a' : info.color, x: lm.pos[0], z: lm.pos[1] });
   }
   if (def.garage) out.push({ id: 'lm:garage', name: 'Car Parking', glyph: 'car', color: '#b3261e', x: def.garage[0], z: def.garage[1] });
   for (const h of ctx.homes) out.push({ id: `home:${h.uid}`, name: `Your home: ${h.name}`, glyph: 'key', color: '#c9952a', x: h.x, z: h.z });

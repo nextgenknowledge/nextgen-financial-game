@@ -1,5 +1,5 @@
 {
-  "$comment": "Quests. goal.type: move (value = meters) | jump | menu (target = phone app) | enter (building id) | travel (location) | activity (target = activity id or '*', count, value = min stars) | event (target = event type, value = optional min amount) | talk (target = location) | netWorth (value) | stat (target = stat key, value). Narwhal says `say` lines when a step starts (entrySay in Entry mode). marker points Narwhal and the beacon at a spot.",
+  "$comment": "Quests. goal.type: move (value = meters) | jump | menu (target = phone app) | enter (building id) | travel (location) | activity (target = activity id or '*', count, value = min stars) | event (target = event type, value = optional min amount) | talk (target = location) | netWorth (value) | stat (target = stat key, value). Narwhal says `say` lines when a step starts (entrySay in Entry mode). marker points Narwhal and the beacon at a spot. spot lights up a HUD element (CSS selector) during a step, touchSpot on touch devices. mustDo keeps a tutorial step from being skipped over.",
   "quests": [
     {
       "id": "q1-welcome",
@@ -16,13 +16,14 @@
             "value": 15
           },
           "say": [
-            "Hi there! I'm NextGen Narwhal, your money guide. Welcome to Fin City!",
+            "Hi there! I'm NextGen Narwhal, your money guide. Welcome to Fin City! My card always shows your next step, and you can tap me any time for a hint.",
             "Let's stretch those legs. Walk with W A S D or the arrow keys. Drag with your mouse to look around, or just click the ground to walk there."
           ],
           "entrySay": [
-            "Hi! I'm NextGen Narwhal! Welcome to Fin City!",
+            "Hi! I'm NextGen Narwhal! My card always shows what to do next. Tap me if you get stuck!",
             "Let's walk! Use W A S D or the arrow keys. You can also click the ground to walk there."
-          ]
+          ],
+          "touchSpot": ".joystick"
         },
         {
           "id": "jump",
@@ -36,7 +37,8 @@
           ],
           "entrySay": [
             "Great job! Press Space to jump. Hold Shift to run fast!"
-          ]
+          ],
+          "touchSpot": ".touch-btn:not(.gold)"
         },
         {
           "id": "phone",
@@ -47,12 +49,37 @@
             "target": "phone"
           },
           "say": [
-            "See the top of your screen? That's your cash 💵 and your net worth 📈. Net worth is everything you own minus everything you owe.",
-            "Your FinPhone holds your bank, goals, net worth and more. Press P or click the 📱 button."
+            "You start with $20. Your cash and net worth sit at the top of your screen. Net worth is everything you own minus everything you owe. Your FinPhone holds your bank, goals and more. Press P or click the 📱 button."
           ],
           "entrySay": [
-            "Look at the top of the screen! That's your money 💵.",
-            "Now open your FinPhone! Press P or tap the 📱 button."
+            "You have $20! See it at the top of the screen? Now open your FinPhone. Press P or tap the 📱 button."
+          ],
+          "spot": ".mini-phone"
+        },
+        {
+          "id": "odd-job",
+          "text": "Do an odd job from the board by the fountain",
+          "goal": {
+            "type": "activity",
+            "target": "odd-jobs"
+          },
+          "mustDo": true,
+          "marker": {
+            "location": "park",
+            "pos": [
+              -14,
+              14
+            ],
+            "label": "Odd Jobs Board"
+          },
+          "reward": {
+            "cash": 25
+          },
+          "say": [
+            "Time to earn! Most people get money by working. The Odd Jobs board by the fountain has quick jobs, and your first one comes with a $25 welcome bonus."
+          ],
+          "entrySay": [
+            "People earn money by working! Do a job from the board by the fountain. Your first job pays a $25 bonus!"
           ]
         },
         {
@@ -71,10 +98,10 @@
             "label": "Welcome Center"
           },
           "say": [
-            "Follow me to the Welcome Center, just look for the golden beam of light! Press E at the door to go in."
+            "That's your first paycheck: work earns money! Now let's learn how to use it. Follow me to the Welcome Center, just look for the golden beam of light! Press E at the door to go in."
           ],
           "entrySay": [
-            "Follow me to the Welcome Center! Walk to the gold light and press E."
+            "You earned that! Work earns money. Now follow me to the Welcome Center! Walk to the gold light and press E."
           ]
         },
         {
@@ -97,7 +124,89 @@
         }
       ],
       "reward": {
-        "cash": 25,
+        "xp": 60,
+        "unlock": [
+          "new-york"
+        ]
+      },
+      "next": [
+        "q1b-portal"
+      ]
+    },
+    {
+      "id": "q1b-portal",
+      "title": "Your First Portal",
+      "icon": "🌀",
+      "onboarding": true,
+      "steps": [
+        {
+          "id": "travel-ny",
+          "text": "Take the portal to New York (west grove)",
+          "goal": {
+            "type": "travel",
+            "target": "new-york"
+          },
+          "marker": {
+            "location": "park",
+            "pos": [
+              -110,
+              8
+            ],
+            "label": "New York Portal"
+          },
+          "say": [
+            "You passed! I've opened your first portal. Fin City connects to real cities, and New York is the home of investing. The portals are in the grove on the west side of the park."
+          ],
+          "entrySay": [
+            "You did it! I opened a magic portal to New York! Follow me to the west side of the park."
+          ]
+        },
+        {
+          "id": "see-brokerage",
+          "text": "Look inside the New York Brokerage",
+          "goal": {
+            "type": "enter",
+            "target": "ny-brokerage"
+          },
+          "marker": {
+            "location": "new-york",
+            "pos": [
+              44,
+              -44
+            ],
+            "label": "Brokerage"
+          },
+          "say": [
+            "Welcome to New York! This is where people invest, buying small pieces of companies called shares. Follow me to the Brokerage and take a look."
+          ],
+          "entrySay": [
+            "This is New York! People here buy tiny pieces of companies. Follow me to the Brokerage!"
+          ]
+        },
+        {
+          "id": "back-home",
+          "text": "Take the portal back to the park",
+          "goal": {
+            "type": "travel",
+            "target": "park"
+          },
+          "marker": {
+            "location": "new-york",
+            "pos": [
+              0,
+              92
+            ],
+            "label": "Park Portal"
+          },
+          "say": [
+            "We'll come back and buy your first share soon. First you need somewhere safe for your money, so let's head home through the portal."
+          ],
+          "entrySay": [
+            "We'll come back soon! First let's keep your money safe. Go back through the portal."
+          ]
+        }
+      ],
+      "reward": {
         "xp": 60
       },
       "next": [
@@ -177,10 +286,13 @@
       ],
       "reward": {
         "cash": 20,
-        "xp": 80
+        "xp": 80,
+        "unlock": [
+          "san-francisco"
+        ]
       },
       "next": [
-        "q3-job"
+        "q3b-starter"
       ]
     },
     {
@@ -344,10 +456,10 @@
             "label": "SF Portal"
           },
           "say": [
-            "I've opened your first portal! San Francisco is the city of jobs and technology. The portals are in the grove on the west side of the park."
+            "I've opened another portal! San Francisco is the city of jobs and technology. You'll find it in the same grove on the west side of the park."
           ],
           "entrySay": [
-            "I opened a magic portal! It goes to San Francisco. Follow me!"
+            "I opened a new portal! It goes to San Francisco. Follow me!"
           ]
         },
         {
@@ -406,7 +518,7 @@
         },
         {
           "id": "buy-share",
-          "text": "Buy your first investment at the Brokerage",
+          "text": "Buy your first investment at the New York Brokerage",
           "goal": {
             "type": "event",
             "target": "invest"
@@ -414,16 +526,16 @@
           "marker": {
             "location": "new-york",
             "pos": [
-              0,
-              0
+              44,
+              -44
             ],
             "label": "Brokerage"
           },
           "say": [
-            "Head to the Brokerage and buy something. Tip: an index fund like FCX owns a little of every company, instant diversification!"
+            "Time to go back to New York's Brokerage and buy something. Tip: an index fund like FCX owns a little of every company, instant diversification!"
           ],
           "entrySay": [
-            "Go to the Brokerage and buy one share. FCX is a basket with a tiny piece of every company!"
+            "Let's go back to the New York Brokerage and buy one share. FCX is a basket with a tiny piece of every company!"
           ]
         }
       ],

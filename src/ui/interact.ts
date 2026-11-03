@@ -97,6 +97,18 @@ export function enterHome(propUid: string) {
   }, 150);
 }
 
+/** Leaves the building, then runs `then` once the street has loaded. */
+export function exitBuildingThen(then: () => void) {
+  exitBuilding();
+  const started = Date.now();
+  const id = setInterval(() => {
+    const ready = !useScene.getState().interior && !useUI.getState().loading.active;
+    if (!ready && Date.now() - started < 15000) return;
+    clearInterval(id);
+    if (ready) then();
+  }, 100);
+}
+
 export function exitBuilding() {
   const scene = useScene.getState();
   // Already outside (e.g. a delivery resumed from the HUD in the street): nothing to leave, and

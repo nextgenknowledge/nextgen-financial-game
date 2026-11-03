@@ -2,7 +2,7 @@ import companies from '@/data/companies.json';
 import type { AvatarConfig, Difficulty, WorldState } from './types';
 import { randomSeed } from './rng';
 
-export const SAVE_VERSION = 1;
+export const SAVE_VERSION = 2;
 
 export const DEFAULT_AVATAR: AvatarConfig = {
   skin: '#e8b48f',
@@ -135,7 +135,11 @@ export function createWorld(opts: NewWorldOptions): WorldState {
 export function migrateWorld(raw: unknown): WorldState {
   const w = raw as WorldState;
   if (!w || typeof w !== 'object' || !w.id || !w.finance) throw new Error('Not a Fin City world');
-  // v1 is current. Fill in any fields added after a save was made (defensive merge).
+  // v2 put the first job into the welcome quest at step 3, so later steps moved down one.
+  if ((w.version ?? 1) < 2) {
+    for (const a of w.progress?.quests?.active ?? []) if (a.id === 'q1-welcome' && a.step >= 3) a.step++;
+  }
+  // Fill in any fields added after a save was made (defensive merge).
   const fresh = createWorld({ name: w.name, nickname: w.nickname, difficulty: w.difficulty, seed: w.seed });
   const merged = deepFillDefaults(w, fresh) as WorldState;
   // New securities added to data after the save was made.

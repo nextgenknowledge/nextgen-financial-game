@@ -6,7 +6,7 @@ the app doesn't appear on the phone and the game makes no requests.
 
 ## What gets shared
 
-Each world is asked once, about 30 seconds into play, whether to share its score, with a disclaimer
+Each world is asked once, about five minutes into play, whether to share its score, with a disclaimer
 explaining what that means. Nothing is sent unless the player says yes, and they can change their
 mind in the FinPhone Leaderboard app (saying no removes their row).
 

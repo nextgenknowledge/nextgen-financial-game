@@ -1,7 +1,7 @@
 import Script from 'next/script';
 
 /**
- * Google Analytics (GA4), page views only. Loads only when NEXT_PUBLIC_GA_ID is set at build time
+ * Google Analytics (GA4): page views plus the learning milestones in src/game/progress/milestones.ts. Loads only when NEXT_PUBLIC_GA_ID is set at build time
  * (e.g. in the Cloudflare build settings), so local and test builds stay network-free. Ad features
  * and Google signals are off, and the game never sends nicknames, world names or answers.
  */

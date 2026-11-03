@@ -6,7 +6,7 @@ import { useScene } from '@/store/scene';
 import { Button, Modal } from '../common';
 import { CITIES, CITY_META } from '@/world/cities';
 import { rt } from '@/engine/runtime';
-import { travelTo } from '../interact';
+import { exitBuildingThen, travelTo } from '../interact';
 import { showTheWay } from '../goal';
 import { CITY_IDS, type LocationId } from '@/game/types';
 import { getCityMap } from '@/world/builders/sceneBuilder';
@@ -41,6 +41,8 @@ export function MapPanel() {
   const data = useMemo(() => getCityMap(def, difficulty), [def, difficulty]);
   const pois = useMemo(() => buildingsPois(def), [def]);
   const here = view === location && !interior;
+  // Jumping works from inside a building too: it walks you out first
+  const canJump = view === location;
   // Landmarks, building sites and the player's own homes
   const world = useGame((s) => s.world!);
   const myHomes = useMemo(() => ownedHomes(world, location), [world, location]);
@@ -143,22 +145,27 @@ export function MapPanel() {
   };
 
   const goTo = (id: string) => {
-    if (!here) return;
+    if (!canJump) return;
     // A building's door, your home's door, or just beside a landmark
-    const t = rt.triggers.find((x) => x.id === (id.startsWith('home:') ? id : `door:${id}`));
     const lm = extras.find((p) => p.id === id);
-    if (t || lm) {
+    const jump = () => {
+      const t = rt.triggers.find((x) => x.id === (id.startsWith('home:') ? id : `door:${id}`));
+      if (!t && !lm) return false;
       playSfx('whoosh');
       if (t) rt.teleport(t.x, t.z);
       else if (lm) rt.teleport(lm.x, lm.z + 5);
+      return true;
+    };
+    if (interior) {
       close();
-    }
+      exitBuildingThen(jump);
+    } else if (jump()) close();
   };
   /** Where Show the way should lead for a pin. */
   const target = (p: Poi): string | [number, number] => (p.id.startsWith('home:') ? p.id : p.id.startsWith('lm:') ? [p.x, p.z + 5] : `door:${p.id}`);
   const row = (p: Poi, blurb?: string) => (
     <div key={p.id} className="map-place-row">
-      <button className={`map-place ${hover === p.id ? 'on' : ''}`} onMouseEnter={() => setHover(p.id)} onMouseLeave={() => setHover(null)} onClick={() => goTo(p.id)} disabled={!here} title={here ? 'Jump straight there' : undefined}>
+      <button className={`map-place ${hover === p.id ? 'on' : ''}`} onMouseEnter={() => setHover(p.id)} onMouseLeave={() => setHover(null)} onClick={() => goTo(p.id)} disabled={!canJump} title={canJump ? 'Jump straight there' : undefined}>
         <GlyphIcon poi={p} />
         <span className="col" style={{ alignItems: 'flex-start', minWidth: 0 }}>
           <b className="small">{p.name}</b>
@@ -199,7 +206,7 @@ export function MapPanel() {
               const p = poiAt(e);
               if (p) goTo(p.id);
             }}
-            style={{ cursor: here && hover ? 'pointer' : 'default' }}
+            style={{ cursor: canJump && hover ? 'pointer' : 'default' }}
           />
           <div className="map-compass pixel">N ▲</div>
         </div>
@@ -209,7 +216,7 @@ export function MapPanel() {
           </h3>
           <span className="muted small">{CITY_META[view].theme}</span>
           <span className="small">
-            {here ? 'Click a place to jump straight there, or pick Show the way and follow the gold trail.' : 'Pick Show the way and Narwhal leads you there, through the portal.'}
+            {canJump ? 'Click a place to jump straight there, or pick Show the way and follow the gold trail.' : 'Pick Show the way and Narwhal leads you there, through the portal.'}
           </span>
           {(homesHere.length > 0 || homesElsewhere.length > 0) && (
             <div className="col" style={{ gap: '0.3rem' }}>

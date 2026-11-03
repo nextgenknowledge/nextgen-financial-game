@@ -28,7 +28,8 @@ import { sayStep, currentStep, startEpics } from '@/game/progress/quests';
 import { capture, saveNow } from './startWorld';
 import { interact } from './interact';
 import { HUD } from './hud/HUD';
-import { HudTour, startTour } from './hud/HudTour';
+import { HudTour } from './hud/HudTour';
+import { CostSummaryCard } from './hud/CostSummary';
 import { Panels } from './panels/Panels';
 import { updateGoalMarker } from './goal';
 import { getOff } from '@/world/ParkedVehicles';
@@ -89,19 +90,17 @@ export default function GameView() {
     const w = getWorld();
     if (!w) return;
     playMusic(CITIES[w.player.location].music);
-    // A brand-new world gets the screen tour first; the first quest line plays when it ends.
-    // Older saves that already saw the intro never get it unasked.
-    const fresh = !w.progress.flags.introDone && !w.progress.flags.tourDone;
+    // The first quest is the tutorial; the screen tour is only a replay from Settings.
     act((d, fx) => {
       refreshChallenges(d);
       startEpics(d, fx);
       if (!d.progress.flags.introDone) {
         d.progress.flags.introDone = true;
+        d.progress.flags.tourDone = true;
         const cs = currentStep(d);
-        if (cs && !fresh) sayStep(d, fx, cs.step);
+        if (cs) sayStep(d, fx, cs.step);
       }
     });
-    if (fresh) startTour();
   }, []);
 
   // L opens the Learn hub
@@ -192,6 +191,7 @@ export default function GameView() {
       </Canvas>
       <HUD />
       <Panels />
+      <CostSummaryCard />
       <HudTour />
     </div>
   );

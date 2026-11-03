@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { createWorld } from '@/game/world';
+import { createWorld, migrateWorld } from '@/game/world';
 import { recordEvent } from '@/game/progress/events';
 import { currentStep } from '@/game/progress/quests';
 import type { Fx } from '@/game/effects';
@@ -10,31 +10,118 @@ describe('quests tolerate out-of-order play', () => {
   it('skips steps the player already did before being asked', () => {
     const w = createWorld({ name: 'T', nickname: 'T', difficulty: 'entry', seed: 1 });
     const fx: Fx = [];
-    // Open the phone and enter the Welcome Center before the guide asks
+    // Open the phone before the guide asks
     recordEvent(w, fx, { type: 'menu', target: 'phone' });
-    recordEvent(w, fx, { type: 'enterBuilding', target: 'welcome-center' });
     expect(cur(w)).toBe('walk');
     recordEvent(w, fx, { type: 'move', value: 20 });
     expect(cur(w)).toBe('jump');
-    fx.length = 0;
     recordEvent(w, fx, { type: 'jump' });
-    // phone + welcome center were already done → straight to the quiz
+    // The phone was already opened, so it moves straight on
+    expect(cur(w)).toBe('odd-job');
+  });
+
+  it('never lets a small step hold back something bigger the player already did', () => {
+    const w = createWorld({ name: 'T', nickname: 'T', difficulty: 'entry', seed: 1 });
+    const fx: Fx = [];
+    recordEvent(w, fx, { type: 'move', value: 20 });
+    expect(cur(w)).toBe('jump');
+    // The odd job without ever jumping
+    w.progress.activities['odd-jobs'] = { best: 80, stars: 2, plays: 1, last: 0 };
+    recordEvent(w, fx, { type: 'activityComplete', target: 'odd-jobs', stars: 2 });
+    expect(cur(w)).toBe('enter-wc');
+    fx.length = 0;
+    recordEvent(w, fx, { type: 'enterBuilding', target: 'welcome-center' });
     expect(cur(w)).toBe('first-quiz');
-    const lines = fx.filter((e) => e.type === 'narwhal').length;
-    expect(lines).toBeGreaterThan(0); // only the quiz step is announced
+    expect(fx.filter((e) => e.type === 'narwhal').length).toBeGreaterThan(0); // the quiz is announced
+    // And finishing the quiz completes the quest
+    w.progress.activities['first-quiz'] = { best: 80, stars: 2, plays: 1, last: 0 };
+    recordEvent(w, fx, { type: 'activityComplete', target: 'first-quiz', stars: 2 });
+    expect(w.progress.quests.completed).toContain('q1-welcome');
+  });
+
+  it('makes the first job the first thing a new player earns from', () => {
+    const w = createWorld({ name: 'T', nickname: 'T', difficulty: 'entry', seed: 1 });
+    const fx: Fx = [];
+    for (const ev of [{ type: 'move', value: 20 }, { type: 'jump' }, { type: 'menu', target: 'phone' }]) recordEvent(w, fx, ev);
+    expect(cur(w)).toBe('odd-job');
+    // Walking into the Welcome Center early doesn't skip the job
+    recordEvent(w, fx, { type: 'enterBuilding', target: 'welcome-center' });
+    expect(cur(w)).toBe('odd-job');
+    const before = w.finance.cash;
+    w.progress.activities['odd-jobs'] = { best: 80, stars: 2, plays: 1, last: 0 };
+    recordEvent(w, fx, { type: 'activityComplete', target: 'odd-jobs', stars: 2 });
+    expect(w.finance.cash).toBe(before + 25);
+    // The Welcome Center visit counts now, so it moves on to the quiz
+    expect(cur(w)).toBe('first-quiz');
+  });
+
+  it('opens New York after the first quiz, then sends the player to the bank', () => {
+    const w = createWorld({ name: 'T', nickname: 'T', difficulty: 'entry', seed: 1 });
+    const fx: Fx = [];
+    for (const ev of [{ type: 'move', value: 20 }, { type: 'jump' }, { type: 'menu', target: 'phone' }, { type: 'enterBuilding', target: 'welcome-center' }]) recordEvent(w, fx, ev);
+    w.progress.activities['odd-jobs'] = { best: 80, stars: 2, plays: 1, last: 0 };
+    recordEvent(w, fx, { type: 'activityComplete', target: 'odd-jobs', stars: 2 });
+    expect(w.progress.unlocked).not.toContain('new-york');
+    w.progress.activities['first-quiz'] = { best: 80, stars: 2, plays: 1, last: 0 };
+    recordEvent(w, fx, { type: 'activityComplete', target: 'first-quiz', stars: 2 });
+    expect(w.progress.unlocked).toContain('new-york');
+    expect(cur(w)).toBe('travel-ny');
+    w.player.location = 'new-york';
+    recordEvent(w, fx, { type: 'travel', target: 'new-york' });
+    expect(cur(w)).toBe('see-brokerage');
+    recordEvent(w, fx, { type: 'enterBuilding', target: 'ny-brokerage' });
+    expect(cur(w)).toBe('back-home');
+    w.player.location = 'park';
+    recordEvent(w, fx, { type: 'travel', target: 'park' });
+    expect(cur(w)).toBe('enter-bank');
+  });
+
+  it('keeps small steps in order: pressing jump first still teaches walking', () => {
+    const w = createWorld({ name: 'T', nickname: 'T', difficulty: 'entry', seed: 1 });
+    recordEvent(w, [], { type: 'jump' });
+    expect(cur(w)).toBe('walk');
   });
 
   it('auto-completes the next quest’s early steps too', () => {
     const w = createWorld({ name: 'T', nickname: 'T', difficulty: 'entry', seed: 2 });
     const fx: Fx = [];
-    recordEvent(w, fx, { type: 'enterBuilding', target: 'bank' });
-    recordEvent(w, fx, { type: 'openChecking' });
+    recordEvent(w, fx, { type: 'enterBuilding', target: 'ny-brokerage' });
     for (const ev of [{ type: 'move', value: 20 }, { type: 'jump' }, { type: 'menu', target: 'phone' }, { type: 'enterBuilding', target: 'welcome-center' }])
       recordEvent(w, fx, ev);
+    w.progress.activities['odd-jobs'] = { best: 80, stars: 2, plays: 1, last: 0 };
+    recordEvent(w, fx, { type: 'activityComplete', target: 'odd-jobs', stars: 2 });
     w.progress.activities['first-quiz'] = { best: 80, stars: 2, plays: 1, last: 0 };
     recordEvent(w, fx, { type: 'activityComplete', target: 'first-quiz', stars: 2 });
     expect(w.progress.quests.completed).toContain('q1-welcome');
-    expect(cur(w)).toBe('deposit');
+    expect(cur(w)).toBe('travel-ny');
+    w.player.location = 'new-york';
+    recordEvent(w, fx, { type: 'travel', target: 'new-york' });
+    expect(cur(w)).toBe('back-home');
+  });
+});
+
+describe('older saves', () => {
+  it('keeps a player on the same welcome step after the job moved into the quest', () => {
+    const w = createWorld({ name: 'T', nickname: 'T', difficulty: 'entry', seed: 1 });
+    w.version = 1;
+    w.progress.quests.active = [{ id: 'q1-welcome', step: 3, progress: 0 }]; // was enter-wc
+    expect(cur(migrateWorld(w))).toBe('enter-wc');
+    const early = createWorld({ name: 'T', nickname: 'T', difficulty: 'entry', seed: 1 });
+    early.version = 1;
+    early.progress.quests.active = [{ id: 'q1-welcome', step: 1, progress: 0 }];
+    expect(cur(migrateWorld(early))).toBe('jump');
+    // Already on the new numbering: left alone
+    const fresh = createWorld({ name: 'T', nickname: 'T', difficulty: 'entry', seed: 1 });
+    fresh.progress.quests.active = [{ id: 'q1-welcome', step: 3, progress: 0 }];
+    expect(cur(migrateWorld(fresh))).toBe('odd-job');
+  });
+
+  it('still unlocks San Francisco for a save past the old first-job quest', () => {
+    const w = createWorld({ name: 'T', nickname: 'T', difficulty: 'entry', seed: 1 });
+    w.progress.quests.active = [{ id: 'q2-bank', step: 3, progress: 0 }];
+    recordEvent(w, [], { type: 'openSavings' });
+    expect(w.progress.unlocked).toContain('san-francisco');
+    expect(cur(w)).toBe('starter-outfit');
   });
 });
 

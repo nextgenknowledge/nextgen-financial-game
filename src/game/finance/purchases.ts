@@ -17,6 +17,7 @@ import { STARTER, starterPrice, useStarter } from '../starter';
 import community from '@/data/community.json';
 import furniture from '@/data/shop/furniture.json';
 import property from '@/data/shop/property.json';
+import { financedSummary, leaseSummary, petSummary } from './costSummary';
 
 /** Price including inflation (shop prices creep up over time). */
 export function currentPrice(w: WorldState, base: number) {
@@ -141,6 +142,7 @@ export function adoptPet(w: WorldState, fx: Fx, id: string, name: string) {
   fx.push({ type: 'confetti' });
   recordEvent(w, fx, { type: 'buy', target: id, value: price });
   recordEvent(w, fx, { type: 'ownPet', target: id });
+  fx.push({ type: 'costSummary', summary: petSummary(d.name, price, round2(d.monthly * w.market.priceIndex)) });
   return true;
 }
 
@@ -196,6 +198,9 @@ export function buyVehicle(w: WorldState, fx: Fx, id: string, method: PayMethod)
   fx.push({ type: 'confetti' });
   recordEvent(w, fx, { type: 'buy', target: id, value: deal ?? o.price });
   recordEvent(w, fx, { type: 'ownRide', target: id });
+  const upkeep = round2(d.upkeep * w.market.priceIndex);
+  if (method === 'loan') fx.push({ type: 'costSummary', summary: financedSummary({ name: d.name, price: o.price, down: o.down, payment: o.loan.payment, months: o.months, upkeep }) });
+  if (method === 'lease') fx.push({ type: 'costSummary', summary: leaseSummary({ name: d.name, signing: o.leaseDown, payment: o.lease, months: o.leaseMonths, upkeep }) });
   return true;
 }
 
@@ -248,6 +253,10 @@ export function buyPlot(w: WorldState, fx: Fx, plotId: string, downPct: number |
   fx.push({ type: 'narwhal', text: `You own land! 🏡 Land usually grows in value slowly. Next, you can build a house on it at the Real Estate Office.`, mood: 'hyped' });
   fx.push({ type: 'confetti' });
   recordEvent(w, fx, { type: 'buy', target: plotId, value: price });
+  if (downPct !== null) {
+    const o = propertyOffer(w, price, downPct, 15);
+    fx.push({ type: 'costSummary', summary: financedSummary({ name: p.name, price, down: o.down, payment: o.payment, months: o.months }) });
+  }
   return true;
 }
 
@@ -274,6 +283,10 @@ export function buildHouse(w: WorldState, fx: Fx, plotId: string, houseId: strin
   recordEvent(w, fx, { type: 'buy', target: houseId, value: cost });
   recordEvent(w, fx, { type: 'build', target: houseId });
   recordEvent(w, fx, { type: 'ownHome', target: houseId });
+  if (downPct !== null) {
+    const o = propertyOffer(w, cost, downPct, 30);
+    fx.push({ type: 'costSummary', summary: financedSummary({ name: h.name, price: cost, down: o.down, payment: o.payment, months: o.months }) });
+  }
   return true;
 }
 
@@ -293,6 +306,10 @@ export function buyCondo(w: WorldState, fx: Fx, condoId: string, downPct: number
   fx.push({ type: 'narwhal', text: `You bought the ${c.name}! It's rented out to tenants for about ${fmt(c.rent)}/month. That's passive income, but upkeep and empty months happen too.`, mood: 'hyped' });
   recordEvent(w, fx, { type: 'buy', target: condoId, value: price });
   recordEvent(w, fx, { type: 'ownHome', target: condoId });
+  if (downPct !== null) {
+    const o = propertyOffer(w, price, downPct, 30);
+    fx.push({ type: 'costSummary', summary: financedSummary({ name: c.name, price, down: o.down, payment: o.payment, months: o.months }) });
+  }
   return true;
 }
 

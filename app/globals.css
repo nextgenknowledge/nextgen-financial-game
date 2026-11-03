@@ -2108,3 +2108,17 @@ button.item-card { cursor: pointer; }
 .lb-name { font-weight: 800; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .lb-level { color: #4a5672; font-size: 0.76rem; font-weight: 800; }
 .lb-nw { font-weight: 800; color: #2f8a4a; }
+
+/* The first quest lights up the part of the screen it is talking about, without stopping play. */
+.quest-spot {
+  position: fixed; z-index: 45; pointer-events: none; border-radius: 14px;
+  box-shadow: 0 0 0 3px #ffd34d, 0 0 18px 6px rgba(255, 211, 77, 0.65);
+  animation: questSpot 1.1s ease-in-out infinite alternate;
+}
+@keyframes questSpot { from { opacity: 0.55; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .quest-spot { animation: none; } }
+
+/* What this really cost */
+.cost-rows { display: grid; gap: 0.35rem; margin: 0.4rem 0 0.8rem; }
+.cost-row { display: flex; justify-content: space-between; gap: 1rem; }
+.cost-row.strong { font-weight: 900; border-top: 2px solid rgba(15, 26, 61, 0.25); padding-top: 0.4rem; }

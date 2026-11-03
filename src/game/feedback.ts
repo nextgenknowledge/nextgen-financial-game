@@ -9,6 +9,16 @@
  *
  * From that link we get where to send answers (…/formResponse) and each question's entry id.
  */
+import type { WorldState } from './types';
+
+/** Minutes of play in this world before the rating card can pop up by itself. */
+export const RATING_AFTER_MINUTES = 10;
+
+/** Ask for a rating after a good moment (a first 3-star run or first purchase), never right away. */
+export function ratingDue(w: WorldState): boolean {
+  if (w.playSeconds < RATING_AFTER_MINUTES * 60) return false;
+  return (w.progress.stats['ev:buy'] ?? 0) > 0 || Object.values(w.progress.activities).some((a) => a.stars >= 3);
+}
 
 export interface FeedbackForm {
   /** Where answers are posted. */

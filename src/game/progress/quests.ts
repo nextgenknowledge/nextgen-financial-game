@@ -137,6 +137,7 @@ function completeQuest(w: WorldState, fx: Fx, q: QuestDef) {
   w.progress.quests.active = w.progress.quests.active.filter((a) => a.id !== q.id);
   w.progress.quests.completed.push(q.id);
   fx.push({ type: 'questComplete', title: q.title });
+  if (q.id === 'q1-welcome') fx.push({ type: 'track', name: 'tutorial_finished' });
   fx.push({ type: 'confetti' });
   const r = q.reward;
   if (r.cash) {
@@ -161,6 +162,8 @@ function completeQuest(w: WorldState, fx: Fx, q: QuestDef) {
   for (const n of q.next ?? []) startQuest(w, fx, n);
 }
 
+const BIG_GOALS = new Set<QuestStep['goal']['type']>(['enter', 'activity', 'travel']);
+
 /** Feed an event to all active quests. Returns true if anything advanced. */
 export function questsOnEvent(w: WorldState, fx: Fx, ev: GameEvent): boolean {
   let changed = false;
@@ -168,6 +171,21 @@ export function questsOnEvent(w: WorldState, fx: Fx, ev: GameEvent): boolean {
   for (const a of [...w.progress.quests.active]) {
     const q = QUEST_BY_ID.get(a.id);
     if (!q) continue;
+    // Doing something big from later in a tutorial quest moves it on, so a small step skipped
+    // along the way (a jump, say) can't hold back everything after it
+    if (q.onboarding) {
+      const ahead = q.steps.findIndex(
+        (s, i) => i > a.step && BIG_GOALS.has(s.goal.type) && stepTarget(s) === 1 && stepProgress(w, s, ev) > 0 && !q.steps.slice(a.step, i).some((x) => x.mustDo),
+      );
+      if (ahead > a.step) {
+        for (const s of q.steps.slice(a.step, ahead)) {
+          if (s.reward?.cash) w.finance.cash += s.reward.cash;
+          if (s.reward?.xp) grantXp(w, fx, s.reward.xp);
+        }
+        a.step = ahead;
+        a.progress = 0;
+      }
+    }
     let guard = 0;
     while (guard++ < 30) {
       const step = q.steps[a.step];
@@ -182,7 +200,10 @@ export function questsOnEvent(w: WorldState, fx: Fx, ev: GameEvent): boolean {
       if (!done && stateComplete(w, step)) done = true;
       if (!done) break;
       // Step complete
-      if (step.reward?.cash) w.finance.cash += step.reward.cash;
+      if (step.reward?.cash) {
+        w.finance.cash += step.reward.cash;
+        fx.push({ type: 'toast', text: `Bonus: +$${step.reward.cash}`, icon: '💵', tone: 'good' });
+      }
       if (step.reward?.xp) grantXp(w, fx, step.reward.xp);
       fx.push({ type: 'sfx', name: 'star' });
       a.step++;

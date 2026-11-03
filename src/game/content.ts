@@ -172,6 +172,11 @@ export interface QuestStep {
   entrySay?: string[];
   proSay?: string[];
   marker?: { location: LocationId; pos: [number, number]; label?: string };
+  /** A HUD element to light up during this step (CSS selector); touchSpot wins on touch devices. */
+  spot?: string;
+  touchSpot?: string;
+  /** Doing something later in the tutorial doesn't skip past this step. */
+  mustDo?: boolean;
   reward?: { cash?: number; xp?: number };
 }
 

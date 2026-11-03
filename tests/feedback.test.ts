@@ -1,5 +1,8 @@
 import { describe, expect, it } from 'vitest';
-import { feedbackBody, parsePrefilledLink } from '@/game/feedback';
+import { feedbackBody, parsePrefilledLink, ratingDue } from '@/game/feedback';
+import { createWorld } from '@/game/world';
+import { buyOutfit } from '@/game/finance/purchases';
+import { STARTER } from '@/game/starter';
 import config from '@/data/feedbackForm.json';
 
 const LINK = 'https://docs.google.com/forms/d/e/1FAIpQLSexample/viewform?usp=pp_url&entry.111=5&entry.222=review&entry.333=nickname&entry.444=Mode';
@@ -36,5 +39,26 @@ describe('in-game rating form', () => {
     expect(parsePrefilledLink('')).toBeNull();
     expect(parsePrefilledLink('https://example.com/forms/d/x/viewform?entry.1=5')).toBeNull();
     expect(parsePrefilledLink('https://docs.google.com/forms/d/e/X/viewform?entry.1=review')).toBeNull();
+  });
+});
+
+describe('when the rating card asks', () => {
+  const world = () => createWorld({ name: 'T', nickname: 'T', difficulty: 'entry', seed: 1 });
+  it('waits for ten minutes and a good moment', () => {
+    const w = world();
+    w.playSeconds = 3600;
+    expect(ratingDue(w)).toBe(false);
+    w.progress.activities['first-quiz'] = { best: 70, stars: 2, plays: 1, last: 0 };
+    expect(ratingDue(w)).toBe(false);
+    w.progress.activities['first-quiz'].stars = 3;
+    expect(ratingDue(w)).toBe(true);
+    w.playSeconds = 599;
+    expect(ratingDue(w)).toBe(false);
+  });
+  it('counts a first purchase as a good moment', () => {
+    const w = world();
+    w.playSeconds = 600;
+    expect(buyOutfit(w, [], STARTER.outfit.id)).toBe(true);
+    expect(ratingDue(w)).toBe(true);
   });
 });

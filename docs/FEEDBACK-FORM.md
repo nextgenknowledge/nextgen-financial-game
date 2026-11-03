@@ -1,7 +1,7 @@
 # In-game rating form (Google Form)
 
-Two minutes into play (and any time from **Pause > Rate & review**) players get a "Having fun?"
-card: they tap 1 to 5 stars, can write a short review, and press **Submit**. The answer goes
+After a first 3-star run or first purchase, at least ten minutes in (and any time from **Leave a
+Review** or **Pause > Rate & review**), players get a "Having fun?" card: they tap 1 to 5 stars, can write a short review, and press **Submit**. The answer goes
 straight into the team's Google Form without leaving the game. Their nickname goes in the
 form's Name question.
 

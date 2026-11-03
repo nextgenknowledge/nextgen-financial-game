@@ -22,6 +22,7 @@ import { useRide, getOff } from '@/world/ParkedVehicles';
 import { Minimap } from './Minimap';
 import { RatingPrompt, openRating } from './RatingPrompt';
 import { LeaderboardPrompt } from './LeaderboardPrompt';
+import { QuestSpot } from './QuestSpot';
 import { APPS } from '../phone/Phone';
 import { condoDef } from '@/game/sim/catalog';
 import { DecorPanel } from './DecorPanel';
@@ -72,6 +73,7 @@ export function HUD() {
       <NavTips />
       <RatingPrompt />
       <LeaderboardPrompt />
+      <QuestSpot />
       <TouchControls />
     </div>
   );

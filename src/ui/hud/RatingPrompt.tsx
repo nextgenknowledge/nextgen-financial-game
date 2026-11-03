@@ -2,8 +2,8 @@
 /**
  * "Having fun?" rating and review, done inside the game: tap 1 to 5 stars, optionally write a
  * review, and Submit sends it into the team's Google Form in the background (see
- * src/game/feedback.ts and docs/FEEDBACK-FORM.md). It pops up after two minutes of play and
- * opens any time from Pause > Rate & review. Nothing is sent unless the player taps Submit.
+ * src/game/feedback.ts and docs/FEEDBACK-FORM.md). It pops up after a good moment, at least ten
+ * minutes in, and opens any time from Leave a Review or Pause > Rate & review. Nothing is sent unless the player taps Submit.
  * Answers are remembered on this device: after Submit or No thanks it never pops up again, and
  * Maybe later asks once more in a later session.
  */
@@ -15,12 +15,9 @@ import { playSfx } from '@/engine/audio';
 import { Button, Modal } from '../common';
 import { narwhalFace } from '../narwhalArt';
 import config from '@/data/feedbackForm.json';
-import { feedbackBody, parsePrefilledLink } from '@/game/feedback';
+import { feedbackBody, parsePrefilledLink, ratingDue } from '@/game/feedback';
 
 const FORM = parsePrefilledLink(config.prefilledLink);
-
-/** Seconds of actual play before the pop-up appears. */
-const ASK_AFTER = 120;
 
 type Answer = 'rated' | 'never' | 'later';
 
@@ -39,20 +36,13 @@ export function RatingPrompt() {
     getGlobal<Answer>('ratingPrompt')
       .then((a) => (answer.current = a ?? null))
       .catch(() => (answer.current = null));
-    let played = 0;
-    let last = performance.now();
     const id = setInterval(() => {
-      // Real elapsed time (a busy slow device fires fewer ticks), capped so a sleeping laptop doesn't count
-      const now = performance.now();
-      const dt = Math.min(5, (now - last) / 1000);
-      last = now;
       const ui = useUI.getState();
-      if (ui.rating || askedThisSession || answer.current === undefined || answer.current === 'rated' || answer.current === 'never') return;
-      // Only count time actually playing: not loading, not in another tab
-      if (ui.screen !== 'game' || ui.loading.active || document.visibilityState !== 'visible') return;
-      played += dt;
+      const w = useGame.getState().world;
+      if (!w || ui.rating || askedThisSession || answer.current === undefined || answer.current === 'rated' || answer.current === 'never') return;
+      if (ui.screen !== 'game' || ui.loading.active || document.visibilityState !== 'visible' || !ratingDue(w)) return;
       // Wait for a calm moment: no menu, tour, activity, Narwhal speech or furniture moving
-      if (played < ASK_AFTER || ui.panel || ui.tour || ui.run || ui.decor || ui.narwhal.length || ui.worldActivity || ui.leaderboardAsk) return;
+      if (ui.panel || ui.tour || ui.run || ui.decor || ui.narwhal.length || ui.worldActivity || ui.leaderboardAsk) return;
       askedThisSession = true;
       playSfx('pop');
       openRating();

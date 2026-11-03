@@ -102,12 +102,15 @@ export function Modal({
   /** Header colour theme. */
   accent?: 'navy' | 'teal' | 'gold' | 'terminal';
 }) {
+  const backdrop = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (!onClose || hidden) return;
     const h = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         e.stopPropagation();
-        onClose();
+        // With dialogs stacked, Escape only closes the top one
+        const open = document.querySelectorAll('.modal-backdrop:not([hidden])');
+        if (open[open.length - 1] === backdrop.current) onClose();
       }
     };
     window.addEventListener('keydown', h, true);
@@ -115,7 +118,7 @@ export function Modal({
   }, [onClose, hidden]);
   const [icon, text] = splitIcon(title);
   return (
-    <div className="modal-backdrop" hidden={hidden} onMouseDown={(e) => e.target === e.currentTarget && onClose?.()}>
+    <div className="modal-backdrop" ref={backdrop} hidden={hidden} onMouseDown={(e) => e.target === e.currentTarget && onClose?.()}>
       <div className={cls('modal', 'panel', size, className)} role="dialog" aria-modal="true">
         {(title || onClose) && (
           <div className={cls('modal-head', accent ?? 'navy')}>

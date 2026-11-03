@@ -14,7 +14,7 @@ import { nicknameProblem } from '@/game/leaderboard';
 import { LEADERBOARD_URL, setScoreShared } from '../leaderboard';
 
 /** Seconds of actual play before asking, so a new player gets to look around first. */
-const ASK_AFTER = 30;
+const ASK_AFTER = 300;
 
 /** Worlds already asked this browser session. */
 const asked = new Set<string>();

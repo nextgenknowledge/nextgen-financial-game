@@ -1,9 +1,8 @@
 'use client';
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useUI } from '@/store/ui';
-import { useGame, act } from '@/store/game';
+import { useGame } from '@/store/game';
 import { useSettings, keyLabel } from '@/store/settings';
-import { currentStep, sayStep } from '@/game/progress/quests';
 import { playSfx } from '@/engine/audio';
 import { rt } from '@/engine/runtime';
 import { speak, stopSpeaking } from '../speech';
@@ -11,9 +10,9 @@ import { narwhalFace } from '../narwhalArt';
 import type { Mood } from '@/game/effects';
 
 /*
- * First-play tour. The screen dims and each important part of the HUD is lit up in turn while
- * Narwhal explains it. The game stays paused (see isPaused) until the last step, then the
- * first quest line plays as usual.
+ * Screen tour, replayed from Settings (new players learn the HUD from the first quest, see
+ * QuestSpot). The screen dims and each important part of the HUD is lit up in turn while
+ * Narwhal explains it. The game stays paused (see isPaused) until the last step.
  */
 
 interface TourStep {
@@ -23,8 +22,6 @@ interface TourStep {
   entry: string;
   pro: string;
   mood: Mood;
-  /** Only shown on touch screens. */
-  touch?: boolean;
 }
 
 type Keys = ReturnType<typeof useSettings.getState>['keys'];
@@ -33,76 +30,33 @@ const STEPS = (k: Keys, touch: boolean): TourStep[] => [
   {
     target: 'player',
     title: 'This is you',
-    entry: 'Hi! I am NextGen Narwhal. This is you, right in the middle of Fin City. Let me show you around the screen first.',
-    pro: 'Welcome to Fin City. That is your character in the middle. Before you head out, here is a quick tour of the screen.',
+    entry: 'Hi! I am NextGen Narwhal, and this is you, right in the middle of Fin City. I live in the corner. Tap me any time for a hint.',
+    pro: 'Welcome to Fin City. That is your character in the middle. I sit in the corner: tap me whenever you are stuck.',
     mood: 'hyped',
   },
   {
-    target: '.narwhal-guide-body',
-    title: 'NextGen Narwhal',
-    entry: 'That is me! I live down here. When I have something to say, a bubble pops up. Tap me any time for a hint.',
-    pro: 'I sit in the bottom left. I will flag new quests and news, and you can tap me for a hint whenever you are stuck.',
+    target: touch ? '.joystick' : 'player',
+    title: 'Move around',
+    entry: touch
+      ? 'Drag this stick to walk. The round button jumps and the gold button talks to people and opens doors.'
+      : 'Walk with W A S D or the arrow keys. Press ' + keyLabel(k.interact) + ' to talk to people and go through doors.',
+    pro: touch
+      ? 'Drag the stick to move. The round button jumps; the gold button interacts with people, doors and vehicles.'
+      : 'Move with W A S D or the arrows, hold Shift to run, and press ' + keyLabel(k.interact) + ' to interact.',
     mood: 'talking',
-  },
-  {
-    target: '.narwhal-bubble.idle',
-    title: 'Your quest',
-    entry: 'This card tells you what to do next. Follow the sparkly light on the ground and it will take you there.',
-    pro: 'Your current quest step lives here, with a progress bar when there is one. A light trail on the ground points the way.',
-    mood: 'confident',
-  },
-  {
-    target: '.map-corner',
-    title: 'Your map',
-    entry: 'This little round map shows where you are. Tap it, or press ' + keyLabel(k.map) + ', to see the whole city.',
-    pro: 'The minimap shows your surroundings and the place name. Click it or press ' + keyLabel(k.map) + ' for the full city map and fast travel.',
-    mood: 'confident',
   },
   {
     target: '.mini-phone',
     title: 'Your FinPhone',
-    entry: 'This is your FinPhone. It shows the time, your FinBucks and your level. Open it to see your bank, quests and stuff. Press ' + keyLabel(k.phone) + '.',
-    pro: 'Your FinPhone holds the bank, budget, quests, Learn hub and inventory. The screen shows the time, your cash and level. Shortcut: ' + keyLabel(k.phone) + '.',
+    entry: 'This is your FinPhone. Open it to see your bank, quests and stuff. Press ' + keyLabel(k.phone) + '.',
+    pro: 'Your FinPhone holds the bank, budget, quests, Learn hub and inventory. Shortcut: ' + keyLabel(k.phone) + '.',
     mood: 'talking',
   },
   {
-    target: 'player',
-    title: 'Make Fin City yours',
-    entry: 'Fin City is not just about learning. You can buy cool clothes, adopt a puppy that follows you, ride a scooter and even own a house you can decorate! Every shop has one super cheap starter deal, and I will take you to them after your first job.',
-    pro: 'The money you earn is yours to use: clothes, pets that follow you around, vehicles and homes you can furnish. Each shop has one starter deal so you can try them all early. I will walk you through them after your first job.',
-    mood: 'hyped',
-  },
-  {
-    target: '.tl-buttons .corner-btn.square',
-    title: 'Settings',
-    entry: 'This gear opens Settings. You can turn on read-aloud, change the sound, or make the game run smoother.',
-    pro: 'Settings: graphics quality, sound, read-aloud, controls and the length of a game month.',
-    mood: 'confident',
-  },
-  {
-    target: '.tl-buttons .corner-btn:not(.square)',
-    title: 'Save & Exit',
-    entry: 'The game saves by itself. When you want to stop, press Save & Exit and your world will be here next time.',
-    pro: 'The game autosaves every 30 seconds. Save & Exit stores your world and takes you back to your saves.',
-    mood: 'confident',
-  },
-  {
-    target: '.joystick',
-    title: 'Move around',
-    entry: 'Drag this stick to walk. The round button jumps and the gold button talks to people and opens doors.',
-    pro: 'Drag the stick to move. The round button jumps; the gold button interacts with people, doors and vehicles.',
-    mood: 'talking',
-    touch: true,
-  },
-  {
-    target: 'player',
-    title: 'Ready to play',
-    entry: touch
-      ? 'That is everything! Follow the sparkly light to your first quest. Have fun!'
-      : 'Walk with W A S D or the arrow keys. Press ' + keyLabel(k.interact) + ' to talk to people and go through doors. That is everything. Have fun!',
-    pro: touch
-      ? 'That is the whole screen. Follow the light trail to your first quest.'
-      : 'Move with W A S D or the arrows, hold Shift to run, and press ' + keyLabel(k.interact) + ' to interact. Follow the light trail to your first quest.',
+    target: '.narwhal-bubble.idle',
+    title: 'Your next step',
+    entry: 'This card tells you what to do next. Follow the sparkly light!',
+    pro: 'Your current step lives here, and a light trail points the way.',
     mood: 'hyped',
   },
 ];
@@ -166,7 +120,7 @@ export function HudTour() {
     return () => clearInterval(id);
   }, [tour, loading]);
 
-  const steps = useMemo(() => STEPS(keys, touch).filter((s) => !s.touch || touch), [keys, touch]);
+  const steps = useMemo(() => STEPS(keys, touch), [keys, touch]);
   const step = steps[Math.min(i, steps.length - 1)];
 
   // Follow the target while it is lit (the HUD can reflow when the window resizes).
@@ -191,13 +145,6 @@ export function HudTour() {
     stopSpeaking();
     setI(0);
     useUI.setState({ tour: false });
-    act((d, fx) => {
-      // The first quest line waits for the first tour; a replay from Settings just closes.
-      const first = !d.progress.flags.tourDone;
-      d.progress.flags.tourDone = true;
-      const cs = currentStep(d);
-      if (first && cs) sayStep(d, fx, cs.step);
-    });
   }, []);
 
   const go = useCallback(
