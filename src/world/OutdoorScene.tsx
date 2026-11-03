@@ -45,7 +45,7 @@ export function OutdoorScene({ def, difficulty }: { def: CityDef; difficulty: Di
   // Place the player
   useEffect(() => {
     const sp = useScene.getState().spawn ?? build.spawn;
-    rt.teleport(sp.x, sp.z, sp.rot);
+    if (!rt.restoreSpot()) rt.teleport(sp.x, sp.z, sp.rot);
     // Finish loading after the first frame renders
     const t = setTimeout(() => useUI.getState().setLoading({ active: false, progress: 1 }), 120);
     return () => clearTimeout(t);

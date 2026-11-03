@@ -1532,6 +1532,9 @@ button.item-card { cursor: pointer; }
 .hud.entry-mode .narwhal-guide .narwhal-bubble .dialog-text { font-size: 1.12rem; }
 .hud .narwhal-guide .narwhal-bubble-head .grow { flex: 1; }
 @media (max-height: 640px) { .hud .narwhal-guide-body img { height: 96px; } }
+/* The door and desk prompt sits above Narwhal's card when the two would collide */
+@media (max-width: 1500px) { .hud:has(.narwhal-bubble) .hud-prompt { margin-bottom: 118px; } }
+@media (max-height: 500px) { .hud:has(.narwhal-bubble) .hud-prompt { margin-bottom: 94px; } }
 @media (max-width: 760px) { .hud .r-bl { position: absolute; left: 8px; bottom: 8px; } }
 
 /* ═════════ In-game HUD, laid out like the earlier Fin-City build ═════════
@@ -1548,7 +1551,7 @@ button.item-card { cursor: pointer; }
 /* Top left buttons */
 .tl-buttons { display: flex; gap: 8px; pointer-events: auto; }
 .corner-btn {
-  display: inline-flex; align-items: center; gap: 0.4rem; height: 42px; padding: 0 0.9rem; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 0.4rem; height: 42px; padding: 0 0.9rem; cursor: pointer; white-space: nowrap;
   font-family: var(--font-body); font-weight: 900; font-size: 0.9rem; color: #fff;
   background: #0b1a3a; border: 2px solid #3d8bff; box-shadow: 3px 3px 0 #061233;
 }
@@ -2111,7 +2114,7 @@ button.item-card { cursor: pointer; }
 
 /* The first quest lights up the part of the screen it is talking about, without stopping play. */
 .quest-spot {
-  position: fixed; z-index: 45; pointer-events: none; border-radius: 14px;
+  position: fixed; z-index: 60; pointer-events: none; border-radius: 14px;
   box-shadow: 0 0 0 3px #ffd34d, 0 0 18px 6px rgba(255, 211, 77, 0.65);
   animation: questSpot 1.1s ease-in-out infinite alternate;
 }

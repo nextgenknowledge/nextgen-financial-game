@@ -38,6 +38,12 @@ import { PlayerPets } from '@/world/Pets';
 
 export default function GameView() {
   const quality = useSettings((s) => s.quality);
+  // A new quality rebuilds the whole 3D scene (the Canvas is keyed on it): don't move the player
+  const lastQuality = useRef(quality);
+  if (lastQuality.current !== quality) {
+    lastQuality.current = quality;
+    rt.keepSpot = { x: rt.player.x, z: rt.player.z, scene: rt.sceneKey };
+  }
   const [dpr, setDpr] = useState(() => (typeof window === 'undefined' ? 1 : pickDpr(quality, window.innerWidth, window.innerHeight, window.devicePixelRatio || 1)));
   const narwhalFollow = useSettings((s) => s.narwhalFollow);
   const location = useScene((s) => s.location);

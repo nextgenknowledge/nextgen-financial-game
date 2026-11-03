@@ -273,7 +273,7 @@ function RealEstate({ focusPlot }: { focusPlot?: string }) {
       {tab === 'land' && starterPrice(w, 'home', STARTER.home.id) !== null && (
         <div className="card starter-card row between wrap" style={{ marginTop: 8 }}>
           <div className="col" style={{ gap: 4 }}>
-            <b>🏠 Starter Tiny Home</b>
+            <b>🏠 Starter Tiny House</b>
             <span className="small">Fin City&apos;s First-Home Grant pays for most of a Tiny House on a free lot. Live in it and decorate it. It can&apos;t be rented out.</span>
             <StarterTag was={currentPrice(w, (property.plots[0]?.price ?? 0) + (property.houses.find((h) => h.id === STARTER.home.id)?.buildCost ?? 0))} now={STARTER.home.price} note="One per player." />
           </div>

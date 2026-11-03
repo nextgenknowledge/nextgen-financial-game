@@ -198,13 +198,19 @@ export function NarwhalGuide() {
 export function GoalBeacon() {
   const g = useRef<THREE.Group>(null);
   const arrow = useRef<THREE.Mesh>(null);
+  const beam = useRef<THREE.Group>(null);
   const hints = useSettings((s) => s.hints);
   useFrame((state) => {
     const goal = rt.goal;
     if (!g.current) return;
-    g.current.visible = !!goal && hints;
+    g.current.visible = !!goal && (hints || !!useUI.getState().guide);
     if (!goal) return;
     g.current.position.set(goal.x, 0, goal.z);
+    // Up close (or with the camera inside it) the beam would white out the whole screen
+    if (beam.current) {
+      const cam = state.camera.position;
+      beam.current.visible = Math.hypot(goal.x - rt.player.x, goal.z - rt.player.z) > 5 && Math.hypot(goal.x - cam.x, goal.z - cam.z) > 3;
+    }
     if (arrow.current) {
       arrow.current.position.y = 4.4 + Math.sin(state.clock.elapsedTime * 3) * 0.35;
       arrow.current.rotation.y = state.clock.elapsedTime * 1.5;
@@ -213,6 +219,7 @@ export function GoalBeacon() {
   return (
     <group ref={g}>
       {/* Bright core beam inside a wider glow, both visible from across the city */}
+      <group ref={beam}>
       <mesh position={[0, 15, 0]}>
         <cylinderGeometry args={[0.55, 0.75, 30, 12, 1, true]} />
         <meshBasicMaterial color="#fff2b0" transparent opacity={0.75} depthWrite={false} side={THREE.DoubleSide} toneMapped={false} />
@@ -221,6 +228,7 @@ export function GoalBeacon() {
         <cylinderGeometry args={[1.3, 1.8, 30, 16, 1, true]} />
         <meshBasicMaterial color="#ffc21a" transparent opacity={0.38} depthWrite={false} side={THREE.DoubleSide} toneMapped={false} blending={THREE.AdditiveBlending} />
       </mesh>
+      </group>
       <mesh ref={arrow} rotation={[Math.PI, 0, 0]}>
         <coneGeometry args={[1.0, 2.0, 4]} />
         <meshBasicMaterial color="#ffd23f" toneMapped={false} />
@@ -258,7 +266,7 @@ export function GuideTrail() {
     const path = rt.guidePath;
     const goal = rt.goal;
     const p = rt.player;
-    if (!hints || !path || path.length < 2 || !goal || Math.hypot(goal.x - p.x, goal.z - p.z) < 3.5) {
+    if (!(hints || useUI.getState().guide) || !path || path.length < 2 || !goal || Math.hypot(goal.x - p.x, goal.z - p.z) < 3.5) {
       mesh.count = 0;
       glow.count = 0;
       return;

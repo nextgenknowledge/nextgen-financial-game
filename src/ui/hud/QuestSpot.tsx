@@ -20,8 +20,12 @@ export function QuestSpot() {
     const id = setInterval(() => {
       const ui = useUI.getState();
       const w = useGame.getState().world;
-      const step = w && !ui.panel && !ui.tour && !ui.run && !ui.loading.active ? currentStep(w)?.step : null;
-      const selector = step && (isTouch() ? step.touchSpot ?? step.spot : step.spot);
+      const phone = ui.panel?.type === 'phone' ? ui.panel : null;
+      const step = w && (!ui.panel || phone) && !ui.tour && !ui.run && !ui.loading.active ? currentStep(w)?.step : null;
+      // With the phone open, light up the app to tap; on its screen there's nothing left to point at
+      const selector = phone
+        ? step?.appSpot && !phone.app && `[data-app="${step.appSpot}"]`
+        : step && (isTouch() ? step.touchSpot ?? step.spot : step.spot);
       const r = selector ? document.querySelector(selector)?.getBoundingClientRect() : null;
       setBox((old) => {
         if (!r || !r.width) return null;

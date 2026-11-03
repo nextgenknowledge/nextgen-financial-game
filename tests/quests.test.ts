@@ -2,6 +2,9 @@ import { describe, expect, it } from 'vitest';
 import { createWorld, migrateWorld } from '@/game/world';
 import { recordEvent } from '@/game/progress/events';
 import { currentStep } from '@/game/progress/quests';
+import { sameActivity } from '@/game/activities';
+import { CITIES } from '@/world/cities';
+import questData from '@/data/quests.json';
 import type { Fx } from '@/game/effects';
 
 const cur = (w: ReturnType<typeof createWorld>) => currentStep(w)?.step.id;
@@ -100,6 +103,30 @@ describe('quests tolerate out-of-order play', () => {
   });
 });
 
+describe('starter quest teaches riding', () => {
+  it('goes from buying the scooter to riding it to hopping off, then the home', () => {
+    const w = createWorld({ name: 'T', nickname: 'T', difficulty: 'entry', seed: 1 });
+    const fx: Fx = [];
+    w.progress.quests.active = [{ id: 'q3b-starter', step: 2, progress: 0 }];
+    recordEvent(w, fx, { type: 'ownRide', target: 'scooter' });
+    expect(cur(w)).toBe('starter-hop-on');
+    recordEvent(w, fx, { type: 'rideVehicle', target: 'scooter' });
+    expect(cur(w)).toBe('starter-drive');
+    recordEvent(w, fx, { type: 'getOff' });
+    expect(cur(w)).toBe('starter-home');
+  });
+
+  it('skips the riding steps for someone who already rode', () => {
+    const w = createWorld({ name: 'T', nickname: 'T', difficulty: 'entry', seed: 1 });
+    const fx: Fx = [];
+    recordEvent(w, fx, { type: 'rideVehicle', target: 'x' });
+    recordEvent(w, fx, { type: 'getOff' });
+    w.progress.quests.active = [{ id: 'q3b-starter', step: 2, progress: 0 }];
+    recordEvent(w, fx, { type: 'ownRide', target: 'scooter' });
+    expect(cur(w)).toBe('starter-home');
+  });
+});
+
 describe('older saves', () => {
   it('keeps a player on the same welcome step after the job moved into the quest', () => {
     const w = createWorld({ name: 'T', nickname: 'T', difficulty: 'entry', seed: 1 });
@@ -114,6 +141,17 @@ describe('older saves', () => {
     const fresh = createWorld({ name: 'T', nickname: 'T', difficulty: 'entry', seed: 1 });
     fresh.progress.quests.active = [{ id: 'q1-welcome', step: 3, progress: 0 }];
     expect(cur(migrateWorld(fresh))).toBe('odd-job');
+  });
+
+  it('keeps a player on the same starter step after the riding steps were added', () => {
+    const w = createWorld({ name: 'T', nickname: 'T', difficulty: 'entry', seed: 1 });
+    w.version = 2;
+    w.progress.quests.active = [{ id: 'q3b-starter', step: 3, progress: 0 }]; // was the home
+    expect(cur(migrateWorld(w))).toBe('starter-home');
+    const early = createWorld({ name: 'T', nickname: 'T', difficulty: 'entry', seed: 1 });
+    early.version = 2;
+    early.progress.quests.active = [{ id: 'q3b-starter', step: 2, progress: 0 }];
+    expect(cur(migrateWorld(early))).toBe('starter-ride');
   });
 
   it('still unlocks San Francisco for a save past the old first-job quest', () => {
@@ -151,5 +189,36 @@ describe('legendary quests', () => {
     const w = createWorld({ name: 'T', nickname: 'T', difficulty: 'advanced', seed: 4 });
     startEpics(w, []);
     expect(w.progress.quests.active.some((a) => a.id === 'epic-wallstreet')).toBe(true);
+  });
+});
+
+describe('Narwhal cards name things that exist', () => {
+  const steps = (questData.quests as unknown as { id: string; difficulty?: string; steps: { id: string; text: string; proText?: string; entryText?: string; say?: string[]; proSay?: string[]; entrySay?: string[]; goal: { type: string; target?: string } }[] }[]).flatMap((q) =>
+    q.steps.map((s) => ({ q, s })),
+  );
+  const buildings = Object.values(CITIES).flatMap((c) => c.buildings);
+  const renamed = buildings.filter((b) => b.pro?.name && b.pro.name !== b.name);
+
+  it('every activity goal has a station to play in both modes', () => {
+    for (const { q, s } of steps) {
+      // Odd Jobs is the board by the fountain, not a station
+      if (s.goal.type !== 'activity' || !s.goal.target || s.goal.target === '*' || s.goal.target === 'odd-jobs') continue;
+      const t = s.goal.target;
+      const pro = buildings.some((b) => b.stations.some((st) => sameActivity(st.activity, t)));
+      const entry = buildings.some((b) => (b.entryStations ?? b.stations).some((st) => st.activity === t));
+      expect(pro, `${q.id}/${s.id} advanced`).toBe(true);
+      if (q.difficulty !== 'advanced') expect(entry, `${q.id}/${s.id} entry`).toBe(true);
+    }
+  });
+
+  it('cards use the building name the player actually sees in their mode', () => {
+    for (const { q, s } of steps) {
+      const advanced = [s.proText ?? s.text, ...(s.proSay ?? s.say ?? [])].join(' ');
+      const entry = q.difficulty === 'advanced' ? '' : [s.entryText ?? s.text, ...(s.entrySay ?? s.say ?? [])].join(' ');
+      for (const b of renamed) {
+        expect(advanced.includes(b.name), `${q.id}/${s.id} says ${b.name} in Advanced`).toBe(false);
+        expect(entry.includes(b.pro!.name!), `${q.id}/${s.id} says ${b.pro!.name} in Entry`).toBe(false);
+      }
+    }
   });
 });

@@ -210,13 +210,15 @@ function NavTips() {
       if (!w || ui.panel || ui.narwhal.length || ui.loading.active || rt.flyover) return;
       const near = rt.nearTrigger?.kind;
       const scene = useScene.getState();
+      // These tips wait while a tutorial quest is already walking the player through the same thing
+      const on = (id: string) => w.progress.quests.active.some((a) => a.id === id);
       if (near === 'portal')
         tip('tipPortal', 'This portal takes you to another city. Press E to travel. Open the Map any time to see every city, jump to any building, or pick Show the way and follow the gold trail.');
-      else if (near === 'vehicle')
+      else if (near === 'vehicle' && !on('q3b-starter'))
         tip('tipRide', 'Your ride is here! Press E to hop on. W A S D or the arrow keys drive, and E gets you off again. Lost it? Open My Stuff in your FinPhone and tap Bring it here.');
-      else if (w.assets.properties.some((pr) => (pr.houseId || condoDef(pr.itemId)) && !pr.rented))
+      else if (!on('q3b-starter') && w.assets.properties.some((pr) => (pr.houseId || condoDef(pr.itemId)) && !pr.rented))
         tip('tipHome', 'You own a home now! To get there, open My Stuff in your FinPhone, go to Property, and tap Show the way. Its front door says Go home.');
-      else if (scene.location !== 'park' && !scene.interior)
+      else if (!on('q1b-portal') && scene.location !== 'park' && !scene.interior)
         tip('tipCity', 'New city! The portal back to Fin-City Park is on your minimap. Tap the minimap to open the Map, then pick any building and tap Show the way.');
     }, 1000);
     return () => clearInterval(id);
@@ -289,7 +291,7 @@ function Compass() {
     }, 120);
     return () => clearInterval(id);
   }, []);
-  if (!state || !hints || state.dist < 4) return null;
+  if (!state || !(hints || useUI.getState().guide) || state.dist < 4) return null;
   return (
     <div className="hud-compass" aria-label={`Goal ${Math.round(state.dist)} meters away`}>
       <div className="arrow" style={{ transform: `rotate(${state.angle}rad)` }}>

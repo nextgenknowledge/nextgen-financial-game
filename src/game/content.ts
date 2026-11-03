@@ -175,6 +175,8 @@ export interface QuestStep {
   /** A HUD element to light up during this step (CSS selector); touchSpot wins on touch devices. */
   spot?: string;
   touchSpot?: string;
+  /** The FinPhone app to light up once the phone is open. */
+  appSpot?: string;
   /** Doing something later in the tutorial doesn't skip past this step. */
   mustDo?: boolean;
   reward?: { cash?: number; xp?: number };

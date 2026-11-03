@@ -89,6 +89,16 @@ export const rt = {
       this.camYaw = rotY + Math.PI;
     }
   },
+  /** Where the player stood when a graphics change rebuilt the scene, to put them back there. */
+  keepSpot: null as null | { x: number; z: number; scene: string },
+  /** Puts the player back after a rebuild of the same scene. True if it did. */
+  restoreSpot() {
+    const k = this.keepSpot;
+    this.keepSpot = null;
+    if (!k || k.scene !== this.sceneKey) return false;
+    this.teleport(k.x, k.z);
+    return true;
+  },
   resetScene(key: string) {
     this.collision = new CollisionWorld();
     this.triggers = [];

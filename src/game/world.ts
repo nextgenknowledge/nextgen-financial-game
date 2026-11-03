@@ -2,7 +2,7 @@ import companies from '@/data/companies.json';
 import type { AvatarConfig, Difficulty, WorldState } from './types';
 import { randomSeed } from './rng';
 
-export const SAVE_VERSION = 2;
+export const SAVE_VERSION = 3;
 
 export const DEFAULT_AVATAR: AvatarConfig = {
   skin: '#e8b48f',
@@ -138,6 +138,10 @@ export function migrateWorld(raw: unknown): WorldState {
   // v2 put the first job into the welcome quest at step 3, so later steps moved down one.
   if ((w.version ?? 1) < 2) {
     for (const a of w.progress?.quests?.active ?? []) if (a.id === 'q1-welcome' && a.step >= 3) a.step++;
+  }
+  // v3 added two riding steps to the starter quest after buying the scooter (step 2).
+  if ((w.version ?? 1) < 3) {
+    for (const a of w.progress?.quests?.active ?? []) if (a.id === 'q3b-starter' && a.step >= 3) a.step += 2;
   }
   // Fill in any fields added after a save was made (defensive merge).
   const fresh = createWorld({ name: w.name, nickname: w.nickname, difficulty: w.difficulty, seed: w.seed });

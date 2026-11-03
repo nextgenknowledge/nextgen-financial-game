@@ -358,7 +358,7 @@ export function InteriorScene({ building, difficulty }: { building: BuildingDef;
 
   useEffect(() => {
     // Start a few steps inside, facing into the room, with the camera already clear of the doorway
-    rt.teleport(0, L.d / 2 - 4.6, Math.PI);
+    if (!rt.restoreSpot()) rt.teleport(0, L.d / 2 - 4.6, Math.PI);
     rt.camYaw = 0;
     rt.camPitch = 0.42;
     rt.camDist = 4.2;

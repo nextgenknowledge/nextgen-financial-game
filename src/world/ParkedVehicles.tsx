@@ -1,7 +1,8 @@
 'use client';
 import { useEffect, useMemo } from 'react';
 import { create } from 'zustand';
-import { useGame } from '@/store/game';
+import { useGame, act } from '@/store/game';
+import { recordEvent } from '@/game/progress/events';
 import { rt } from '@/engine/runtime';
 import { vehicleDef, mountVehicle, dismountVehicle } from '@/engine/vehicles';
 import { VehicleModel } from './Vehicles';
@@ -30,6 +31,7 @@ export function rideParked() {
   rt.parked = null;
   useRide.getState().set(p.uid);
   playSfx('horn');
+  act((d, fx) => recordEvent(d, fx, { type: 'rideVehicle', target: p.itemId }));
 }
 
 export function getOff() {
@@ -44,6 +46,7 @@ export function getOff() {
   dismountVehicle();
   useRide.getState().set(null);
   useRide.getState().bump();
+  act((d, fx) => recordEvent(d, fx, { type: 'getOff' }));
 }
 
 /** Summon your active vehicle next to you (FinPhone garage). */

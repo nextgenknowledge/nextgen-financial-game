@@ -1,8 +1,16 @@
 import { describe, expect, it } from 'vitest';
 import { CITIES } from '@/world/cities';
-import { landmarkPois, MAP_LANDMARKS, MAP_SKIPPED_LANDMARKS } from '@/ui/map/pixelMap';
+import { buildingsPois, landmarkPois, MAP_LANDMARKS, MAP_SKIPPED_LANDMARKS } from '@/ui/map/pixelMap';
+import { getCityBuild } from '@/world/builders/sceneBuilder';
 
 describe('city maps', () => {
+  it('Show the way can reach every building on the map: each has a door to lead to', () => {
+    for (const c of Object.values(CITIES)) {
+      const doors = new Set(getCityBuild(c, 'entry').triggers.map((t) => t.id));
+      for (const p of buildingsPois(c)) expect(doors.has(`door:${p.id}`), `${c.id} ${p.id}`).toBe(true);
+      expect(doors.has(c.id === 'park' ? 'portal:new-york' : 'portal:park'), c.id).toBe(true);
+    }
+  });
   it('every landmark in every city is either pinned on the map or a deliberately skipped prop', () => {
     for (const c of Object.values(CITIES))
       for (const lm of c.landmarks) expect(MAP_LANDMARKS.has(lm.type) || MAP_SKIPPED_LANDMARKS.has(lm.type), `${c.id}: ${lm.type}`).toBe(true);

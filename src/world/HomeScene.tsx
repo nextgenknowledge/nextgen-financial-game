@@ -90,7 +90,7 @@ export function HomeScene({ propUid }: { propUid: string }) {
   }, [L, layoutKey, itemsById]);
 
   useEffect(() => {
-    rt.teleport(0, L.d / 2 - 3.2, Math.PI);
+    if (!rt.restoreSpot()) rt.teleport(0, L.d / 2 - 3.2, Math.PI);
     rt.camYaw = 0;
     rt.camPitch = 0.5;
     rt.camDist = 4.2;

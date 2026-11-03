@@ -1,5 +1,5 @@
 {
-  "$comment": "Quests. goal.type: move (value = meters) | jump | menu (target = phone app) | enter (building id) | travel (location) | activity (target = activity id or '*', count, value = min stars) | event (target = event type, value = optional min amount) | talk (target = location) | netWorth (value) | stat (target = stat key, value). Narwhal says `say` lines when a step starts (entrySay in Entry mode). marker points Narwhal and the beacon at a spot. spot lights up a HUD element (CSS selector) during a step, touchSpot on touch devices. mustDo keeps a tutorial step from being skipped over.",
+  "$comment": "Quests. goal.type: move (value = meters) | jump | menu (target = phone app) | enter (building id) | travel (location) | activity (target = activity id or '*', count, value = min stars) | event (target = event type, value = optional min amount) | talk (target = location) | netWorth (value) | stat (target = stat key, value). Narwhal says `say` lines when a step starts (entrySay in Entry mode). marker points Narwhal and the beacon at a spot. spot lights up a HUD element (CSS selector) during a step, touchSpot on touch devices, appSpot is the FinPhone app to light up once the phone is open. mustDo keeps a tutorial step from being skipped over.",
   "quests": [
     {
       "id": "q1-welcome",
@@ -42,17 +42,17 @@
         },
         {
           "id": "phone",
-          "text": "Open your FinPhone (P key or the 📱 button)",
-          "entryText": "Open your FinPhone! Tap the 📱 button",
+          "text": "Open your FinPhone (P key or the phone in the corner)",
+          "entryText": "Open your FinPhone! Tap the phone in the corner",
           "goal": {
             "type": "menu",
             "target": "phone"
           },
           "say": [
-            "You start with $20. Your cash and net worth sit at the top of your screen. Net worth is everything you own minus everything you owe. Your FinPhone holds your bank, goals and more. Press P or click the 📱 button."
+            "You start with $20. Your cash and net worth sit at the top of your screen. Net worth is everything you own minus everything you owe. Your FinPhone holds your bank, goals and more. Press P or click the phone in the bottom corner."
           ],
           "entrySay": [
-            "You have $20! See it at the top of the screen? Now open your FinPhone. Press P or tap the 📱 button."
+            "You have $20! See it at the top of the screen? Now open your FinPhone. Press P or tap the phone in the corner."
           ],
           "spot": ".mini-phone"
         },
@@ -356,17 +356,17 @@
         },
         {
           "id": "starter-pet",
-          "text": "Adopt the starter puppy at the Pet Shop ($10 deal)",
-          "proText": "Adopt the starter puppy at the Veterinary Clinic ($10 deal)",
+          "text": "Adopt the starter Dog at the Pet Shop ($10 deal)",
+          "proText": "Adopt the starter Dog at the Veterinary Clinic ($10 deal)",
           "goal": {
             "type": "event",
             "target": "ownPet"
           },
           "say": [
-            "Looking sharp! Next, adopt a puppy for $10. Remember that pets cost money every month for food and care. That cost lands in your bills."
+            "Looking sharp! Next, adopt a Dog for $10. Remember that pets cost money every month for food and care. That cost lands in your bills."
           ],
           "entrySay": [
-            "Looking good! Now adopt a puppy for $10. It will follow you everywhere! Pets need food every month, so they cost a little each month too."
+            "Looking good! Now adopt a Dog for $10. It will follow you everywhere! Pets need food every month, so they cost a little each month too."
           ]
         },
         {
@@ -380,21 +380,51 @@
             "Walking is slow. The Auto Dealer has a starter deal on an Electric Scooter: $15. Vehicles lose value every year, and that's called depreciation."
           ],
           "entrySay": [
-            "Let's get you a ride! The Auto Dealer has an Electric Scooter for only $15. Walk up to it and press the interact button to ride."
+            "Let's get you a ride! The Auto Dealer has an Electric Scooter for only $15."
+          ]
+        },
+        {
+          "id": "starter-hop-on",
+          "text": "Hop on your scooter (walk up to it and press E)",
+          "goal": {
+            "type": "event",
+            "target": "rideVehicle"
+          },
+          "touchSpot": ".touch-btn.gold",
+          "say": [
+            "Now let's try it! Follow the light to your scooter, walk up to it and press E to hop on."
+          ],
+          "entrySay": [
+            "Let's try it! Follow the light to your scooter, walk up to it and press E to hop on!"
+          ]
+        },
+        {
+          "id": "starter-drive",
+          "text": "Ride to the Real Estate Office, then press E to hop off",
+          "goal": {
+            "type": "event",
+            "target": "getOff"
+          },
+          "touchSpot": ".joystick",
+          "say": [
+            "Drive with W A S D or the arrow keys. Follow the light to the Real Estate Office, slow down, and press E to hop off."
+          ],
+          "entrySay": [
+            "Zoom! Drive with W A S D or the arrow keys. Follow the light to the Real Estate Office. Then slow down and press E to hop off."
           ]
         },
         {
           "id": "starter-home",
-          "text": "Claim your starter Tiny Home at the Real Estate Office ($30 deal)",
+          "text": "Claim your starter Tiny House at the Real Estate Office ($30 deal)",
           "goal": {
             "type": "event",
             "target": "ownHome"
           },
           "say": [
-            "Last one: a home of your own. Fin City's First-Home Grant pays for most of a Tiny House, so you pay $30. Then we'll go and see it."
+            "Nice parking! Your ride stays where you leave it, and My Stuff in your FinPhone can bring it to you. Last one: a home of your own. Fin City helps new players, so the Real Estate Office has a Tiny House for just $30."
           ],
           "entrySay": [
-            "Last one: your very own house! The city helps new players, so a Tiny House costs only $30. Then we'll go see it!"
+            "Nice parking! Lost your ride? My Stuff in your FinPhone can bring it to you. Last one: your very own house! A Tiny House costs only $30 at the Real Estate Office."
           ]
         },
         {
@@ -419,9 +449,11 @@
             "target": "viewPlot"
           },
           "say": [
+            "Welcome home! Furniture you buy at the Furniture Store lands here, and the Arrange furniture button moves it around.",
             "See the For Sale signs next door? Those are empty lots. Land can be bought with cash or a mortgage, and you can build a bigger house on it later. Walk up to a sign to see the prices."
           ],
           "entrySay": [
+            "Welcome home! Buy furniture at the Furniture Store, then tap Arrange furniture to move it around.",
             "See the For Sale signs? Those are empty lots you can buy one day and build a bigger house on. Walk up to a sign to see how much they cost!"
           ]
         }
@@ -564,7 +596,9 @@
           ],
           "entrySay": [
             "What do you want to save for? A bike? A pet? Open your FinPhone and tap Goals!"
-          ]
+          ],
+          "spot": ".mini-phone",
+          "appSpot": "goals"
         },
         {
           "id": "fund-goal",
@@ -578,7 +612,9 @@
           ],
           "entrySay": [
             "Now put some money in your goal. It will grow in savings!"
-          ]
+          ],
+          "spot": ".mini-phone",
+          "appSpot": "goals"
         }
       ],
       "reward": {
@@ -636,7 +672,9 @@
           ],
           "entrySay": [
             "Let's see your net worth! It's all your stuff and money, minus what you owe."
-          ]
+          ],
+          "spot": ".mini-phone",
+          "appSpot": "networth"
         }
       ],
       "reward": {
@@ -671,16 +709,20 @@
         },
         {
           "id": "budget",
-          "text": "Make a budget at the Budget Planner",
+          "text": "Make a budget at the Budget Planner Hall",
+          "proText": "Make a budget at the Budget Planner in Wealth Advisory",
           "goal": {
             "type": "activity",
             "target": "budget-planner"
           },
           "say": [
-            "A budget is a plan for your money before you spend it. Try the Budget Planner!"
+            "A budget is a plan for your money before you spend it. Follow the light to the Budget Planner Hall and try the Budget Planner!"
+          ],
+          "proSay": [
+            "A budget is a plan for your money before you spend it. Follow the light to Wealth Advisory, then use the Budget Planner desk inside."
           ],
           "entrySay": [
-            "A budget is a money plan! Try the Budget Planner."
+            "A budget is a money plan! Follow the light to the Budget Planner Hall."
           ]
         }
       ],
@@ -726,7 +768,7 @@
             "Run your own stall at the Night Market. Profit is what's left after you pay for supplies!"
           ],
           "proSay": [
-            "Head to the Futures Pit. Hedgers use futures to lock in prices; size the hedge to the exposure and keep cash ready for margin calls."
+            "Head to the Futures Hedging Pit. Hedgers use futures to lock in prices; size the hedge to the exposure and keep cash ready for margin calls."
           ],
           "entrySay": [
             "Run your own snack stall! Profit is the money left after you pay for supplies."
@@ -1048,6 +1090,7 @@
         {
           "id": "sch-24",
           "text": "Finish all 24 lessons",
+          "proText": "Finish 24 lessons",
           "goal": {
             "type": "stat",
             "target": "lessonsRead",
@@ -1087,6 +1130,7 @@
         {
           "id": "w-ldn",
           "text": "3 stars on the Budget Planner in London",
+          "proText": "3 stars on the Budget Planner in Wealth Advisory (London)",
           "goal": {
             "type": "activity",
             "target": "budget-planner",

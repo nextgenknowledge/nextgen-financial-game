@@ -117,7 +117,7 @@ export function Phone({ app, arg }: { app?: string; arg?: string }) {
         {!app && (
           <div className="app-grid">
             {APPS.filter((a) => !a.advanced || difficulty === 'advanced').map((a) => (
-              <button key={a.id} className="app-icon" onClick={() => go(a.id)}>
+              <button key={a.id} className="app-icon" data-app={a.id} onClick={() => go(a.id)}>
                 <span className="app-tile" style={{ background: a.color }}>
                   {a.icon}
                   {a.id === 'quests' && claimable > 0 && <span className="app-badge">{claimable}</span>}

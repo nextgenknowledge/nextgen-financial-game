@@ -5,6 +5,7 @@ import { getWorld } from '@/store/game';
 import { useScene } from '@/store/scene';
 import { useUI } from '@/store/ui';
 import { currentStep } from '@/game/progress/quests';
+import { sameActivity } from '@/game/activities';
 import { CITIES } from '@/world/cities';
 import type { LocationId } from '@/game/types';
 import { worldRun } from '@/activities/world/delivery';
@@ -25,6 +26,8 @@ const EVENT_SERVICE: Record<string, string | string[]> = {
   ownPet: 'shop:pets',
   ownRide: 'shop:vehicles',
   ownHome: 'shop:property',
+  // Riding there is the step before buying the home
+  getOff: 'shop:property',
 };
 
 /** First building with a matching station, looking in the city you're in before anywhere else. */
@@ -134,7 +137,12 @@ function guideGoal(): boolean {
     if (portal) rt.goal = { id: portal.id, x: portal.x, z: portal.z, label: 'Portal' };
     return true;
   }
-  if (t) rt.goal = { id: t.id, x: t.x, z: t.z, label: g.label };
+  // The place is gone (a home that was sold, say): don't hold back the quest trail
+  if (!t) {
+    ui.setGuide(null);
+    return false;
+  }
+  rt.goal = { id: t.id, x: t.x, z: t.z, label: g.label };
   return true;
 }
 
@@ -160,6 +168,16 @@ function setGoal() {
     const f = findBuilding((s) => s.activity === g.target);
     if (f) dest = { ...f, activity: g.target };
     else if (cs.step.marker) dest = { city: cs.step.marker.location, pos: cs.step.marker.pos };
+  } else if (g.type === 'event' && g.target === 'rideVehicle') {
+    if (inside) return pointToExit();
+    const t = rt.triggers.find((x) => x.kind === 'vehicle');
+    if (t) rt.goal = { id: t.id, x: t.x, z: t.z, label: 'Your ride' };
+    return;
+  } else if (g.type === 'event' && g.target === 'getOff' && !rt.vehicle && !inside && rt.triggers.some((x) => x.kind === 'vehicle')) {
+    // Reloaded the game mid-ride, so the player is on foot: get back on first
+    const t = rt.triggers.find((x) => x.kind === 'vehicle')!;
+    rt.goal = { id: t.id, x: t.x, z: t.z, label: 'Your ride' };
+    return;
   } else if (g.type === 'event' && (g.target === 'enterHome' || g.target === 'viewPlot')) {
     // Your home's front door, or a lot that's still for sale, both on Maple Lane in the park
     if (here !== 'park') dest = { city: 'park', portal: undefined };
@@ -208,7 +226,7 @@ function setGoal() {
   }
   if (dest.building) {
     if (inside === dest.building) {
-      const st = rt.triggers.find((t) => t.kind === 'station' && ((dest!.activity && t.data?.activity === dest!.activity) || (dest!.service && t.data?.service === dest!.service)));
+      const st = rt.triggers.find((t) => t.kind === 'station' && ((dest!.activity && sameActivity(t.data?.activity as string | undefined, dest!.activity)) || (dest!.service && t.data?.service === dest!.service)));
       if (st) rt.goal = { id: st.id, x: st.x, z: st.z, label: st.label };
       return;
     }
