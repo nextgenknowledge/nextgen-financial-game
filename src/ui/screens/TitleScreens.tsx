@@ -164,7 +164,7 @@ export function TitleScreen() {
         <a className="title-foot-logo" href={ORG_SITE} target="_blank" rel="noopener noreferrer" title="nextgenknowledge.org">
           <img src={ORG_LOGO} alt="NextGen Knowledge" />
         </a>
-        <span>A NextGen Knowledge game · Your game saves on this device</span>
+        <span>A NextGen Knowledge game · Your game saves on this device · <a href={`${process.env.NEXT_PUBLIC_BASE_PATH ?? ''}/about/`}>About Fin City</a></span>
       </div>
       {newGame && (
         <NewGameFlow
