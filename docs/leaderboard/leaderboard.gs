@@ -125,3 +125,25 @@ function doGet(e) {
   });
   return json_({ rows: rows.slice(0, TOP) });
 }
+
+/** Tidies up the Scores tab. Run it once from the Apps Script editor; no new deployment needed. */
+function formatSheet() {
+  var sh = sheet_();
+  var cols = HEADERS.length;
+  sh.setFrozenRows(1);
+  sh.getRange(1, 1, 1, cols).setFontWeight('bold').setFontColor('#ffffff').setBackground('#0b1a3a').setHorizontalAlignment('center');
+  var last = sh.getLastRow();
+  if (last > 1) {
+    var body = sh.getRange(2, 1, last - 1, cols);
+    body.sort([{ column: 5, ascending: true }, { column: 4, ascending: false }]);
+    body.setFontColor('#0b1a3a').applyRowBanding(SpreadsheetApp.BandingTheme.LIGHT_GREY, false, false);
+    sh.getRange(2, 4, last - 1, 1).setNumberFormat('$#,##0');
+    sh.getRange(2, 6, last - 1, 1).setNumberFormat('mmm d, yyyy');
+    // Sample players start with seed_: grey them so they're easy to spot and remove
+    var ids = sh.getRange(2, 1, last - 1, 1).getValues();
+    for (var r = 0; r < ids.length; r++) {
+      if (String(ids[r][0]).indexOf('seed_') === 0) sh.getRange(r + 2, 1, 1, cols).setFontColor('#8a8f9c').setFontStyle('italic');
+    }
+  }
+  sh.autoResizeColumns(1, cols);
+}

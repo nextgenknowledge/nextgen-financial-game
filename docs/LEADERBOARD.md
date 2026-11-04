@@ -44,6 +44,10 @@ The sheet makes its own **Scores** tab the first time someone posts.
 
 ## Looking after it
 
+- **Sample players:** 20 made-up players per mode fill the board for now. Their World id starts
+  with `seed_`. Delete those rows when enough real players have joined. The game shows the top 20
+  of each mode.
+- **Tidy the sheet:** paste the latest script in, pick `formatSheet` and press **Run**.
 - **Remove a player:** type `x` in their **Hidden** column. They disappear from the board and
   can't post to that row again. (Deleting the row also works, but they could post again.)
 - **Change the script later:** edit it, then **Deploy > Manage deployments**, edit the existing

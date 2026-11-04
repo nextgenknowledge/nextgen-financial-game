@@ -8,7 +8,7 @@ import { useGame } from '@/store/game';
 import { Section, Tabs, Empty } from '../../kit';
 import { Button } from '../../common';
 import { money } from '../../format';
-import { nicknameProblem, scoreEntry, type BoardRow } from '@/game/leaderboard';
+import { BOARD_SIZE, nicknameProblem, scoreEntry, type BoardRow } from '@/game/leaderboard';
 import { fetchBoard, LEADERBOARD_URL, sendScore, setScoreShared } from '../../leaderboard';
 import { ShareDisclaimer } from '../../hud/LeaderboardPrompt';
 import type { Difficulty } from '@/game/types';
@@ -63,7 +63,8 @@ export function LeaderboardApp() {
           { id: 'advanced', label: '🚀 Advanced' },
         ]}
       />
-      <Section title="Top players by net worth" right={<Button size="small" onClick={refresh}>Refresh</Button>}>
+      <Section title={`Top ${BOARD_SIZE} players by net worth`} right={<Button size="small" onClick={refresh}>Refresh</Button>}>
+        <p className="small muted" style={{ marginTop: 0 }}>The leaderboard only shows the top {BOARD_SIZE} players for Entry and for Advanced.</p>
         {load.state === 'loading' && <p className="small muted">Loading the leaderboard...</p>}
         {load.state === 'error' && (
           <p className="small">Couldn&apos;t reach the leaderboard. You might be offline, or the school network may block it. Try again later.</p>
@@ -87,6 +88,7 @@ export function LeaderboardApp() {
           <p className="small" style={{ marginTop: 0 }}>
             <b>{mine.nickname}</b> · Lv {mine.level} · {money(mine.netWorth, { cents: false })}
             {myRow && <> · now <b>#{myRow.rank}</b></>}
+            {!myRow && share === true && load.state === 'ok' && <> · not in the top {BOARD_SIZE} yet</>}
           </p>
           {problem ? (
             <p className="small">{problem} Start a new game with a different nickname to join the leaderboard.</p>

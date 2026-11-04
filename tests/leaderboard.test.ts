@@ -120,3 +120,10 @@ describe('leaderboard Google Sheet script', () => {
     expect(s.post({ id: 'world_eee', nickname: 'Eve', level: 3, netWorth: 60, difficulty: 'entry' }).error).toBe('hidden');
   });
 });
+
+it('the board stops at the top 20', () => {
+  const rows = Array.from({ length: 30 }, (_, i) => ({ id: `id_${i}`, nickname: `Player${i}`, level: 1, netWorth: i, difficulty: 'entry' }));
+  const board = parseBoard({ rows }, 'entry');
+  expect(board).toHaveLength(20);
+  expect(board[0].netWorth).toBe(29);
+});

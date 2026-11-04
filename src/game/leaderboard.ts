@@ -16,6 +16,9 @@ export interface ScoreEntry {
   difficulty: Difficulty;
 }
 
+/** How many players each leaderboard shows. */
+export const BOARD_SIZE = 20;
+
 export interface BoardRow extends ScoreEntry {
   rank: number;
 }
@@ -88,7 +91,7 @@ export function shouldSend(entry: ScoreEntry, last: LastSend | undefined, now: n
 }
 
 /** Reads the sheet's reply into ranked rows (richest first), dropping anything malformed. */
-export function parseBoard(data: unknown, difficulty: Difficulty, limit = 50): BoardRow[] {
+export function parseBoard(data: unknown, difficulty: Difficulty, limit = BOARD_SIZE): BoardRow[] {
   const rows = Array.isArray(data) ? data : Array.isArray((data as { rows?: unknown })?.rows) ? (data as { rows: unknown[] }).rows : [];
   const clean: ScoreEntry[] = [];
   for (const r of rows) {
