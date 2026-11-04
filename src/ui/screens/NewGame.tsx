@@ -3,6 +3,7 @@ import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { DEFAULT_AVATAR } from '@/game/world';
 import type { AvatarConfig, Difficulty } from '@/game/types';
 import { playSfx } from '@/engine/audio';
+import { trackEvent } from '../analytics';
 import { AvatarPreview } from '../AvatarPreview';
 import outfits from '@/data/shop/outfits.json';
 import { BODIES, BUILDS, HAIR_STYLES, bodyOf, buildOf, withBody } from '@/game/look';
@@ -150,7 +151,11 @@ export function NewGameFlow({ onCancel, onCreate }: { onCancel: () => void; onCr
             <div className="st-look-options">
               <AvatarOptions avatar={avatar} onChange={setAvatar} dark />
               <span className="st-note">You can buy more outfits later at the Style Studio in Fin-City Park.</span>
-              <button type="button" className="st-big gold" onClick={() => onCreate({ name: name.trim(), nickname: nickname.trim(), difficulty, avatar })}>
+              <button type="button" className="st-big gold" onClick={() => {
+                // Counts players who finish setup; the game's name and nickname are never sent
+                trackEvent('world_created', { difficulty });
+                onCreate({ name: name.trim(), nickname: nickname.trim(), difficulty, avatar });
+              }}>
                 Start adventure ▶
               </button>
             </div>
