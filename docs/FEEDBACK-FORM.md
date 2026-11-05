@@ -8,6 +8,10 @@ form's Name question.
 The Fin-City Feedback Form (NGK) is already connected. Repeat the steps below only if the game
 should use a different form, or a question on this one is deleted and remade (its id changes).
 
+On fincity.dev the answers go through `fincity.dev/api/feedback`
+([`functions/api/feedback.ts`](../functions/api/feedback.ts)) and on to the form, because school networks
+often block Google links from accounts outside the district. The form must not require a sign-in.
+
 ## Connect the form (2 minutes)
 
 The game needs the form's **pre-filled link**, which tells it which question is which.

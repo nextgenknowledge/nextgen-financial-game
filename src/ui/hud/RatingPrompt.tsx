@@ -77,8 +77,15 @@ function RatingForm({ onDone }: { onDone: (a: Answer) => void }) {
     }
     setState('sending');
     try {
-      // Google Forms doesn't let a page read its reply, so this is a fire-and-forget post
-      await fetch(FORM.action, { method: 'POST', mode: 'no-cors', body: feedbackBody(FORM, { stars, review, nickname: world?.nickname ?? '', mode: world?.difficulty ?? '' }) });
+      const body = feedbackBody(FORM, { stars, review, nickname: world?.nickname ?? '', mode: world?.difficulty ?? '' });
+      if (/^(www\.)?fincity\.dev$/.test(location.hostname)) {
+        // Through fincity.dev's own route: school networks often block Google links
+        const res = await fetch('/api/feedback', { method: 'POST', body });
+        if (!res.ok) throw new Error(`Rating replied ${res.status}`);
+      } else {
+        // Google Forms doesn't let a page read its reply, so this is a fire-and-forget post
+        await fetch(FORM.action, { method: 'POST', mode: 'no-cors', body });
+      }
       playSfx('coin');
       setState('sent');
       setTimeout(() => onDone('rated'), 2200);

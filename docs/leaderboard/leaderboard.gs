@@ -136,6 +136,9 @@ function formatSheet() {
   if (last > 1) {
     var body = sh.getRange(2, 1, last - 1, cols);
     body.sort([{ column: 5, ascending: true }, { column: 4, ascending: false }]);
+    sh.getBandings().forEach(function (band) {
+      band.remove();
+    });
     body.setFontColor('#0b1a3a').applyRowBanding(SpreadsheetApp.BandingTheme.LIGHT_GREY, false, false);
     sh.getRange(2, 4, last - 1, 1).setNumberFormat('$#,##0');
     sh.getRange(2, 6, last - 1, 1).setNumberFormat('mmm d, yyyy');

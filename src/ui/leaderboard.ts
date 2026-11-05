@@ -1,6 +1,7 @@
 'use client';
 /**
- * Talks to the leaderboard Google Sheet (an Apps Script web app, see docs/LEADERBOARD.md). The
+ * Talks to the leaderboard Google Sheet (an Apps Script web app, see docs/LEADERBOARD.md), through
+ * fincity.dev's own route on the real site so school networks that block Google links still work. The
  * link comes from NEXT_PUBLIC_LEADERBOARD_URL at build time, or src/data/leaderboard.json. With
  * no link the Leaderboard app stays hidden on the FinPhone, and the game makes no requests.
  * Once a player chooses to share, scores go out by themselves during play on the real site;
@@ -15,18 +16,28 @@ const fromEnv = process.env.NEXT_PUBLIC_LEADERBOARD_URL ?? '';
 /** The sheet's web app link, if one is set (must be an Apps Script /exec link). */
 export const LEADERBOARD_URL = [fromEnv, config.url].find((u) => /^https:\/\/script\.google(usercontent)?\.com\/.+/.test(u ?? '')) ?? '';
 
-export async function fetchBoard(difficulty: Difficulty): Promise<BoardRow[]> {
-  const res = await fetch(`${LEADERBOARD_URL}?difficulty=${difficulty}`, { cache: 'no-store' });
+/** fincity.dev's own route to the sheet (functions/api/leaderboard.ts): school networks often block Google links. */
+const PROXY = '/api/leaderboard';
+
+function hasProxy() {
+  return typeof location !== 'undefined' && (liveSite() || location.hostname.endsWith('.pages.dev'));
+}
+
+async function readBoard(url: string, difficulty: Difficulty): Promise<BoardRow[]> {
+  const res = await fetch(`${url}?difficulty=${difficulty}`, { cache: 'no-store' });
   if (!res.ok) throw new Error(`Leaderboard replied ${res.status}`);
   return parseBoard(await res.json(), difficulty);
 }
 
-/**
- * Apps Script doesn't answer cross-site POSTs in a way the browser lets us read, so sends are
- * fire-and-forget (plain text body, no-cors). keepalive lets one finish as the tab closes.
- */
+export async function fetchBoard(difficulty: Difficulty): Promise<BoardRow[]> {
+  if (!hasProxy()) return readBoard(LEADERBOARD_URL, difficulty);
+  return readBoard(PROXY, difficulty).catch(() => readBoard(LEADERBOARD_URL, difficulty));
+}
+
+/** Only the live site sends scores, always through its own route. keepalive lets one finish as the tab closes. */
 async function post(body: object): Promise<void> {
-  await fetch(LEADERBOARD_URL, { method: 'POST', mode: 'no-cors', keepalive: true, headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(body) });
+  const res = await fetch(PROXY, { method: 'POST', keepalive: true, headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(body) });
+  if (!res.ok) throw new Error(`Leaderboard replied ${res.status}`);
 }
 
 function liveSite() {

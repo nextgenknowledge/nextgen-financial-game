@@ -4,6 +4,14 @@ The FinPhone has a **Leaderboard** app that ranks players by net worth, split in
 Advanced. The scores live in a Google Sheet that the team owns. Until the sheet's link is added,
 the app doesn't appear on the phone and the game makes no requests.
 
+## School networks
+
+Many school districts block Google links from accounts outside the district. So on fincity.dev the
+game never talks to Google directly: it calls `fincity.dev/api/leaderboard`
+([`functions/api/leaderboard.ts`](../functions/api/leaderboard.ts)), and Cloudflare passes the request
+to the sheet. The browser only needs to reach fincity.dev. The board is cached for 20 seconds so a full
+classroom doesn't use up the sheet's daily limits. Only the score is forwarded, never IP addresses.
+
 ## What gets shared
 
 Each world is asked once, about five minutes into play, whether to share its score, with a disclaimer
