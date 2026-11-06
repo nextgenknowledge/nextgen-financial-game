@@ -13,6 +13,12 @@ import sfA from '@/data/questions/san-francisco.advanced.json';
 import sgE from '@/data/questions/singapore.entry.json';
 import sgA from '@/data/questions/singapore.advanced.json';
 
-export const QUESTION_BANK: QuestionDef[] = [parkE, parkA, nyE, nyA, ldE, ldA, hkE, hkA, sfE, sfA, sgE, sgA].flatMap(
+const ALL: QuestionDef[] = [parkE, parkA, nyE, nyA, ldE, ldA, hkE, hkA, sfE, sfA, sgE, sgA].flatMap(
   (f) => (f as { questions: unknown[] }).questions as QuestionDef[],
 );
+
+/** Every quiz draws from these. */
+export const QUESTION_BANK: QuestionDef[] = ALL.filter((q) => !q.trivia);
+
+/** Money fun facts, only for the Wall Street Quiz Tower. */
+export const TOWER_TRIVIA: QuestionDef[] = ALL.filter((q) => q.trivia);

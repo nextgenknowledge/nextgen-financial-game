@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { QUESTION_BANK } from '@/game/questions/bank';
+import { QUESTION_BANK, TOWER_TRIVIA } from '@/game/questions/bank';
 import { instantiate, grade, selectQuestions, fillTemplate, adaptLevel } from '@/game/questions/engine';
 import { makeRng } from '@/game/rng';
 
@@ -49,5 +49,24 @@ describe('question engine', () => {
     expect(adaptLevel(2, 0, 2)).toBe(1);
     expect(adaptLevel(5, 3, 0)).toBe(5);
     expect(adaptLevel(1, 0, 2)).toBe(1);
+  });
+});
+
+describe('Quiz Tower fun facts', () => {
+  const trivia = TOWER_TRIVIA;
+  it('stay out of every other quiz', () => {
+    expect(QUESTION_BANK.some((q) => q.trivia)).toBe(false);
+  });
+  it('has fun facts at every level in both modes, with no maths', () => {
+    for (const difficulty of ['entry', 'advanced'] as const) {
+      for (let level = 1; level <= 5; level++) {
+        expect(trivia.filter((q) => q.difficulty === difficulty && q.level === level).length, `${difficulty} level ${level}`).toBeGreaterThanOrEqual(3);
+      }
+    }
+    for (const q of trivia) {
+      expect(['mc', 'tf'], q.id).toContain(q.type);
+      expect(q.vars, q.id).toBeUndefined();
+      expect(q.city, q.id).toBe('new-york');
+    }
   });
 });

@@ -3,7 +3,7 @@ import { useMemo, useRef, useState } from 'react';
 import type { KindProps } from '../types';
 import { QuestionView, type AnswerOutcome } from '../QuestionView';
 import { selectQuestions, correctAnswerText, type RuntimeQuestion } from '@/game/questions/engine';
-import { QUESTION_BANK } from '@/game/questions/bank';
+import { QUESTION_BANK, TOWER_TRIVIA } from '@/game/questions/bank';
 import { useGame, act } from '@/store/game';
 import { recordAnswer } from '@/game/progress/activities';
 import type { LocationId, Topic } from '@/game/types';
@@ -78,18 +78,22 @@ export function QuizTower({ def, params, difficulty, onFinish, addReview, seed }
   const [between, setBetween] = useState<null | 'up' | 'fall'>(null);
   const totalRight = useRef(0);
   const totalAsked = useRef(0);
-  const qs = useMemo(
-    () =>
-      selectQuestions(QUESTION_BANK, {
-        difficulty,
-        cities: params.cities ?? [def.city],
-        topics: params.topics,
-        level: Math.min(5, 1 + Math.floor((floor - 1) / 2)),
-        count: 3,
-        seed: seed + floor * 101,
-      }),
-    [floor, seed, difficulty, params.cities, params.topics, def.city],
-  );
+  // Questions already asked on lower floors, so a fun fact never comes up twice in one climb
+  const asked = useRef(new Map<number, RuntimeQuestion[]>());
+  const qs = useMemo(() => {
+    const kept = asked.current.get(floor);
+    if (kept) return kept;
+    const used = new Set([...asked.current.values()].flat().map((q) => q.id));
+    const fresh = (bank: typeof QUESTION_BANK) => bank.filter((q) => !used.has(q.id));
+    const o = { difficulty, cities: params.cities ?? [def.city], level: Math.min(5, 1 + Math.floor((floor - 1) / 2)), seed: seed + floor * 101 };
+    // Fun facts on every floor (two on odd floors), so the climb isn't all calculating
+    const facts = selectQuestions(fresh(TOWER_TRIVIA), { ...o, count: floor % 2 ? 2 : 1 });
+    const rest = selectQuestions(fresh(QUESTION_BANK), { ...o, topics: params.topics, count: 3 - facts.length });
+    const all = [...rest];
+    facts.forEach((f, i) => all.splice((seed + floor + i) % (all.length + 1), 0, f));
+    asked.current.set(floor, all);
+    return all;
+  }, [floor, seed, difficulty, params.cities, params.topics, def.city]);
   const finishTower = (reached: number) => onFinish({ score: Math.min(100, (reached / floors) * 100), correct: totalRight.current, total: totalAsked.current, stats: { towerFloor: reached }, summary: `You reached floor ${reached} of ${floors}!` });
 
   if (between) {

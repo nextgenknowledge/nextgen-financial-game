@@ -158,6 +158,8 @@ export interface QuestionDef {
   hint?: string;
   media?: QuestionMedia;
   icon?: string;
+  /** A fun-fact question (money history and trivia, no maths), asked only in the Quiz Tower. */
+  trivia?: boolean;
 }
 
 export interface QuestStep {
