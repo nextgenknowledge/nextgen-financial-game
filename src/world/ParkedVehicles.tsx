@@ -49,9 +49,32 @@ export function getOff() {
   act((d, fx) => recordEvent(d, fx, { type: 'getOff' }));
 }
 
+/**
+ * Removes the ridden or parked vehicle once it isn't yours any more (the delivery
+ * scooter is a loaner and never counts). Returns true if you were riding it.
+ */
+export function dropUnowned(owned: string[]) {
+  const mine = new Set(owned);
+  let wasRiding = false;
+  let changed = false;
+  const v = rt.vehicle;
+  if (v && v.itemId !== 'rental-scooter' && !v.uid.startsWith('dev-') && !mine.has(v.uid)) {
+    dismountVehicle();
+    useRide.getState().set(null);
+    wasRiding = changed = true;
+  }
+  if (rt.parked && !mine.has(rt.parked.uid)) {
+    rt.parked = null;
+    changed = true;
+  }
+  if (changed) useRide.getState().bump();
+  return wasRiding;
+}
+
 /** Summon your active vehicle next to you (FinPhone garage). */
 export function summonVehicle(uid: string, itemId: string) {
   const def = vehicleDef(itemId);
+  if (!useGame.getState().world?.assets.vehicles.some((v) => v.uid === uid)) return false;
   if (!def) return false;
   if (def.type === 'plane' && rt.dock) {
     rt.parked = { uid, itemId, x: rt.dock.x, z: rt.dock.z, rot: rt.dock.rot, scene: rt.sceneKey };
@@ -87,6 +110,12 @@ export function ParkedVehicles() {
     }
     useRide.getState().bump();
   }, [active]);
+
+  // A vehicle you no longer own (sold, lease ended) leaves the world, even mid-ride.
+  useEffect(() => {
+    if (!vehicles) return;
+    if (dropUnowned(vehicles.map((v) => v.uid))) useUI.getState().pushToast({ text: 'You sold the vehicle you were riding, so you hopped off.', icon: '🏷️', tone: 'info' });
+  }, [vehicles]);
 
   const p = rt.parked;
   // Keep the trigger in sync

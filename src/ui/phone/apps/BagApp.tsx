@@ -167,7 +167,12 @@ export function BagApp({ tab: initial }: { tab?: string }) {
                 <div className="row wrap" style={{ gap: 6 }}>
                   {home && <span className="chip good">🏠 You live here</span>}
                   {p.rented && <span className="chip gold">🔑 Rented · ~{money((h?.rent ?? c?.rent ?? 0) * w.market.priceIndex, { cents: false })}/mo</span>}
-                  {canRent && !p.rented && !c && (
+                  {canRent && !p.rented && !c && p.starter && (
+                    <span className="chip" title="The First-Home Grant paid for this home so you could live in it. Buy another home to rent out.">
+                      🔑 Starter home: live in it, can&apos;t be rented out
+                    </span>
+                  )}
+                  {canRent && !p.rented && !c && !p.starter && (
                     <Button size="small" onClick={() => act((d2, fx) => setRented(d2, fx, p.uid, true))}>
                       Rent it out
                     </Button>
