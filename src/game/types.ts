@@ -329,5 +329,7 @@ export interface WorldState {
     flags: Record<string, boolean | number | string>;
     tipsShown: string[];
     seenBuildings: string[];
+    /** Daily login streak and the XP calendar (src/game/progress/streak.ts). */
+    streak: { last: string; count: number; best: number; days: Record<string, { xp: number; bonus: number; cash: number; streak: number }> };
   };
 }

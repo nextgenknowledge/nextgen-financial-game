@@ -2,6 +2,7 @@ import type { WorldState } from '../types';
 import type { Fx } from '../effects';
 import community from '@/data/community.json';
 import { currentSeason } from './seasonal';
+import { logXp } from './streak';
 
 /** Total XP needed to reach a level. Level 2 = 80 XP, level 10 ≈ 2,700, level 20 ≈ 8,800. */
 export function xpForLevel(level: number): number {
@@ -25,10 +26,11 @@ export function xpMultiplier(w: WorldState): number {
   return m;
 }
 
-export function grantXp(w: WorldState, fx: Fx, amount: number, opts: { raw?: boolean } = {}) {
+export function grantXp(w: WorldState, fx: Fx, amount: number, opts: { raw?: boolean; day?: string } = {}) {
   const gained = Math.round(opts.raw ? amount : amount * xpMultiplier(w));
   if (gained <= 0) return 0;
   w.progress.xp += gained;
+  logXp(w, gained, opts.day);
   const newLevel = levelForXp(w.progress.xp);
   while (w.progress.level < newLevel) {
     w.progress.level++;

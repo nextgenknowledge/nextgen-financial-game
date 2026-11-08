@@ -42,7 +42,7 @@ export function RatingPrompt() {
       if (!w || ui.rating || askedThisSession || answer.current === undefined || answer.current === 'rated' || answer.current === 'never') return;
       if (ui.screen !== 'game' || ui.loading.active || document.visibilityState !== 'visible' || !ratingDue(w)) return;
       // Wait for a calm moment: no menu, tour, activity, Narwhal speech or furniture moving
-      if (ui.panel || ui.tour || ui.run || ui.decor || ui.narwhal.length || ui.worldActivity || ui.leaderboardAsk) return;
+      if (ui.panel || ui.tour || ui.run || ui.decor || ui.narwhal.length || ui.worldActivity || ui.streakShow || ui.streakCal || ui.leaderboardAsk) return;
       askedThisSession = true;
       playSfx('pop');
       openRating();
