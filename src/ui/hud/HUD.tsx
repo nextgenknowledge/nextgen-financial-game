@@ -22,6 +22,8 @@ import { useRide, getOff } from '@/world/ParkedVehicles';
 import { Minimap } from './Minimap';
 import { RatingPrompt, openRating } from './RatingPrompt';
 import { LeaderboardPrompt } from './LeaderboardPrompt';
+import { StreakWatcher, openStreakCalendar } from './Streak';
+import { dayKey, liveStreak } from '@/game/progress/streak';
 import { QuestSpot } from './QuestSpot';
 import { APPS } from '../phone/Phone';
 import { condoDef } from '@/game/sim/catalog';
@@ -73,6 +75,7 @@ export function HUD() {
       <NavTips />
       <RatingPrompt />
       <LeaderboardPrompt />
+      <StreakWatcher />
       <QuestSpot />
       <TouchControls />
     </div>
@@ -234,9 +237,16 @@ function QuickApps() {
   const panel = useUI((s) => s.panel);
   const decor = useUI((s) => s.decor);
   const claimable = useGame((s) => [...s.world!.progress.daily.list, ...s.world!.progress.weekly.list].filter((c) => !c.claimed).length);
+  const streak = useGame((s) => (s.world!.progress.streak ? liveStreak(s.world!.progress.streak, dayKey()) : 0));
   if (panel || decor) return null;
   return (
     <nav className="quick-apps" aria-label="FinPhone shortcuts">
+      <button className="qa-btn qa-streak" title="Daily streak and XP calendar" aria-label={`${streak} day streak. Open the XP calendar`} onClick={openStreakCalendar}>
+        <span className="qa-icon" style={{ background: '#3a1f1a' }}>
+          <span className="qa-flame">🔥</span>
+        </span>
+        <span className="qa-name">{streak === 1 ? '1 day streak' : `${streak} day streak`}</span>
+      </button>
       {QUICK_APPS.map((id) => APPS.find((a) => a.id === id)!).map((a) => (
         <button
           key={a.id}

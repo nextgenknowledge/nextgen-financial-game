@@ -76,6 +76,10 @@ export interface UIStore {
   rating: boolean;
   /** Asking whether to share this world's score on the leaderboard. */
   leaderboardAsk: boolean;
+  /** Today's streak reward card (src/ui/hud/Streak.tsx). */
+  streakShow: import('@/game/progress/streak').CheckIn | null;
+  /** The XP calendar is open. */
+  streakCal: boolean;
   setGuide: (g: UIStore['guide']) => void;
   setDecor: (d: UIStore['decor']) => void;
   setRun: (r: UIStore['run']) => void;
@@ -119,6 +123,8 @@ export const useUI = create<UIStore>((set, get) => ({
   guide: null,
   rating: false,
   leaderboardAsk: false,
+  streakShow: null,
+  streakCal: false,
   setGuide: (guide) => set({ guide }),
   setDecor: (decor) => set({ decor }),
   setRun: (run) => set({ run }),

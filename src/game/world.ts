@@ -127,6 +127,7 @@ export function createWorld(opts: NewWorldOptions): WorldState {
       flags: {},
       tipsShown: [],
       seenBuildings: [],
+      streak: { last: '', count: 0, best: 0, days: {} },
     },
   };
 }

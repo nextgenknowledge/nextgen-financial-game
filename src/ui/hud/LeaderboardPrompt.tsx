@@ -46,7 +46,7 @@ export function LeaderboardPrompt() {
       if (ui.screen !== 'game' || ui.loading.active || document.visibilityState !== 'visible') return;
       played += dt;
       // Wait for a calm moment: no menu, tour, activity, Narwhal speech, furniture moving or rating card
-      if (played < ASK_AFTER || ui.panel || ui.tour || ui.run || ui.decor || ui.narwhal.length || ui.worldActivity || ui.rating) return;
+      if (played < ASK_AFTER || ui.panel || ui.tour || ui.run || ui.decor || ui.narwhal.length || ui.worldActivity || ui.streakShow || ui.streakCal || ui.rating) return;
       asked.add(w.id);
       playSfx('pop');
       useUI.setState({ leaderboardAsk: true });
