@@ -23,6 +23,8 @@ import { Minimap } from './Minimap';
 import { RatingPrompt, openRating } from './RatingPrompt';
 import { LeaderboardPrompt } from './LeaderboardPrompt';
 import { StreakWatcher, openStreakCalendar } from './Streak';
+import { questWayOn, setQuestWay, updateGoalMarker, wayAsked } from '../goal';
+import { worldRun } from '@/activities/world/delivery';
 import { dayKey, liveStreak } from '@/game/progress/streak';
 import { QuestSpot } from './QuestSpot';
 import { APPS } from '../phone/Phone';
@@ -301,7 +303,7 @@ function Compass() {
     }, 120);
     return () => clearInterval(id);
   }, []);
-  if (!state || !(hints || useUI.getState().guide) || state.dist < 4) return null;
+  if (!state || !(hints || wayAsked()) || state.dist < 4) return null;
   return (
     <div className="hud-compass" aria-label={`Goal ${Math.round(state.dist)} meters away`}>
       <div className="arrow" style={{ transform: `rotate(${state.angle}rad)` }}>
@@ -312,6 +314,23 @@ function Compass() {
         {state.label ? '· ' : ''}
         {Math.round(state.dist)}m
       </span>
+      {!worldRun.run && (
+        <button
+          type="button"
+          className="compass-stop"
+          title="Stop showing the way"
+          aria-label="Stop showing the way"
+          onClick={() => {
+            playSfx('click');
+            if (useUI.getState().guide) {
+              useUI.getState().setGuide(null);
+              updateGoalMarker();
+            } else setQuestWay(false);
+          }}
+        >
+          ✕
+        </button>
+      )}
     </div>
   );
 }
@@ -367,6 +386,7 @@ function NarwhalDialog() {
   const [shown, setShown] = useState('');
   const reduced = useSettings((s) => s.reducedMotion);
   const cs = useMemo(() => currentStep(w), [w]);
+  const wayOn = questWayOn(w);
   // Clicking Narwhal tucks the quest bubble away (and back). Remembered on this device.
   const [tucked, setTucked] = useState(false);
   useEffect(() => {
@@ -453,21 +473,34 @@ function NarwhalDialog() {
         {!line && (tucked || !cs) && <span className="narwhal-guide-ping">{cs ? '!' : '?'}</span>}
       </button>
       {!line && cs && !tucked && (
-        <button type="button" className="narwhal-bubble idle" onClick={hint} title="Tap for a hint from Narwhal">
-          <span className="narwhal-bubble-head">
-            <img src={narwhalFace('confident')} alt="" />
-            <span>
-              {cs.quest.title} · {cs.index + 1}/{cs.quest.steps.length}
+        <div className="narwhal-bubble idle">
+          <button type="button" className="idle-main" onClick={hint} title="Tap for a hint from Narwhal">
+            <span className="narwhal-bubble-head">
+              <img src={narwhalFace('confident')} alt="" />
+              <span>
+                {cs.quest.title} · {cs.index + 1}/{cs.quest.steps.length}
+              </span>
             </span>
-          </span>
-          <span className="idle-text">{forDevice(textFor(cs.step, w.difficulty === 'entry' ? 'entry' : 'advanced'))}</span>
-          {cs.step.goal.type === 'move' && (
-            <span className="idle-bar">
-              <span style={{ width: `${Math.min(100, (cs.progress / (cs.step.goal.value ?? 1)) * 100)}%` }} />
-            </span>
-          )}
-          <span className="idle-hint">Tap for a hint</span>
-        </button>
+            <span className="idle-text">{forDevice(textFor(cs.step, w.difficulty === 'entry' ? 'entry' : 'advanced'))}</span>
+            {cs.step.goal.type === 'move' && (
+              <span className="idle-bar">
+                <span style={{ width: `${Math.min(100, (cs.progress / (cs.step.goal.value ?? 1)) * 100)}%` }} />
+              </span>
+            )}
+            <span className="idle-hint">Tap for a hint</span>
+          </button>
+          <button
+            type="button"
+            className={cls('quest-way-btn', wayOn && 'on')}
+            aria-pressed={wayOn}
+            onClick={() => {
+              playSfx('click');
+              setQuestWay(!wayOn);
+            }}
+          >
+            🧭 {wayOn ? 'Hide the way' : 'Show the way'}
+          </button>
+        </div>
       )}
       {line && (
         <div className="narwhal-bubble hud-dialog" role="dialog" aria-live="polite" key={line.id}>

@@ -10,6 +10,7 @@ import { rt } from '@/engine/runtime';
 import { useUI } from '@/store/ui';
 import { useSettings } from '@/store/settings';
 import { EMBLEM } from '@/ui/common';
+import { wayAsked } from '@/ui/goal';
 
 const faceTextures = new Map<Mood, THREE.CanvasTexture>();
 export function faceTexture(mood: Mood): THREE.CanvasTexture {
@@ -155,7 +156,7 @@ export function NarwhalGuide() {
     if (!group) return;
     const p = rt.player;
     const target = scratch;
-    const goal = hints ? rt.goal : null;
+    const goal = hints || wayAsked() ? rt.goal : null;
     if (goal && !line) {
       // Lead the way along the walking route (round buildings, to the door the beacon marks)
       const d = Math.hypot(goal.x - p.x, goal.z - p.z);
@@ -203,7 +204,7 @@ export function GoalBeacon() {
   useFrame((state) => {
     const goal = rt.goal;
     if (!g.current) return;
-    g.current.visible = !!goal && (hints || !!useUI.getState().guide);
+    g.current.visible = !!goal && (hints || wayAsked());
     if (!goal) return;
     g.current.position.set(goal.x, 0, goal.z);
     // Up close (or with the camera inside it) the beam would white out the whole screen
@@ -266,7 +267,7 @@ export function GuideTrail() {
     const path = rt.guidePath;
     const goal = rt.goal;
     const p = rt.player;
-    if (!(hints || useUI.getState().guide) || !path || path.length < 2 || !goal || Math.hypot(goal.x - p.x, goal.z - p.z) < 3.5) {
+    if (!(hints || wayAsked()) || !path || path.length < 2 || !goal || Math.hypot(goal.x - p.x, goal.z - p.z) < 3.5) {
       mesh.count = 0;
       glow.count = 0;
       return;

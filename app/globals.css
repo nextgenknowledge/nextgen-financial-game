@@ -2257,3 +2257,21 @@ button.item-card { cursor: pointer; }
   .qa-flame, .streak-rays, .streak-flame, .streak-spark, .streak-count b, .streak-pip, .streak-chip, .cal-cell, .cal-cell.today.streaked .cal-flame { animation: none !important; }
   .streak-spark { display: none; }
 }
+
+/* Quest directions are opt-in: Show/Hide the way in the quest bubble, and a stop button on the compass */
+.narwhal-bubble.idle .idle-main {
+  display: flex; flex-direction: column; gap: 2px; width: 100%; padding: 0; margin: 0; text-align: left;
+  font: inherit; color: inherit; background: none; border: 0; cursor: pointer;
+}
+.hud .quest-way-btn {
+  margin-top: 6px; white-space: nowrap; cursor: pointer;
+  padding: 4px 10px; font-family: var(--font-body); font-size: 0.78rem; font-weight: 800; color: var(--px-ink);
+  background: var(--px-gold); border: 2px solid var(--px-ink); box-shadow: 2px 2px 0 var(--px-ink);
+}
+.hud .quest-way-btn.on { background: var(--px-white); }
+.hud .quest-way-btn:active { transform: translate(2px, 2px); box-shadow: none; }
+.hud .hud-compass { pointer-events: auto; }
+.hud .compass-stop {
+  margin-left: 4px; width: 22px; height: 22px; padding: 0; line-height: 1; font-size: 0.75rem; font-weight: 900; cursor: pointer;
+  color: #fff; background: var(--px-red); border: 2px solid var(--px-ink);
+}
