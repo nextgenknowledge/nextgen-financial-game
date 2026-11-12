@@ -1,8 +1,10 @@
 'use client';
 /**
  * Asks each world once whether to share its score on the online leaderboard, with what that
- * means. Nothing is sent until the player says yes. Closing it without answering asks again next
- * session; the answer can be changed any time in the FinPhone Leaderboard app.
+ * means. It comes up right after the tutorial quest is finished (or after a few minutes of play
+ * for anyone who skips it), at the first calm moment. Nothing is sent until the player says yes.
+ * Closing it without answering asks again next session; the answer can be changed any time in
+ * the FinPhone Leaderboard app.
  */
 import { useEffect } from 'react';
 import { useUI } from '@/store/ui';
@@ -12,12 +14,22 @@ import { Button, Modal } from '../common';
 import { narwhalFace } from '../narwhalArt';
 import { nicknameProblem } from '@/game/leaderboard';
 import { LEADERBOARD_URL, setScoreShared } from '../leaderboard';
+import type { WorldState } from '@/game/types';
 
-/** Seconds of actual play before asking, so a new player gets to look around first. */
+/** The tutorial quest: finishing it is the natural moment to ask. */
+export const TUTORIAL_QUEST = 'q1-welcome';
+/** Seconds of play before asking someone who hasn't finished the tutorial. */
 const ASK_AFTER = 300;
+/** Seconds of calm (nothing else on screen) before the card appears. */
+const SETTLE = 2;
 
 /** Worlds already asked this browser session. */
 const asked = new Set<string>();
+
+/** True while this world still has the leaderboard question coming after the tutorial, so other cards can wait for it. */
+export function leaderboardAskPending(w: WorldState): boolean {
+  return !!LEADERBOARD_URL && !asked.has(w.id) && w.progress.flags.leaderboardShare === undefined && !nicknameProblem(w.nickname) && w.progress.quests.completed.includes(TUTORIAL_QUEST);
+}
 
 /** What sharing means, shown wherever a player makes the choice. */
 export function ShareDisclaimer() {
@@ -35,6 +47,7 @@ export function LeaderboardPrompt() {
   useEffect(() => {
     if (!LEADERBOARD_URL) return;
     let played = 0;
+    let calm = 0;
     let last = performance.now();
     const id = setInterval(() => {
       const now = performance.now();
@@ -43,10 +56,20 @@ export function LeaderboardPrompt() {
       const ui = useUI.getState();
       const w = useGame.getState().world;
       if (!w || ui.leaderboardAsk || asked.has(w.id) || w.progress.flags.leaderboardShare !== undefined || nicknameProblem(w.nickname)) return;
-      if (ui.screen !== 'game' || ui.loading.active || document.visibilityState !== 'visible') return;
+      if (!LEADERBOARD_URL) return;
+      if (ui.screen !== 'game' || ui.loading.active || document.visibilityState !== 'visible') {
+        calm = 0;
+        return;
+      }
       played += dt;
-      // Wait for a calm moment: no menu, tour, activity, Narwhal speech, furniture moving or rating card
-      if (played < ASK_AFTER || ui.panel || ui.tour || ui.run || ui.decor || ui.narwhal.length || ui.worldActivity || ui.streakShow || ui.streakCal || ui.rating) return;
+      const ready = w.progress.quests.completed.includes(TUTORIAL_QUEST) || played >= ASK_AFTER;
+      // Wait for a calm moment: no menu, tour, activity, Narwhal speech, furniture moving or other card
+      const busy = ui.panel || ui.tour || ui.run || ui.decor || ui.narwhal.length || ui.worldActivity || ui.streakShow || ui.streakCal || ui.rating || ui.costSummary;
+      if (!ready || busy) {
+        calm = 0;
+        return;
+      }
+      if ((calm += dt) < SETTLE) return;
       asked.add(w.id);
       playSfx('pop');
       useUI.setState({ leaderboardAsk: true });
