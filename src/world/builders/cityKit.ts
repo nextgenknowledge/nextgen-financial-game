@@ -56,11 +56,11 @@ export function roadMarkings(def: CityDef, b: Builders, rng: Rng, inWater: (x: n
   // Runs of each road between junctions (markings stop short of the crossings)
   const runs: { along: 'x' | 'z'; c: number; a: number; b: number }[] = [];
   for (const rx of xs) {
-    const cuts = [-H - roadW, ...zs, H + roadW];
+    const cuts = [-H - 8, ...zs, H + 8];
     for (let i = 0; i < cuts.length - 1; i++) runs.push({ along: 'z', c: rx, a: cuts[i] + roadW / 2 + 3, b: cuts[i + 1] - roadW / 2 - 3 });
   }
   for (const rz of zs) {
-    const cuts = [-H - roadW, ...xs, H + roadW];
+    const cuts = [-H - 8, ...xs, H + 8];
     for (let i = 0; i < cuts.length - 1; i++) runs.push({ along: 'x', c: rz, a: cuts[i] + roadW / 2 + 3, b: cuts[i + 1] - roadW / 2 - 3 });
   }
   const line = (r: (typeof runs)[number], off: number, c: string, dash = 0) => {
@@ -77,9 +77,15 @@ export function roadMarkings(def: CityDef, b: Builders, rng: Rng, inWater: (x: n
       else mark(t + dash / 2, r.c + off, dash, 0.15, c);
     }
   };
+  // Streets stop at the shoreline, so their markings do too
+  const at = (r: (typeof runs)[number], t: number) => (r.along === 'z' ? inWater(r.c, t, 2) : inWater(t, r.c, 2));
+  for (const r of runs) {
+    while (r.b > r.a && at(r, r.b)) r.b -= 1;
+    while (r.a < r.b && at(r, r.a)) r.a += 1;
+  }
   for (const r of runs) {
     const mid = r.along === 'z' ? { x: r.c, z: (r.a + r.b) / 2 } : { x: (r.a + r.b) / 2, z: r.c };
-    if (inWater(mid.x, mid.z, 2)) continue;
+    if (r.b - r.a < 3 || inWater(mid.x, mid.z, 2)) continue;
     if (kit.centre === 'double-yellow') {
       line(r, -0.15, YELLOW);
       line(r, 0.15, YELLOW);

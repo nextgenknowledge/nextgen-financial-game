@@ -19,7 +19,7 @@ import { shade } from './builders/buildings';
 import { makeRng, type Rng } from '@/game/rng';
 import { DEFAULT_AVATAR } from '@/game/world';
 import { HAIR_STYLES } from '@/game/look';
-import { plant, type Actor, type InteriorKind, type Kit } from './interiors/furnish';
+import { dressFloor, plant, type Actor, type InteriorKind, type Kit } from './interiors/furnish';
 import { kindFor, layoutFor, zoneFor, type Layout } from './interiors/plan';
 import { worldUniforms } from '@/engine/atlas';
 
@@ -311,6 +311,7 @@ export function InteriorScene({ building, difficulty }: { building: BuildingDef;
       actors: [],
     };
     kind.furnish(k);
+    dressFloor(k, kind, L.spots.slice(0, stations.length));
     L.spots.slice(0, stations.length).forEach((s) => buildCounter(b, gl, kind.counter, s));
     return { geo: b.build(), glow: g.build(), glass: gl.build(), solids: k.solids, actors: k.actors };
   }, [L, kind, stations.length, building.id]);

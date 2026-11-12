@@ -86,6 +86,34 @@ export function footprint(b: BuildingDef): Rect {
   return { minX: b.pos[0] - hx, maxX: b.pos[0] + hx, minZ: b.pos[1] - hz, maxZ: b.pos[1] + hz };
 }
 
+/**
+ * The parts of an axis-aligned road that stay clear of the given rectangles (water, landmarks),
+ * so streets end at the shoreline instead of running into the harbour.
+ */
+function clipRoad(seg: { a: [number, number]; b: [number, number]; w: number }, rects: Rect[], margin: number, minLen = 6) {
+  const alongX = seg.a[1] === seg.b[1];
+  const fixed = alongX ? seg.a[1] : seg.a[0];
+  const lo = Math.min(alongX ? seg.a[0] : seg.a[1], alongX ? seg.b[0] : seg.b[1]);
+  const hi = Math.max(alongX ? seg.a[0] : seg.a[1], alongX ? seg.b[0] : seg.b[1]);
+  let pieces: [number, number][] = [[lo, hi]];
+  for (const r of rects) {
+    // The rect blocks this road only if it crosses the road's strip
+    const [fMin, fMax] = alongX ? [r.minZ, r.maxZ] : [r.minX, r.maxX];
+    if (fixed + seg.w / 2 <= fMin - margin || fixed - seg.w / 2 >= fMax + margin) continue;
+    const [cMin, cMax] = alongX ? [r.minX - margin, r.maxX + margin] : [r.minZ - margin, r.maxZ + margin];
+    pieces = pieces.flatMap(([a, b]) => {
+      if (b <= cMin || a >= cMax) return [[a, b] as [number, number]];
+      const out: [number, number][] = [];
+      if (a < cMin) out.push([a, cMin]);
+      if (b > cMax) out.push([cMax, b]);
+      return out;
+    });
+  }
+  return pieces
+    .filter(([a, b]) => b - a >= minLen)
+    .map(([a, b]) => ({ a: (alongX ? [a, fixed] : [fixed, a]) as [number, number], b: (alongX ? [b, fixed] : [fixed, b]) as [number, number], w: seg.w }));
+}
+
 function segmentDist(px: number, pz: number, a: [number, number], b: [number, number]) {
   const dx = b[0] - a[0];
   const dz = b[1] - a[1];
@@ -148,8 +176,11 @@ export function buildOutdoor(def: CityDef, difficulty: Difficulty): SceneBuild {
 
   // ── Roads ──
   const roadSegs: { a: [number, number]; b: [number, number]; w: number }[] = [];
-  for (const x of def.roads.xs) roadSegs.push({ a: [x, -H], b: [x, H], w: roadW });
-  for (const z of def.roads.zs) roadSegs.push({ a: [-H, z], b: [H, z], w: roadW });
+  // City streets run out to the boulevard round the edge (RING), and stop at the shoreline
+  const RING = H + 8;
+  const shore = (seg: { a: [number, number]; b: [number, number]; w: number }) => clipRoad(seg, water, 0.5);
+  for (const x of def.roads.xs) roadSegs.push(...shore({ a: [x, -RING], b: [x, RING], w: roadW }));
+  for (const z of def.roads.zs) roadSegs.push(...shore({ a: [-RING, z], b: [RING, z], w: roadW }));
   // Park ring road only spans between its lines
   if (!isCity) {
     roadSegs.length = 0;
@@ -182,8 +213,9 @@ export function buildOutdoor(def: CityDef, difficulty: Difficulty): SceneBuild {
   // ── Sidewalk blocks (cities): raised curbs between roads ──
   const blocks: Rect[] = [];
   if (isCity) {
-    const xs = [-H, ...def.roads.xs, H];
-    const zs = [-H, ...def.roads.zs, H];
+    const E = H + 8 - roadW / 2;
+    const xs = [-E, ...def.roads.xs, E];
+    const zs = [-E, ...def.roads.zs, E];
     for (let i = 0; i < xs.length - 1; i++)
       for (let j = 0; j < zs.length - 1; j++) {
         const r: Rect = {
@@ -197,7 +229,6 @@ export function buildOutdoor(def: CityDef, difficulty: Difficulty): SceneBuild {
         const cx = (r.minX + r.maxX) / 2;
         const cz = (r.minZ + r.maxZ) / 2;
         if (inWater(cx, cz)) continue;
-        blocks.push(r);
         const clipped = { ...r };
         for (const w of water) {
           if (!rectsOverlap(clipped, w)) continue;
@@ -207,6 +238,8 @@ export function buildOutdoor(def: CityDef, difficulty: Difficulty): SceneBuild {
           else if (w.minX > cx) clipped.maxX = Math.min(clipped.maxX, w.minX);
           else clipped.minX = Math.max(clipped.minX, w.maxX);
         }
+        // Blocks (and the walking loops and filler built from them) stop at the shoreline too
+        blocks.push(clipped);
         const w = clipped.maxX - clipped.minX;
         const d = clipped.maxZ - clipped.minZ;
         b.solid.box((clipped.minX + clipped.maxX) / 2, 0.08, (clipped.minZ + clipped.maxZ) / 2, w, 0.16, d, kit.paveColor, { ao: false, tex: kit.pave });
@@ -383,6 +416,51 @@ export function buildOutdoor(def: CityDef, difficulty: Difficulty): SceneBuild {
           buildFiller(b, cx, cz, fw, fd, Math.round(h), facing, style, rng, def.palette);
           reserved.push(lot);
         }
+    }
+  }
+
+  // ── Boulevard round the city edge: joins the street ends, with a sidewalk on its outer side ──
+  if (isCity) {
+    const blockers: Rect[] = [...water.map((w) => ({ ...w })), ...b.colliders.filter((c) => c.maxY > 0.6 && Math.max(Math.abs(c.cx), Math.abs(c.cz)) > H - 30).map((c) => {
+      const r = Math.max(c.w, c.d) / 2;
+      return { minX: c.cx - r, maxX: c.cx + r, minZ: c.cz - r, maxZ: c.cz + r };
+    })];
+    const ringSegs = [
+      { a: [-RING, -RING], b: [RING, -RING], w: roadW },
+      { a: [-RING, RING], b: [RING, RING], w: roadW },
+      { a: [-RING, -RING], b: [-RING, RING], w: roadW },
+      { a: [RING, -RING], b: [RING, RING], w: roadW },
+    ] as { a: [number, number]; b: [number, number]; w: number }[];
+    for (const seg of ringSegs) {
+      for (const r of clipRoad(seg, blockers, 1.5, 10)) {
+        roadSegs.push(r);
+        const alongX = r.a[1] === r.b[1];
+        const len = alongX ? r.b[0] - r.a[0] : r.b[1] - r.a[1];
+        const cx = (r.a[0] + r.b[0]) / 2;
+        const cz = (r.a[1] + r.b[1]) / 2;
+        // Extend over the corners so the boulevard meets itself cleanly
+        b.solid.box(cx, 0.03, cz, alongX ? len + roadW : roadW, 0.06, alongX ? roadW : len + roadW, roadColor, { ao: false, tex: 'asphalt' });
+        // Dashed centre line
+        for (let t = 4; t < len - 4; t += 6) {
+          const x = alongX ? r.a[0] + t : cx;
+          const z = alongX ? cz : r.a[1] + t;
+          if (def.roads.xs.some((rx) => Math.abs(rx - x) < roadW / 2 + 1) && alongX) continue;
+          if (def.roads.zs.some((rz) => Math.abs(rz - z) < roadW / 2 + 1) && !alongX) continue;
+          b.solid.box(x, 0.065, z, alongX ? 2.4 : 0.2, 0.02, alongX ? 0.2 : 2.4, '#e8e2cf', { ao: false });
+        }
+        // Outer sidewalk with a low wall where the playable area ends
+        const side = alongX ? Math.sign(cz) : Math.sign(cx);
+        const off = RING + side * (roadW / 2 + 2);
+        const sw = alongX ? len + roadW + 4 : 4;
+        const sd = alongX ? 4 : len + roadW + 4;
+        const sx = alongX ? cx : off;
+        const sz = alongX ? off : cz;
+        b.solid.box(sx, 0.08, sz, sw, 0.16, sd, kit.paveColor, { ao: false, tex: kit.pave });
+        lowColliders.push({ cx: sx, cz: sz, w: sw, d: sd, maxY: 0.16 });
+        const wallOff = RING + side * (roadW / 2 + 4.2);
+        b.solid.box(alongX ? cx : wallOff, 0.45, alongX ? wallOff : cz, alongX ? len + roadW + 4 : 0.5, 0.9, alongX ? 0.5 : len + roadW + 4, '#a7a294', { tex: 'stone' });
+        b.colliders.push({ cx: alongX ? cx : wallOff, cz: alongX ? wallOff : cz, w: alongX ? len + roadW + 4 : 0.5, d: alongX ? 0.5 : len + roadW + 4, minY: 0, maxY: 1.2, rotY: 0 });
+      }
     }
   }
 

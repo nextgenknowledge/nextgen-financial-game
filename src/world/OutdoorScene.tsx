@@ -33,7 +33,9 @@ export function OutdoorScene({ def, difficulty }: { def: CityDef; difficulty: Di
   useMemo(() => {
     rt.resetScene(def.id);
     const c = rt.collision;
-    c.bounds = { minX: -def.half - 20, maxX: def.half + 20, minZ: -def.half - 20, maxZ: def.half + 20 };
+    // Cities end at the low wall beyond the edge boulevard; the park keeps its open meadow
+    const edge = def.id === 'park' ? def.half + 20 : def.half + 16;
+    c.bounds = { minX: -edge, maxX: edge, minZ: -edge, maxZ: edge };
     for (const k of build.colliders) c.addBox(k.cx, k.cz, k.w, k.d, k.minY, k.maxY, undefined, k.rotY);
     for (const k of build.lowColliders) c.addBox(k.cx, k.cz, k.w, k.d, -1, k.maxY);
     c.water = build.water;

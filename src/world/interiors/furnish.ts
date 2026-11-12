@@ -1368,3 +1368,197 @@ KINDS.arcade = {
     walker(k, loop(k, 1), 'casual');
   },
 };
+
+/* ───────── Filling bare floor ───────── */
+
+/**
+ * Some rooms leave big stretches of empty floor between their counters, seating and the door.
+ * This pass finds those gaps and dresses them to suit the room: lounge corners, planters, info
+ * kiosks and benches in offices and halls; display tables, shelving and crates in shops. It keeps
+ * a clear aisle from the door, a lane to every counter, the walking loops and space round people.
+ */
+export function dressFloor(k: Kit, kind: InteriorKind, spots: { x: number; z: number; rot: number }[]) {
+  const { b, g, w, d, rng } = k;
+  const C = 0.5; // grid cell (m)
+  const nx = Math.floor(w / C);
+  const nz = Math.floor(d / C);
+  const busy = new Uint8Array(nx * nz);
+  const cx = (i: number) => -w / 2 + (i + 0.5) * C;
+  const cz = (j: number) => -d / 2 + (j + 0.5) * C;
+  const mark = (x0: number, z0: number, x1: number, z1: number) => {
+    const i0 = Math.max(0, Math.floor((x0 + w / 2) / C));
+    const i1 = Math.min(nx - 1, Math.floor((x1 + w / 2) / C));
+    const j0 = Math.max(0, Math.floor((z0 + d / 2) / C));
+    const j1 = Math.min(nz - 1, Math.floor((z1 + d / 2) / C));
+    for (let i = i0; i <= i1; i++) for (let j = j0; j <= j1; j++) busy[j * nx + i] = 1;
+  };
+  const free = (x0: number, z0: number, x1: number, z1: number) => {
+    if (x0 < -w / 2 + 1 || x1 > w / 2 - 1 || z0 < -d / 2 + 1 || z1 > d / 2 - 1) return false;
+    const i0 = Math.floor((x0 + w / 2) / C);
+    const i1 = Math.floor((x1 + w / 2) / C);
+    const j0 = Math.floor((z0 + d / 2) / C);
+    const j1 = Math.floor((z1 + d / 2) / C);
+    for (let i = i0; i <= i1; i++) for (let j = j0; j <= j1; j++) if (busy[j * nx + i]) return false;
+    return true;
+  };
+  const line = (ax: number, az: number, bx: number, bz: number, r: number) => {
+    const n = Math.ceil(Math.hypot(bx - ax, bz - az) / C) + 1;
+    for (let t = 0; t <= n; t++) {
+      const x = ax + ((bx - ax) * t) / n;
+      const z = az + ((bz - az) * t) / n;
+      mark(x - r, z - r, x + r, z + r);
+    }
+  };
+  // What's already there, with room to walk round it
+  for (const s of k.solids) {
+    const r = Math.max(s.w, s.d) / 2;
+    mark(s.x - r - 0.9, s.z - r - 0.9, s.x + r + 0.9, s.z + r + 0.9);
+  }
+  for (const a of k.actors) {
+    if (a.path) for (let i = 0; i < a.path.length; i++) line(a.path[i][0], a.path[i][1], a.path[(i + 1) % a.path.length][0], a.path[(i + 1) % a.path.length][1], 1.0);
+    else mark(a.x - 0.9, a.z - 0.9, a.x + 0.9, a.z + 0.9);
+  }
+  // The aisle from the door, the entrance, and a lane to each counter
+  mark(-2.4, -d / 2, 2.4, d / 2);
+  mark(-3.5, d / 2 - 4.5, 3.5, d / 2);
+  mark(-w / 2, d / 2 - 2.2, w / 2, d / 2);
+  for (const s of spots) {
+    const fx = s.x + Math.sin(s.rot) * 3;
+    const fz = s.z + Math.cos(s.rot) * 3;
+    mark(Math.min(s.x, fx) - 2.6, Math.min(s.z, fz) - 2.6, Math.max(s.x, fx) + 2.6, Math.max(s.z, fz) + 2.6);
+    line(fx, fz, 0, fz, 1.1);
+  }
+
+  const retail = kind.counter === 'checkout' || kind.counter === 'stall';
+  const dark = new THREE.Color(kind.floorColor).getHSL({ h: 0, s: 0, l: 0 }).l < 0.35;
+  const fabric = rng.pick(['#3f5a7a', '#5a2e24', '#2f4a32', '#6a5a8a', '#7a5a3a']);
+  const rugColor = dark ? '#3a3f5c' : rng.pick(['#b9a27a', '#8a5a4a', '#5a6a8a', '#7a8a6a']);
+  const pieces: { w: number; d: number; max?: number; build: (x: number, z: number) => void }[] = retail
+    ? [
+        {
+          w: 3.4,
+          d: 2.2,
+          build: (x, z) => {
+            table(b, x, z, 2.4, 1.2, '#d8cbb3');
+            for (let t = -1; t <= 1; t += 0.45) b.box(x + t, 0.86, z + rng.range(-0.3, 0.3), 0.32, rng.range(0.12, 0.3), 0.26, rng.pick(GOODS), { ao: false });
+            k.solids.push({ x, z, w: 2.5, d: 1.3, h: 1 });
+          },
+        },
+        {
+          w: 4.2,
+          d: 1.6,
+          build: (x, z) => {
+            gondola(b, rng, x, z, 3, GOODS);
+            k.solids.push({ x, z, w: 3.4, d: 0.9, h: 2 });
+          },
+        },
+        {
+          w: 2,
+          d: 2,
+          max: 3,
+          build: (x, z) => {
+            crates(b, rng, x, z);
+            k.solids.push({ x, z, w: 1.4, d: 1.4, h: 1 });
+          },
+        },
+      ]
+    : [
+        {
+          // Lounge corner: rug, sofa, two armchairs and a coffee table
+          w: 4.4,
+          d: 4,
+          build: (x, z) => {
+            rug(b, x, z, 4, 3.4, rugColor);
+            const seats = sofa(b, x, z - 1.1, 0, fabric, 2.2);
+            armchair(b, x - 1.6, z + 0.4, Math.PI / 2, fabric);
+            armchair(b, x + 1.6, z + 0.4, -Math.PI / 2, fabric);
+            table(b, x, z + 0.3, 1.2, 0.7, '#4a3324');
+            g.box(x + 0.25, 0.79, z + 0.3, 0.3, 0.02, 0.22, '#e9e4da');
+            k.solids.push({ x, z: z - 1.1, w: 2.3, d: 1, h: 1 }, { x, z: z + 0.3, w: 1.3, d: 0.8, h: 0.8 }, { x: x - 1.6, z: z + 0.4, w: 1, d: 1.1, h: 1 }, { x: x + 1.6, z: z + 0.4, w: 1, d: 1.1, h: 1 });
+            if (rng.chance(0.5)) sitAt(k, seats[0], rng.chance(0.5) ? 'casual' : 'smart');
+          },
+        },
+        {
+          // Long planter with shrubs
+          w: 3.6,
+          d: 1.6,
+          build: (x, z) => {
+            b.box(x, 0.35, z, 3, 0.7, 0.9, '#9a958a', { tex: 'concrete' });
+            b.box(x, 0.68, z, 2.8, 0.06, 0.7, '#4a3a2a');
+            for (let t = -1.1; t <= 1.1; t += 0.55) b.geom(sphere(rng.range(0.32, 0.45), 7, 5), trs(x + t, 0.95, z + rng.range(-0.1, 0.1)), rng.pick(['#3f6e34', '#4a7a3a', '#365f2e']), 'leaves');
+            k.solids.push({ x, z, w: 3, d: 0.9, h: 1 });
+          },
+        },
+        {
+          // Information kiosk with a lit screen
+          w: 1.8,
+          d: 1.8,
+          max: 2,
+          build: (x, z) => {
+            b.box(x, 0.55, z, 0.7, 1.1, 0.5, '#2f3a4a', { tex: 'metal' });
+            b.box(x, 1.4, z, 0.8, 0.9, 0.12, BLACK, { rotY: 0 });
+            g.box(x, 1.4, z + 0.07, 0.68, 0.76, 0.01, rng.pick(['#3a8fd0', '#2fd07a', '#e9b23a']));
+            k.solids.push({ x, z, w: 0.9, d: 0.7, h: 2 });
+          },
+        },
+        {
+          // Bench between two potted plants
+          w: 4,
+          d: 1.4,
+          build: (x, z) => {
+            b.box(x, 0.45, z, 1.8, 0.08, 0.5, '#8a6440', { tex: 'wood' });
+            for (const lx of [-0.75, 0.75]) b.box(x + lx, 0.22, z, 0.08, 0.44, 0.45, '#2a2a2a');
+            plant(b, x - 1.45, z);
+            plant(b, x + 1.45, z);
+            k.solids.push({ x, z, w: 3.6, d: 0.7, h: 0.8 });
+          },
+        },
+      ];
+
+  // A carpet runner down the aisle from the door, and pictures and notice boards on the bare
+  // front wall either side of the door
+  const runner = dark ? '#5a2e6a' : rng.pick(['#7a2e2e', '#2f4a6a', '#2f5a3a', '#6a4a2a']);
+  if (kind.floor !== 'carpet') {
+    b.box(0, 0.012, 0, 3.2, 0.02, d - 2, runner, { ao: false });
+    b.box(0, 0.016, 0, 2.7, 0.02, d - 2.4, '#' + new THREE.Color(runner).multiplyScalar(1.25).getHexString(), { ao: false });
+  }
+  for (const sx of [-1, 1])
+    for (let x = 5; x < w / 2 - 2.5; x += 4.5) {
+      const fx = sx * x;
+      const fz = d / 2 - 0.12;
+      if (rng.chance(0.3)) {
+        // Notice board with pinned papers
+        b.box(fx, 2, fz, 2.2, 1.3, 0.08, '#8a6440', { tex: 'wood' });
+        b.box(fx, 2, fz - 0.05, 2, 1.1, 0.02, '#c9a77a');
+        for (let i = 0; i < 5; i++) b.box(fx - 0.75 + i * 0.37, 2 + rng.range(-0.3, 0.3), fz - 0.07, 0.28, 0.36, 0.01, rng.pick(['#f4f1ea', '#fdf6c9', '#dbe9f5']));
+      } else {
+        // Framed picture: a landscape of sky, hills and sun
+        b.box(fx, 2.1, fz, 1.6, 1.1, 0.08, rng.pick(['#2a2a2a', '#c9a24a', DARK_WOOD]));
+        b.box(fx, 2.24, fz - 0.05, 1.4, 0.5, 0.02, rng.pick(['#9cc8e8', '#e8b48a', '#b9d4e8']));
+        b.box(fx, 1.86, fz - 0.05, 1.4, 0.42, 0.02, rng.pick(['#5a8a4a', '#3a6a8a', '#8a7a4a']));
+        b.box(fx + rng.range(-0.4, 0.4), 2.3, fz - 0.06, 0.18, 0.18, 0.01, '#f2c94c');
+      }
+    }
+
+  // Scan the room and drop a piece into each gap that is big enough, keeping space between them
+  let placed = 0;
+  const used = new Map<(typeof pieces)[number], number>();
+  const cap = Math.max(3, Math.round((w * d) / 40));
+  for (let j = 2; j < nz - 2 && placed < cap; j += 2)
+    for (let i = 2; i < nx - 2 && placed < cap; i += 2) {
+      const x = cx(i);
+      const z = cz(j);
+      // Bigger pieces first so the small ones don't crowd every gap
+      const order = [...pieces].sort((a, c) => c.w * c.d - a.w * a.d + (rng.next() - 0.5) * 4);
+      for (const p of order) {
+        if (p.max !== undefined && (used.get(p) ?? 0) >= p.max) continue;
+        const pad = 0.75; // walking room round each piece
+        if (!free(x - p.w / 2 - pad, z - p.d / 2 - pad, x + p.w / 2 + pad, z + p.d / 2 + pad)) continue;
+        p.build(x, z);
+        used.set(p, (used.get(p) ?? 0) + 1);
+        mark(x - p.w / 2 - pad, z - p.d / 2 - pad, x + p.w / 2 + pad, z + p.d / 2 + pad);
+        placed++;
+        break;
+      }
+    }
+}
