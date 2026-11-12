@@ -1,8 +1,8 @@
 'use client';
 /**
  * Asks each world once whether to share its score on the online leaderboard, with what that
- * means. It comes up right after the tutorial quest is finished (or after a few minutes of play
- * for anyone who skips it), at the first calm moment. Nothing is sent until the player says yes.
+ * means. It comes up right after the player's first odd job in the tutorial (or after a few
+ * minutes of play for anyone who skips it), at the first calm moment. Nothing is sent until the player says yes.
  * Closing it without answering asks again next session; the answer can be changed any time in
  * the FinPhone Leaderboard app.
  */
@@ -15,9 +15,18 @@ import { narwhalFace } from '../narwhalArt';
 import { nicknameProblem } from '@/game/leaderboard';
 import { LEADERBOARD_URL, setScoreShared } from '../leaderboard';
 import type { WorldState } from '@/game/types';
+import { QUESTS } from '@/game/progress/quests';
 
-/** The tutorial quest: finishing it is the natural moment to ask. */
+/** The tutorial quest, and its odd-jobs step: right after the first paycheck is when we ask. */
 export const TUTORIAL_QUEST = 'q1-welcome';
+const ODD_JOB_STEP = Math.max(0, QUESTS.find((q) => q.id === TUTORIAL_QUEST)?.steps.findIndex((st) => st.id === 'odd-job') ?? 0);
+
+/** True once the tutorial's odd job is done (or the whole tutorial is). */
+export function didFirstOddJob(w: WorldState): boolean {
+  if (w.progress.quests.completed.includes(TUTORIAL_QUEST)) return true;
+  const q = w.progress.quests.active.find((a) => a.id === TUTORIAL_QUEST);
+  return !!q && q.step > ODD_JOB_STEP;
+}
 /** Seconds of play before asking someone who hasn't finished the tutorial. */
 const ASK_AFTER = 300;
 /** Seconds of calm (nothing else on screen) before the card appears. */
@@ -26,9 +35,9 @@ const SETTLE = 2;
 /** Worlds already asked this browser session. */
 const asked = new Set<string>();
 
-/** True while this world still has the leaderboard question coming after the tutorial, so other cards can wait for it. */
+/** True while this world still has the leaderboard question coming, so other cards can wait for it. */
 export function leaderboardAskPending(w: WorldState): boolean {
-  return !!LEADERBOARD_URL && !asked.has(w.id) && w.progress.flags.leaderboardShare === undefined && !nicknameProblem(w.nickname) && w.progress.quests.completed.includes(TUTORIAL_QUEST);
+  return !!LEADERBOARD_URL && !asked.has(w.id) && w.progress.flags.leaderboardShare === undefined && !nicknameProblem(w.nickname) && didFirstOddJob(w);
 }
 
 /** What sharing means, shown wherever a player makes the choice. */
@@ -62,7 +71,7 @@ export function LeaderboardPrompt() {
         return;
       }
       played += dt;
-      const ready = w.progress.quests.completed.includes(TUTORIAL_QUEST) || played >= ASK_AFTER;
+      const ready = didFirstOddJob(w) || played >= ASK_AFTER;
       // Wait for a calm moment: no menu, tour, activity, Narwhal speech, furniture moving or other card
       const busy = ui.panel || ui.tour || ui.run || ui.decor || ui.narwhal.length || ui.worldActivity || ui.streakShow || ui.streakCal || ui.rating || ui.costSummary;
       if (!ready || busy) {

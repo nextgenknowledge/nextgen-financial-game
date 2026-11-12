@@ -39,7 +39,7 @@ export function StreakWatcher() {
       // The first-day tutorial gets to finish first.
       const busy =
         ui.panel || ui.tour || ui.run || ui.decor || ui.narwhal.length || ui.worldActivity || ui.rating || ui.leaderboardAsk || ui.costSummary || ui.streakCal;
-      // The leaderboard question that follows the tutorial goes first
+      // ...and the leaderboard question goes before it too
       const tutorial = w.progress.quests.active.some((q) => q.id === 'q1-welcome') || leaderboardAskPending(w);
       if (busy || tutorial) {
         calm = 0;
