@@ -103,7 +103,7 @@ export function NewGameFlow({ onCancel, onCreate }: { onCancel: () => void; onCr
               autoComplete="off"
               onChange={(e) => setNickname(e.target.value.replace(/[^\w\- ]/g, ''))}
             />
-            <div className="st-note">Use a fun nickname, never your real name.</div>
+            <div className="st-note">Use a fun nickname, never your real name. It shows on the public leaderboard.</div>
 
             <div className="st-perks" aria-label="What you can do in Fin City">
               {[

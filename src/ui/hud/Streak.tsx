@@ -10,7 +10,6 @@ import { useUI } from '@/store/ui';
 import { playSfx } from '@/engine/audio';
 import { checkIn, dayKey, liveStreak, streakReward, type CheckIn, type StreakState } from '@/game/progress/streak';
 import { Button, Modal } from '../common';
-import { leaderboardAskPending } from './LeaderboardPrompt';
 
 /** Seconds of calm play before the card shows, so it never lands on top of a loading screen. */
 const SETTLE = 2;
@@ -38,9 +37,8 @@ export function StreakWatcher() {
       // A calm moment: no menu, tour, activity, Narwhal speech, furniture moving or other card.
       // The first-day tutorial gets to finish first.
       const busy =
-        ui.panel || ui.tour || ui.run || ui.decor || ui.narwhal.length || ui.worldActivity || ui.rating || ui.leaderboardAsk || ui.costSummary || ui.streakCal;
-      // ...and the leaderboard question goes before it too
-      const tutorial = w.progress.quests.active.some((q) => q.id === 'q1-welcome') || leaderboardAskPending(w);
+        ui.panel || ui.tour || ui.run || ui.decor || ui.narwhal.length || ui.worldActivity || ui.rating || ui.costSummary || ui.streakCal;
+      const tutorial = w.progress.quests.active.some((q) => q.id === 'q1-welcome');
       if (busy || tutorial) {
         calm = 0;
         return;

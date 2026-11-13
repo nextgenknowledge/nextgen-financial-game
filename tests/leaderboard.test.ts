@@ -64,9 +64,9 @@ function sheetScript() {
 }
 
 describe('sending scores by themselves', () => {
-  it('never shares unless the player said yes', () => {
+  it('shares by default and stops only when the player turns it off', () => {
     const w = createWorld({ name: 'Test', nickname: 'Zed', difficulty: 'entry', seed: 1 });
-    expect(sharesScore(w)).toBe(false);
+    expect(sharesScore(w)).toBe(true);
     w.progress.flags.leaderboardShare = false;
     expect(sharesScore(w)).toBe(false);
     w.progress.flags.leaderboardShare = true;

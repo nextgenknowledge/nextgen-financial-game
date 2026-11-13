@@ -21,7 +21,6 @@ import { CITY_META } from '@/world/cities';
 import { useRide, getOff } from '@/world/ParkedVehicles';
 import { Minimap } from './Minimap';
 import { RatingPrompt, openRating } from './RatingPrompt';
-import { LeaderboardPrompt } from './LeaderboardPrompt';
 import { StreakWatcher, openStreakCalendar } from './Streak';
 import { dayKey, liveStreak } from '@/game/progress/streak';
 import { QuestSpot } from './QuestSpot';
@@ -74,7 +73,6 @@ export function HUD() {
       <QuickApps />
       <NavTips />
       <RatingPrompt />
-      <LeaderboardPrompt />
       <StreakWatcher />
       <QuestSpot />
       <TouchControls />

@@ -68,9 +68,9 @@ export function scoreEntry(w: WorldState): ScoreEntry {
   };
 }
 
-/** Only a yes counts: a world that hasn't been asked, or said no, never sends. */
+/** Every world is on the leaderboard by its nickname unless the player turned sharing off. */
 export function sharesScore(w: WorldState): boolean {
-  return w.progress.flags.leaderboardShare === true;
+  return w.progress.flags.leaderboardShare !== false;
 }
 
 /** How often a score can go out during play, and when the player is leaving. */
