@@ -55,7 +55,7 @@ export default function AboutPage() {
         <h2>Who made it</h2>
         <p>
           Fin City is made by <a href="https://nextgenknowledge.org">NextGen Knowledge</a>, a student-led organization that makes
-          real-world financial literacy free and accessible. The game is in beta, so things may still change.{' '}
+          real-world financial literacy free and accessible. The game has officially launched, and we keep adding to it.{' '}
           <a href="https://nextgenknowledge.org/fin-city.html#feedback">Send us feedback</a>.
         </p>
       </div>
