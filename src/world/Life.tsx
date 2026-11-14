@@ -3,6 +3,7 @@ import { useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import { rbox } from './Avatar';
+import { InstancedSunShadow, shadowProxy } from './SunShadows';
 import { VoxelBuilder, cylinder, trs } from '@/engine/voxel';
 import { hourOf } from '@/engine/Sky';
 import { getWorld } from '@/store/game';
@@ -134,6 +135,9 @@ function matFor(key: string) {
 }
 
 /** Instanced walking townsfolk: 7 draw calls no matter how many people. */
+/** The big body parts are enough for a person-shaped shadow. */
+const SHADOW_PARTS = new Set(['legL', 'legR', 'torso', 'head']);
+
 export function Crowd({ loops, count, seed = 1 }: { loops: [number, number][][]; count: number; seed?: number }) {
   const refs = useRef<(THREE.InstancedMesh | null)[]>([]);
   const walkers = useMemo<Walker[]>(() => {
@@ -318,6 +322,7 @@ export function Crowd({ loops, count, seed = 1 }: { loops: [number, number][][];
       {PARTS.map((p, k) => (
         <instancedMesh key={p.key} ref={(m) => void (refs.current[k] = m)} args={[p.geo, matFor(p.key), walkers.length]} frustumCulled={false} />
       ))}
+      {PARTS.map((p, k) => (SHADOW_PARTS.has(p.key) ? <InstancedSunShadow key={p.key} source={() => refs.current[k]} geometry={shadowProxy(p.geo)} count={walkers.length} /> : null))}
       <instancedMesh ref={(m) => void (refs.current[PARTS.length] = m)} args={[umbrellaGeo, extraMat, walkers.length]} frustumCulled={false} />
       <instancedMesh ref={(m) => void (refs.current[PARTS.length + 1] = m)} args={[dogGeo, extraMat, walkers.length]} frustumCulled={false} />
       <instancedMesh ref={(m) => void (refs.current[PARTS.length + 2] = m)} args={[leashGeo, leashMat, walkers.length]} frustumCulled={false} />

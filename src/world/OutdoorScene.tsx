@@ -24,6 +24,8 @@ import { CondoEntrances } from './CondoEntrance';
 import { Weather } from './Weather';
 import { Sites, Steam, Pigeons, Flags } from './Ambient';
 import { worldUniforms } from '@/engine/atlas';
+import { MeshSunShadow, updateSunShadows } from './SunShadows';
+import { ContactShadow } from './ContactShadow';
 
 export function OutdoorScene({ def, difficulty }: { def: CityDef; difficulty: Difficulty }) {
   const quality = useSettings((s) => s.quality);
@@ -55,6 +57,7 @@ export function OutdoorScene({ def, difficulty }: { def: CityDef; difficulty: Di
 
   useFrame(() => {
     updateNightMaterials(rt.dayLight);
+    updateSunShadows();
     worldUniforms.uGrime.value = quality === 'low' ? 0 : 1;
     // Gusty in storms, a light breeze otherwise
     worldUniforms.uWind.value = 1 + (rt.weather === 'rain' || rt.weather === 'snow' ? rt.weatherAmt * 1.6 : 0);
@@ -86,6 +89,7 @@ export function OutdoorScene({ def, difficulty }: { def: CityDef; difficulty: Di
     <group>
       <mesh geometry={build.ground} material={M.ground} receiveShadow onClick={onGroundClick} />
       <mesh geometry={build.solid} material={M.vc} castShadow receiveShadow onClick={onGroundClick} />
+      <MeshSunShadow geometry={build.solid} />
       <mesh geometry={build.lit} material={M.lit} />
       <mesh geometry={build.dark} material={M.dark} />
       <mesh geometry={build.neon} material={M.neon} />
@@ -132,6 +136,7 @@ function HostNPC({ look, x, z }: { look: AvatarConfig; x: number; z: number }) {
   return (
     <group ref={g} position={[x, 0, z]}>
       <Avatar config={look} anim={anim} />
+      <ContactShadow r={0.55} />
       <mesh position={[0, 2.65, 0]}>
         <octahedronGeometry args={[0.22, 0]} />
         <meshBasicMaterial color="#ffcf3f" toneMapped={false} />

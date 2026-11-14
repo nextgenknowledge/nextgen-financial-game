@@ -169,6 +169,8 @@ export function SkyAndLights({ interior = false }: { interior?: boolean }) {
     uniforms.hor.value.copy(s.hor);
     uniforms.sunDir.value.copy(dir);
     rt.sunDir.copy(dir);
+    // Shadows soften toward sunrise and sunset and wash out under cloud
+    rt.sunShadow = interior || !isDay ? 0 : Math.min(1, Math.max(0, (elev - 0.03) / 0.15)) * (1 - wa * 0.85);
     rt.sunColor.copy(s.sun);
     uniforms.sunCol.value.copy(s.sun);
     uniforms.night.value = nightAmt;

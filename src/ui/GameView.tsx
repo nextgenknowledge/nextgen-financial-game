@@ -164,8 +164,10 @@ export default function GameView() {
         shadows={quality !== 'low'}
         dpr={dpr}
         camera={{ fov: 55, near: 0.1, far: 1200, position: [0, 6, 10] }}
-        gl={{ antialias: quality !== 'low', powerPreference: 'high-performance', preserveDrawingBuffer: false }}
-        onCreated={({ gl }) => {
+        gl={{ antialias: quality !== 'low', powerPreference: 'high-performance', preserveDrawingBuffer: false, stencil: quality === 'low' }}
+        onCreated={({ gl, scene }) => {
+          // Dev-only handle so automated checks can read draw calls and triangle counts
+          if (process.env.NODE_ENV !== 'production') (window as unknown as Record<string, unknown>).__fcGl = { gl, scene };
           gl.toneMapping = THREE.ACESFilmicToneMapping;
           gl.toneMappingExposure = 1.05;
         }}

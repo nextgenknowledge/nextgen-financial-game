@@ -12,6 +12,7 @@ import { M } from './materials';
 import { rt } from '@/engine/runtime';
 import { Avatar, type AnimState } from './Avatar';
 import { LitePerson } from './LitePerson';
+import { ContactShadow } from './ContactShadow';
 import { useUI } from '@/store/ui';
 import { useSettings } from '@/store/settings';
 import npcs from '@/data/npcs.json';
@@ -122,6 +123,7 @@ function Person({ actor, look }: { actor: Actor; look: AvatarConfig }) {
   return (
     <group ref={g} position={[actor.x - Math.sin(actor.rot) * back, y, actor.z - Math.cos(actor.rot) * back]} rotation={[0, actor.rot, 0]}>
       {near ? <Avatar config={look} anim={anim} /> : <LitePerson config={look} anim={anim} />}
+      {!seated && <ContactShadow r={0.5} />}
     </group>
   );
 }
@@ -412,6 +414,7 @@ function Station({ st, x, z, rot, ceiling }: { st: StationDef; x: number; z: num
       {look ? (
         <group ref={npc} rotation={[0, rot, 0]}>
           <Avatar config={look} anim={anim} />
+          <ContactShadow r={0.52} />
         </group>
       ) : (
         // Self-service terminal (ATM / kiosk): steel cabinet, recessed lit screen, keypad, card slot

@@ -7,6 +7,7 @@ import { NARWHAL_COLORS as C, drawNarwhalFace } from './narwhalFace';
 import { mat, rbox } from './Avatar';
 import { aheadOnPath } from '@/engine/nav';
 import { rt } from '@/engine/runtime';
+import { ContactShadow } from './ContactShadow';
 import { useUI } from '@/store/ui';
 import { useSettings } from '@/store/settings';
 import { EMBLEM } from '@/ui/common';
@@ -191,6 +192,10 @@ export function NarwhalGuide() {
   return (
     <group ref={g} scale={0.8}>
       <NarwhalModel mood={line ? mood : 'confident'} talking={!!line} />
+      {/* Narwhal hovers, so its patch sits on the ground below */}
+      <group position={[0, -0.68, 0]}>
+        <ContactShadow r={0.62} />
+      </group>
     </group>
   );
 }

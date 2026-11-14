@@ -15,6 +15,7 @@ import { DEFAULT_AVATAR } from '@/game/world';
 import { M, glowTexture } from './materials';
 import type { AnimState } from './Avatar';
 import { LitePerson } from './LitePerson';
+import { ContactShadow } from './ContactShadow';
 import type { Site } from './builders/streetscape';
 
 /* ───────── Building sites ───────── */
@@ -114,6 +115,7 @@ function Worker({ x, z, rot, i }: { x: number; z: number; rot: number; i: number
   return (
     <group position={[x, 0.14, z]} rotation={[0, rot, 0]}>
       <LitePerson config={look} anim={anim} />
+      <ContactShadow r={0.5} />
     </group>
   );
 }

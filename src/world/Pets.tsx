@@ -6,6 +6,7 @@ import { useGame } from '@/store/game';
 import { useSettings } from '@/store/settings';
 import { isPaused } from '@/store/ui';
 import { rt } from '@/engine/runtime';
+import { ContactShadow } from './ContactShadow';
 import { findPath, lineClear } from '@/engine/nav';
 import { VoxelBuilder, sphere, trs } from '@/engine/voxel';
 import type { OwnedPet } from '@/game/types';
@@ -357,6 +358,7 @@ function Pet({ pet, slot, low }: { pet: OwnedPet; slot: number; low: boolean }) 
 
   return (
     <group ref={root} visible={false} name={`pet:${pet.itemId}`}>
+      <ContactShadow r={kind === 'hamster' ? 0.2 : 0.36} />
       {kind === 'hamster' ? (
         <>
           <group ref={body} position={[0, 0.27, 0]}>

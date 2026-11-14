@@ -5,6 +5,7 @@ import * as THREE from 'three';
 import { VoxelBuilder, cylinder, sphere, trs } from '@/engine/voxel';
 import { signMaterial } from './signage';
 import { M, glowTexture } from './materials';
+import { InstancedSunShadow, shadowProxy, thinGeometry } from './SunShadows';
 import type { SignSpec, } from './builders/buildings';
 import type { Rect } from './builders/sceneBuilder';
 import { rt } from '@/engine/runtime';
@@ -192,7 +193,7 @@ export function Trees({ trees, city }: { trees: { kind: string; x: number; z: nu
   return (
     <>
       {groups.map(([kind, list]) => (
-        <InstancedStatic key={kind} geometry={treeGeometry(kind)} material={M.foliage} items={list.map((t) => ({ x: t.x, y: 0, z: t.z, ry: t.r, s: t.s }))} castShadow />
+        <InstancedStatic key={kind} geometry={treeGeometry(kind)} material={M.foliage} items={list.map((t) => ({ x: t.x, y: 0, z: t.z, ry: t.r, s: t.s }))} castShadow shadowGeometry={kind === 'bare' ? thinGeometry(treeGeometry(kind), 0.06) : shadowProxy(treeGeometry(kind), 5)} />
       ))}
       {leaves && <mesh geometry={leaves} material={M.vc} receiveShadow />}
       {festive && <points geometry={festive.geo} material={festive.mat} frustumCulled={false} />}
@@ -205,11 +206,14 @@ export function InstancedStatic({
   material,
   items,
   castShadow,
+  shadowGeometry,
 }: {
   geometry: THREE.BufferGeometry;
   material: THREE.Material;
   items: { x: number; y: number; z: number; ry?: number; s?: number }[];
   castShadow?: boolean;
+  /** Simpler shape to cast the Low-graphics sun shadow with. */
+  shadowGeometry?: THREE.BufferGeometry;
 }) {
   const ref = useRef<THREE.InstancedMesh>(null);
   useEffect(() => {
@@ -222,7 +226,12 @@ export function InstancedStatic({
     mesh.computeBoundingSphere();
   }, [items]);
   if (!items.length) return null;
-  return <instancedMesh ref={ref} args={[geometry, material, items.length]} castShadow={castShadow} frustumCulled={false} />;
+  return (
+    <>
+      <instancedMesh ref={ref} args={[geometry, material, items.length]} castShadow={castShadow} frustumCulled={false} />
+      {castShadow && <InstancedSunShadow source={() => ref.current} geometry={shadowGeometry ?? geometry} count={items.length} />}
+    </>
+  );
 }
 
 /* ───────── Street lamps ───────── */

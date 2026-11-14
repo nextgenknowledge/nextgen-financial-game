@@ -67,6 +67,8 @@ export const rt = {
   sceneKey: '',
   timeOfDay: 0.3,
   dayLight: 1,
+  /** How strongly the sun casts shadows right now (0 at night and under thick cloud … 1 at clear midday). */
+  sunShadow: 0,
   /** Walking route from the player to the goal (world points), for Narwhal and the ground trail. */
   guidePath: null as null | [number, number][],
   /** Arrival flyover queued for when the loading screen clears (first visit to a city). */

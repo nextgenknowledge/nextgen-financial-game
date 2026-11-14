@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
+import { InstancedSunShadow, shadowProxy } from './SunShadows';
 import { trs } from '@/engine/voxel';
 import { rt } from '@/engine/runtime';
 import { makeRng } from '@/game/rng';
@@ -14,6 +15,7 @@ import { CAR_PAINTS } from './builders/streetscape';
 import { glowTexture } from './materials';
 import type { AnimState } from './Avatar';
 import { LitePerson } from './LitePerson';
+import { ContactShadow } from './ContactShadow';
 import { DEFAULT_AVATAR } from '@/game/world';
 import { hourOf } from '@/engine/Sky';
 import { getWorld } from '@/store/game';
@@ -95,6 +97,7 @@ function CarGroup({ model, items }: { model: AnyCarModel; items: { x: number; y?
     <>
       <instancedMesh ref={paint} args={[g.paint, carPaintMat, items.length]} castShadow receiveShadow />
       <instancedMesh ref={trim} args={[g.trim, carTrimMat, items.length]} castShadow />
+      <InstancedSunShadow source={() => paint.current} geometry={shadowProxy(g.paint, 2)} count={items.length} />
     </>
   );
 }
@@ -174,6 +177,7 @@ function Delivery({ van, seed }: { van: ParkedCar; seed: number }) {
       <points ref={lights} geometry={geo} material={mat} frustumCulled={false} />
       <group ref={g}>
         <LitePerson config={DRIVER} anim={anim} />
+        <ContactShadow r={0.5} />
         <mesh ref={box} position={[0, 1.1, 0.42]} castShadow>
           <boxGeometry args={[0.55, 0.42, 0.4]} />
           <meshLambertMaterial color="#b8895a" />
@@ -385,6 +389,7 @@ export function Traffic({ loops, count, colors, cityId }: { loops: [number, numb
           <group key={model}>
             <instancedMesh ref={(m) => void refs.current.set(model + ':p', m)} args={[g.paint, carPaintMat, idx.length]} frustumCulled={false} castShadow />
             <instancedMesh ref={(m) => void refs.current.set(model + ':t', m)} args={[g.trim, carTrimMat, idx.length]} frustumCulled={false} />
+            <InstancedSunShadow source={() => refs.current.get(model + ':p')} geometry={shadowProxy(g.paint, 2)} count={idx.length} />
           </group>
         );
       })}

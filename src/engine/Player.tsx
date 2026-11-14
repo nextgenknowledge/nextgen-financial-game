@@ -10,6 +10,7 @@ import { isDown, virtual } from './input';
 import { rt } from './runtime';
 import { playSfx } from './audio';
 import { VehicleModel } from '@/world/Vehicles';
+import { ContactShadow } from '@/world/ContactShadow';
 import { updateVehicle, CHASE_DIST } from './vehicles';
 import { useRide } from '@/world/ParkedVehicles';
 
@@ -341,6 +342,9 @@ export function PlayerController() {
         <VehicleModel itemId={rt.vehicle.itemId} rider={avatar} />
       ) : (
         <Avatar config={avatar} anim={anim} />
+      )}
+      {(!riding || !rt.vehicle || (rt.vehicle.type !== 'plane' && rt.vehicle.type !== 'boat')) && (
+        <ContactShadow player r={0.6} rx={riding && rt.vehicle ? (rt.vehicle.type === 'car' || rt.vehicle.type === 'kart' ? 1.25 : 0.6) : undefined} rz={riding && rt.vehicle ? (rt.vehicle.type === 'car' || rt.vehicle.type === 'kart' ? 2.5 : 1.2) : undefined} />
       )}
     </group>
   );

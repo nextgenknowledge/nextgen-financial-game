@@ -795,6 +795,8 @@ float fcUp = smoothstep(0.75, 0.95, fcN.y);
 // Coordinate running along a wall (whichever horizontal axis the face spans)
 float fcAlong = abs(fcN.x) > abs(fcN.z) ? vWPos.z : vWPos.x;
 float fcDirt = 0.0;
+// Baked-style contact shading: walls and anything upright darken a little where they meet the ground
+diffuseColor.rgb *= 1.0 - fcVert * (1.0 - smoothstep(0.0, 1.3, vWPos.y)) * 0.2;
 bool fcPave = fcUp > 0.5 && (fcIs(FC_ASPHALT) || fcIs(FC_SIDEWALK) || fcIsPave() || fcIs(FC_COBBLE) || fcIs(FC_PATH) || fcIs(FC_GRASS));
 #ifdef FC_GROUND
   fcPave = true;
