@@ -38,6 +38,50 @@ export function IntroScreen() {
   );
 }
 
+/** All-time player count as a little scoreboard whose digits roll into place. */
+function PlayerCount({ n }: { n: number }) {
+  const [rolled, setRolled] = useState(false);
+  useEffect(() => {
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) {
+      setRolled(true);
+      return;
+    }
+    const t = setTimeout(() => setRolled(true), 1300);
+    return () => clearTimeout(t);
+  }, []);
+  const text = n.toLocaleString('en-US');
+  let col = 0;
+  return (
+    <div className="st-players">
+      <span className="sr-only">{text} players so far</span>
+      <span className="st-players-digits" aria-hidden>
+        {text.split('').map((ch, i) => {
+          if (ch === ',') return <span key={i} className="st-players-sep">,</span>;
+          const d = Number(ch);
+          const delay = col++ * 0.15;
+          return (
+            <span key={i} className="st-players-d">
+              <span className="st-players-strip" style={{ transform: `translateY(-${rolled ? (d + 10) * 1.25 : 0}em)`, transitionDelay: `${delay}s` }}>
+                {'01234567890123456789'.split('').map((x, j) => (
+                  <span key={j}>{x}</span>
+                ))}
+              </span>
+            </span>
+          );
+        })}
+      </span>
+      <span className="st-players-label" aria-hidden>
+        <span className="st-players-live">
+          <span className="st-players-dot" />
+          Live
+        </span>
+        Players so far
+      </span>
+    </div>
+  );
+}
+
 type MenuItem = { label: string; hint?: string; color: 'yellow' | 'blue' | 'cyan' | 'lime' | 'navy'; action: () => void };
 
 export function TitleScreen() {
@@ -130,12 +174,7 @@ export function TitleScreen() {
           <img className="st-logo" src={FIN_LOGO} alt="Fin City" draggable={false} />
         </h1>
         <p className="st-tagline">Travel the world and master money on the way.</p>
-        {playerStats.players > 0 && (
-          <p className="st-players">
-            <span className="st-players-dot" aria-hidden />
-            <strong>{playerStats.players.toLocaleString('en-US')}</strong> players so far
-          </p>
-        )}
+        {playerStats.players > 0 && <PlayerCount n={playerStats.players} />}
 
         {!newGame && (
           <div className="st-menu st-panel-in" role="menu">
