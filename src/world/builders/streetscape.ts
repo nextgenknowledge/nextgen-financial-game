@@ -478,16 +478,19 @@ export function buildBackdrop(def: CityDef, b: Builders, rng: Rng, inWater: (x: 
   const isPark = def.id === 'park';
   const facades = def.filler.style === 'hk' ? ['fac-hk', 'fac-hk', 'fac-glass'] : def.filler.style === 'london' ? ['fac-stone', 'fac-brick', 'fac-glass'] : ['fac-glass', 'fac-office', 'fac-glass', 'fac-brick'];
   const walls = def.palette.walls;
-  for (let ring = 0; ring < 3; ring++) {
-    const dist = H + 58 + ring * 42;
-    const step = isPark ? 26 : 16 - ring * 2;
+  // Cities: a near row of buildings just past the edge boulevard's wall, so streets look like they
+  // carry on into more city instead of stopping at empty ground, then the skyline rings
+  for (let ring = isPark ? 1 : 0; ring < 4; ring++) {
+    const dist = ring === 0 ? H + 30 : H + 24 + ring * 36;
+    const step = isPark ? 26 : ring === 0 ? 17 : 17 - ring * 2;
     for (let side = 0; side < 4; side++)
       for (let t = -dist; t < dist; t += step + rng.range(0, step * 0.6)) {
         const x = side === 0 ? t : side === 1 ? t : side === 2 ? -dist : dist;
         const z = side === 0 ? -dist : side === 1 ? dist : t;
-        const jx = x + rng.range(-6, 6);
-        const jz = z + rng.range(-6, 6);
-        if (inWater(jx, jz, 8)) continue;
+        // The near row lines up along the boulevard (only along it, never toward it)
+        const jx = ring === 0 && side >= 2 ? x + (x > 0 ? 1 : -1) * rng.range(0, 3) : x + rng.range(-6, 6);
+        const jz = ring === 0 && side < 2 ? z + (z > 0 ? 1 : -1) * rng.range(0, 3) : z + rng.range(-6, 6);
+        if (inWater(jx, jz, ring === 0 ? 14 : 8)) continue;
         if (isPark) {
           // Wooded hills
           const r = rng.range(14, 30);
@@ -496,13 +499,13 @@ export function buildBackdrop(def: CityDef, b: Builders, rng: Rng, inWater: (x: 
             b.solid.geom(sphere(rng.range(2.2, 3.6), 7, 5), new THREE.Matrix4().makeTranslation(jx + rng.range(-r * 0.5, r * 0.5), rng.range(2, r * 0.35), jz + rng.range(-r * 0.5, r * 0.5)), rng.pick(['#3a6630', '#456f37']), 'leaves');
           continue;
         }
-        const w = rng.range(12, 26);
-        const d = rng.range(12, 26);
+        const w = ring === 0 ? (side < 2 ? rng.range(14, 19) : 20) : rng.range(12, 26);
+        const d = ring === 0 ? (side < 2 ? 20 : rng.range(14, 19)) : rng.range(12, 26);
         // Taller toward the outer rings and the city's "downtown" side
         const scale = ({ 'new-york': 1.2, 'hong-kong': 1.15, singapore: 1.0, 'san-francisco': 0.72, london: 0.68 } as Record<string, number>)[def.id] ?? 1;
-        const h = (rng.range(18, 40) + ring * rng.range(8, 26) + (rng.chance(0.15) ? rng.range(30, 70) : 0)) * scale;
+        const h = ring === 0 ? rng.range(12, 30) * scale + 6 : (rng.range(18, 40) + ring * rng.range(8, 26) + (rng.chance(0.15) ? rng.range(30, 70) : 0)) * scale;
         // Aerial perspective: farther rings are lighter and bluer
-        const col = new THREE.Color(rng.pick(walls)).lerp(new THREE.Color('#b9c6d3'), 0.18 + ring * 0.16);
+        const col = new THREE.Color(rng.pick(walls)).lerp(new THREE.Color('#b9c6d3'), ring === 0 ? 0.06 : 0.1 + ring * 0.14);
         const tex = rng.pick(facades);
         // Taller towers step back once or twice and finish with a crown, so the skyline has a real silhouette
         if (h > 36 && rng.chance(0.7)) {
