@@ -1,7 +1,7 @@
 'use client';
 /** Works out where Narwhal should point for the current quest step, across scenes and cities. */
 import { rt } from '@/engine/runtime';
-import { getWorld } from '@/store/game';
+import { act, getWorld } from '@/store/game';
 import { useScene } from '@/store/scene';
 import { useUI } from '@/store/ui';
 import { currentStep } from '@/game/progress/quests';
@@ -82,6 +82,32 @@ export function showTheWay(city: LocationId, target: string | [number, number], 
   updateGoalMarker();
 }
 
+/** Tutorial quests that keep their directions on until the player turns them off. */
+const TUTORIAL = ['q1-welcome', 'q1b-portal'];
+
+/**
+ * Whether the compass, gold trail, beacon and Narwhal lead to the current quest step. Players
+ * turn it on and off (quest bubble, Quests app, compass); only the first tutorial quests start
+ * with it on, so directions never sit on screen unless the player wants them.
+ */
+export function questWayOn(w: { progress: { flags: Record<string, unknown>; quests: { active: { id: string }[] } } }): boolean {
+  const f = w.progress.flags.questWay;
+  if (typeof f === 'boolean') return f;
+  return w.progress.quests.active.some((a) => TUTORIAL.includes(a.id));
+}
+
+/** The player asked for directions (Show the way on a place or on their quest), so they show even with Narwhal hints off. */
+export function wayAsked(): boolean {
+  return !!useUI.getState().guide || getWorld()?.progress.flags.questWay === true;
+}
+
+/** Turn quest directions on or off for this world. */
+export function setQuestWay(on: boolean) {
+  act((d) => void (d.progress.flags.questWay = on));
+  if (on) useUI.getState().pushToast({ text: 'Follow the gold trail to your quest', icon: '🧭', tone: 'gold' });
+  updateGoalMarker();
+}
+
 /** What the current guide route was planned from, so it is only re-planned when that changes. */
 let planned = { goal: '', scene: '', x: 0, z: 0, at: 0 };
 
@@ -153,6 +179,7 @@ function setGoal() {
   rt.goal = null;
   if (!w) return;
   if (guideGoal()) return;
+  if (!questWayOn(w)) return;
   const cs = currentStep(w);
   if (!cs) return;
   const g = cs.step.goal;

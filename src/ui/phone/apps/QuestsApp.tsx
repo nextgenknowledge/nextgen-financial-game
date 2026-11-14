@@ -1,6 +1,8 @@
 'use client';
 import { useGame, act } from '@/store/game';
-import { QUEST_BY_ID, QUESTS } from '@/game/progress/quests';
+import { QUEST_BY_ID, QUESTS, currentStep } from '@/game/progress/quests';
+import { questWayOn, setQuestWay } from '@/ui/goal';
+import { useUI } from '@/store/ui';
 import { challengeDef, claimChallenge } from '@/game/progress/challenges';
 import { seasonalProgress, claimSeasonal } from '@/game/progress/seasonal';
 import { Section, Empty } from '../../kit';
@@ -12,6 +14,8 @@ export function QuestsApp() {
   const w = useGame((s) => s.world!);
   const entry = w.difficulty === 'entry';
   const season = seasonalProgress(w);
+  const current = currentStep(w)?.quest.id;
+  const wayOn = questWayOn(w);
   return (
     <div>
       <Section title="👑 Legendary quests">
@@ -87,6 +91,17 @@ export function QuestsApp() {
                   </li>
                 ))}
               </ol>
+              {current === a.id && (
+                <div style={{ marginTop: 6 }}>
+                  <Button size="small" variant={wayOn ? 'ghost' : 'gold'} onClick={() => {
+                      setQuestWay(!wayOn);
+                      // Close the phone so the trail is right there to follow
+                      if (!wayOn) useUI.getState().closeAll();
+                    }}>
+                    🧭 {wayOn ? 'Hide the way' : 'Show the way'}
+                  </Button>
+                </div>
+              )}
             </div>
           );
         })}
