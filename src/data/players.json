@@ -1,0 +1,4 @@
+{
+  "$comment": "All-time Fin City players from Google Analytics, shown on the title screen. Updated daily by .github/workflows/player-count.yml from nextgenknowledge.org. The game itself never fetches it.",
+  "players": 636
+}

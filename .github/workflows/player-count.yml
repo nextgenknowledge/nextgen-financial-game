@@ -1,0 +1,50 @@
+name: Update player count
+
+# Copies the all-time player count that nextgenknowledge.org already reads from Google Analytics
+# (see that repo's fin-city-players workflow) into src/data/players.json, so the title screen
+# shows it. Runs an hour after that workflow. The game itself never goes online for it.
+
+on:
+  schedule:
+    - cron: "17 12 * * *"  # every day at 12:17 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Read the count from nextgenknowledge.org
+        run: |
+          python3 - <<'PY'
+          import json, re, sys, urllib.request
+          url = "https://raw.githubusercontent.com/nextgenknowledge/next-gen-knowledge/main/fin-city.html"
+          html = urllib.request.urlopen(url, timeout=30).read().decode("utf-8")
+          m = re.search(r'id="playerCount" data-count="(\d+)"', html)
+          if not m:
+              sys.exit("Player count not found on the Fin City page")
+          new = int(m.group(1))
+          path = "src/data/players.json"
+          data = json.load(open(path))
+          old = int(data.get("players", 0))
+          if new <= old:
+              print(f"No change ({old})")
+              sys.exit(0)
+          data["players"] = new
+          with open(path, "w") as f:
+              json.dump(data, f, indent=2, ensure_ascii=False)
+              f.write("\n")
+          print(f"Players: {old} -> {new}")
+          PY
+
+      - name: Commit the new number
+        run: |
+          if git diff --quiet; then echo "No change"; exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -am "Update player count"
+          git push

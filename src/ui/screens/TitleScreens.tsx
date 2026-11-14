@@ -10,6 +10,7 @@ import { createWorld } from '@/game/world';
 import { startWorld } from '../startWorld';
 import { CityBackdrop } from './CityBackdrop';
 import { NewGameFlow } from './NewGame';
+import playerStats from '@/data/players.json';
 
 /** NextGen Knowledge's website. Only ever opened by the player clicking the logo; the game itself never goes online. */
 export const ORG_SITE = 'https://nextgenknowledge.org';
@@ -129,6 +130,12 @@ export function TitleScreen() {
           <img className="st-logo" src={FIN_LOGO} alt="Fin City" draggable={false} />
         </h1>
         <p className="st-tagline">Travel the world and master money on the way.</p>
+        {playerStats.players > 0 && (
+          <p className="st-players">
+            <span className="st-players-dot" aria-hidden />
+            <strong>{playerStats.players.toLocaleString('en-US')}</strong> players so far
+          </p>
+        )}
 
         {!newGame && (
           <div className="st-menu st-panel-in" role="menu">
