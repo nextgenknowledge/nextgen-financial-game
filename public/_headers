@@ -5,3 +5,4 @@
   Strict-Transport-Security: max-age=31536000; includeSubDomains
   Cross-Origin-Opener-Policy: same-origin
   Cross-Origin-Resource-Policy: same-site
+  ! Access-Control-Allow-Origin

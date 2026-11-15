@@ -88,7 +88,8 @@ export default function PrivacyPage() {
         </p>
 
         <p>
-          <a href={`${BASE}/`}>Back to the game</a> · <a href={`${BASE}/about/`}>About Fin City</a>
+          <a href={`${BASE}/`}>Back to the game</a> · <a href={`${BASE}/about/`}>About Fin City</a> ·{' '}
+          <a href={`${BASE}/terms/`}>Terms of use</a>
         </p>
       </div>
     </main>

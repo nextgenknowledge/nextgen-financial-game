@@ -8,9 +8,11 @@ const GameRoot = dynamic(() => import('@/ui/GameRoot'), {
   loading: () => <div className="boot-blank" />,
 });
 
+const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
+
 export default function Page() {
   return (
-    <>
+    <main className="game-main" aria-label="Fin City">
       {/* The game draws in 3D, so this describes it for screen readers and search engines */}
       <section className="sr-only">
         <h1>Fin City: a free financial literacy game for kids and teens</h1>
@@ -20,8 +22,18 @@ export default function Page() {
           kinds of activities, and learn budgeting, saving, banking, credit, taxes and investing by running a financial life
           of your own. Made by NextGen Knowledge, a student-led financial literacy organization.
         </p>
+        <p>
+          Fin City is a game for learning, not financial advice. Prices, markets and returns in the game are simulated, and
+          past performance does not guarantee future results.
+        </p>
       </section>
       <GameRoot />
-    </>
+      <footer className="sr-only">
+        <nav aria-label="Site links">
+          <a href={`${BASE}/about/`}>About Fin City</a> <a href={`${BASE}/privacy/`}>Privacy policy</a>{' '}
+          <a href={`${BASE}/terms/`}>Terms of use</a> <a href="https://nextgenknowledge.org">NextGen Knowledge</a>
+        </nav>
+      </footer>
+    </main>
   );
 }

@@ -66,7 +66,7 @@ export default function AboutPage() {
         </p>
 
         <p>
-          <a href={`${BASE}/privacy/`}>Privacy policy</a>
+          <a href={`${BASE}/privacy/`}>Privacy policy</a> · <a href={`${BASE}/terms/`}>Terms of use</a>
         </p>
       </div>
     </main>
