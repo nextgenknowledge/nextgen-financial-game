@@ -58,6 +58,16 @@ export default function AboutPage() {
           real-world financial literacy free and accessible. The game has officially launched, and we keep adding to it.{' '}
           <a href="https://nextgenknowledge.org/fin-city.html#feedback">Send us feedback</a>.
         </p>
+
+        <h2>Not financial advice</h2>
+        <p>
+          Fin City is a game for learning. Prices, markets and returns in the game are simulated, and nothing in it is financial,
+          investment or tax advice. Past performance, in the game or in real markets, does not guarantee future results.
+        </p>
+
+        <p>
+          <a href={`${BASE}/privacy/`}>Privacy policy</a>
+        </p>
       </div>
     </main>
   );

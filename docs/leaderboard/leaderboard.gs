@@ -150,3 +150,30 @@ function formatSheet() {
   }
   sh.autoResizeColumns(1, cols);
 }
+
+/**
+ * Gives every sample player (World id starting with seed_) two digits at the end of their
+ * nickname, like the game's own default nicknames (CoinCaptain42). Names that already end in
+ * exactly two digits are left alone. Run it once from the Apps Script editor; no new deployment needed.
+ */
+function numberSampleNames() {
+  var sh = sheet_();
+  var last = sh.getLastRow();
+  if (last < 2) return;
+  var range = sh.getRange(2, 1, last - 1, 2);
+  var vals = range.getValues();
+  var changed = 0;
+  for (var r = 0; r < vals.length; r++) {
+    if (String(vals[r][0]).indexOf('seed_') !== 0) continue;
+    var name = String(vals[r][1]).trim();
+    if (/[^0-9][0-9]{2}$/.test(name)) continue;
+    var base = name.replace(/[0-9]+$/, '').trim().slice(0, 14);
+    var n;
+    do n = 10 + Math.floor(Math.random() * 90);
+    while (n === 69 || n === 88);
+    vals[r][1] = base + n;
+    changed++;
+  }
+  range.setValues(vals);
+  Logger.log('Renamed ' + changed + ' sample players');
+}
