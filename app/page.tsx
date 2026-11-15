@@ -32,8 +32,10 @@ export default function Page() {
         <nav aria-label="Site links">
           <a href={`${BASE}/about/`}>About Fin City</a> <a href={`${BASE}/privacy/`}>Privacy policy</a>{' '}
           <a href={`${BASE}/terms/`}>Terms of use</a>{' '}
-          <a href={`${BASE}/accessibility/`}>Accessibility</a> <a href="https://nextgenknowledge.org">NextGen Knowledge</a>
+          <a href={`${BASE}/accessibility/`}>Accessibility</a> <a href={`${BASE}/privacy/#cookies`}>Cookie policy</a>{' '}
+          <a href={`${BASE}/privacy/#deleting-data`}>Delete my data</a> <a href="https://nextgenknowledge.org">NextGen Knowledge</a>
         </nav>
+        <p>© 2026 NextGen Knowledge. All rights reserved.</p>
       </footer>
     </main>
   );

@@ -74,6 +74,30 @@ export default function PrivacyPage() {
           as a real name as a nickname or in a review, email us and we will remove it.
         </p>
 
+        <h2 id="purposes">Why we use information, and our legal basis</h2>
+        <ul>
+          <li>
+            <b>Analytics</b>, to learn what players enjoy and where they get stuck so we can improve the game. Legal basis: our
+            legitimate interest in running and improving a free educational game, and your consent where the law requires it.
+          </li>
+          <li>
+            <b>The leaderboard</b>, to show nicknames, levels and net worth so players can compare progress. Legal basis: your
+            consent, which you can take back any time by turning sharing off on the FinPhone.
+          </li>
+          <li>
+            <b>Ratings and reviews</b>, to read them and improve the game. Legal basis: your consent, given when you choose to
+            send one.
+          </li>
+          <li>
+            <b>Saved worlds and settings</b>, to keep your progress. These stay in your browser and are never sent to us.
+          </li>
+        </ul>
+        <p>
+          We never use information for advertising, profiling or automated decisions about you. Depending on where you live, you
+          may have the right to see, correct or delete information about you, or to object to how we use it. Email us to use any
+          of these rights.
+        </p>
+
         <h2 id="cookies">Cookies and browser storage</h2>
         <p>We don&apos;t use advertising or tracking cookies. These are the only things Fin City stores in your browser:</p>
         <ul>
