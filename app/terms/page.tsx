@@ -78,7 +78,8 @@ export default function TermsPage() {
 
         <p>
           <a href={`${BASE}/`}>Back to the game</a> · <a href={`${BASE}/about/`}>About Fin City</a> ·{' '}
-          <a href={`${BASE}/privacy/`}>Privacy policy</a>
+          <a href={`${BASE}/privacy/`}>Privacy policy</a> ·{' '}
+          <a href={`${BASE}/accessibility/`}>Accessibility</a>
         </p>
       </div>
     </main>

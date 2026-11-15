@@ -74,6 +74,35 @@ export default function PrivacyPage() {
           as a real name as a nickname or in a review, email us and we will remove it.
         </p>
 
+        <h2 id="cookies">Cookies and browser storage</h2>
+        <p>We don&apos;t use advertising or tracking cookies. These are the only things Fin City stores in your browser:</p>
+        <ul>
+          <li>
+            <b>_ga</b> and <b>_ga_</b> cookies from Google Analytics (kept up to 2 years), which tell apart returning visits so we
+            can count players.
+          </li>
+          <li>
+            <b>Your saved worlds and settings</b>, kept in your browser&apos;s storage (IndexedDB and local storage) until you
+            delete them or clear your browser&apos;s data. These never leave your device.
+          </li>
+        </ul>
+        <p>
+          You can delete all of these by clearing fincity.dev&apos;s site data in your browser settings. You can block the
+          analytics cookies with your browser&apos;s privacy settings or an analytics blocker, and the game works the same.
+        </p>
+
+        <h2 id="deleting-data">Keeping and deleting your data</h2>
+        <p>
+          Google Analytics keeps this data for no more than 14 months and then deletes it automatically. Leaderboard entries stay while a world is
+          shared, and turning sharing off in the FinPhone Leaderboard app removes that world from the board. Ratings and reviews are
+          kept until we&apos;ve read them, and we delete old ones regularly.
+        </p>
+        <p>
+          To have anything removed, such as a leaderboard nickname or a review, email{' '}
+          <a href={`mailto:${CONTACT}`}>{CONTACT}</a> with the nickname and what to remove. We&apos;ll delete it within 30 days
+          and let you know when it&apos;s done.
+        </p>
+
         <h2>Not financial advice</h2>
         <p>
           Fin City is a game for learning. Prices, markets, interest rates and returns in the game are simulated. Nothing in Fin
@@ -89,7 +118,8 @@ export default function PrivacyPage() {
 
         <p>
           <a href={`${BASE}/`}>Back to the game</a> · <a href={`${BASE}/about/`}>About Fin City</a> ·{' '}
-          <a href={`${BASE}/terms/`}>Terms of use</a>
+          <a href={`${BASE}/terms/`}>Terms of use</a> ·{' '}
+          <a href={`${BASE}/accessibility/`}>Accessibility</a>
         </p>
       </div>
     </main>

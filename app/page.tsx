@@ -31,7 +31,8 @@ export default function Page() {
       <footer className="sr-only">
         <nav aria-label="Site links">
           <a href={`${BASE}/about/`}>About Fin City</a> <a href={`${BASE}/privacy/`}>Privacy policy</a>{' '}
-          <a href={`${BASE}/terms/`}>Terms of use</a> <a href="https://nextgenknowledge.org">NextGen Knowledge</a>
+          <a href={`${BASE}/terms/`}>Terms of use</a>{' '}
+          <a href={`${BASE}/accessibility/`}>Accessibility</a> <a href="https://nextgenknowledge.org">NextGen Knowledge</a>
         </nav>
       </footer>
     </main>
