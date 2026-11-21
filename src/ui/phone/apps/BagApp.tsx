@@ -127,7 +127,7 @@ export function BagApp({ tab: initial }: { tab?: string }) {
       )}
       {tab === 'pets' && (
         <Section title="Your pets">
-          {w.assets.pets.length === 0 && <Empty icon="🐾">No pets yet. Visit the Pet Shop in the park.</Empty>}
+          {w.assets.pets.length === 0 && <Empty icon="🐾">No pets yet. Visit the {w.difficulty === 'advanced' ? 'Veterinary Clinic' : 'Pet Shop'} in the park.</Empty>}
           {w.assets.pets.map((p) => {
             const d = petDef(p.itemId)!;
             return (

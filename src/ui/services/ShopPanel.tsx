@@ -61,7 +61,7 @@ export function ShopPanel({ id }: { id: string }) {
   const method = card ? 'card' : 'auto';
   const canCard = w.difficulty === 'advanced' && w.finance.card.open;
   return (
-    <Modal onClose={close} title={TITLES[base] ?? 'Shop'} size="wide">
+    <Modal onClose={close} title={(base === 'pets' && w.difficulty === 'advanced' ? '🐾 Veterinary Clinic' : TITLES[base]) ?? 'Shop'} size="wide">
       <div className="row between wrap" style={{ marginBottom: 8 }}>
         <span className="small">
           You can spend: <b className="mono">{money(available(w))}</b> (cash + checking)

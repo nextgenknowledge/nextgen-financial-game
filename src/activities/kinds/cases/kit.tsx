@@ -22,6 +22,9 @@ import { playSfx } from '@/engine/audio';
 import { cls } from '@/ui/format';
 import { ProHead, Stats } from '../pro/kit';
 import { variantIndex } from '../../variant';
+import { useUI } from '@/store/ui';
+import { ACTIVITIES } from '@/game/activities';
+import { buildingById } from '@/world/cities';
 
 /* ───────── Step definitions ───────── */
 
@@ -514,6 +517,14 @@ export function CaseRunner<S>({ def, seed, onFinish, addReview }: { def: CaseDef
     }),
   );
   if (i < pickers.length && !built.current[i]) built.current[i] = pickers[i]({ s, rng });
+  // The header names the building this case runs in, as it is called right now (Advanced worlds
+  // rename some buildings), rather than the name typed into the case
+  const actId = useUI((u) => (u.panel?.type === 'activity' ? u.panel.id : null));
+  const place = useMemo(() => {
+    const a = actId ? ACTIVITIES.find((x) => x.id === actId) : undefined;
+    return a ? buildingById(a.building)?.building.name : undefined;
+  }, [actId]);
+  const kicker = place ? def.kicker.replace(/^[^·]*·/, `${place} ·`) : def.kicker;
 
   const advance = (credit: number, review?: ReviewItem, apply?: (st: S) => void) => {
     const w = built.current[i].weight ?? 1;
@@ -531,7 +542,7 @@ export function CaseRunner<S>({ def, seed, onFinish, addReview }: { def: CaseDef
     const score = Math.max(0, Math.min(100, base + (out?.bonus ?? 0)));
     return (
       <div className="pro">
-        <ProHead kicker={`${def.kicker} · Debrief`} title={out?.headline ?? (score >= 90 ? 'Sharp work' : score >= 72 ? 'Solid judgment' : score >= 50 ? 'Case closed, with a few misses' : 'A tough case')} sub={`Decisions: ${Math.round(base)}%${out?.bonus ? `, outcome ${out.bonus > 0 ? '+' : ''}${Math.round(out.bonus)}` : ''}.`} />
+        <ProHead kicker={`${kicker} · Debrief`} title={out?.headline ?? (score >= 90 ? 'Sharp work' : score >= 72 ? 'Solid judgment' : score >= 50 ? 'Case closed, with a few misses' : 'A tough case')} sub={`Decisions: ${Math.round(base)}%${out?.bonus ? `, outcome ${out.bonus > 0 ? '+' : ''}${Math.round(out.bonus)}` : ''}.`} />
         {def.meters && <Stats items={def.meters(s)} />}
         <div className="pro-grid">
           {out?.detail && <section className="pro-panel">{out.detail}</section>}
@@ -559,7 +570,7 @@ export function CaseRunner<S>({ def, seed, onFinish, addReview }: { def: CaseDef
       <div className="pro-head">
         <div>
           <div className="pro-kicker">
-            {def.kicker} · {i + 1} of {def.steps.length}
+            {kicker} · {i + 1} of {def.steps.length}
           </div>
           <div className="cs-dots">
             {def.steps.map((_, k) => (
