@@ -163,7 +163,8 @@ function MiniPhone() {
   const open = useUI((s) => s.open);
   const panel = useUI((s) => s.panel);
   const keys = useSettings((s) => s.keys);
-  const cash = useGame((s) => s.world!.finance.cash);
+  // Same number as the FinBucks pill: income lands in checking once you have it, so pocket cash alone can sit at 0
+  const cash = useGame((s) => s.world!.finance.cash + s.world!.finance.checking);
   const level = useGame((s) => s.world!.progress.level);
   const t = useGame((s) => s.world!.time.t);
   const claimable = useGame((s) => [...s.world!.progress.daily.list, ...s.world!.progress.weekly.list].filter((c) => !c.claimed).length);
