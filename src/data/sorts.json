@@ -85,6 +85,204 @@
      "icon": "💡",
      "bin": 0,
      "why": "Streetlights are public and paid for by taxes."
+    },
+    {
+     "text": "Street lights",
+     "icon": "💡",
+     "bin": 0,
+     "why": "Lights on public streets are paid for with taxes."
+    },
+    {
+     "text": "Public swimming pool",
+     "icon": "🏊",
+     "bin": 0,
+     "why": "Town pools are built and run with tax money."
+    },
+    {
+     "text": "Snow plows clearing roads",
+     "icon": "❄️",
+     "bin": 0,
+     "why": "The city pays for plows with taxes."
+    },
+    {
+     "text": "Stop signs",
+     "icon": "🛑",
+     "bin": 0,
+     "why": "Road signs are put up by the government with tax money."
+    },
+    {
+     "text": "Garbage pickup",
+     "icon": "🗑️",
+     "bin": 0,
+     "why": "Many towns pay for trash trucks with taxes."
+    },
+    {
+     "text": "Lifeguards at the public beach",
+     "icon": "🏖️",
+     "bin": 0,
+     "why": "Public beach lifeguards are paid with taxes."
+    },
+    {
+     "text": "School buses",
+     "icon": "🚌",
+     "bin": 0,
+     "why": "Public school buses are paid for with taxes."
+    },
+    {
+     "text": "Sidewalks",
+     "icon": "👣",
+     "bin": 0,
+     "why": "Sidewalks are public, built with tax money."
+    },
+    {
+     "text": "Courts and judges",
+     "icon": "⚖️",
+     "bin": 0,
+     "why": "Courts are part of government, paid for by taxes."
+    },
+    {
+     "text": "Your teacher's pay at a public school",
+     "icon": "🍎",
+     "bin": 0,
+     "why": "Public school teachers are paid with taxes."
+    },
+    {
+     "text": "Computers at the public library",
+     "icon": "💻",
+     "bin": 0,
+     "why": "Libraries buy computers with tax money so anyone can use them."
+    },
+    {
+     "text": "Space missions by the national space agency",
+     "icon": "🚀",
+     "bin": 0,
+     "why": "Government space programs are paid for with taxes."
+    },
+    {
+     "text": "Fixing potholes",
+     "icon": "🔨",
+     "bin": 0,
+     "why": "Road repairs are paid for with taxes."
+    },
+    {
+     "text": "Soccer field at the town rec center",
+     "icon": "⚽",
+     "bin": 0,
+     "why": "Public sports fields are built with tax money."
+    },
+    {
+     "text": "Weather forecasts from the national weather service",
+     "icon": "⛅",
+     "bin": 0,
+     "why": "The national weather service is a government agency, paid for by taxes."
+    },
+    {
+     "text": "Birthday cupcakes",
+     "icon": "🧁",
+     "bin": 1,
+     "why": "Families buy their own party treats."
+    },
+    {
+     "text": "New sneakers",
+     "icon": "👟",
+     "bin": 1,
+     "why": "Clothes and shoes are bought by families."
+    },
+    {
+     "text": "Movie tickets",
+     "icon": "🎟️",
+     "bin": 1,
+     "why": "Going to the movies is paid for by whoever goes."
+    },
+    {
+     "text": "The family car",
+     "icon": "🚗",
+     "bin": 1,
+     "why": "A family buys its own car."
+    },
+    {
+     "text": "Your phone",
+     "icon": "📱",
+     "bin": 1,
+     "why": "Phones are bought by families."
+    },
+    {
+     "text": "A teddy bear",
+     "icon": "🧸",
+     "bin": 1,
+     "why": "Toys are bought by families."
+    },
+    {
+     "text": "Dog treats",
+     "icon": "🦴",
+     "bin": 1,
+     "why": "Pet owners pay for their own pet's food."
+    },
+    {
+     "text": "T-shirts",
+     "icon": "👕",
+     "bin": 1,
+     "why": "Families buy their own clothes."
+    },
+    {
+     "text": "A vacation trip",
+     "icon": "✈️",
+     "bin": 1,
+     "why": "Families pay for their own holidays."
+    },
+    {
+     "text": "Ice cream cone",
+     "icon": "🍦",
+     "bin": 1,
+     "why": "Treats are paid for by the buyer."
+    },
+    {
+     "text": "Weekly groceries",
+     "icon": "🛒",
+     "bin": 1,
+     "why": "Families buy their own food."
+    },
+    {
+     "text": "Internet at home",
+     "icon": "🖥️",
+     "bin": 1,
+     "why": "Families pay for internet at home."
+    },
+    {
+     "text": "A backpack",
+     "icon": "🎒",
+     "bin": 1,
+     "why": "School supplies at home are bought by families."
+    },
+    {
+     "text": "Piano lessons",
+     "icon": "🎹",
+     "bin": 1,
+     "why": "Private lessons are paid for by families."
+    },
+    {
+     "text": "A haircut",
+     "icon": "✂️",
+     "bin": 1,
+     "why": "Families pay the barber or salon."
+    },
+    {
+     "text": "Headphones",
+     "icon": "🎧",
+     "bin": 1,
+     "why": "Families buy their own gadgets."
+    },
+    {
+     "text": "A board game",
+     "icon": "🎲",
+     "bin": 1,
+     "why": "Games are bought by families."
+    },
+    {
+     "text": "Your bed",
+     "icon": "🛏️",
+     "bin": 1,
+     "why": "Furniture at home is bought by families."
     }
    ]
   },
@@ -158,6 +356,156 @@
      "text": "Charged on a new car purchase at the dealer",
      "bin": 2,
      "why": "Sales tax applies to car purchases too."
+    },
+    {
+     "text": "7.25% added to a restaurant bill",
+     "bin": 2,
+     "why": "Sales tax is charged on purchases at the register."
+    },
+    {
+     "text": "Bill from the county based on your house's assessed value",
+     "bin": 3,
+     "why": "Property tax is based on what your property is worth."
+    },
+    {
+     "text": "Withheld from each paycheck according to your W-4",
+     "bin": 0,
+     "why": "Income tax withholding is set by your W-4."
+    },
+    {
+     "text": "Matched by your employer, 6.2% each, for Social Security",
+     "bin": 1,
+     "why": "Payroll taxes are split between worker and employer."
+    },
+    {
+     "text": "A tax on profits when you sell shares for more than you paid",
+     "bin": 0,
+     "why": "Capital gains are taxed under the income tax system."
+    },
+    {
+     "text": "Self-employment tax of 15.3% on freelance profit",
+     "bin": 1,
+     "why": "It is payroll tax paid by self-employed people."
+    },
+    {
+     "text": "Charged on a new car purchase at the dealership",
+     "bin": 2,
+     "why": "Car sales are subject to sales tax in most states."
+    },
+    {
+     "text": "Your landlord passes it on through rent",
+     "bin": 3,
+     "why": "Landlords pay property tax and build it into rent."
+    },
+    {
+     "text": "Owed on interest your savings account earns",
+     "bin": 0,
+     "why": "Interest is taxable income."
+    },
+    {
+     "text": "Higher rate on each slice of income above a bracket line",
+     "bin": 0,
+     "why": "Brackets are how income tax becomes progressive."
+    },
+    {
+     "text": "Funds Medicare for people over 65",
+     "bin": 1,
+     "why": "The Medicare part of FICA is a payroll tax."
+    },
+    {
+     "text": "Added to online purchases shipped to your state",
+     "bin": 2,
+     "why": "Most states charge sales tax on online orders."
+    },
+    {
+     "text": "Paid yearly on a vacation cabin",
+     "bin": 3,
+     "why": "Any real estate you own carries property tax."
+    },
+    {
+     "text": "Owed on tips from a waitstaff job",
+     "bin": 0,
+     "why": "Tips are income."
+    },
+    {
+     "text": "Not charged on groceries in many states",
+     "bin": 2,
+     "why": "Many states exempt food from sales tax."
+    },
+    {
+     "text": "Lowered for homeowners over 65 in some towns",
+     "bin": 3,
+     "why": "Many places offer property tax relief for seniors."
+    },
+    {
+     "text": "Capped each year at a wage limit for the Social Security part",
+     "bin": 1,
+     "why": "Social Security tax only applies up to a yearly wage cap."
+    },
+    {
+     "text": "Refund possible if too much was withheld",
+     "bin": 0,
+     "why": "A refund means you overpaid income tax during the year."
+    },
+    {
+     "text": "A hotel room tax on your bill",
+     "bin": 2,
+     "why": "Hotel taxes work like a sales tax on lodging."
+    },
+    {
+     "text": "Rises when your town reassesses home values",
+     "bin": 3,
+     "why": "A higher assessed value means a higher property tax bill."
+    },
+    {
+     "text": "Shown as \"OASDI\" on a paystub",
+     "bin": 1,
+     "why": "OASDI is Social Security, a payroll tax."
+    },
+    {
+     "text": "Due by the April filing deadline",
+     "bin": 0,
+     "why": "The yearly income tax return is due in April."
+    },
+    {
+     "text": "Charged at a different rate in each city",
+     "bin": 2,
+     "why": "Local sales taxes stack on top of state rates."
+    },
+    {
+     "text": "Pays for most local public schools",
+     "bin": 3,
+     "why": "Property taxes are the main local school funding."
+    },
+    {
+     "text": "Taken even from a teen's first paycheck",
+     "bin": 1,
+     "why": "Payroll taxes apply from the first dollar of wages."
+    },
+    {
+     "text": "Uses the standard deduction to lower what is taxed",
+     "bin": 0,
+     "why": "Deductions reduce taxable income for income tax."
+    },
+    {
+     "text": "Charged when you buy concert tickets in some states",
+     "bin": 2,
+     "why": "Some states apply sales tax to event tickets."
+    },
+    {
+     "text": "Can be appealed if your home was valued too high",
+     "bin": 3,
+     "why": "Owners can challenge a property assessment."
+    },
+    {
+     "text": "Shown as \"Medicare\" with 1.45% on a paystub",
+     "bin": 1,
+     "why": "Medicare tax is part of FICA payroll tax."
+    },
+    {
+     "text": "Owed on prize money from a contest",
+     "bin": 0,
+     "why": "Prizes count as taxable income."
     }
    ]
   },
@@ -245,6 +593,180 @@
      "icon": "👟",
      "bin": 1,
      "why": "Shoes are a need, but fancy ones are a want."
+    },
+    {
+     "text": "Shoes that fit",
+     "icon": "👟",
+     "bin": 0,
+     "why": "You need shoes to keep your feet safe."
+    },
+    {
+     "text": "Warm socks in winter",
+     "icon": "🧣",
+     "bin": 0,
+     "why": "Keeping warm is a need."
+    },
+    {
+     "text": "Medicine when you are sick",
+     "icon": "🩺",
+     "bin": 0,
+     "why": "Medicine helps you get better, a need."
+    },
+    {
+     "text": "Soap",
+     "icon": "🛁",
+     "bin": 0,
+     "why": "Staying clean keeps you healthy."
+    },
+    {
+     "text": "A bed to sleep in",
+     "icon": "🛏️",
+     "bin": 0,
+     "why": "Sleep is a need, and a bed is where you get it."
+    },
+    {
+     "text": "Glasses to see the board",
+     "icon": "👓",
+     "bin": 0,
+     "why": "If you need them to see, glasses are a need."
+    },
+    {
+     "text": "Breakfast",
+     "icon": "🍞",
+     "bin": 0,
+     "why": "Food in the morning gives you energy, a need."
+    },
+    {
+     "text": "A jacket for rain",
+     "icon": "🧥",
+     "bin": 0,
+     "why": "Staying dry and warm is a need."
+    },
+    {
+     "text": "Milk",
+     "icon": "🥛",
+     "bin": 0,
+     "why": "Healthy food and drink are needs."
+    },
+    {
+     "text": "Fruit",
+     "icon": "🍌",
+     "bin": 0,
+     "why": "Healthy food is a need."
+    },
+    {
+     "text": "School pencils",
+     "icon": "✏️",
+     "bin": 0,
+     "why": "You need pencils to do your schoolwork."
+    },
+    {
+     "text": "A bike helmet when you ride",
+     "icon": "⛑️",
+     "bin": 0,
+     "why": "Safety gear is a need when you ride."
+    },
+    {
+     "text": "Rice for dinner",
+     "icon": "🍚",
+     "bin": 0,
+     "why": "Food is a need."
+    },
+    {
+     "text": "A toy robot",
+     "icon": "🤖",
+     "bin": 1,
+     "why": "Toys are fun wants."
+    },
+    {
+     "text": "Ice cream",
+     "icon": "🍦",
+     "bin": 1,
+     "why": "A tasty treat, a want."
+    },
+    {
+     "text": "A second skateboard",
+     "icon": "🛴",
+     "bin": 1,
+     "why": "You already have one, so another is a want."
+    },
+    {
+     "text": "Movie night popcorn",
+     "icon": "🎬",
+     "bin": 1,
+     "why": "A fun treat, a want."
+    },
+    {
+     "text": "Balloons",
+     "icon": "🎈",
+     "bin": 1,
+     "why": "Fun for a party, a want."
+    },
+    {
+     "text": "A new video game skin",
+     "icon": "🎮",
+     "bin": 1,
+     "why": "Extras in games are wants."
+    },
+    {
+     "text": "A teddy bear",
+     "icon": "🧸",
+     "bin": 1,
+     "why": "Cuddly, but a want."
+    },
+    {
+     "text": "Cupcakes",
+     "icon": "🧁",
+     "bin": 1,
+     "why": "A sweet treat, a want."
+    },
+    {
+     "text": "Sparkly sneakers when yours still fit",
+     "icon": "✨",
+     "bin": 1,
+     "why": "Your shoes still work, so new ones are a want."
+    },
+    {
+     "text": "Bubble tea",
+     "icon": "🧋",
+     "bin": 1,
+     "why": "A tasty drink, but a want."
+    },
+    {
+     "text": "A kite",
+     "icon": "🎈",
+     "bin": 1,
+     "why": "Fun to fly, a want."
+    },
+    {
+     "text": "Trading cards",
+     "icon": "🃏",
+     "bin": 1,
+     "why": "Collecting is fun, a want."
+    },
+    {
+     "text": "A fancy phone case",
+     "icon": "📱",
+     "bin": 1,
+     "why": "Nice to have, a want."
+    },
+    {
+     "text": "Concert tickets",
+     "icon": "🎟️",
+     "bin": 1,
+     "why": "A fun outing, a want."
+    },
+    {
+     "text": "A bigger TV",
+     "icon": "📺",
+     "bin": 1,
+     "why": "Entertainment upgrades are wants."
+    },
+    {
+     "text": "Candy at the checkout",
+     "icon": "🍫",
+     "bin": 1,
+     "why": "Candy is a treat, a want."
     }
    ]
   },
@@ -334,6 +856,136 @@
      "text": "Designer handbag",
      "bin": 1,
      "why": "A clear want."
+    },
+    {
+     "text": "Electricity and heating",
+     "bin": 0,
+     "why": "Basic utilities keep a home safe and livable."
+    },
+    {
+     "text": "Bus pass to get to work",
+     "bin": 0,
+     "why": "Getting to your job is a need: no job, no income."
+    },
+    {
+     "text": "Prescription medication",
+     "bin": 0,
+     "why": "Medicine your doctor says you need is a need."
+    },
+    {
+     "text": "Renter's insurance required by your lease",
+     "bin": 0,
+     "why": "If the lease requires it, it is a need, and it protects your belongings."
+    },
+    {
+     "text": "Minimum payment on a credit card",
+     "bin": 0,
+     "why": "Missing it brings fees and credit damage, so it must be paid."
+    },
+    {
+     "text": "Work boots required for your construction job",
+     "bin": 0,
+     "why": "Required safety gear for your job is a need."
+    },
+    {
+     "text": "Car insurance, if you own a car",
+     "bin": 0,
+     "why": "Required by law to drive."
+    },
+    {
+     "text": "Designer sunglasses",
+     "bin": 1,
+     "why": "Sunglasses can protect your eyes; designer ones are a want."
+    },
+    {
+     "text": "Daily coffee shop latte",
+     "bin": 1,
+     "why": "A treat. Coffee at home costs a fraction."
+    },
+    {
+     "text": "Upgrading to a bigger apartment for a home gym",
+     "bin": 1,
+     "why": "A nicer space is a want when your current home works."
+    },
+    {
+     "text": "Food delivery four nights a week",
+     "bin": 1,
+     "why": "Eating is a need; delivery is a want."
+    },
+    {
+     "text": "New gaming console",
+     "bin": 1,
+     "why": "Entertainment, a want."
+    },
+    {
+     "text": "Weekend trip with friends",
+     "bin": 1,
+     "why": "Experiences matter, but they are wants."
+    },
+    {
+     "text": "Internet at home",
+     "bin": 2,
+     "why": "A need for remote school or work; for streaming alone, a want."
+    },
+    {
+     "text": "A smartphone",
+     "bin": 2,
+     "why": "Often a need for work and safety, but the newest model is a want."
+    },
+    {
+     "text": "Child care",
+     "bin": 2,
+     "why": "A need if parents must work; not needed otherwise."
+    },
+    {
+     "text": "Professional work clothes",
+     "bin": 2,
+     "why": "A need if your job requires them; otherwise a want."
+    },
+    {
+     "text": "Tutoring",
+     "bin": 2,
+     "why": "A need if you are failing a required class; otherwise an extra."
+    },
+    {
+     "text": "A second car for the household",
+     "bin": 2,
+     "why": "Needed if two people commute to places without transit; otherwise a want."
+    },
+    {
+     "text": "Moving to a safer neighborhood",
+     "bin": 2,
+     "why": "A need if your current area is unsafe; otherwise a preference."
+    },
+    {
+     "text": "Paying for a phone plan with more data",
+     "bin": 2,
+     "why": "Needed if your job runs on mobile data; otherwise a want."
+    },
+    {
+     "text": "A pet",
+     "bin": 2,
+     "why": "A want for most people; a need for someone with a trained service animal."
+    },
+    {
+     "text": "Organic groceries",
+     "bin": 2,
+     "why": "Food is a need; organic is a preference unless a medical reason applies."
+    },
+    {
+     "text": "A laptop repair",
+     "bin": 2,
+     "why": "A need if school or work depends on it; otherwise it can wait."
+    },
+    {
+     "text": "Dental cleaning",
+     "bin": 0,
+     "why": "Preventive care avoids much bigger bills, so it belongs with needs."
+    },
+    {
+     "text": "An emergency fund contribution",
+     "bin": 0,
+     "why": "Saving for emergencies protects every other need."
     }
    ]
   },
@@ -399,6 +1051,156 @@
      "text": "Retirement account",
      "bin": 0,
      "why": "Savings you own (even if you can't touch it yet)."
+    },
+    {
+     "text": "Cash in your wallet",
+     "bin": 0,
+     "why": "Money you have is an asset."
+    },
+    {
+     "text": "Buy-now-pay-later balance",
+     "bin": 1,
+     "why": "You still owe the remaining payments."
+    },
+    {
+     "text": "A rental property you own",
+     "bin": 0,
+     "why": "Property that earns rent is an asset."
+    },
+    {
+     "text": "Medical bill you have not paid yet",
+     "bin": 1,
+     "why": "An unpaid bill is money owed."
+    },
+    {
+     "text": "Bonds you own",
+     "bin": 0,
+     "why": "A bond you own is a loan you made: someone owes you."
+    },
+    {
+     "text": "Payday loan",
+     "bin": 1,
+     "why": "A short-term debt you must repay."
+    },
+    {
+     "text": "Money a friend owes you",
+     "bin": 0,
+     "why": "Money owed to you is an asset, if they pay."
+    },
+    {
+     "text": "Overdrawn checking account",
+     "bin": 1,
+     "why": "A negative balance is money owed to the bank."
+    },
+    {
+     "text": "Gold coins in a safe",
+     "bin": 0,
+     "why": "Something valuable you own."
+    },
+    {
+     "text": "Car lease payments still due",
+     "bin": 1,
+     "why": "Remaining lease payments are an obligation."
+    },
+    {
+     "text": "Your car (its resale value)",
+     "bin": 0,
+     "why": "A car you own is an asset, though it loses value."
+    },
+    {
+     "text": "Phone plan balance on a 24-month installment",
+     "bin": 1,
+     "why": "The remaining installments are a debt."
+    },
+    {
+     "text": "A savings bond from your grandparents",
+     "bin": 0,
+     "why": "A bond you own is an asset."
+    },
+    {
+     "text": "Personal loan from a bank",
+     "bin": 1,
+     "why": "Borrowed money you must repay."
+    },
+    {
+     "text": "Shares in a company",
+     "bin": 0,
+     "why": "You own a piece of a company."
+    },
+    {
+     "text": "Back rent owed to your landlord",
+     "bin": 1,
+     "why": "Money owed."
+    },
+    {
+     "text": "A certificate of deposit",
+     "bin": 0,
+     "why": "Savings you own, locked for a time."
+    },
+    {
+     "text": "Home equity line of credit you drew from",
+     "bin": 1,
+     "why": "Borrowed money against your home."
+    },
+    {
+     "text": "Rare trading cards worth $500",
+     "bin": 0,
+     "why": "Collectibles with resale value are assets."
+    },
+    {
+     "text": "Unpaid parking tickets",
+     "bin": 1,
+     "why": "Fines owed to the city."
+    },
+    {
+     "text": "Patent on an invention",
+     "bin": 0,
+     "why": "Intellectual property can be sold or licensed."
+    },
+    {
+     "text": "Money owed on a store credit card",
+     "bin": 1,
+     "why": "A debt to the store's lender."
+    },
+    {
+     "text": "Health savings account balance",
+     "bin": 0,
+     "why": "Money you own, set aside for health costs."
+    },
+    {
+     "text": "Taxes owed on freelance income",
+     "bin": 1,
+     "why": "Money owed to the government."
+    },
+    {
+     "text": "Equipment your business owns",
+     "bin": 0,
+     "why": "Business property is an asset."
+    },
+    {
+     "text": "Unpaid invoice your business owes a supplier",
+     "bin": 1,
+     "why": "A business debt."
+    },
+    {
+     "text": "Invoice a client owes your business",
+     "bin": 0,
+     "why": "Money owed to you is an asset."
+    },
+    {
+     "text": "Mortgage on a rental property",
+     "bin": 1,
+     "why": "The loan is a liability even if the property earns rent."
+    },
+    {
+     "text": "Emergency fund in a high-yield account",
+     "bin": 0,
+     "why": "Savings you own."
+    },
+    {
+     "text": "Car title loan",
+     "bin": 1,
+     "why": "A high-cost loan using your car as security."
     }
    ]
   },
@@ -454,6 +1256,166 @@
      "text": "Spends most donations on the cause, not overhead",
      "bin": 0,
      "why": "Low overhead means more help for the cause."
+    },
+    {
+     "text": "Is listed in the government's charity registry",
+     "bin": 0,
+     "why": "Registration can be checked in minutes."
+    },
+    {
+     "text": "Wants payment by wire transfer to a personal account",
+     "bin": 1,
+     "why": "Real charities take donations to the organization, not a person."
+    },
+    {
+     "text": "Explains exactly what $50 pays for",
+     "bin": 0,
+     "why": "Specific programs are a sign of a real organization."
+    },
+    {
+     "text": "Asks for your bank login to set up a donation",
+     "bin": 1,
+     "why": "No charity needs your login."
+    },
+    {
+     "text": "Was set up the day after a disaster, with no track record",
+     "bin": 1,
+     "why": "New groups after disasters can be scams. Give to established ones."
+    },
+    {
+     "text": "Sends a receipt for your donation",
+     "bin": 0,
+     "why": "Real charities provide receipts."
+    },
+    {
+     "text": "Refuses to say what percentage reaches programs",
+     "bin": 1,
+     "why": "Real charities share where money goes."
+    },
+    {
+     "text": "Has independent reviews from charity evaluators",
+     "bin": 0,
+     "why": "Outside reviews are a good sign."
+    },
+    {
+     "text": "Tells you that you already pledged when you did not",
+     "bin": 1,
+     "why": "Fake pledges are a pressure trick."
+    },
+    {
+     "text": "Lets you donate on its own official website",
+     "bin": 0,
+     "why": "Giving through the official site is safe."
+    },
+    {
+     "text": "Messages from a social media account with no history",
+     "bin": 1,
+     "why": "Brand-new accounts cannot be checked."
+    },
+    {
+     "text": "Publishes the names of its board members",
+     "bin": 0,
+     "why": "Accountability is a good sign."
+    },
+    {
+     "text": "Only accepts cryptocurrency",
+     "bin": 1,
+     "why": "Untraceable payments are a scam signal."
+    },
+    {
+     "text": "Has been running the same program for 20 years",
+     "bin": 0,
+     "why": "A long track record is reassuring."
+    },
+    {
+     "text": "Promises a prize if you donate today",
+     "bin": 1,
+     "why": "Prizes and deadlines are pressure tactics."
+    },
+    {
+     "text": "Says it is too new to be registered but is \"100% legit\"",
+     "bin": 1,
+     "why": "If you cannot check it, do not give to it."
+    },
+    {
+     "text": "Shares results, like how many kids it tutored",
+     "bin": 0,
+     "why": "Measured results are a strong sign."
+    },
+    {
+     "text": "A door-to-door collector with no ID badge",
+     "bin": 1,
+     "why": "Real collectors carry identification."
+    },
+    {
+     "text": "Allows a monthly donation you can cancel any time",
+     "bin": 0,
+     "why": "Flexible, cancelable giving is normal."
+    },
+    {
+     "text": "Uses a photo of a child with no name or place",
+     "bin": 1,
+     "why": "Emotional pictures with no details are a warning sign."
+    },
+    {
+     "text": "Has a tax ID number you can look up",
+     "bin": 0,
+     "why": "Registered charities have a verifiable tax ID."
+    },
+    {
+     "text": "Says your gift will be \"doubled by a celebrity\" if you send it now",
+     "bin": 1,
+     "why": "Fake matches add urgency."
+    },
+    {
+     "text": "Responds to your questions by email",
+     "bin": 0,
+     "why": "Real organizations answer questions."
+    },
+    {
+     "text": "Asks you to keep the donation secret",
+     "bin": 1,
+     "why": "Secrecy has no place in real giving."
+    },
+    {
+     "text": "Lists its office address and phone number",
+     "bin": 0,
+     "why": "Real organizations can be contacted."
+    },
+    {
+     "text": "Spells its own name differently in different places",
+     "bin": 1,
+     "why": "Sloppy branding often signals a copycat."
+    },
+    {
+     "text": "Partners with a known local hospital or school",
+     "bin": 0,
+     "why": "Real partners can confirm the relationship."
+    },
+    {
+     "text": "Calls repeatedly after you said no",
+     "bin": 1,
+     "why": "Pressure is a red flag."
+    },
+    {
+     "text": "Explains how it will use any extra money raised",
+     "bin": 0,
+     "why": "Clear plans for surplus funds are a good sign."
+    },
+    {
+     "text": "Wants gift card numbers read over the phone",
+     "bin": 1,
+     "why": "Gift card payments are a classic scam."
+    },
+    {
+     "text": "Has a clear way to request a refund for a mistaken donation",
+     "bin": 0,
+     "why": "Real charities handle mistakes properly."
+    },
+    {
+     "text": "Uses a free email address like charityhelp123@freemail.com",
+     "bin": 1,
+     "why": "Real charities use their own domain."
     }
    ]
   },
@@ -509,6 +1471,166 @@
      "text": "Manager's salary",
      "bin": 0,
      "why": "A set salary doesn't change with sales."
+    },
+    {
+     "text": "Monthly rent for the shop",
+     "bin": 0,
+     "why": "The same each month, however much you sell."
+    },
+    {
+     "text": "Packaging for each order",
+     "bin": 1,
+     "why": "One box per order sold."
+    },
+    {
+     "text": "Website hosting subscription",
+     "bin": 0,
+     "why": "A set monthly fee."
+    },
+    {
+     "text": "Ingredients for each pizza",
+     "bin": 1,
+     "why": "More pizzas, more ingredients."
+    },
+    {
+     "text": "Loan payment on the oven",
+     "bin": 0,
+     "why": "The payment is set regardless of sales."
+    },
+    {
+     "text": "Sales commission paid to staff",
+     "bin": 1,
+     "why": "A percentage of every sale."
+    },
+    {
+     "text": "Shipping cost per parcel",
+     "bin": 1,
+     "why": "Each order adds a shipping cost."
+    },
+    {
+     "text": "Accounting software subscription",
+     "bin": 0,
+     "why": "A set monthly fee."
+    },
+    {
+     "text": "Delivery app commission on each order",
+     "bin": 1,
+     "why": "Charged as a share of every order."
+    },
+    {
+     "text": "Property tax on the building",
+     "bin": 0,
+     "why": "A set yearly amount."
+    },
+    {
+     "text": "Thread and fabric for each shirt made",
+     "bin": 1,
+     "why": "Materials rise with each item."
+    },
+    {
+     "text": "Security alarm monitoring",
+     "bin": 0,
+     "why": "A fixed monthly charge."
+    },
+    {
+     "text": "Hourly workers called in for busy days",
+     "bin": 1,
+     "why": "More sales, more hours worked."
+    },
+    {
+     "text": "Annual trade show booth fee",
+     "bin": 0,
+     "why": "A set fee whatever you sell."
+    },
+    {
+     "text": "Printer ink used for each order receipt",
+     "bin": 1,
+     "why": "Each order uses a little more."
+    },
+    {
+     "text": "Phone plan for the business line",
+     "bin": 0,
+     "why": "The same each month."
+    },
+    {
+     "text": "Payment processing fee per card sale",
+     "bin": 1,
+     "why": "A percentage of each transaction."
+    },
+    {
+     "text": "Owner's fixed salary",
+     "bin": 0,
+     "why": "A set amount each month."
+    },
+    {
+     "text": "Raw coffee beans for each cup",
+     "bin": 1,
+     "why": "More cups, more beans."
+    },
+    {
+     "text": "Business insurance premium",
+     "bin": 0,
+     "why": "Paid regardless of sales."
+    },
+    {
+     "text": "Gift wrapping for each holiday order",
+     "bin": 1,
+     "why": "Each order adds wrapping costs."
+    },
+    {
+     "text": "Lease on the delivery van",
+     "bin": 0,
+     "why": "A set monthly payment."
+    },
+    {
+     "text": "Fuel per delivery route",
+     "bin": 1,
+     "why": "More deliveries, more fuel."
+    },
+    {
+     "text": "Music streaming license for the café",
+     "bin": 0,
+     "why": "A fixed subscription."
+    },
+    {
+     "text": "Royalties paid per book sold",
+     "bin": 1,
+     "why": "Paid on each copy sold."
+    },
+    {
+     "text": "Yearly software license for design tools",
+     "bin": 0,
+     "why": "A set yearly fee."
+    },
+    {
+     "text": "Cups, lids and straws",
+     "bin": 1,
+     "why": "Used per drink sold."
+    },
+    {
+     "text": "Cleaning contract for the office, monthly",
+     "bin": 0,
+     "why": "A set monthly fee."
+    },
+    {
+     "text": "Electricity for machines that run per order",
+     "bin": 1,
+     "why": "More production, more power used."
+    },
+    {
+     "text": "Interest on the business loan",
+     "bin": 0,
+     "why": "Set by the loan, not by sales."
+    },
+    {
+     "text": "Marketplace listing fee per item sold",
+     "bin": 1,
+     "why": "Charged per item."
+    },
+    {
+     "text": "Annual audit fee",
+     "bin": 0,
+     "why": "A set professional fee."
     }
    ]
   },
@@ -574,6 +1696,156 @@
      "text": "A company's earnings grew, so its stock rose over several years",
      "bin": 0,
      "why": "Prices following real profits over time is reasonable."
+    },
+    {
+     "text": "A savings account paying 4% with government insurance",
+     "bin": 0,
+     "why": "Insured savings at market rates is reasonable."
+    },
+    {
+     "text": "\"Turn $100 into $10,000 with my secret system, only 3 spots left\"",
+     "bin": 1,
+     "why": "Secret systems and fake scarcity are hype."
+    },
+    {
+     "text": "Stocks can fall 30% in a bad year but have grown over long periods",
+     "bin": 0,
+     "why": "Honest about risk and time, reasonable."
+    },
+    {
+     "text": "\"This AI bot trades for you and never loses\"",
+     "bin": 1,
+     "why": "Every real strategy loses sometimes."
+    },
+    {
+     "text": "Paying off a 24% credit card is like earning 24% risk-free",
+     "bin": 0,
+     "why": "Clearing high-interest debt is a reasonable, certain return."
+    },
+    {
+     "text": "\"Celebrity-backed token, buy before it lists!\"",
+     "bin": 1,
+     "why": "Celebrity endorsements are often paid promotions."
+    },
+    {
+     "text": "Diversifying across hundreds of companies lowers your risk",
+     "bin": 0,
+     "why": "Spreading money out is a sound principle."
+    },
+    {
+     "text": "\"Quit your job: I made $40,000 last month day trading\"",
+     "bin": 1,
+     "why": "Screenshots of one great month prove nothing."
+    },
+    {
+     "text": "Higher potential returns usually come with higher risk",
+     "bin": 0,
+     "why": "Risk and return travel together."
+    },
+    {
+     "text": "\"Banks don't want you to know this one trick\"",
+     "bin": 1,
+     "why": "Secret-trick framing is classic hype."
+    },
+    {
+     "text": "A fund that charges 0.05% a year and tracks the whole market",
+     "bin": 0,
+     "why": "Low-cost index funds are a reasonable choice."
+    },
+    {
+     "text": "\"Double your money in 30 days, guaranteed by our partners\"",
+     "bin": 1,
+     "why": "Guaranteed doubling is a sign of fraud."
+    },
+    {
+     "text": "Starting to invest early gives compounding more time",
+     "bin": 0,
+     "why": "Time is a reasonable, proven advantage."
+    },
+    {
+     "text": "\"Everyone in the group chat made 300%, you're missing out\"",
+     "bin": 1,
+     "why": "FOMO from a group chat is not research."
+    },
+    {
+     "text": "Bonds usually fall in value when interest rates rise",
+     "bin": 0,
+     "why": "An honest, well-known relationship."
+    },
+    {
+     "text": "\"Join now and earn by recruiting friends who also join\"",
+     "bin": 1,
+     "why": "Recruit-to-earn is how pyramid schemes work."
+    },
+    {
+     "text": "Keeping three to six months of costs in savings before investing",
+     "bin": 0,
+     "why": "A sound, reasonable foundation."
+    },
+    {
+     "text": "\"This penny stock is the next big tech giant, insiders confirm\"",
+     "bin": 1,
+     "why": "Unnamed insiders and wild comparisons are hype."
+    },
+    {
+     "text": "Past performance does not guarantee future results",
+     "bin": 0,
+     "why": "An honest warning every investor should know."
+    },
+    {
+     "text": "\"Send 1 coin, get 2 back from our official giveaway\"",
+     "bin": 1,
+     "why": "Send-to-receive giveaways are always scams."
+    },
+    {
+     "text": "Rebalancing once a year to keep your planned mix",
+     "bin": 0,
+     "why": "A reasonable, disciplined habit."
+    },
+    {
+     "text": "\"Forex robot with a 98% win rate for just $499\"",
+     "bin": 1,
+     "why": "If it worked, it would not be for sale."
+    },
+    {
+     "text": "An employer retirement match is free money up to the limit",
+     "bin": 0,
+     "why": "Accurate and reasonable."
+    },
+    {
+     "text": "\"Real estate course: get rich with zero money down, starting tomorrow\"",
+     "bin": 1,
+     "why": "No-money-down get-rich courses are hype."
+    },
+    {
+     "text": "Index funds rarely beat the market because they are the market",
+     "bin": 0,
+     "why": "An honest description."
+    },
+    {
+     "text": "\"The market will crash tomorrow, sell everything now\"",
+     "bin": 1,
+     "why": "Nobody can time crashes to the day."
+    },
+    {
+     "text": "A high-yield savings account for money you need within a year",
+     "bin": 0,
+     "why": "Safe money for short-term goals is reasonable."
+    },
+    {
+     "text": "\"My friend's startup is guaranteed to be the next unicorn\"",
+     "bin": 1,
+     "why": "No startup is guaranteed."
+    },
+    {
+     "text": "Fees of 1% a year can add up to a large share of returns over decades",
+     "bin": 0,
+     "why": "True and reasonable to consider."
+    },
+    {
+     "text": "\"Limited-time NFT drop, prices only go up\"",
+     "bin": 1,
+     "why": "\"Only go up\" is never true."
     }
    ]
   }

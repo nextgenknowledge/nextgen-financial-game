@@ -33,7 +33,7 @@
       "topics": ["credit", "debt"],
       "blurb": "Make 24 months of credit decisions and watch a credit score rise or fall. Reach 740+ with the lowest cost.",
       "entryBlurb": "A story about borrowing and being trustworthy.",
-      "entry": { "kind": "story", "story": "borrow-trust" },
+      "entry": { "kind": "story", "story": ["borrow-trust", "borrow-markers", "borrow-snack", "borrow-library"] },
       "advanced": { "months": 24, "target": 740 },
       "stars": [40, 70, 90], "rewards": { "cash": [25, 40, 60], "xp": [40, 60, 90] }
     },
@@ -79,8 +79,8 @@
       "id": "pet-budget", "name": "Pet Care Budget", "kind": "allocate", "icon": "🦴", "building": "pet-shop", "city": "park",
       "topics": ["budgeting", "needs-wants"],
       "blurb": "Plan a month of pet care: needs first, then the fun extras, without going over budget.",
-      "entry": { "scenario": "pet-entry" },
-      "advanced": { "scenario": "pet-advanced" },
+      "entry": { "scenario": ["pet-entry", "pet-entry-cat", "pet-entry-fish", "pet-entry-bunny"] },
+      "advanced": { "scenario": ["pet-advanced", "pet-advanced-cat", "pet-advanced-two", "pet-advanced-rescue"] },
       "stars": [50, 75, 92], "rewards": { "cash": [15, 25, 40], "xp": [25, 40, 55] }
     },
     {
@@ -105,8 +105,8 @@
       "id": "travel-budget", "name": "Trip Planner", "kind": "allocate", "icon": "🧳", "building": "map-travel", "city": "park",
       "topics": ["budgeting", "shopping"],
       "blurb": "Plan a trip to a world city on a budget: travel, hotel, food and fun.",
-      "entry": { "scenario": "trip-entry" },
-      "advanced": { "scenario": "trip-advanced" },
+      "entry": { "scenario": ["trip-entry", "trip-entry-camp", "trip-entry-park", "trip-entry-grandma"] },
+      "advanced": { "scenario": ["trip-advanced", "trip-advanced-road", "trip-advanced-tokyo", "trip-advanced-fest"] },
       "stars": [50, 75, 92], "rewards": { "cash": [15, 25, 40], "xp": [25, 40, 55] }
     },
     {
@@ -180,6 +180,78 @@
       "replaces": "civics-sort",
       "entry": null, "advanced": {},
       "stars": [45, 70, 90], "rewards": { "cash": [60, 110, 180], "xp": [80, 130, 200] }
+    },
+    {
+      "id": "myth-fact", "name": "Myth, Fact or It Depends", "kind": "mythFact", "icon": "🤔", "building": "welcome-center", "city": "park",
+      "topics": ["credit", "taxes", "investing", "saving"],
+      "blurb": "Seven confident money claims from your feed. Decide which are true, which are false and which depend on the numbers.",
+      "entry": null,
+      "advanced": {},
+      "stars": [50, 72, 90], "rewards": { "cash": [60, 110, 180], "xp": [80, 130, 200] }
+    },
+    {
+      "id": "account-showdown", "name": "First Account Showdown", "kind": "accountShowdown", "icon": "🏦", "building": "bank", "city": "park",
+      "topics": ["banking", "saving"],
+      "blurb": "Match three young customers to the right account, then read the fee schedule and work out what one bad month really costs.",
+      "entry": null,
+      "advanced": {},
+      "stars": [50, 72, 90], "rewards": { "cash": [60, 110, 180], "xp": [80, 130, 200] }
+    },
+    {
+      "id": "score-tanks", "name": "Whose Score Tanks?", "kind": "scoreTanks", "icon": "📉", "building": "credit-bureau", "city": "park",
+      "topics": ["credit", "debt"],
+      "blurb": "Five people handle credit five different ways for a year. Predict who ends highest and lowest, then fix the damage.",
+      "entry": null,
+      "advanced": {},
+      "stars": [50, 72, 90], "rewards": { "cash": [60, 110, 180], "xp": [80, 130, 200] }
+    },
+    {
+      "id": "vote-on-it", "name": "Vote On It", "kind": "voteOnIt", "icon": "📜", "building": "town-hall", "city": "park",
+      "topics": ["taxes", "economics"],
+      "blurb": "Five measures on the Fin City ballot. Work out who really pays for each one and what is being traded away.",
+      "entry": null,
+      "advanced": {},
+      "stars": [50, 72, 90], "rewards": { "cash": [60, 110, 180], "xp": [80, 130, 200] }
+    },
+    {
+      "id": "loot-box-lab", "name": "Loot Box Lab", "kind": "lootBoxLab", "icon": "🎁", "building": "arcade", "city": "park",
+      "topics": ["economics", "safety", "needs-wants"],
+      "blurb": "Open crates with real published odds, find the true price of the rare skin and spot the store tricks built to keep you spending.",
+      "entry": null,
+      "advanced": {},
+      "stars": [50, 72, 90], "rewards": { "cash": [60, 110, 180], "xp": [80, 130, 200] }
+    },
+    {
+      "id": "pet-hustle", "name": "Pet Sitting Side Hustle", "kind": "petHustle", "icon": "🐶", "building": "pet-shop", "city": "park",
+      "topics": ["earning", "business", "taxes"],
+      "blurb": "Run a dog-walking business for a year: set your price, find your real hourly pay, handle no-shows, an accident and the tax bill.",
+      "entry": null,
+      "advanced": {},
+      "stars": [50, 72, 90], "rewards": { "cash": [60, 110, 180], "xp": [80, 130, 200] }
+    },
+    {
+      "id": "dealer-playbook", "name": "The Dealer’s Playbook", "kind": "dealerPlaybook", "icon": "🚗", "building": "auto-dealer", "city": "park",
+      "topics": ["debt", "shopping", "credit"],
+      "blurb": "Buy a first used car from a salesperson who does this every day. Strike the junk add-ons, see through the long loan and hold your ground.",
+      "entry": null,
+      "advanced": {},
+      "stars": [50, 72, 90], "rewards": { "cash": [60, 110, 180], "xp": [80, 130, 200] }
+    },
+    {
+      "id": "apartment-hunt", "name": "First Apartment Hunt", "kind": "apartmentHunt", "icon": "🔑", "building": "real-estate", "city": "park",
+      "topics": ["housing", "budgeting", "insurance"],
+      "blurb": "Choose a first place on a starting salary, find the cash to move in, read the lease, survive a roommate who stops paying and get your deposit back.",
+      "entry": null,
+      "advanced": {},
+      "stars": [50, 72, 90], "rewards": { "cash": [60, 110, 180], "xp": [80, 130, 200] }
+    },
+    {
+      "id": "spring-break", "name": "Spring Break on $600", "kind": "springBreak", "icon": "🧳", "building": "map-travel", "city": "park",
+      "topics": ["budgeting", "shopping", "debt"],
+      "blurb": "Four friends, four nights and a fixed budget. Find the real price behind every advertised one and come home without a debt.",
+      "entry": null,
+      "advanced": {},
+      "stars": [50, 72, 90], "rewards": { "cash": [60, 110, 180], "xp": [80, 130, 200] }
     }
   ]
 }

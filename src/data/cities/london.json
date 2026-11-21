@@ -102,6 +102,12 @@
           "label": "Market Quiz",
           "icon": "🎤",
           "npc": "host"
+        },
+        {
+          "activity": "shrinkflation",
+          "label": "Shrinkflation Detective",
+          "icon": "🔍",
+          "npc": "grocer"
         }
       ],
       "interior": {
@@ -170,6 +176,12 @@
           "label": "Retail Analyst Desk",
           "icon": "🛍️",
           "npc": "stylist"
+        },
+        {
+          "activity": "pay-later",
+          "label": "Pay Later Trap",
+          "icon": "🛍️",
+          "npc": "stylist"
         }
       ],
       "interior": {
@@ -213,6 +225,12 @@
           "activity": "fx-dealing",
           "label": "FX Dealing Desk",
           "icon": "💱",
+          "npc": "clerk"
+        },
+        {
+          "activity": "subscription-purge",
+          "label": "Subscription Purge",
+          "icon": "✂️",
           "npc": "clerk"
         }
       ],
@@ -281,6 +299,12 @@
           "label": "Bond Desk",
           "icon": "📜",
           "activity": "bond-desk"
+        },
+        {
+          "activity": "study-abroad",
+          "label": "Study Abroad Wallet",
+          "icon": "🌍",
+          "npc": "banker"
         }
       ],
       "interior": {
@@ -331,13 +355,33 @@
           "label": "City Condos",
           "icon": "🏙️",
           "npc": "agent"
+        },
+        {
+          "activity": "roommate-split",
+          "label": "Roommate Split",
+          "icon": "🛏️",
+          "npc": "agent"
         }
       ],
       "interior": {
         "floor": "#c9a87a",
         "wall": "#fbf3e6",
         "theme": "office"
-      }
+      },
+      "entryStations": [
+        {
+          "activity": "rent-vs-buy",
+          "label": "Rent or Buy?",
+          "icon": "🏠",
+          "npc": "agent"
+        },
+        {
+          "service": "shop:property",
+          "label": "City Condos",
+          "icon": "🏙️",
+          "npc": "agent"
+        }
+      ]
     },
     {
       "id": "budget-hall",
@@ -373,6 +417,12 @@
           "activity": "client-plans",
           "label": "Client Plans",
           "icon": "💼",
+          "npc": "teacher"
+        },
+        {
+          "activity": "first-year-out",
+          "label": "First Year Out",
+          "icon": "📋",
           "npc": "teacher"
         }
       ],

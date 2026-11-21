@@ -11,21 +11,63 @@ import { Button } from '@/ui/common';
 import { playSfx } from '@/engine/audio';
 import { VET_FIXED, VET_SALARY, bestVetMonth, vetMonth, type VetMonth } from '@/game/finance/desks';
 import { C, LineChart, ProHead, Slider, Stats, Table, Verdict, usd } from './pro/kit';
+import { variantIndex } from '../variant';
 
-const MONTHS = [
-  { name: 'January', season: 0.85, note: 'Quiet after the holidays.' },
-  { name: 'February', season: 0.9, note: 'Still slow.' },
-  { name: 'March', season: 1.05, note: 'Spring: vaccinations pick up.' },
-  { name: 'April', season: 1.15, note: 'Puppy and kitten season.' },
-  { name: 'May', season: 1.2, note: 'Busiest month of the year.' },
-  { name: 'June', season: 1.1, note: 'Summer travel boarding checks.' },
+// Four different half-years to run the clinic through, so demand never moves the same way twice
+const RUNS = [
+  {
+    cash: 40_000,
+    months: [
+      { name: 'January', season: 0.85, note: 'Quiet after the holidays.' },
+      { name: 'February', season: 0.9, note: 'Still slow.' },
+      { name: 'March', season: 1.05, note: 'Spring: vaccinations pick up.' },
+      { name: 'April', season: 1.15, note: 'Puppy and kitten season.' },
+      { name: 'May', season: 1.2, note: 'Busiest month of the year.' },
+      { name: 'June', season: 1.1, note: 'Summer travel boarding checks.' },
+    ],
+  },
+  {
+    cash: 35_000,
+    months: [
+      { name: 'July', season: 1.05, note: 'Boarding checks before summer trips.' },
+      { name: 'August', season: 0.9, note: 'Many families are away.' },
+      { name: 'September', season: 1.0, note: 'Back to routine visits.' },
+      { name: 'October', season: 1.1, note: 'Autumn vaccination reminders go out.' },
+      { name: 'November', season: 0.9, note: 'Quieter as the weather turns.' },
+      { name: 'December', season: 0.8, note: 'Holidays: very quiet, except emergencies.' },
+    ],
+  },
+  {
+    cash: 30_000,
+    months: [
+      { name: 'March', season: 0.7, note: 'You just opened in a new neighbourhood. Few people know you yet.' },
+      { name: 'April', season: 0.8, note: 'Word of mouth is starting to spread.' },
+      { name: 'May', season: 0.95, note: 'New homes nearby are filling up with families and pets.' },
+      { name: 'June', season: 1.05, note: 'Reviews online are bringing in new clients.' },
+      { name: 'July', season: 1.15, note: 'You are now the local clinic of choice.' },
+      { name: 'August', season: 1.2, note: 'Fully known in the area. Busiest month yet.' },
+    ],
+  },
+  {
+    cash: 45_000,
+    months: [
+      { name: 'February', season: 1.1, note: 'Steady and busy. You are the only clinic in town.' },
+      { name: 'March', season: 1.15, note: 'Spring vaccinations. A rival clinic announces it will open next month.' },
+      { name: 'April', season: 0.85, note: 'The rival opens with discount check-ups. Some clients try it.' },
+      { name: 'May', season: 0.8, note: 'The rival is busy. Your diary has gaps.' },
+      { name: 'June', season: 0.9, note: 'Some clients come back, missing your service.' },
+      { name: 'July', season: 1.0, note: 'The town has settled into two clinics.' },
+    ],
+  },
 ];
 
-export default function VetPractice({ onFinish, addReview }: KindProps) {
+export default function VetPractice({ seed, onFinish, addReview }: KindProps) {
+  const [run0] = useState(() => RUNS[variantIndex('vet-practice', RUNS.length, seed)]);
+  const MONTHS = run0.months;
   const [m, setM] = useState(0);
   const [d, setD] = useState<VetMonth>({ checkup: 60, surgery: 1100, vets: 1, insurance: false });
   const [log, setLog] = useState<{ profit: number; best: number; cash: number }[]>([]);
-  const [cash, setCash] = useState(40_000);
+  const [cash, setCash] = useState(run0.cash);
   const [owed, setOwed] = useState(0);
   const [shown, setShown] = useState<null | ReturnType<typeof vetMonth>>(null);
   const mo = MONTHS[m];

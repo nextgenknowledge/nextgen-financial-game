@@ -23,6 +23,18 @@ const PRODUCTS = [
   { product: 'Bicycles', kgPerUnit: 16, unitValue: 260, margin: 70 },
   { product: 'Toys for the holidays', kgPerUnit: 0.8, unitValue: 22, margin: 10 },
   { product: 'Solar panels', kgPerUnit: 21, unitValue: 180, margin: 35 },
+  { product: 'Wireless earbuds', kgPerUnit: 0.15, unitValue: 120, margin: 45 },
+  { product: 'Sneakers (limited drop)', kgPerUnit: 1.2, unitValue: 160, margin: 70 },
+  { product: 'Ceramic dinner sets', kgPerUnit: 9, unitValue: 75, margin: 25 },
+  { product: 'Game consoles', kgPerUnit: 4.5, unitValue: 450, margin: 60 },
+  { product: 'Umbrellas', kgPerUnit: 0.5, unitValue: 12, margin: 6 },
+  { product: 'Electric scooters', kgPerUnit: 14, unitValue: 380, margin: 90 },
+  { product: 'Medical test kits', kgPerUnit: 0.3, unitValue: 60, margin: 25 },
+  { product: 'Desk lamps', kgPerUnit: 2, unitValue: 35, margin: 12 },
+  { product: 'Silk scarves', kgPerUnit: 0.1, unitValue: 85, margin: 40 },
+  { product: 'Kitchen mixers', kgPerUnit: 6, unitValue: 210, margin: 55 },
+  { product: 'Phone cases', kgPerUnit: 0.05, unitValue: 9, margin: 5 },
+  { product: 'Camping tents', kgPerUnit: 4, unitValue: 130, margin: 40 },
 ];
 
 export default function SupplyChain({ onFinish, addReview, seed }: KindProps) {

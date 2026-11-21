@@ -4,6 +4,7 @@ import type { KindProps } from '../types';
 import { Button } from '@/ui/common';
 import { playSfx } from '@/engine/audio';
 import { cls } from '@/ui/format';
+import { variantIndex } from '../variant';
 
 type Cmd = 'F' | 'L' | 'R' | 'P' | `${number}x`;
 interface Level {
@@ -22,6 +23,25 @@ const LEVELS: Level[] = [
   { size: 6, start: [0, 0, 1], coins: [[5, 0], [5, 5], [0, 5]], walls: [[2, 2], [3, 3]], par: 17, parLoops: 5 },
   { size: 7, start: [0, 6, 0], coins: [[0, 0], [6, 0], [6, 6]], walls: [[3, 3], [2, 2], [4, 4]], par: 20, parLoops: 5 },
 ];
+
+/**
+ * Turns or mirrors a puzzle (one of 8 ways), so each run lays the coins and walls out differently.
+ * Every version needs the same number of commands, because turning or mirroring a whole board
+ * just swaps which way the robot turns.
+ */
+function transform(l: Level, k: number): Level {
+  const n = l.size;
+  const mirror = k >= 4;
+  const turns = k % 4;
+  const pt = ([x, y]: [number, number]): [number, number] => {
+    let p: [number, number] = mirror ? [n - 1 - x, y] : [x, y];
+    for (let i = 0; i < turns; i++) p = [n - 1 - p[1], p[0]];
+    return p;
+  };
+  const dir = (d: number) => ((mirror ? (4 - d) % 4 : d) + turns) % 4;
+  const [sx, sy] = pt([l.start[0], l.start[1]]);
+  return { ...l, start: [sx, sy, dir(l.start[2])], coins: l.coins.map(pt), walls: l.walls.map(pt) };
+}
 
 /** A loop marker and the command it repeats count as one command. */
 function cmdCount(prog: Cmd[]) {
@@ -48,8 +68,12 @@ function expand(prog: Cmd[], loops: boolean): ('F' | 'L' | 'R')[] {
 }
 
 /** Program a robot with Forward/Left/Right (and loops in Advanced) to collect every coin. */
-export default function Coding({ params, onFinish }: KindProps<{ levels: number; loops: boolean }>) {
-  const levels = useMemo(() => LEVELS.slice(0, params.levels), [params.levels]);
+export default function Coding({ params, seed, onFinish }: KindProps<{ levels: number; loops: boolean }>) {
+  const levels = useMemo(() => {
+    const k = variantIndex('coding', 8, seed);
+    // Each puzzle gets its own turn so the course never repeats as a whole
+    return LEVELS.slice(0, params.levels).map((l, i) => transform(l, (k + i * 3) % 8));
+  }, [params.levels, seed]);
   const [li, setLi] = useState(0);
   const [prog, setProg] = useState<Cmd[]>([]);
   const [bot, setBot] = useState<[number, number, number]>(levels[0].start);

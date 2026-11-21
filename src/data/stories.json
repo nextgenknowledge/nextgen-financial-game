@@ -83,6 +83,246 @@
         ] },
         "end": { "speaker": "Narwhal", "mood": "hyped", "text": "Taxes are how a community buys things together. Now you know where the money goes!" }
       }
+    },
+    "borrow-markers": {
+      "title": "Max and the Borrowed Markers",
+      "maxPoints": 30,
+      "start": "a",
+      "nodes": {
+        "a": { "speaker": "Max", "mood": "talking", "text": "I forgot my markers and we have art today. Can I borrow yours? I'll give them back after class.", "choices": [
+          { "text": "Sure, just give them back after class.", "next": "b", "points": 10, "feedback": "Lending with a clear promise is kind and fair." },
+          { "text": "No way, I don't lend my things to anybody, ever.", "next": "b", "points": 4, "feedback": "It's okay to be careful, but Max hasn't broken a promise yet." }
+        ] },
+        "b": { "speaker": "Narwhal", "mood": "talking", "text": "After class, Max gives every marker back, caps on. A week later Max asks again. What do you think?", "choices": [
+          { "text": "Yes! Max kept the promise last time.", "next": "c", "points": 10, "feedback": "Right. Keeping promises builds trust, and trust is what lenders look for." },
+          { "text": "No, I'm never lending anything to anyone again.", "next": "c", "points": 3, "feedback": "Max proved they're trustworthy. Trust grows when promises are kept." }
+        ] },
+        "c": { "speaker": "Narwhal", "mood": "confident", "text": "Another kid borrowed your markers and lost two. Who would you lend to next time?", "choices": [
+          { "text": "The friend who gave everything back", "next": "end", "points": 10, "feedback": "Yes! Banks decide the same way. Paying back on time is called good credit." },
+          { "text": "The friend who lost two, so they can make it up to me", "next": "end", "points": 0, "feedback": "Lending again to someone who didn't keep their promise is risky." }
+        ] },
+        "end": { "speaker": "Narwhal", "mood": "hyped", "text": "Borrowing is a promise. Keep it, and people trust you more next time. Banks call that trust credit." }
+      }
+    },
+    "borrow-snack": {
+      "title": "Max's Snack Money",
+      "maxPoints": 30,
+      "start": "a",
+      "nodes": {
+        "a": { "speaker": "Max", "mood": "talking", "text": "I left my lunch money at home! Can I borrow $2? I'll pay you back Friday.", "choices": [
+          { "text": "Okay, $2 until Friday.", "next": "b", "points": 10, "feedback": "A small loan with a clear date is a fair deal." },
+          { "text": "Only if you pay me $10 back.", "next": "b", "points": 0, "feedback": "That's way too much extra! Fair deals keep friends." }
+        ] },
+        "b": { "speaker": "Max", "mood": "talking", "text": "It's Friday! Here's your $2, and an extra dime to say thanks.", "choices": [
+          { "text": "Thanks! You paid back on time.", "next": "c", "points": 10, "feedback": "That extra dime is like interest: a small thank-you for lending." },
+          { "text": "A dime? That's not nearly enough extra for waiting all week!", "next": "c", "points": 2, "feedback": "It was a gift. The important part is Max paid back on time." }
+        ] },
+        "c": { "speaker": "Narwhal", "mood": "confident", "text": "When grown-ups borrow from a bank, they pay back a little extra, called interest. Who pays LESS extra?", "choices": [
+          { "text": "People who always pay back on time", "next": "end", "points": 10, "feedback": "Yes! Banks charge less to people they trust." },
+          { "text": "People who forget to pay, since the bank feels sorry for them", "next": "end", "points": 0, "feedback": "Banks charge more, or say no, when people don't pay back." }
+        ] },
+        "end": { "speaker": "Narwhal", "mood": "hyped", "text": "Borrow only what you can pay back, and pay on time. That's how trust, and good credit, are built." }
+      }
+    },
+    "borrow-library": {
+      "title": "The Library Book Promise",
+      "maxPoints": 30,
+      "start": "a",
+      "nodes": {
+        "a": { "speaker": "Narwhal", "mood": "talking", "text": "The library lets you borrow three books for free for two weeks. What's the deal?", "choices": [
+          { "text": "I promise to bring them back on time", "next": "b", "points": 10, "feedback": "Exactly. Borrowing always comes with a promise." },
+          { "text": "I get to keep them forever since the library has so many books", "next": "b", "points": 0, "feedback": "Borrowed things go back. That's what makes it borrowing." }
+        ] },
+        "b": { "speaker": "Narwhal", "mood": "skeptical", "text": "Oops! One book is three days late. The library charges a late fee of 30 cents. Why?", "choices": [
+          { "text": "Because I broke the promise to return it on time", "next": "c", "points": 10, "feedback": "Right. Late payments on loans cost extra too, called late fees." },
+          { "text": "Because libraries are mean and just want to take kids' pocket money", "next": "c", "points": 0, "feedback": "The fee reminds everyone to keep their promise so others can borrow." }
+        ] },
+        "c": { "speaker": "Narwhal", "mood": "confident", "text": "Your friend always returns books on time. Their sister is always late. Who should the library trust with a special rare book?", "choices": [
+          { "text": "The friend who's always on time", "next": "end", "points": 10, "feedback": "Yes! A history of keeping promises is what lenders trust." },
+          { "text": "The sister who's always late, to give her one more chance to change", "next": "end", "points": 0, "feedback": "Being late again and again makes it harder to be trusted." }
+        ] },
+        "end": { "speaker": "Narwhal", "mood": "hyped", "text": "Return things on time and pay back on time. People trust you more, and that trust is called credit." }
+      }
+    },
+    "cookie-stand": {
+      "title": "The Cookie Stand",
+      "maxPoints": 30,
+      "start": "a",
+      "nodes": {
+        "a": { "speaker": "Narwhal", "mood": "talking", "text": "You sold cookies at the school fair and made $26! The ingredients cost $8. How much profit did you make?", "choices": [
+          { "text": "$18", "next": "b", "points": 10, "feedback": "Yes! Profit is what's left after costs: $26 minus $8." },
+          { "text": "$26", "next": "b", "points": 0, "feedback": "That's all the money that came in. Take away the $8 of ingredients first." }
+        ] },
+        "b": { "speaker": "Narwhal", "mood": "talking", "text": "Next fair, should you charge $1 or $5 for a cookie?", "choices": [
+          { "text": "$1, so lots of kids can buy one", "next": "c", "points": 10, "feedback": "A fair price sells more. If it's too high, nobody buys." },
+          { "text": "$5, so I make a lot more money on every single cookie", "next": "c", "points": 3, "feedback": "You'd make more per cookie, but most kids would walk away." }
+        ] },
+        "c": { "speaker": "Narwhal", "mood": "talking", "text": "You have $18 of profit. What's a smart plan?", "choices": [
+          { "text": "Save some, spend some, share some", "next": "end", "points": 10, "feedback": "A great habit! Every jar gets a little." },
+          { "text": "Spend it all today on something fun, I earned it after all", "next": "end", "points": 2, "feedback": "Fun today, but nothing left for next fair's ingredients." }
+        ] },
+        "end": { "speaker": "Narwhal", "mood": "hyped", "text": "Know your costs, pick a fair price and save some profit. That's how a business keeps going!" }
+      }
+    },
+    "car-wash": {
+      "title": "Car Wash Saturday",
+      "maxPoints": 30,
+      "start": "a",
+      "nodes": {
+        "a": { "speaker": "Narwhal", "mood": "talking", "text": "You and your friend washed cars and made $44! Soap and sponges cost $8. What's the profit?", "choices": [
+          { "text": "$36", "next": "b", "points": 10, "feedback": "Correct! $44 minus $8 of supplies." },
+          { "text": "$52", "next": "b", "points": 0, "feedback": "Costs are taken away, not added. $44 minus $8." }
+        ] },
+        "b": { "speaker": "Max", "mood": "talking", "text": "We both worked the whole time. How should we split the $36?", "choices": [
+          { "text": "$18 each, we worked the same", "next": "c", "points": 10, "feedback": "Fair! Equal work, equal share." },
+          { "text": "I keep $30 because it was my idea", "next": "c", "points": 0, "feedback": "Ideas matter, but you both did the work. Fair splits keep partners happy." }
+        ] },
+        "c": { "speaker": "Narwhal", "mood": "skeptical", "text": "Next Saturday it's raining and nobody comes. You still bought new soap. What happened?", "choices": [
+          { "text": "We had a cost but no sales, so we lost a little", "next": "end", "points": 10, "feedback": "Yes. Businesses have bad days. Saving some profit helps cover them." },
+          { "text": "Nothing happened, because rain doesn't change anything for a business", "next": "end", "points": 0, "feedback": "No customers means no money in, but the soap still cost money." }
+        ] },
+        "end": { "speaker": "Narwhal", "mood": "hyped", "text": "Profit is money in minus costs. Split fairly, and save for rainy days, real or not!" }
+      }
+    },
+    "bracelets": {
+      "title": "The Bracelet Business",
+      "maxPoints": 30,
+      "start": "a",
+      "nodes": {
+        "a": { "speaker": "Narwhal", "mood": "talking", "text": "Beads for one bracelet cost $1. You sell each bracelet for $3. How much do you make on each one?", "choices": [
+          { "text": "$2", "next": "b", "points": 10, "feedback": "Right! $3 minus the $1 of beads." },
+          { "text": "$3", "next": "b", "points": 0, "feedback": "Don't forget the beads cost $1 each." }
+        ] },
+        "b": { "speaker": "Narwhal", "mood": "talking", "text": "A grown-up offers to buy all 10 bracelets for $5 total. Is that a good deal?", "choices": [
+          { "text": "No, that's only 50 cents each, less than the beads cost", "next": "c", "points": 10, "feedback": "Yes! You'd lose money on every bracelet." },
+          { "text": "Yes, selling all ten bracelets at once to one buyer is a great day for my business", "next": "c", "points": 0, "feedback": "Selling everything sounds great, but $5 doesn't even cover $10 of beads." }
+        ] },
+        "c": { "speaker": "Narwhal", "mood": "skeptical", "text": "Someone online says: send me $10 and I'll send you $100 of beads! What do you do?", "choices": [
+          { "text": "No thanks, it sounds too good to be true", "next": "end", "points": 10, "feedback": "Smart! Deals that seem too good to be true usually are." },
+          { "text": "Send the $10 right away before someone else grabs the deal", "next": "end", "points": 0, "feedback": "That's a common trick. You'd likely lose your $10." }
+        ] },
+        "end": { "speaker": "Narwhal", "mood": "hyped", "text": "Know what each item costs you, never sell below cost, and watch out for tricks!" }
+      }
+    },
+    "lifeguard-check": {
+      "title": "Your First Lifeguard Paycheck",
+      "maxPoints": 30,
+      "start": "a",
+      "nodes": {
+        "a": { "speaker": "Narwhal", "mood": "talking", "text": "You worked 40 hours as a lifeguard at $10 an hour. Your paycheck says $400 earned, $352 take-home. Where did $48 go?", "choices": [
+          { "text": "Taxes, like Social Security and Medicare", "next": "b", "points": 10, "feedback": "Right. Some pay goes to taxes before it reaches you." },
+          { "text": "The pool kept it as a fee for giving me the lifeguard job", "next": "b", "points": 0, "feedback": "Employers don't charge fees on pay. It's taxes withheld." }
+        ] },
+        "b": { "speaker": "Narwhal", "mood": "talking", "text": "You want headphones that cost $150. What's your plan with the $352?", "choices": [
+          { "text": "Save part each payday and buy them in a few weeks", "next": "c", "points": 10, "feedback": "Planning a want while still saving is a great habit." },
+          { "text": "Buy them today and spend whatever is left on fun with friends", "next": "c", "points": 4, "feedback": "You'd have the headphones, but no savings at all." }
+        ] },
+        "c": { "speaker": "Max", "mood": "talking", "text": "Hey, you just got paid! Can I borrow $100? I'll pay you back... sometime.", "choices": [
+          { "text": "I can lend a little, but I need a clear payback date", "next": "end", "points": 10, "feedback": "Kind and smart. A clear date protects the friendship." },
+          { "text": "Sure, take the whole $100, whenever you get around to it is fine", "next": "end", "points": 3, "feedback": "\"Sometime\" often means never. Agree on a date first." }
+        ] },
+        "end": { "speaker": "Narwhal", "mood": "hyped", "text": "Know where your pay goes, plan for wants and set clear terms when you lend." }
+      }
+    },
+    "babysitting": {
+      "title": "Babysitting Money",
+      "maxPoints": 30,
+      "start": "a",
+      "nodes": {
+        "a": { "speaker": "Narwhal", "mood": "talking", "text": "You babysat on Saturday and earned $60 in cash. What should happen first?", "choices": [
+          { "text": "Put some in savings before spending", "next": "b", "points": 10, "feedback": "Paying yourself first is a powerful habit." },
+          { "text": "Keep it all in my pocket and spend it whenever something comes up", "next": "b", "points": 3, "feedback": "Cash in a pocket tends to disappear. Give it a plan." }
+        ] },
+        "b": { "speaker": "Narwhal", "mood": "talking", "text": "The family asks you to babysit every Saturday for $60. That's about $240 a month! What should you think about?", "choices": [
+          { "text": "Whether it fits with homework and other plans", "next": "c", "points": 10, "feedback": "Yes. Time is valuable too. Money isn't the only thing to weigh." },
+          { "text": "Nothing, more money is always better no matter how much time it takes", "next": "c", "points": 4, "feedback": "More money is great, but not if your grades or sleep suffer." }
+        ] },
+        "c": { "speaker": "Narwhal", "mood": "skeptical", "text": "A friend says cash from babysitting doesn't count as real income. Is that right?", "choices": [
+          { "text": "No, money you earn from work is income", "next": "end", "points": 10, "feedback": "Correct. Cash or not, pay for work is income." },
+          { "text": "Yes, cash is invisible, so it doesn't count as real money you earned", "next": "end", "points": 0, "feedback": "Pay for work is income however it's paid." }
+        ] },
+        "end": { "speaker": "Narwhal", "mood": "hyped", "text": "Pay yourself first, weigh time against money and remember: what you earn is income." }
+      }
+    },
+    "cafe-job": {
+      "title": "Summer Café Job",
+      "maxPoints": 30,
+      "start": "a",
+      "nodes": {
+        "a": { "speaker": "Narwhal", "mood": "talking", "text": "Your café job pays by direct deposit. Where should the money go?", "choices": [
+          { "text": "Into a bank account I can see and track", "next": "b", "points": 10, "feedback": "Direct deposit to a checking account is safe and easy to track." },
+          { "text": "I'll ask to be paid in cash in an envelope", "next": "b", "points": 3, "feedback": "Cash is harder to track and easy to lose." }
+        ] },
+        "b": { "speaker": "Narwhal", "mood": "talking", "text": "You earned $300 plus $45 in tips this week. Your phone bill is $40. What's the plan?", "choices": [
+          { "text": "Pay the bill, save some, then plan fun money", "next": "c", "points": 10, "feedback": "Bills first, then savings, then fun. Perfect order." },
+          { "text": "Spend first, pay the bill if there's money left", "next": "c", "points": 2, "feedback": "Bills can't wait. Late fees cost extra." }
+        ] },
+        "c": { "speaker": "Narwhal", "mood": "skeptical", "text": "You see sneakers on sale for $120, today only! You had not planned to buy any. What do you do?", "choices": [
+          { "text": "Wait a day and decide if I really want them", "next": "end", "points": 10, "feedback": "A 24-hour pause stops most impulse buys." },
+          { "text": "Buy them now, because a sale this good might never come back again", "next": "end", "points": 3, "feedback": "A sale on something you didn't plan to buy is still spending." }
+        ] },
+        "end": { "speaker": "Narwhal", "mood": "hyped", "text": "Track your pay, pay bills first, save next and pause before impulse buys." }
+      }
+    },
+    "broken-bridge": {
+      "title": "The Broken Bridge",
+      "maxPoints": 30,
+      "start": "a",
+      "nodes": {
+        "a": { "speaker": "Mayor Penny", "mood": "talking", "text": "The old bridge into town is cracked and must be fixed. It costs a lot. How should the town pay?", "choices": [
+          { "text": "Everyone chips in a little through taxes", "next": "b", "points": 10, "feedback": "Yes. Taxes let a whole town pay for big things together." },
+          { "text": "Whoever crosses first pays for all of it", "next": "b", "points": 0, "feedback": "That's not fair. Everyone uses the bridge, so everyone shares the cost." }
+        ] },
+        "b": { "speaker": "Mayor Penny", "mood": "talking", "text": "You buy shoes for $50, and the store adds $3 at the register. What is that $3?", "choices": [
+          { "text": "Sales tax", "next": "c", "points": 10, "feedback": "Correct. Sales tax is added when you buy things." },
+          { "text": "A tip for the cashier", "next": "c", "points": 0, "feedback": "Tips are for service. The $3 is sales tax, which goes to the government." }
+        ] },
+        "c": { "speaker": "Mayor Penny", "mood": "talking", "text": "The town has money for only one project this year: the bridge or a new fountain. Which first?", "choices": [
+          { "text": "The bridge, because people need it to get around safely", "next": "end", "points": 10, "feedback": "Needs come before wants, for towns too." },
+          { "text": "The fountain, because it's prettier and everyone will love taking photos", "next": "end", "points": 2, "feedback": "Pretty, but the broken bridge is a safety problem." }
+        ] },
+        "end": { "speaker": "Narwhal", "mood": "hyped", "text": "Taxes pay for things a town needs together, and leaders choose needs first." }
+      }
+    },
+    "town-library": {
+      "title": "The Town Library",
+      "maxPoints": 30,
+      "start": "a",
+      "nodes": {
+        "a": { "speaker": "Mayor Penny", "mood": "talking", "text": "The library lends books to anyone for free. Who pays for the books and the librarians?", "choices": [
+          { "text": "Everyone, through taxes", "next": "b", "points": 10, "feedback": "Right. Taxes keep the library free for everyone." },
+          { "text": "The library prints its own money", "next": "b", "points": 0, "feedback": "Only the government makes money, and it doesn't print it for libraries!" }
+        ] },
+        "b": { "speaker": "Mayor Penny", "mood": "talking", "text": "Which of these is NOT usually paid for with taxes?", "choices": [
+          { "text": "A family's pizza dinner", "next": "c", "points": 10, "feedback": "Right. Families pay for their own food." },
+          { "text": "Street lights that light up the sidewalks at night", "next": "c", "points": 0, "feedback": "Street lights are public and paid for with taxes." }
+        ] },
+        "c": { "speaker": "Mayor Penny", "mood": "talking", "text": "Your aunt's pay stub says Earned $500, Take home $440. Where did $60 go?", "choices": [
+          { "text": "Taxes, for schools, roads and parks", "next": "end", "points": 10, "feedback": "Yes. Some pay goes to taxes before it reaches you." },
+          { "text": "Her boss kept it for the office snack fund and birthday parties", "next": "end", "points": 0, "feedback": "Bosses don't take pay for snacks. It's taxes." }
+        ] },
+        "end": { "speaker": "Narwhal", "mood": "hyped", "text": "Taxes are how a community shares the cost of things everyone uses." }
+      }
+    },
+    "snow-plows": {
+      "title": "Snow Day Plows",
+      "maxPoints": 30,
+      "start": "a",
+      "nodes": {
+        "a": { "speaker": "Mayor Penny", "mood": "talking", "text": "A big snowstorm hit! Plows are clearing the roads. Who pays the plow drivers?", "choices": [
+          { "text": "The town, using taxes", "next": "b", "points": 10, "feedback": "Right. Taxes pay for services everyone needs." },
+          { "text": "Each driver pays for their own street", "next": "b", "points": 2, "feedback": "That would leave many streets snowy. Sharing the cost works better." }
+        ] },
+        "b": { "speaker": "Mayor Penny", "mood": "skeptical", "text": "What would happen if nobody paid any taxes?", "choices": [
+          { "text": "No plows, firefighters or public schools", "next": "c", "points": 10, "feedback": "Exactly. Taxes keep those services running." },
+          { "text": "Everything would stay the same, since services run on their own", "next": "c", "points": 0, "feedback": "Public services need money to run." }
+        ] },
+        "c": { "speaker": "Mayor Penny", "mood": "talking", "text": "A family earns more money than another. In many places, they pay a higher share in income tax. What's the idea?", "choices": [
+          { "text": "People who earn more can chip in more", "next": "end", "points": 10, "feedback": "That's called a progressive tax." },
+          { "text": "It's a punishment for working hard and earning a lot of money", "next": "end", "points": 2, "feedback": "It's not a punishment. It's a way of sharing costs by ability to pay." }
+        ] },
+        "end": { "speaker": "Narwhal", "mood": "hyped", "text": "Taxes keep roads clear, schools open and helpers on the job. Everyone shares the cost." }
+      }
     }
   }
 }

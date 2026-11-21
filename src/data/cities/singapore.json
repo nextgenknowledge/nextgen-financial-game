@@ -102,6 +102,12 @@
           "label": "Open a CD (Money Tree)",
           "icon": "🔒",
           "npc": "banker"
+        },
+        {
+          "activity": "start-early",
+          "label": "Start at 18 or 28?",
+          "icon": "🌱",
+          "npc": "gardener"
         }
       ],
       "interior": {
@@ -181,6 +187,12 @@
           "label": "Portfolio Lab",
           "icon": "🧪",
           "activity": "portfolio-lab"
+        },
+        {
+          "activity": "summer-job",
+          "label": "Summer Job $2,000",
+          "icon": "💰",
+          "npc": "banker"
         }
       ],
       "interior": {
@@ -237,13 +249,33 @@
           "label": "Buy Real Insurance",
           "icon": "☂️",
           "npc": "agent"
+        },
+        {
+          "activity": "claim-denied",
+          "label": "Claim Denied?",
+          "icon": "☂️",
+          "npc": "agent"
         }
       ],
       "interior": {
         "floor": "#d9cdb4",
         "wall": "#fbf6ee",
         "theme": "office"
-      }
+      },
+      "entryStations": [
+        {
+          "activity": "insurance-sim",
+          "label": "Insurance Year",
+          "icon": "🎲",
+          "npc": "agent"
+        },
+        {
+          "service": "insurance",
+          "label": "Buy Real Insurance",
+          "icon": "☂️",
+          "npc": "agent"
+        }
+      ]
     },
     {
       "id": "emergency-center",
@@ -271,6 +303,12 @@
         {
           "activity": "stress-test",
           "label": "Personal Stress Test",
+          "icon": "☔",
+          "npc": "teacher"
+        },
+        {
+          "activity": "life-happens",
+          "label": "Life Happens",
           "icon": "☔",
           "npc": "teacher"
         }
@@ -341,13 +379,33 @@
           "label": "Real Loans",
           "icon": "💳",
           "npc": "banker"
+        },
+        {
+          "activity": "loan-signing",
+          "label": "Loan Signing Day",
+          "icon": "📝",
+          "npc": "banker"
         }
       ],
       "interior": {
         "floor": "#e2cfb0",
         "wall": "#fbf6ee",
         "theme": "office"
-      }
+      },
+      "entryStations": [
+        {
+          "activity": "borrowing-booth",
+          "label": "Compare Loan Offers",
+          "icon": "📝",
+          "npc": "banker"
+        },
+        {
+          "service": "loans",
+          "label": "Real Loans",
+          "icon": "💳",
+          "npc": "banker"
+        }
+      ]
     },
     {
       "id": "giving-center",
@@ -389,6 +447,12 @@
           "label": "Long-Term Quiz",
           "icon": "🎤",
           "npc": "host"
+        },
+        {
+          "activity": "give-thousand",
+          "label": "$1,000 to Give",
+          "icon": "💝",
+          "npc": "mayor"
         }
       ],
       "interior": {

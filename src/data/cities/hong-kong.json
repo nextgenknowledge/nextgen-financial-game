@@ -103,6 +103,12 @@
           "label": "Business Quiz",
           "icon": "🎤",
           "npc": "host"
+        },
+        {
+          "activity": "sneaker-flip",
+          "label": "Sneaker Flip",
+          "icon": "👟",
+          "npc": "chef"
         }
       ],
       "interior": {
@@ -171,13 +177,27 @@
           "label": "Trading Desk",
           "icon": "📦",
           "npc": "sailor"
+        },
+        {
+          "activity": "tariff-shock",
+          "label": "Tariff Shock",
+          "icon": "🚢",
+          "npc": "sailor"
         }
       ],
       "interior": {
         "floor": "#8a8f9c",
         "wall": "#d9dde6",
         "theme": "shop"
-      }
+      },
+      "entryStations": [
+        {
+          "activity": "harbor-trading",
+          "label": "Trading Desk",
+          "icon": "📦",
+          "npc": "sailor"
+        }
+      ]
     },
     {
       "id": "business-registry",
@@ -213,6 +233,12 @@
           "label": "Choose a Structure",
           "icon": "📜",
           "npc": "clerk"
+        },
+        {
+          "activity": "cofounder-split",
+          "label": "Co-founder Split",
+          "icon": "🤝",
+          "npc": "banker"
         }
       ],
       "interior": {
@@ -265,17 +291,31 @@
           "npc": "banker"
         },
         {
-          "activity": "break-even",
-          "label": "Break-Even Lab",
-          "icon": "⚖️",
-          "npc": "teacher"
+          "activity": "money-trail",
+          "label": "Where Did the Money Go?",
+          "icon": "🕵️",
+          "npc": "banker"
         }
       ],
       "interior": {
         "floor": "#c9b48a",
         "wall": "#f4ead6",
         "theme": "office"
-      }
+      },
+      "entryStations": [
+        {
+          "activity": "accounting",
+          "label": "Ledger Check",
+          "icon": "📒",
+          "npc": "banker"
+        },
+        {
+          "activity": "break-even",
+          "label": "Break-Even Lab",
+          "icon": "⚖️",
+          "npc": "teacher"
+        }
+      ]
     },
     {
       "id": "dim-sum",
@@ -311,6 +351,12 @@
           "label": "Last-Mile Delivery Run",
           "icon": "🛵",
           "npc": "chef"
+        },
+        {
+          "activity": "delivery-squeeze",
+          "label": "Delivery App Squeeze",
+          "icon": "🛵",
+          "npc": "trader"
         }
       ],
       "interior": {
@@ -374,6 +420,12 @@
           "label": "Profit Puzzles",
           "icon": "🧮",
           "npc": "teacher"
+        },
+        {
+          "activity": "concert-pricing",
+          "label": "Concert Pricing",
+          "icon": "🎤",
+          "npc": "grocer"
         }
       ],
       "interior": {

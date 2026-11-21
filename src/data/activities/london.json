@@ -236,10 +236,10 @@
       ],
       "blurb": "Split your earnings into three jars.",
       "entry": {
-        "scenario": "budget-entry"
+        "scenario": ["budget-entry", "budget-entry-birthday", "budget-entry-allowance", "budget-entry-bike"]
       },
       "advanced": {
-        "scenario": "trip-advanced"
+        "scenario": ["trip-advanced", "trip-advanced-road", "trip-advanced-tokyo", "trip-advanced-fest"]
       },
       "stars": [
         50,
@@ -363,6 +363,54 @@
       "replaces": "dept-store",
       "entry": null, "advanced": {},
       "stars": [45, 70, 90], "rewards": { "cash": [60, 110, 180], "xp": [80, 130, 200] }
+    },
+    {
+      "id": "shrinkflation", "name": "Shrinkflation Detective", "kind": "shrinkflation", "icon": "🔍", "building": "london-market", "city": "london",
+      "topics": ["shopping", "economics"],
+      "blurb": "Catch shrinking packs, multibuys that cost more and family sizes that are not cheaper. The tool is the unit price.",
+      "entry": null,
+      "advanced": {},
+      "stars": [50, 72, 90], "rewards": { "cash": [60, 110, 180], "xp": [80, 130, 200] }
+    },
+    {
+      "id": "pay-later", "name": "Pay Later Trap", "kind": "payLater", "icon": "🛍️", "building": "dept-store", "city": "london",
+      "topics": ["debt", "shopping", "credit"],
+      "blurb": "Shop for three months with buy-now-pay-later. Add up the stacked plans, read the terms and get through the month your shifts are cut.",
+      "entry": null,
+      "advanced": {},
+      "stars": [50, 72, 90], "rewards": { "cash": [60, 110, 180], "xp": [80, 130, 200] }
+    },
+    {
+      "id": "subscription-purge", "name": "Subscription Purge", "kind": "subscriptionPurge", "icon": "✂️", "building": "corner-shop", "city": "london",
+      "topics": ["budgeting", "shopping"],
+      "blurb": "A statement full of small monthly charges. Find the ones not earning their keep, add up the year and get past the cancel page.",
+      "entry": null,
+      "advanced": {},
+      "stars": [50, 72, 90], "rewards": { "cash": [60, 110, 180], "xp": [80, 130, 200] }
+    },
+    {
+      "id": "study-abroad", "name": "Study Abroad Wallet", "kind": "studyAbroad", "icon": "🌍", "building": "currency-exchange", "city": "london",
+      "topics": ["banking", "economics"],
+      "blurb": "A semester abroad on a budget in pounds. Find the fee hidden in the exchange rate and never say yes to paying in pounds.",
+      "entry": null,
+      "advanced": {},
+      "stars": [50, 72, 90], "rewards": { "cash": [60, 110, 180], "xp": [80, 130, 200] }
+    },
+    {
+      "id": "roommate-split", "name": "Roommate Split", "kind": "roommateSplit", "icon": "🛏️", "building": "rent-buy-office", "city": "london",
+      "topics": ["housing", "budgeting"],
+      "blurb": "Three friends, one flat, three unequal rooms. Split the rent fairly, write the house agreement and see what a guarantor signs up for.",
+      "entry": null,
+      "advanced": {},
+      "stars": [50, 72, 90], "rewards": { "cash": [60, 110, 180], "xp": [80, 130, 200] }
+    },
+    {
+      "id": "first-year-out", "name": "First Year Out", "kind": "firstYearOut", "icon": "📋", "building": "budget-hall", "city": "london",
+      "topics": ["budgeting", "earning", "saving"],
+      "blurb": "A first year of freelance income where no two months match. Budget on the lean month, plan for yearly bills and set tax aside.",
+      "entry": null,
+      "advanced": {},
+      "stars": [50, 72, 90], "rewards": { "cash": [60, 110, 180], "xp": [80, 130, 200] }
     }
   ]
 }

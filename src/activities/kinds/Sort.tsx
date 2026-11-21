@@ -29,7 +29,8 @@ export default function Sort({ def, params, onFinish, addReview, seed, difficult
   const set: SortSet = params.items ? { title: def.name, bins: params.bins!, items: params.items } : SORT_SETS[params.set];
   const items = useMemo(() => {
     const r = makeRng(seed);
-    return r.shuffle([...set.items]).slice(0, params.count ?? set.items.length);
+    // Ten cards a round from a bank of 40 or more, so replays deal a different hand
+    return r.shuffle([...set.items]).slice(0, params.count ?? Math.min(10, set.items.length));
   }, [seed, set, params.count]);
   const [i, setI] = useState(0);
   const [feedback, setFeedback] = useState<null | { ok: boolean; item: SortItem }>(null);

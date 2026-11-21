@@ -323,6 +323,54 @@
       "replaces": "charity-check",
       "entry": null, "advanced": {},
       "stars": [45, 70, 90], "rewards": { "cash": [40, 75, 120], "xp": [60, 100, 150] }
+    },
+    {
+      "id": "start-early", "name": "Start at 18 or 28?", "kind": "startEarly", "icon": "🌱", "building": "savings-garden", "city": "singapore",
+      "topics": ["saving", "investing", "interest"],
+      "blurb": "Twins race to 65: one invests for ten years and stops, the other starts later and never stops. Predict the winner and find out why.",
+      "entry": null,
+      "advanced": {},
+      "stars": [50, 72, 90], "rewards": { "cash": [60, 110, 180], "xp": [80, 130, 200] }
+    },
+    {
+      "id": "summer-job", "name": "Summer Job $2,000", "kind": "summerJob", "icon": "💰", "building": "retirement-tower", "city": "singapore",
+      "topics": ["saving", "retirement"],
+      "blurb": "A 16-year-old earned $2,000. Match each goal to the right account, learn what a Roth IRA allows and build a plan with some fun in it.",
+      "entry": null,
+      "advanced": {},
+      "stars": [50, 72, 90], "rewards": { "cash": [60, 110, 180], "xp": [80, 130, 200] }
+    },
+    {
+      "id": "claim-denied", "name": "Claim Denied?", "kind": "claimDenied", "icon": "☂️", "building": "insurance-office", "city": "singapore",
+      "topics": ["insurance"],
+      "blurb": "You are the claims adjuster. Read the policy wording and rule on five real claims: phone, laptop, flood and car.",
+      "entry": null,
+      "advanced": {},
+      "stars": [50, 72, 90], "rewards": { "cash": [60, 110, 180], "xp": [80, 130, 200] }
+    },
+    {
+      "id": "life-happens", "name": "Life Happens", "kind": "lifeHappens", "icon": "☔", "building": "emergency-center", "city": "singapore",
+      "topics": ["saving", "debt"],
+      "blurb": "Twelve months on a first paycheck with four surprise bills. Build a fund and pay for each hit without sliding into expensive debt.",
+      "entry": null,
+      "advanced": {},
+      "stars": [50, 72, 90], "rewards": { "cash": [60, 110, 180], "xp": [80, 130, 200] }
+    },
+    {
+      "id": "loan-signing", "name": "Loan Signing Day", "kind": "loanSigning", "icon": "📝", "building": "borrowing-booth", "city": "singapore",
+      "topics": ["debt", "interest"],
+      "blurb": "Choose student loans in the right order, watch interest build while you study, read a private loan and plan for a lower first salary.",
+      "entry": null,
+      "advanced": {},
+      "stars": [50, 72, 90], "rewards": { "cash": [60, 110, 180], "xp": [80, 130, 200] }
+    },
+    {
+      "id": "give-thousand", "name": "$1,000 to Give", "kind": "giveThousand", "icon": "💝", "building": "giving-center", "city": "singapore",
+      "topics": ["giving"],
+      "blurb": "Direct $1,000 for your class. Catch the fake charity, see past the overhead myth, compare results per dollar and use a match.",
+      "entry": null,
+      "advanced": {},
+      "stars": [50, 72, 90], "rewards": { "cash": [60, 110, 180], "xp": [80, 130, 200] }
     }
   ]
 }

@@ -191,6 +191,12 @@
           "label": "Fin City Quiz Show",
           "icon": "🎤",
           "npc": "host"
+        },
+        {
+          "activity": "myth-fact",
+          "label": "Myth, Fact or It Depends",
+          "icon": "🤔",
+          "npc": "host"
         }
       ],
       "interior": {
@@ -271,6 +277,12 @@
           "label": "Loan Officer Desk",
           "icon": "🔍",
           "npc": "banker"
+        },
+        {
+          "activity": "account-showdown",
+          "label": "First Account Showdown",
+          "icon": "🏦",
+          "npc": "banker"
         }
       ],
       "interior": {
@@ -345,13 +357,33 @@
           "label": "Credit Score Simulator",
           "icon": "🎚️",
           "npc": "clerk"
+        },
+        {
+          "activity": "score-tanks",
+          "label": "Whose Score Tanks?",
+          "icon": "📉",
+          "npc": "clerk"
         }
       ],
       "interior": {
         "floor": "#dfe3ee",
         "wall": "#f1ecfb",
         "theme": "office"
-      }
+      },
+      "entryStations": [
+        {
+          "service": "credit",
+          "label": "My Credit Report",
+          "icon": "📊",
+          "npc": "clerk"
+        },
+        {
+          "activity": "credit-sim",
+          "label": "Credit Score Simulator",
+          "icon": "🎚️",
+          "npc": "clerk"
+        }
+      ]
     },
     {
       "id": "style-studio",
@@ -477,6 +509,12 @@
           "service": "hall-of-fame",
           "label": "Leaderboard",
           "icon": "🏆"
+        },
+        {
+          "activity": "vote-on-it",
+          "label": "Vote On It",
+          "icon": "📜",
+          "npc": "mayor"
         }
       ],
       "interior": {
@@ -546,6 +584,12 @@
           "service": "arcade-prizes",
           "label": "Prize Counter",
           "icon": "🎟️",
+          "npc": "clerk"
+        },
+        {
+          "activity": "loot-box-lab",
+          "label": "Loot Box Lab",
+          "icon": "🎁",
           "npc": "clerk"
         }
       ],
@@ -672,6 +716,12 @@
           "label": "Run the Practice",
           "icon": "📋",
           "npc": "vet"
+        },
+        {
+          "activity": "pet-hustle",
+          "label": "Pet Sitting Side Hustle",
+          "icon": "🐶",
+          "npc": "vet"
         }
       ],
       "interior": {
@@ -750,13 +800,38 @@
           "service": "garage",
           "label": "My Garage",
           "icon": "🔑"
+        },
+        {
+          "activity": "dealer-playbook",
+          "label": "The Dealer’s Playbook",
+          "icon": "🚗",
+          "npc": "dealer"
         }
       ],
       "interior": {
         "floor": "#d6dbe3",
         "wall": "#f3f6fa",
         "theme": "showroom"
-      }
+      },
+      "entryStations": [
+        {
+          "service": "shop:vehicles",
+          "label": "Showroom",
+          "icon": "🚙",
+          "npc": "dealer"
+        },
+        {
+          "activity": "car-deal",
+          "label": "Buy, Borrow or Lease?",
+          "icon": "🧾",
+          "npc": "dealer"
+        },
+        {
+          "service": "garage",
+          "label": "My Garage",
+          "icon": "🔑"
+        }
+      ]
     },
     {
       "id": "real-estate",
@@ -788,9 +863,9 @@
           "npc": "agent"
         },
         {
-          "activity": "mortgage-math",
-          "label": "Mortgage Math",
-          "icon": "🧮",
+          "activity": "apartment-hunt",
+          "label": "First Apartment Hunt",
+          "icon": "🔑",
           "npc": "agent"
         }
       ],
@@ -798,7 +873,21 @@
         "floor": "#e2cfb0",
         "wall": "#fbf6ee",
         "theme": "office"
-      }
+      },
+      "entryStations": [
+        {
+          "service": "shop:property",
+          "label": "Land & Homes",
+          "icon": "🏡",
+          "npc": "agent"
+        },
+        {
+          "activity": "mortgage-math",
+          "label": "Mortgage Math",
+          "icon": "🧮",
+          "npc": "agent"
+        }
+      ]
     },
     {
       "id": "map-travel",
@@ -832,6 +921,12 @@
         {
           "activity": "travel-desk",
           "label": "Global Travel Desk",
+          "icon": "🧳",
+          "npc": "guide"
+        },
+        {
+          "activity": "spring-break",
+          "label": "Spring Break on $600",
           "icon": "🧳",
           "npc": "guide"
         }

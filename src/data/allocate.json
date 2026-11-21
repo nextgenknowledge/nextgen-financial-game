@@ -68,6 +68,209 @@
         { "id": "spend", "label": "Spend jar", "icon": "🛍️", "ideal": [12, 24] },
         { "id": "share", "label": "Share jar", "icon": "💝", "min": 2, "ideal": [2, 8], "need": true }
       ]
+    },
+    "pet-entry-cat": {
+      "title": "Whiskers the kitten's month",
+      "intro": "You have $50 for Whiskers this month. Food and litter come first. Then pick some fun!",
+      "budget": 50,
+      "step": 5,
+      "categories": [
+        { "id": "food", "label": "Cat food", "icon": "🥣", "need": true, "min": 15, "ideal": [15, 20] },
+        { "id": "litter", "label": "Litter", "icon": "🧹", "need": true, "min": 10, "ideal": [10, 10] },
+        { "id": "toys", "label": "Toys", "icon": "🧶", "ideal": [5, 10] },
+        { "id": "treats", "label": "Treats", "icon": "🐟", "ideal": [0, 5] },
+        { "id": "save", "label": "Save for next month", "icon": "🐷", "ideal": [5, 15] }
+      ]
+    },
+    "pet-entry-fish": {
+      "title": "Goldie the goldfish",
+      "intro": "You have $30 for Goldie's tank this month. Food and a clean filter keep Goldie healthy!",
+      "budget": 30,
+      "step": 2,
+      "categories": [
+        { "id": "food", "label": "Fish food", "icon": "🥣", "need": true, "min": 6, "ideal": [6, 8] },
+        { "id": "filter", "label": "Filter refill", "icon": "💧", "need": true, "min": 8, "ideal": [8, 10] },
+        { "id": "castle", "label": "Tank castle", "icon": "🐠", "ideal": [4, 8] },
+        { "id": "save", "label": "Save for next month", "icon": "🐷", "ideal": [4, 10] }
+      ]
+    },
+    "pet-entry-bunny": {
+      "title": "Hoppy the bunny",
+      "intro": "You have $40 for Hoppy this month. Bunnies need lots of hay and a vet visit now and then!",
+      "budget": 40,
+      "step": 5,
+      "categories": [
+        { "id": "hay", "label": "Hay and veggies", "icon": "🥕", "need": true, "min": 15, "ideal": [15, 20] },
+        { "id": "vet", "label": "Vet checkup savings", "icon": "🩺", "need": true, "min": 10, "ideal": [10, 10] },
+        { "id": "toys", "label": "Chew toys", "icon": "🧸", "ideal": [5, 10] },
+        { "id": "save", "label": "Save for next month", "icon": "🐷", "ideal": [5, 10] }
+      ]
+    },
+    "pet-advanced-cat": {
+      "title": "A cat on a first paycheck",
+      "intro": "Your weekend job nets $380 a month. You also adopted a cat. Plan the month: needs, a vet fund and some fun. Watch for surprises!",
+      "budget": 380,
+      "step": 10,
+      "categories": [
+        { "id": "phone", "label": "Phone plan (your share)", "icon": "📱", "need": true, "min": 40, "ideal": [40, 40] },
+        { "id": "transport", "label": "Bus pass", "icon": "🚌", "need": true, "min": 50, "ideal": [50, 50] },
+        { "id": "food", "label": "Cat food", "icon": "🥣", "need": true, "min": 40, "ideal": [40, 50] },
+        { "id": "litter", "label": "Litter", "icon": "🧹", "need": true, "min": 20, "ideal": [20, 20] },
+        { "id": "vet", "label": "Vet fund", "icon": "🩺", "need": true, "min": 30, "ideal": [30, 50] },
+        { "id": "fun", "label": "Fun & going out", "icon": "🎉", "ideal": [50, 100] },
+        { "id": "save", "label": "Savings", "icon": "🐷", "ideal": [80, 150] }
+      ],
+      "surprises": [{ "text": "Your cat needs a dental cleaning: $150.", "covers": ["vet", "save"], "cost": 150 }]
+    },
+    "pet-advanced-two": {
+      "title": "Two dogs, one budget",
+      "intro": "Two part-time jobs net $520 a month, and you look after two dogs. Plan the month and leave room for the unexpected.",
+      "budget": 520,
+      "step": 10,
+      "categories": [
+        { "id": "phone", "label": "Phone plan (your share)", "icon": "📱", "need": true, "min": 40, "ideal": [40, 40] },
+        { "id": "food", "label": "Dog food for two", "icon": "🥣", "need": true, "min": 90, "ideal": [90, 110] },
+        { "id": "meds", "label": "Flea and heartworm meds", "icon": "🛡️", "need": true, "min": 30, "ideal": [30, 30] },
+        { "id": "vet", "label": "Vet fund", "icon": "🩺", "need": true, "min": 50, "ideal": [50, 80] },
+        { "id": "fun", "label": "Fun & going out", "icon": "🎉", "ideal": [60, 110] },
+        { "id": "save", "label": "Savings", "icon": "🐷", "ideal": [100, 180] }
+      ],
+      "surprises": [{ "text": "One dog hurt a leg at the park: $250 at the emergency vet.", "covers": ["vet", "save"], "cost": 250 }]
+    },
+    "pet-advanced-rescue": {
+      "title": "Adopting a rescue dog",
+      "intro": "You net $400 this month and are adopting a rescue dog. The first month has one-time costs too. Plan it all.",
+      "budget": 400,
+      "step": 10,
+      "categories": [
+        { "id": "fee", "label": "Adoption fee", "icon": "🏠", "need": true, "min": 80, "ideal": [80, 80] },
+        { "id": "crate", "label": "Crate and bed", "icon": "🛏️", "need": true, "min": 40, "ideal": [40, 60] },
+        { "id": "food", "label": "Dog food", "icon": "🥣", "need": true, "min": 50, "ideal": [50, 60] },
+        { "id": "vet", "label": "First vet checkup", "icon": "🩺", "need": true, "min": 60, "ideal": [60, 60] },
+        { "id": "fun", "label": "Fun & going out", "icon": "🎉", "ideal": [40, 80] },
+        { "id": "save", "label": "Savings", "icon": "🐷", "ideal": [60, 120] }
+      ],
+      "surprises": [{ "text": "Your new dog chewed a neighbour's garden hose: $40 to replace it.", "covers": ["save"], "cost": 40 }]
+    },
+    "trip-entry-camp": {
+      "title": "Camping weekend",
+      "intro": "You have $120 for a camping trip. You need a campsite, a bus ride and food. Then choose the fun!",
+      "budget": 120,
+      "step": 10,
+      "categories": [
+        { "id": "site", "label": "Campsite", "icon": "🌳", "need": true, "min": 30, "ideal": [30, 30] },
+        { "id": "bus", "label": "Bus ticket", "icon": "🚌", "need": true, "min": 20, "ideal": [20, 20] },
+        { "id": "food", "label": "Food", "icon": "🍽️", "need": true, "min": 30, "ideal": [30, 40] },
+        { "id": "fire", "label": "Campfire snacks", "icon": "🔥", "ideal": [10, 20] },
+        { "id": "souvenir", "label": "Souvenirs", "icon": "🧸", "ideal": [0, 10] }
+      ]
+    },
+    "trip-entry-park": {
+      "title": "Day at the theme park",
+      "intro": "You have $100 for a day at the theme park. The ticket and bus come first. Lunch matters too!",
+      "budget": 100,
+      "step": 10,
+      "categories": [
+        { "id": "ticket", "label": "Park ticket", "icon": "🎟️", "need": true, "min": 50, "ideal": [50, 50] },
+        { "id": "bus", "label": "Bus ticket", "icon": "🚌", "need": true, "min": 10, "ideal": [10, 10] },
+        { "id": "lunch", "label": "Lunch", "icon": "🍕", "need": true, "min": 20, "ideal": [20, 30] },
+        { "id": "games", "label": "Prize games", "icon": "🎯", "ideal": [0, 10] },
+        { "id": "souvenir", "label": "Souvenirs", "icon": "🧸", "ideal": [0, 10] },
+        { "id": "save", "label": "Save the rest", "icon": "🐷", "ideal": [0, 10] }
+      ]
+    },
+    "trip-entry-grandma": {
+      "title": "Visiting Grandma by train",
+      "intro": "You have $150 to visit Grandma for the weekend. Pay for the train first. Then plan snacks, fun and a gift!",
+      "budget": 150,
+      "step": 10,
+      "categories": [
+        { "id": "train", "label": "Train ticket", "icon": "🚆", "need": true, "min": 60, "ideal": [60, 60] },
+        { "id": "snacks", "label": "Snacks for the trip", "icon": "🍎", "need": true, "min": 20, "ideal": [20, 30] },
+        { "id": "gift", "label": "Gift for Grandma", "icon": "🎁", "ideal": [10, 20] },
+        { "id": "museum", "label": "Museum day", "icon": "🏛️", "ideal": [20, 30] },
+        { "id": "save", "label": "Save the rest", "icon": "🐷", "ideal": [10, 30] }
+      ]
+    },
+    "trip-advanced-road": {
+      "title": "Road trip with friends",
+      "intro": "Your share of a 4-day road trip is $900. Plan gas, motels, food and park passes, plus a buffer, because something always goes wrong on the road.",
+      "budget": 900,
+      "step": 20,
+      "categories": [
+        { "id": "gas", "label": "Gas (your share)", "icon": "🚗", "need": true, "min": 120, "ideal": [120, 140] },
+        { "id": "motel", "label": "Motels (your share)", "icon": "🏨", "need": true, "min": 240, "ideal": [240, 300] },
+        { "id": "food", "label": "Food", "icon": "🍔", "need": true, "min": 160, "ideal": [160, 200] },
+        { "id": "pass", "label": "Park passes", "icon": "🗺️", "need": true, "min": 40, "ideal": [40, 40] },
+        { "id": "fun", "label": "Fun stops", "icon": "🎢", "ideal": [60, 140] },
+        { "id": "buffer", "label": "Emergency buffer", "icon": "☔", "ideal": [60, 120] }
+      ],
+      "surprises": [{ "text": "A flat tyre on day 2: your share of the new tyre is $60.", "covers": ["buffer"], "cost": 60 }]
+    },
+    "trip-advanced-tokyo": {
+      "title": "Class trip to Tokyo",
+      "intro": "Budget: $2,000 for 6 days. The flight is a fixed $1,100. Plan a hostel, food, transit and fun, and keep a buffer for card fees and surprises.",
+      "budget": 2000,
+      "step": 20,
+      "categories": [
+        { "id": "flight", "label": "Flight (booked)", "icon": "✈️", "need": true, "min": 1100, "ideal": [1100, 1100] },
+        { "id": "hostel", "label": "Hostel (6 nights)", "icon": "🏨", "need": true, "min": 300, "ideal": [300, 360] },
+        { "id": "food", "label": "Food", "icon": "🍜", "need": true, "min": 220, "ideal": [220, 300] },
+        { "id": "transit", "label": "Transit pass", "icon": "🚇", "need": true, "min": 60, "ideal": [60, 80] },
+        { "id": "fun", "label": "Temples, museums, arcades", "icon": "🎮", "ideal": [100, 200] },
+        { "id": "buffer", "label": "Emergency buffer", "icon": "☔", "ideal": [80, 160] }
+      ],
+      "surprises": [{ "text": "Your bank charged a 3% fee on every card purchase abroad: $40.", "covers": ["buffer"], "cost": 40 }]
+    },
+    "trip-advanced-fest": {
+      "title": "Music festival weekend",
+      "intro": "You have $700 for a 3-day festival. The ticket is $320. Plan travel, camping, food and merch, and leave room for the weather.",
+      "budget": 700,
+      "step": 20,
+      "categories": [
+        { "id": "ticket", "label": "Festival ticket", "icon": "🎟️", "need": true, "min": 320, "ideal": [320, 320] },
+        { "id": "travel", "label": "Bus there and back", "icon": "🚌", "need": true, "min": 80, "ideal": [80, 100] },
+        { "id": "camp", "label": "Tent and gear", "icon": "🌳", "need": true, "min": 60, "ideal": [60, 80] },
+        { "id": "food", "label": "Food", "icon": "🍕", "need": true, "min": 100, "ideal": [100, 140] },
+        { "id": "merch", "label": "Merch", "icon": "👕", "ideal": [0, 60] },
+        { "id": "buffer", "label": "Emergency buffer", "icon": "☔", "ideal": [40, 100] }
+      ],
+      "surprises": [{ "text": "It poured all weekend. A poncho and dry sleeping bag rental cost $50.", "covers": ["buffer"], "cost": 50 }]
+    },
+    "budget-entry-birthday": {
+      "title": "Birthday Money",
+      "intro": "You got $50 for your birthday! You also have a friend's party coming up. Split it between your jars.",
+      "budget": 50,
+      "step": 2,
+      "categories": [
+        { "id": "save", "label": "Save jar", "icon": "🐷", "need": true, "min": 6, "ideal": [10, 20] },
+        { "id": "spend", "label": "Spend jar", "icon": "🛍️", "ideal": [14, 30] },
+        { "id": "share", "label": "Share jar", "icon": "💝", "need": true, "min": 2, "ideal": [2, 10] },
+        { "id": "gift", "label": "Gift for a friend's party", "icon": "🎁", "need": true, "min": 6, "ideal": [6, 10] }
+      ]
+    },
+    "budget-entry-allowance": {
+      "title": "Weekly Allowance",
+      "intro": "You get $20 a week. Give every dollar a job: save some, spend some and share some.",
+      "budget": 20,
+      "step": 2,
+      "categories": [
+        { "id": "save", "label": "Save jar", "icon": "🐷", "need": true, "min": 2, "ideal": [4, 8] },
+        { "id": "spend", "label": "Spend jar", "icon": "🛍️", "ideal": [8, 12] },
+        { "id": "share", "label": "Share jar", "icon": "💝", "need": true, "min": 2, "ideal": [2, 4] }
+      ]
+    },
+    "budget-entry-bike": {
+      "title": "Saving for a Bike",
+      "intro": "You earned $60 walking dogs. You're saving up for a new bike. Split it between your jars.",
+      "budget": 60,
+      "step": 2,
+      "categories": [
+        { "id": "save", "label": "Save jar", "icon": "🐷", "need": true, "min": 6, "ideal": [10, 20] },
+        { "id": "bike", "label": "Bike goal jar", "icon": "🚲", "need": true, "min": 6, "ideal": [12, 24] },
+        { "id": "spend", "label": "Spend jar", "icon": "🛍️", "ideal": [12, 24] },
+        { "id": "share", "label": "Share jar", "icon": "💝", "need": true, "min": 2, "ideal": [4, 10] }
+      ]
     }
   }
 }

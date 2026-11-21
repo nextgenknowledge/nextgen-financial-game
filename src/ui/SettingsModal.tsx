@@ -211,7 +211,7 @@ export function SettingsModal({ onClose, extra }: { onClose: () => void; extra?:
                   Reset keys
                 </Button>
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(230px, 1fr))', gap: '0.4rem' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(230px, 100%), 1fr))', gap: '0.4rem' }}>
                 {(Object.keys(KEY_ACTION_LABELS) as KeyAction[]).map((a) => (
                   <div key={a} className="row between" style={{ padding: '0.2rem 0' }}>
                     <span className="small bold">{KEY_ACTION_LABELS[a]}</span>

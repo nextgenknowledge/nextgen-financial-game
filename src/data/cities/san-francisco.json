@@ -108,13 +108,39 @@
           "label": "Career Quiz",
           "icon": "🎤",
           "npc": "host"
+        },
+        {
+          "activity": "offer-showdown",
+          "label": "Offer Letter Showdown",
+          "icon": "💵",
+          "npc": "clerk"
         }
       ],
       "interior": {
         "floor": "#dfe6ee",
         "wall": "#f4f8fb",
         "theme": "office"
-      }
+      },
+      "entryStations": [
+        {
+          "activity": "job-center",
+          "label": "Job Board",
+          "icon": "💼",
+          "npc": "clerk"
+        },
+        {
+          "service": "retirement",
+          "label": "Benefits Desk (Retirement)",
+          "icon": "🏖️",
+          "npc": "banker"
+        },
+        {
+          "activity": "sf-quiz",
+          "label": "Career Quiz",
+          "icon": "🎤",
+          "npc": "host"
+        }
+      ]
     },
     {
       "id": "tech-campus",
@@ -156,6 +182,12 @@
           "label": "Venture Round",
           "icon": "🚀",
           "activity": "venture-round"
+        },
+        {
+          "activity": "creator-economy",
+          "label": "Creator Economy",
+          "icon": "🎬",
+          "npc": "agent"
         }
       ],
       "interior": {
@@ -212,6 +244,12 @@
           "label": "Gadget & Collectibles Shelf",
           "icon": "🖼️",
           "npc": "clerk"
+        },
+        {
+          "activity": "gig-or-job",
+          "label": "Gig or Job?",
+          "icon": "🚗",
+          "npc": "coder"
         }
       ],
       "interior": {
@@ -266,6 +304,12 @@
           "activity": "fintech-lab",
           "label": "Fintech Product Lab",
           "icon": "🚀",
+          "npc": "grocer"
+        },
+        {
+          "activity": "college-roi",
+          "label": "College ROI",
+          "icon": "🎓",
           "npc": "grocer"
         }
       ],
@@ -341,6 +385,12 @@
           "label": "Fraud & Risk Ops",
           "icon": "🕵️",
           "npc": "coder"
+        },
+        {
+          "activity": "deepfake-desk",
+          "label": "Deepfake Desk",
+          "icon": "🤖",
+          "npc": "guard"
         }
       ],
       "interior": {
@@ -398,6 +448,12 @@
           "label": "Paycheck Decoder",
           "icon": "🔍",
           "npc": "clerk"
+        },
+        {
+          "activity": "side-hustle-tax",
+          "label": "Side Hustle Tax Surprise",
+          "icon": "🧾",
+          "npc": "banker"
         }
       ],
       "entryStations": [

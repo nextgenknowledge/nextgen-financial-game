@@ -5,6 +5,7 @@ import data from '@/data/allocate.json';
 import { Button, ReadAloud, ProgressBar } from '@/ui/common';
 import { money } from '@/ui/format';
 import { playSfx } from '@/engine/audio';
+import { pickVariant } from '../variant';
 
 interface Cat {
   id: string;
@@ -64,8 +65,9 @@ export function scoreAllocation(s: Scenario, alloc: Record<string, number>) {
 }
 
 /** Slider budget allocation with needs, ideal ranges and surprise expenses. */
-export default function Allocate({ params, onFinish, difficulty, addReview }: KindProps<{ scenario: string }>) {
-  const s = SCENARIOS[params.scenario];
+export default function Allocate({ params, seed, onFinish, difficulty, addReview }: KindProps<{ scenario: string | string[] }>) {
+  // A list of scenarios rotates, so replays bring a different budget to plan
+  const s = SCENARIOS[pickVariant(`allocate:${[params.scenario].flat()[0]}`, params.scenario, seed)];
   const [alloc, setAlloc] = useState<Record<string, number>>(() => Object.fromEntries(s.categories.map((c) => [c.id, 0])));
   const [result, setResult] = useState<ReturnType<typeof scoreAllocation> | null>(null);
   const total = Object.values(alloc).reduce((a, b) => a + b, 0);

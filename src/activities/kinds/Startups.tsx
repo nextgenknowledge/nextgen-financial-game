@@ -89,7 +89,7 @@ export default function Startups({ params, onFinish, addReview, seed }: KindProp
         </span>
       </div>
       {practice && <div className="card flat small">You need at least $50 of cash to back startups for real, so this round uses 100 practice coins. Earn more at a job and come back to invest for real!</div>}
-      <div className="item-grid" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(230px, 1fr))' }}>
+      <div className="item-grid" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(min(230px, 100%), 1fr))' }}>
         {pitches.map((p) => (
           <div key={p.id} className="item-card" style={{ alignItems: 'stretch', textAlign: 'left' }}>
             <div className="row">

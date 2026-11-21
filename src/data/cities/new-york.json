@@ -102,13 +102,33 @@
           "label": "Trading Floor Quiz",
           "icon": "📊",
           "npc": "trader"
+        },
+        {
+          "activity": "meme-stock",
+          "label": "Meme Stock Week",
+          "icon": "🚀",
+          "npc": "trader"
         }
       ],
       "interior": {
         "floor": "#d9cdb4",
         "wall": "#f1ece0",
         "theme": "exchange"
-      }
+      },
+      "entryStations": [
+        {
+          "activity": "candle-predict",
+          "label": "Up or Down?",
+          "icon": "🕯️",
+          "npc": "trader"
+        },
+        {
+          "activity": "market-quiz",
+          "label": "Trading Floor Quiz",
+          "icon": "📊",
+          "npc": "trader"
+        }
+      ]
     },
     {
       "id": "ny-brokerage",
@@ -150,6 +170,12 @@
           "label": "Equity Research Desk",
           "icon": "📊",
           "activity": "valuation-desk"
+        },
+        {
+          "activity": "which-company",
+          "label": "Which Company Would You Own?",
+          "icon": "🏢",
+          "npc": "banker"
         }
       ],
       "interior": {
@@ -206,13 +232,33 @@
           "label": "Dollar-Cost Averaging Lab",
           "icon": "📅",
           "npc": "teacher"
+        },
+        {
+          "activity": "beat-index",
+          "label": "Beat the Index",
+          "icon": "🏆",
+          "npc": "banker"
         }
       ],
       "interior": {
         "floor": "#8a5a34",
         "wall": "#e8d7b9",
         "theme": "library"
-      }
+      },
+      "entryStations": [
+        {
+          "activity": "portfolio-challenge",
+          "label": "Portfolio Challenge",
+          "icon": "🧺",
+          "npc": "banker"
+        },
+        {
+          "activity": "dca-lab",
+          "label": "Dollar-Cost Averaging Lab",
+          "icon": "📅",
+          "npc": "teacher"
+        }
+      ]
     },
     {
       "id": "ny-quiz-tower",
@@ -242,13 +288,27 @@
           "label": "Elevator to Floor 1",
           "icon": "🛗",
           "npc": "host"
+        },
+        {
+          "activity": "crash-stories",
+          "label": "Crash Stories",
+          "icon": "📉",
+          "npc": "host"
         }
       ],
       "interior": {
         "floor": "#3a3f4a",
         "wall": "#d9dde6",
         "theme": "office"
-      }
+      },
+      "entryStations": [
+        {
+          "activity": "quiz-tower",
+          "label": "Elevator to Floor 1",
+          "icon": "🛗",
+          "npc": "host"
+        }
+      ]
     },
     {
       "id": "ny-newsroom",
@@ -278,13 +338,27 @@
           "label": "Breaking News Desk",
           "icon": "📰",
           "npc": "reporter"
+        },
+        {
+          "activity": "headline-hype",
+          "label": "Headline or Hype?",
+          "icon": "📰",
+          "npc": "reporter"
         }
       ],
       "interior": {
         "floor": "#c9b48a",
         "wall": "#f4ead6",
         "theme": "office"
-      }
+      },
+      "entryStations": [
+        {
+          "activity": "newsroom",
+          "label": "Breaking News Desk",
+          "icon": "📰",
+          "npc": "reporter"
+        }
+      ]
     },
     {
       "id": "ny-theater",
@@ -320,6 +394,12 @@
           "label": "Short Seller's Desk",
           "icon": "🔍",
           "npc": "reporter"
+        },
+        {
+          "activity": "investor-seat",
+          "label": "Investor's Seat",
+          "icon": "💼",
+          "npc": "host"
         }
       ],
       "interior": {

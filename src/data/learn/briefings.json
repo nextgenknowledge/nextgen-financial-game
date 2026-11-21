@@ -1482,6 +1482,571 @@
         "matching-gift",
         "donor-advised-fund"
       ]
+    },
+    "myth-fact": {
+      "ideas": [
+        "Tax brackets are marginal: a raise never lowers your take-home pay.",
+        "Paying a card in full builds credit just as well as carrying a balance, with no interest.",
+        "Debit and cash build no credit history. Checking your own score never lowers it.",
+        "A guaranteed high return with no risk is the mark of a scam."
+      ],
+      "concepts": [
+        "tax-bracket",
+        "marginal-tax-rate",
+        "credit-score",
+        "tax-refund",
+        "too-good-to-be-true",
+        "starting-early"
+      ]
+    },
+    "account-showdown": {
+      "ideas": [
+        "Match the account to the habits: cash deposits need branches, parked money needs interest.",
+        "Read the overdraft line first. It is the fee that turns a small mistake into a big one.",
+        "A declined debit card costs nothing. Overdraft coverage costs a fee for the same purchase.",
+        "Money you will not touch for months should earn interest."
+      ],
+      "concepts": [
+        "apy",
+        "opportunity-cost",
+        "emergency-fund",
+        "red-flags"
+      ]
+    },
+    "score-tanks": {
+      "ideas": [
+        "Payment history is about 35% of a score: late payments hurt most and stay for seven years.",
+        "Utilization is about 30%: keep the balance under 30% of the limit.",
+        "No borrowing history means no score, which lenders treat much like a poor one.",
+        "Several new applications in a short time lower a score for a while."
+      ],
+      "concepts": [
+        "credit-score",
+        "payment-history",
+        "credit-utilization",
+        "hard-inquiry",
+        "credit-age",
+        "minimum-payment"
+      ]
+    },
+    "vote-on-it": {
+      "ideas": [
+        "Compare a tax as a share of income, not only in dollars.",
+        "Whoever gets the bill is not always who bears the cost: property tax reaches renters through rent.",
+        "A bond is a loan to the city: the total repaid includes interest.",
+        "Every dollar of public money has an opportunity cost."
+      ],
+      "concepts": [
+        "opportunity-cost",
+        "public-goods",
+        "property-tax",
+        "municipal-bond",
+        "budget-deficit",
+        "effective-tax-rate"
+      ]
+    },
+    "loot-box-lab": {
+      "ideas": [
+        "A 1% chance means about 100 tries on average, with no guarantee.",
+        "Random rolls have no memory: a losing streak does not make a win due.",
+        "Turn odds into a price before you buy: odds times cost per try.",
+        "Fake currencies, countdowns, near misses and streaks are designed to keep you spending."
+      ],
+      "concepts": [
+        "expected-value",
+        "needs-vs-wants",
+        "red-flags",
+        "opportunity-cost",
+        "anchoring"
+      ]
+    },
+    "pet-hustle": {
+      "ideas": [
+        "Price near the market rate, then let demand guide you: a waiting list means raise the price.",
+        "Real hourly pay counts all your time, including travel.",
+        "Net self-employment earnings over $400 are taxable, at about 15.3% self-employment tax.",
+        "Earned income lets you open a Roth IRA at any age."
+      ],
+      "concepts": [
+        "freelance-income",
+        "self-employment-tax",
+        "market-rate",
+        "profit-margin",
+        "roth",
+        "capacity",
+        "starting-early"
+      ]
+    },
+    "dealer-playbook": {
+      "ideas": [
+        "Negotiate the total out-the-door price, never the monthly payment.",
+        "Add-ons on the buyer's order are optional, even when they are pre-printed.",
+        "Total cost is the payment times the number of months: a longer loan costs more.",
+        "A pre-approved loan from your own bank is the rate the dealer has to beat."
+      ],
+      "concepts": [
+        "total-interest",
+        "loan-payment",
+        "apr",
+        "total-cost-of-ownership",
+        "walk-away-point",
+        "anchoring",
+        "red-flags"
+      ]
+    },
+    "apartment-hunt": {
+      "ideas": [
+        "Compare the all-in monthly cost: rent, utilities, fees, parking and the commute.",
+        "Moving in takes first month, a deposit and fees in cash.",
+        "Jointly and severally liable means each tenant can be made to pay the whole rent.",
+        "Renter's insurance covers your belongings; the landlord's policy covers only the building."
+      ],
+      "concepts": [
+        "lease",
+        "emergency-fund",
+        "premium",
+        "deductible",
+        "budget-50-30-20",
+        "opportunity-cost"
+      ]
+    },
+    "spring-break": {
+      "ideas": [
+        "The advertised price is rarely the full price: add bags, fees, taxes and surcharges first.",
+        "Divide what is left by the days remaining to get a daily number.",
+        "Paying a little for free cancellation is worth it when plans are uncertain.",
+        "A debt on your card is yours, whoever spent the money."
+      ],
+      "concepts": [
+        "total-cost-of-ownership",
+        "sinking-fund",
+        "high-interest-debt",
+        "minimum-payment",
+        "opportunity-cost",
+        "apr"
+      ]
+    },
+    "meme-stock": {
+      "ideas": [
+        "Every share you buy is one someone else sells. In a hype cycle, late buyers pay early ones.",
+        "Speculate only with money that has no other job.",
+        "Taking your original stake off the table caps the downside.",
+        "Gains on shares held a year or less are taxed as ordinary income."
+      ],
+      "concepts": [
+        "volatility",
+        "short-squeeze",
+        "red-flags",
+        "capital-gains-tax"
+      ]
+    },
+    "which-company": {
+      "ideas": [
+        "A stock price already includes what investors expect.",
+        "Runway is cash divided by monthly losses.",
+        "Adjusted numbers and giant market sizes are marketing.",
+        "Selling new shares dilutes every existing owner."
+      ],
+      "concepts": [
+        "runway",
+        "burn-rate",
+        "dilution",
+        "priced-in",
+        "ebitda"
+      ]
+    },
+    "beat-index": {
+      "ideas": [
+        "A few huge winners drive most of the market's gains.",
+        "Owning the whole market is the only sure way to own them.",
+        "A 1% yearly fee can cost about a quarter of your money over 30 years.",
+        "Streaks and survivor statistics mislead."
+      ],
+      "concepts": [
+        "index-fund",
+        "diversification",
+        "expense-ratio",
+        "efficient-market"
+      ]
+    },
+    "crash-stories": {
+      "ideas": [
+        "Borrowing to invest magnifies losses. A 10% fall can wipe out a margin buyer.",
+        "A 50% loss needs a 100% gain to recover.",
+        "Deposit insurance ended ordinary bank runs.",
+        "Every bubble has a story about why this time is different."
+      ],
+      "concepts": [
+        "margin-call",
+        "drawdown",
+        "deposit-insurance",
+        "market-timing"
+      ]
+    },
+    "headline-hype": {
+      "ideas": [
+        "Markets move on surprises. Expected news is already in the price.",
+        "Turn dramatic words into percentages.",
+        "Ask who paid for a story or a rating.",
+        "A pattern with no cause is a coincidence."
+      ],
+      "concepts": [
+        "priced-in",
+        "percent-change",
+        "analyst-rating",
+        "red-flags"
+      ]
+    },
+    "investor-seat": {
+      "ideas": [
+        "Ask for numbers you can check: paying customers and cancellations.",
+        "A customer is only worth winning if they bring in more than they cost.",
+        "No competition and trillion-dollar markets are red flags.",
+        "Most startups fail. Invest small and spread wide."
+      ],
+      "concepts": [
+        "cac",
+        "churn",
+        "post-money",
+        "unit-economics",
+        "red-flags"
+      ]
+    },
+    "shrinkflation": {
+      "ideas": [
+        "The unit price on the shelf label is the real price.",
+        "A smaller pack at the same price is a price rise.",
+        "Multibuys and was-prices are not always savings.",
+        "An offer on something you did not plan to buy is spending."
+      ],
+      "concepts": [
+        "unit-price",
+        "inflation",
+        "percent-change",
+        "bogo"
+      ]
+    },
+    "pay-later": {
+      "ideas": [
+        "Each plan looks small. Add them all up.",
+        "If you cannot pay today, check whether you can next month and the month after.",
+        "Missed payments bring fees and can mark your credit file.",
+        "A longer plan with an APR is a loan."
+      ],
+      "concepts": [
+        "apr",
+        "minimum-payment",
+        "payment-history",
+        "needs-vs-wants"
+      ]
+    },
+    "subscription-purge": {
+      "ideas": [
+        "Check statements for recurring payments every few months.",
+        "Free trials turn into payments automatically.",
+        "Cancel pages are built to stop you.",
+        "Annual plans only save money if you stay all year."
+      ],
+      "concepts": [
+        "fixed-expenses",
+        "opportunity-cost",
+        "zero-based-budget",
+        "needs-vs-wants"
+      ]
+    },
+    "study-abroad": {
+      "ideas": [
+        "0% commission means the fee is hidden in the rate.",
+        "Decline conversion at card machines and ATMs.",
+        "Fixed fees punish small transactions.",
+        "Lock in big fixed costs when income and costs are in different currencies."
+      ],
+      "concepts": [
+        "exchange-rate",
+        "dcc",
+        "fx-fee",
+        "currency-risk"
+      ]
+    },
+    "roommate-split": {
+      "ideas": [
+        "Split rent by what each person gets, agreed before anyone picks a room.",
+        "Write down deposits, bills, guests and leaving.",
+        "On a joint tenancy everyone can be chased for all the rent.",
+        "Cap a guarantee at your own share."
+      ],
+      "concepts": [
+        "lease",
+        "security-deposit",
+        "co-signing",
+        "fixed-expenses"
+      ]
+    },
+    "first-year-out": {
+      "ideas": [
+        "With irregular income, budget on a lean month.",
+        "Save a twelfth of yearly costs every month.",
+        "Freelancers set aside tax from every payment.",
+        "A big month is next season's income, not a raise."
+      ],
+      "concepts": [
+        "sinking-fund",
+        "emergency-fund",
+        "freelance-income",
+        "lifestyle-creep"
+      ]
+    },
+    "sneaker-flip": {
+      "ideas": [
+        "Profit is the sale price minus fees, shipping and cost.",
+        "Half-price deals and gift-card payments are scam signals.",
+        "Most hyped items lose value as hype fades.",
+        "Never borrow to buy stock you may not sell."
+      ],
+      "concepts": [
+        "profit-margin",
+        "transaction-costs",
+        "red-flags",
+        "supply-and-demand"
+      ]
+    },
+    "tariff-shock": {
+      "ideas": [
+        "A tariff is a tax paid by the importer.",
+        "Price from the landed cost.",
+        "Passing on part of a cost often earns the most.",
+        "Relabeling and false invoices are customs fraud."
+      ],
+      "concepts": [
+        "tariff",
+        "landed-cost",
+        "elasticity",
+        "supply-shock"
+      ]
+    },
+    "cofounder-split": {
+      "ideas": [
+        "Split ownership by ongoing commitment, not by who had the idea.",
+        "Vesting with a cliff protects the company when someone leaves.",
+        "The company must own what employees build.",
+        "Raising money shrinks every owner's percentage."
+      ],
+      "concepts": [
+        "cap-table",
+        "vesting",
+        "dilution",
+        "post-money"
+      ]
+    },
+    "money-trail": {
+      "ideas": [
+        "Every entry needs proof.",
+        "Reconcile the books to the bank every month.",
+        "The person who handles money should not be the only one checking it.",
+        "Raise problems privately, with documents."
+      ],
+      "concepts": [
+        "reconcile",
+        "cash-flow",
+        "red-flags",
+        "balance-sheet"
+      ]
+    },
+    "delivery-squeeze": {
+      "ideas": [
+        "Work out profit per order, not total sales.",
+        "Charging more on apps passes a real cost to the customers who create it.",
+        "Margin-cutting promotions need far more orders than they promise.",
+        "Whoever owns the customer sets the price."
+      ],
+      "concepts": [
+        "contribution-margin",
+        "unit-economics",
+        "variable-cost",
+        "markup"
+      ]
+    },
+    "concert-pricing": {
+      "ideas": [
+        "An instant sellout with a booming resale market means the price was too low.",
+        "Tiers and face-value resale take the profit out of scalping.",
+        "Show the all-in price.",
+        "Raise prices only while demand exceeds supply."
+      ],
+      "concepts": [
+        "supply-and-demand",
+        "elasticity",
+        "profit-maximizing-price",
+        "market-rate"
+      ]
+    },
+    "offer-showdown": {
+      "ideas": [
+        "Compare what each offer leaves after taxes and rent.",
+        "Always take the full retirement match.",
+        "Value startup options near zero.",
+        "Negotiate with a specific number and a reason."
+      ],
+      "concepts": [
+        "total-compensation",
+        "employer-match",
+        "stock-option",
+        "net-pay"
+      ]
+    },
+    "creator-economy": {
+      "ideas": [
+        "Views pay little on their own.",
+        "Usage rights, exclusivity and payment terms each have a price.",
+        "Paid posts must be labeled.",
+        "Self-employed people pay both halves of payroll tax."
+      ],
+      "concepts": [
+        "freelance-income",
+        "self-employment-tax",
+        "fica",
+        "emergency-fund"
+      ]
+    },
+    "gig-or-job": {
+      "ideas": [
+        "Divide pay by all hours worked, including waiting.",
+        "Count car costs, about 30 cents a mile or more.",
+        "Gig workers pay both halves of payroll tax.",
+        "Check that insurance covers driving for pay."
+      ],
+      "concepts": [
+        "gross-pay",
+        "self-employment-tax",
+        "depreciation",
+        "insurance-types"
+      ]
+    },
+    "college-roi": {
+      "ideas": [
+        "Only grants and scholarships are free.",
+        "Compare schools on net price.",
+        "Keep total student debt below your expected first-year salary.",
+        "Debt without a degree is the hardest kind to repay."
+      ],
+      "concepts": [
+        "loan-payment",
+        "opportunity-cost",
+        "total-interest",
+        "debt-to-income"
+      ]
+    },
+    "deepfake-desk": {
+      "ideas": [
+        "Urgency, secrecy and odd payment methods mark a scam.",
+        "A familiar voice or face is no longer proof.",
+        "Scammers ask for payments that cannot be reversed.",
+        "Moving money through your account for others makes you part of the crime."
+      ],
+      "concepts": [
+        "phishing",
+        "money-mule",
+        "too-good-to-be-true",
+        "red-flags"
+      ]
+    },
+    "side-hustle-tax": {
+      "ideas": [
+        "Pay for your work is income, however it is paid.",
+        "Self-employment profit of $400 or more means filing.",
+        "Self-employment tax is about 15.3% of most profit.",
+        "Keep receipts and pay as you go."
+      ],
+      "concepts": [
+        "self-employment-tax",
+        "taxable-income",
+        "withholding",
+        "freelance-income"
+      ]
+    },
+    "start-early": {
+      "ideas": [
+        "Time does more than money.",
+        "Rule of 72: divide 72 by the return to find the years to double.",
+        "Keep investing through crashes.",
+        "Judge long-term numbers after inflation."
+      ],
+      "concepts": [
+        "starting-early",
+        "compound-interest",
+        "rule-of-72",
+        "real-return"
+      ]
+    },
+    "summer-job": {
+      "ideas": [
+        "Safe savings for soon, investments for decades.",
+        "Teenagers with earned income can open a Roth IRA.",
+        "Roth contributions can come out any time.",
+        "A good plan funds safety, goals, the future and fun."
+      ],
+      "concepts": [
+        "roth",
+        "emergency-fund",
+        "time-horizon",
+        "pay-yourself-first"
+      ]
+    },
+    "claim-denied": {
+      "ideas": [
+        "The deductible comes off every claim.",
+        "Exclusions decide claims.",
+        "Actual cash value is worth less than replacement cost.",
+        "Liability protects others from you; collision protects your car."
+      ],
+      "concepts": [
+        "deductible",
+        "insurance-types",
+        "premium",
+        "self-insure"
+      ]
+    },
+    "life-happens": {
+      "ideas": [
+        "Surprises are normal. Plan for them.",
+        "Build a first $1,000 fast, then three to six months of costs.",
+        "Use cash first and borrow as little as possible.",
+        "A payday loan fee can equal about 390% a year."
+      ],
+      "concepts": [
+        "emergency-fund",
+        "high-interest-debt",
+        "apr",
+        "minimum-payment"
+      ]
+    },
+    "loan-signing": {
+      "ideas": [
+        "Borrow grants first, then federal, then private.",
+        "Unsubsidized interest builds while you study.",
+        "Variable rates and cosigners add hidden risk.",
+        "Income-driven plans beat missing payments."
+      ],
+      "concepts": [
+        "simple-interest",
+        "co-signing",
+        "loan-payment",
+        "interest-rate-risk"
+      ]
+    },
+    "give-thousand": {
+      "ideas": [
+        "Check charities in a public registry.",
+        "Judge by results per dollar, not overhead alone.",
+        "Matching gifts double what you give.",
+        "After disasters, give cash to established groups."
+      ],
+      "concepts": [
+        "overhead-ratio",
+        "cost-per-outcome",
+        "matching-gift",
+        "red-flags"
+      ]
     }
   }
 }

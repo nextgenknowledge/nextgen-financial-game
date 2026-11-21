@@ -14,17 +14,36 @@ import { cls } from '@/ui/format';
 import { useActivityPaused } from '../paused';
 import { type HedgeCase, hedgeContracts, hedgeOutcome, hedgePath } from '@/game/finance/desks';
 import { Bars, C, LineChart, ProHead, Slider, Stats, Table, Verdict, usdK } from './pro/kit';
+import { variantIndex } from '../variant';
 
-const CASES: HedgeCase[] = [
-  { id: 'airline', title: 'Harbour Air', brief: 'You must buy 2,520,000 gallons of jet fuel in 3 months. If fuel rises, your costs explode.', side: 1, exposure: 2_520_000, spot: 2.6, contractSize: 42_000, unit: 'gallon', vol: 0.035, margin: 13_000, maint: 8_500 },
-  { id: 'farmer', title: 'Wheat farm cooperative', brief: 'Your 400,000-bushel harvest comes in 3 months. If wheat falls, your income falls.', side: -1, exposure: 400_000, spot: 6.2, contractSize: 5_000, unit: 'bushel', vol: 0.03, margin: 3_800, maint: 2_400 },
-  { id: 'fund', title: 'Hong Kong equity fund', brief: 'You manage a HK$90M stock portfolio with a beta of 1.25 to the Hang Seng. Clients fear a crash this quarter but you must stay invested.', side: -1, exposure: 90_000_000, spot: 18_000, contractSize: 50, beta: 1.25, unit: 'index point', vol: 0.03, margin: 170_000, maint: 115_000 },
+// Three hedgers a run, one of each kind, each drawn from four: a business that must buy later,
+// a producer that will sell later, and a fund protecting a stock portfolio
+const POOLS: HedgeCase[][] = [
+  [
+    { id: 'airline', title: 'Harbour Air', brief: 'You must buy 2,520,000 gallons of jet fuel in 3 months. If fuel rises, your costs explode.', side: 1, exposure: 2_520_000, spot: 2.6, contractSize: 42_000, unit: 'gallon', asset: 'fuel', vol: 0.035, margin: 13_000, maint: 8_500 },
+    { id: 'airline', title: 'Golden Crust Bakeries', brief: 'You must buy 350,000 bushels of wheat for flour in 3 months. If wheat rises, every loaf costs more to make.', side: 1, exposure: 350_000, spot: 6.2, contractSize: 5_000, unit: 'bushel', asset: 'wheat', vol: 0.03, margin: 3_800, maint: 2_400 },
+    { id: 'airline', title: 'Velvet Chocolate Co.', brief: 'You must buy 900 tonnes of cocoa beans in 3 months for the holiday season. If cocoa rises, your margins vanish.', side: 1, exposure: 900, spot: 3_800, contractSize: 10, unit: 'tonne', asset: 'cocoa', vol: 0.04, margin: 4_500, maint: 3_000 },
+    { id: 'airline', title: 'Bayline Trucking', brief: 'Your fleet will burn 1,680,000 gallons of diesel next quarter. If diesel rises, your delivery contracts lose money.', side: 1, exposure: 1_680_000, spot: 3.1, contractSize: 42_000, unit: 'gallon', asset: 'diesel', vol: 0.035, margin: 15_000, maint: 10_000 },
+  ],
+  [
+    { id: 'farmer', title: 'Wheat farm cooperative', brief: 'Your 400,000-bushel harvest comes in 3 months. If wheat falls, your income falls.', side: -1, exposure: 400_000, spot: 6.2, contractSize: 5_000, unit: 'bushel', asset: 'wheat', vol: 0.03, margin: 3_800, maint: 2_400 },
+    { id: 'farmer', title: 'North Ridge Oil', brief: 'Your wells will produce 50,000 barrels of crude next quarter. If oil falls, you may not cover your drilling loans.', side: -1, exposure: 50_000, spot: 78, contractSize: 1_000, unit: 'barrel', asset: 'oil', vol: 0.035, margin: 9_000, maint: 6_000 },
+    { id: 'farmer', title: 'Granite Peak Gold', brief: 'Your mine will pour 6,000 ounces of gold in 3 months. If gold falls, the mine runs at a loss.', side: -1, exposure: 6_000, spot: 2_300, contractSize: 100, unit: 'ounce', asset: 'gold', vol: 0.025, margin: 25_000, maint: 17_000 },
+    { id: 'farmer', title: 'Highland Coffee cooperative', brief: 'Your members will deliver 2,250,000 pounds of coffee beans in 3 months. If coffee falls, the farmers earn less for a year’s work.', side: -1, exposure: 2_250_000, spot: 2.1, contractSize: 37_500, unit: 'pound', asset: 'coffee', vol: 0.035, margin: 9_000, maint: 6_000 },
+  ],
+  [
+    { id: 'fund', title: 'Hong Kong equity fund', brief: 'You manage a HK$90M stock portfolio with a beta of 1.25 to the Hang Seng. Clients fear a crash this quarter but you must stay invested.', side: -1, exposure: 90_000_000, spot: 18_000, contractSize: 50, beta: 1.25, unit: 'index point', vol: 0.03, margin: 170_000, maint: 115_000 },
+    { id: 'fund', title: 'Harbour pension fund', brief: 'You manage HK$120M of shares for retiring workers, with a beta of 0.8 to the Hang Seng. Members retiring this year cannot afford a crash.', side: -1, exposure: 120_000_000, spot: 18_000, contractSize: 50, beta: 0.8, unit: 'index point', vol: 0.03, margin: 170_000, maint: 115_000 },
+    { id: 'fund', title: 'Dragon Tech fund', brief: 'You run a HK$60M technology fund with a beta of 1.5 to the Hang Seng. A big rate decision is due and tech shares swing hardest.', side: -1, exposure: 60_000_000, spot: 18_000, contractSize: 50, beta: 1.5, unit: 'index point', vol: 0.03, margin: 170_000, maint: 115_000 },
+    { id: 'fund', title: 'Lam family office', brief: 'The family keeps HK$45M in a portfolio that moves just like the Hang Seng (beta 1.0). They need the money for a property purchase in 3 months.', side: -1, exposure: 45_000_000, spot: 18_000, contractSize: 50, beta: 1.0, unit: 'index point', vol: 0.03, margin: 170_000, maint: 115_000 },
+  ],
 ];
 
 type Phase = 'setup' | 'running' | 'call' | 'done';
 
 export default function FuturesHedge({ onFinish, addReview, seed }: KindProps) {
   const paused = useActivityPaused();
+  const [CASES] = useState(() => POOLS.map((pool, g) => pool[variantIndex(`hedge-${g}`, pool.length, seed + g * 5)]));
   const [k, setK] = useState(0);
   const c = CASES[k];
   const path = useMemo(() => hedgePath(c, seed + k * 101), [c, seed, k]);
@@ -110,8 +129,8 @@ export default function FuturesHedge({ onFinish, addReview, seed }: KindProps) {
       answer: `${c.side === 1 ? 'Buy (go long)' : 'Sell (go short)'} about ${ideal} contracts`,
       explanation:
         c.id === 'fund'
-          ? `Contracts = beta × portfolio ÷ (index × multiplier) = 1.25 × HK$90M ÷ (18,000 × HK$50) = ${ideal}. Short futures gain when the market falls, offsetting the portfolio.`
-          : `Contracts = exposure ÷ contract size = ${c.exposure.toLocaleString()} ÷ ${c.contractSize.toLocaleString()} = ${ideal}. ${c.side === 1 ? 'You will buy fuel later, so you buy futures now: if prices rise the futures profit pays the extra cost.' : 'You will sell wheat later, so you sell futures now: if prices fall the futures profit makes up the lost income.'}${closed !== null ? ' Refusing the margin call closed your hedge just when you needed it.' : topped > 0 ? ' A margin call is not a loss on the hedge as a whole: the physical position gained at the same time.' : ''}`,
+          ? `Contracts = beta × portfolio ÷ (index × multiplier) = ${c.beta} × HK$${c.exposure / 1e6}M ÷ (${c.spot.toLocaleString()} × HK$${c.contractSize}) = ${ideal}. Short futures gain when the market falls, offsetting the portfolio.`
+          : `Contracts = exposure ÷ contract size = ${c.exposure.toLocaleString()} ÷ ${c.contractSize.toLocaleString()} = ${ideal}. ${c.side === 1 ? `You will buy ${c.asset} later, so you buy futures now: if prices rise the futures profit pays the extra cost.` : `You will sell ${c.asset} later, so you sell futures now: if prices fall the futures profit makes up the lost income.`}${closed !== null ? ' Refusing the margin call closed your hedge just when you needed it.' : topped > 0 ? ' A margin call is not a loss on the hedge as a whole: the physical position gained at the same time.' : ''}`,
     });
   }
 

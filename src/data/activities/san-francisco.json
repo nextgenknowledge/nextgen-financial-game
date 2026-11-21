@@ -207,7 +207,7 @@
       ],
       "blurb": "A story about planning your very first paycheck.",
       "entry": {
-        "story": "first-paycheck"
+        "story": ["first-paycheck", "lifeguard-check", "babysitting", "cafe-job"]
       },
       "advanced": {
         "kind": "quiz",
@@ -326,7 +326,7 @@
       "entryBlurb": "A story about why everyone pays taxes.",
       "entry": {
         "kind": "story",
-        "story": "taxes-story"
+        "story": ["taxes-story", "broken-bridge", "town-library", "snow-plows"]
       },
       "advanced": {
         "useReal": true
@@ -483,6 +483,54 @@
       "replaces": "password-lab",
       "entry": null, "advanced": {},
       "stars": [45, 70, 90], "rewards": { "cash": [60, 110, 180], "xp": [80, 130, 200] }
+    },
+    {
+      "id": "offer-showdown", "name": "Offer Letter Showdown", "kind": "offerShowdown", "icon": "💵", "building": "sf-job-center", "city": "san-francisco",
+      "topics": ["earning", "retirement"],
+      "blurb": "Three job offers: big city, cheaper city and a startup. Compare what each leaves you, read the fine print and negotiate.",
+      "entry": null,
+      "advanced": {},
+      "stars": [50, 72, 90], "rewards": { "cash": [60, 110, 180], "xp": [80, 130, 200] }
+    },
+    {
+      "id": "creator-economy", "name": "Creator Economy", "kind": "creatorEconomy", "icon": "🎬", "building": "tech-campus", "city": "san-francisco",
+      "topics": ["earning", "taxes", "business"],
+      "blurb": "Your channel takes off. Work out what views pay, read a brand-deal contract, handle self-employment tax and survive an algorithm change.",
+      "entry": null,
+      "advanced": {},
+      "stars": [50, 72, 90], "rewards": { "cash": [60, 110, 180], "xp": [80, 130, 200] }
+    },
+    {
+      "id": "gig-or-job", "name": "Gig or Job?", "kind": "gigOrJob", "icon": "🚗", "building": "coding-cafe", "city": "san-francisco",
+      "topics": ["earning", "taxes"],
+      "blurb": "A week driving for a delivery app against a steady café job. Find the real hourly pay once waiting, car costs and taxes count.",
+      "entry": null,
+      "advanced": {},
+      "stars": [50, 72, 90], "rewards": { "cash": [60, 110, 180], "xp": [80, 130, 200] }
+    },
+    {
+      "id": "college-roi", "name": "College ROI", "kind": "collegeRoi", "icon": "🎓", "building": "sorting-center", "city": "san-francisco",
+      "topics": ["debt", "earning"],
+      "blurb": "Decode a financial aid letter, find the real price, compare schools and connect what you borrow to what your first job pays.",
+      "entry": null,
+      "advanced": {},
+      "stars": [50, 72, 90], "rewards": { "cash": [60, 110, 180], "xp": [80, 130, 200] }
+    },
+    {
+      "id": "deepfake-desk", "name": "Deepfake Desk", "kind": "deepfakeDesk", "icon": "🤖", "building": "cyber-lab", "city": "san-francisco",
+      "topics": ["safety"],
+      "blurb": "A cloned voice, a fake recruiter, a ticket resale, a crypto giveaway and an easy-money job. Spot the tell and make the safe move.",
+      "entry": null,
+      "advanced": {},
+      "stars": [50, 72, 90], "rewards": { "cash": [60, 110, 180], "xp": [80, 130, 200] }
+    },
+    {
+      "id": "side-hustle-tax", "name": "Side Hustle Tax Surprise", "kind": "sideHustleTax", "icon": "🧾", "building": "tax-office", "city": "san-francisco",
+      "topics": ["taxes", "earning"],
+      "blurb": "Tutoring, babysitting and reselling. Sort what counts as income, see why you must file and work out the tax before April.",
+      "entry": null,
+      "advanced": {},
+      "stars": [50, 72, 90], "rewards": { "cash": [60, 110, 180], "xp": [80, 130, 200] }
     }
   ]
 }

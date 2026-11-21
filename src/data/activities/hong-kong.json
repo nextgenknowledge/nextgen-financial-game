@@ -50,7 +50,7 @@
       "id": "lemonade-story", "name": "My First Stand", "kind": "story", "icon": "🍋", "building": "trade-hall", "city": "hong-kong",
       "topics": ["business", "saving"],
       "blurb": "A choose-your-path story about your first lemonade stand.",
-      "entry": { "story": "lemonade-choice" }, "advanced": { "kind": "quiz", "count": 7, "cities": ["hong-kong"], "topics": ["business"] },
+      "entry": { "story": ["lemonade-choice", "cookie-stand", "car-wash", "bracelets"] }, "advanced": { "kind": "quiz", "count": 7, "cities": ["hong-kong"], "topics": ["business"] },
       "stars": [50, 75, 92], "rewards": { "cash": [15, 25, 40], "xp": [25, 40, 55] }
     },
     {
@@ -97,6 +97,54 @@
       "replaces": "cost-sort",
       "entry": null, "advanced": {},
       "stars": [45, 70, 90], "rewards": { "cash": [40, 75, 120], "xp": [60, 100, 150] }
+    },
+    {
+      "id": "sneaker-flip", "name": "Sneaker Flip", "kind": "sneakerFlip", "icon": "👟", "building": "night-market", "city": "hong-kong",
+      "topics": ["business", "safety"],
+      "blurb": "Resell limited drops. Find the real profit after fees, spot a fake listing, sell into the hype and never borrow to buy stock.",
+      "entry": null,
+      "advanced": {},
+      "stars": [50, 72, 90], "rewards": { "cash": [60, 110, 180], "xp": [80, 130, 200] }
+    },
+    {
+      "id": "tariff-shock", "name": "Tariff Shock", "kind": "tariffShock", "icon": "🚢", "building": "harbor-trading", "city": "hong-kong",
+      "topics": ["business", "economics"],
+      "blurb": "A 25% tariff lands on your supplier's country. Find who pays it, the new cost of each bike, the best price and which fixes are fraud.",
+      "entry": null,
+      "advanced": {},
+      "stars": [50, 72, 90], "rewards": { "cash": [60, 110, 180], "xp": [80, 130, 200] }
+    },
+    {
+      "id": "cofounder-split", "name": "Co-founder Split", "kind": "cofounderSplit", "icon": "🤝", "building": "business-registry", "city": "hong-kong",
+      "topics": ["business"],
+      "blurb": "Three friends start a company. Divide the ownership, add vesting and live through the day one of them quits.",
+      "entry": null,
+      "advanced": {},
+      "stars": [50, 72, 90], "rewards": { "cash": [60, 110, 180], "xp": [80, 130, 200] }
+    },
+    {
+      "id": "money-trail", "name": "Where Did the Money Go?", "kind": "moneyTrail", "icon": "🕵️", "building": "accounting-office", "city": "hong-kong",
+      "topics": ["business", "budgeting"],
+      "blurb": "Audit the robotics club's books, reconcile them to the bank and set the controls that stop money going missing.",
+      "entry": null,
+      "advanced": {},
+      "stars": [50, 72, 90], "rewards": { "cash": [60, 110, 180], "xp": [80, 130, 200] }
+    },
+    {
+      "id": "delivery-squeeze", "name": "Delivery App Squeeze", "kind": "deliverySqueeze", "icon": "🛵", "building": "dim-sum", "city": "hong-kong",
+      "topics": ["business"],
+      "blurb": "A dumpling shop on an app that takes 30%. Find what an order really earns, price the menu and win back customers directly.",
+      "entry": null,
+      "advanced": {},
+      "stars": [50, 72, 90], "rewards": { "cash": [60, 110, 180], "xp": [80, 130, 200] }
+    },
+    {
+      "id": "concert-pricing", "name": "Concert Pricing", "kind": "concertPricing", "icon": "🎤", "building": "trade-hall", "city": "hong-kong",
+      "topics": ["business", "economics"],
+      "blurb": "Price an arena tour that sells out in minutes. Find who captured the money, pick a strategy and strip the fees out of checkout.",
+      "entry": null,
+      "advanced": {},
+      "stars": [50, 72, 90], "rewards": { "cash": [60, 110, 180], "xp": [80, 130, 200] }
     }
   ]
 }

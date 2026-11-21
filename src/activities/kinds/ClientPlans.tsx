@@ -10,6 +10,7 @@ import { Button } from '@/ui/common';
 import { playSfx } from '@/engine/audio';
 import { portfolioStats, type Asset } from '@/game/finance/pro';
 import { C, ProHead, Slider, Stats, Table, Verdict, pc } from './pro/kit';
+import { variantIndex } from '../variant';
 
 const RF = 0.03;
 const ASSETS: Asset[] = [
@@ -34,10 +35,32 @@ interface Client {
   minCash: number;
 }
 
-const CLIENTS: Client[] = [
-  { name: 'Maya, 26', story: 'Saving a £50,000 house deposit she will spend in 5 years. Losing a big chunk the year before she buys would be a disaster.', minRet: 0.035, worst: -0.08, minCash: 0 },
-  { name: 'Daniel, 45', story: 'Retiring in 20 years. Needs strong growth to hit his target and can sit through bad years.', minRet: 0.065, worst: -0.25, minCash: 0 },
-  { name: 'Margaret, 70', story: 'Retired, living on 4% a year from her portfolio. Needs income that keeps up with inflation and a cash buffer so she never sells in a crash.', minRet: 0.045, worst: -0.12, minCash: 0.1 },
+// Three kinds of client: money needed soon, money for decades, and money to live on. Each run
+// meets one client of each kind, drawn from four.
+const CLIENT_POOLS: Client[][] = [
+  [
+    { name: 'Maya, 26', story: 'Saving a £50,000 house deposit she will spend in 5 years. Losing a big chunk the year before she buys would be a disaster.', minRet: 0.035, worst: -0.08, minCash: 0 },
+    { name: 'Theo, 31', story: 'Paying for his wedding in 3 years. He wants a little growth, but a bad year of more than 3% would mean cutting the guest list.', minRet: 0.03, worst: -0.03, minCash: 0 },
+    { name: 'Priya, 34', story: 'Has $30,000 to open a bakery in 4 years. She needs 4% a year to afford the oven and can live with a 7% dip at worst.', minRet: 0.04, worst: -0.07, minCash: 0 },
+    { name: 'Sam, 19', story: 'University fees of €20,000 are due in 2 years. Any real loss means borrowing more, so the worst year must stay above −2%.', minRet: 0.03, worst: -0.02, minCash: 0 },
+  ],
+  [
+    { name: 'Daniel, 45', story: 'Retiring in 20 years. Needs strong growth to hit his target and can sit through bad years.', minRet: 0.065, worst: -0.25, minCash: 0 },
+    { name: 'Aisha, 30', story: 'Retiring in 35 years and wants as much growth as possible. She has said she could live through a 25% fall without selling.', minRet: 0.072, worst: -0.25, minCash: 0 },
+    { name: 'Ken, 50', story: 'Fifteen years from retirement. He needs 6% a year and would lose sleep over a year worse than −20%.', minRet: 0.06, worst: -0.2, minCash: 0 },
+    { name: 'Lucía, 38', story: 'Investing for her two children, who will need the money in about 20 years. She needs 6.8% a year to reach her goal.', minRet: 0.068, worst: -0.24, minCash: 0 },
+  ],
+  [
+    { name: 'Margaret, 70', story: 'Retired, living on 4% a year from her portfolio. Needs income that keeps up with inflation and a cash buffer so she never sells in a crash.', minRet: 0.045, worst: -0.12, minCash: 0.1 },
+    { name: 'George, 67', story: 'Just retired. He wants 4.5% a year and keeps two years of spending, 20% of the portfolio, in cash so a crash never forces a sale.', minRet: 0.045, worst: -0.12, minCash: 0.2 },
+    { name: 'Rosa, 78', story: 'Lives on her pension plus 4% a year from savings. At her age she cannot wait out a long slump, so the worst year must stay above −8%.', minRet: 0.04, worst: -0.08, minCash: 0.1 },
+    { name: 'Walt, 64', story: 'Retiring next year with a long life expected. He needs 5% a year, keeps 5% in cash and can handle a −14% year at worst.', minRet: 0.05, worst: -0.14, minCash: 0.05 },
+  ],
+];
+const EXPLAIN = [
+  'Short horizon: the money must be there on the day. Mostly bonds and cash, with a little growth.',
+  'Long horizon: time lets you ride out falls, so most of the money can be in shares and property.',
+  'Retirees need growth to beat inflation for decades, plus a cash bucket so they never sell shares at the bottom.',
 ];
 
 const worstYear = (s: { ret: number; vol: number }) => s.ret - 1.65 * s.vol;
@@ -59,7 +82,8 @@ function bestFor(c: Client) {
   return best;
 }
 
-export default function ClientPlans({ onFinish, addReview }: KindProps) {
+export default function ClientPlans({ seed, onFinish, addReview }: KindProps) {
+  const CLIENTS = useMemo(() => CLIENT_POOLS.map((pool, g) => pool[variantIndex(`clients-${g}`, pool.length, seed + g * 7)]), [seed]);
   const [k, setK] = useState(0);
   const c = CLIENTS[k];
   const [w, setW] = useState([25, 25, 25, 25]);
@@ -80,7 +104,7 @@ export default function ClientPlans({ onFinish, addReview }: KindProps) {
       q: `${c.name}: ${c.story}`,
       ok: score > 0.85,
       answer: best.w.map((x, i) => `${ASSETS[i].name} ${Math.round(x * 100)}%`).join(', '),
-      explanation: k === 0 ? 'Short horizon: the money must be there on the day. Mostly bonds and cash, with a little growth.' : k === 1 ? 'Long horizon: time lets you ride out falls, so most of the money can be in shares and property.' : 'Retirees need growth to beat inflation for decades, plus a cash bucket so they never sell shares at the bottom.',
+      explanation: EXPLAIN[k],
     });
   };
   const next = () => {

@@ -70,6 +70,7 @@ export interface HedgeCase {
   contractSize: number; // units per contract, or index multiplier
   beta?: number;
   unit: string;
+  asset?: string; // what is bought or sold, for explanations
   vol: number; // weekly volatility
   margin: number; // initial margin per contract
   maint: number; // maintenance margin per contract
@@ -154,17 +155,31 @@ export interface FintechPlan {
   spend: number; // marketing $ per month
 }
 
-export function fintechSim(p: FintechPlan, months = 24, seed = 1) {
+/** The product being launched: what customers cost to win, how fast they cancel, and the budget. */
+export interface FintechMarket {
+  cacBase: number;
+  cacPerDollar: number; // each $1 of price makes a customer this much dearer to win
+  churnBase: number;
+  churnPerDollar: number;
+  margin: number;
+  fixed: number;
+  seedCash: number;
+  priceMin: number;
+  priceMax: number;
+}
+export const FINTECH_DEFAULT: FintechMarket = { cacBase: 14, cacPerDollar: 2.4, churnBase: 0.018, churnPerDollar: 0.0028, margin: 0.78, fixed: 45_000, seedCash: 1_500_000, priceMin: 3, priceMax: 20 };
+
+export function fintechSim(p: FintechPlan, months = 24, seed = 1, mk: FintechMarket = FINTECH_DEFAULT) {
   const rng = makeRng(seed);
   const trialLift = p.trial === 30 ? 1.45 : p.trial === 7 ? 1.2 : 1;
   const trialConvert = p.trial === 30 ? 0.62 : p.trial === 7 ? 0.88 : 1;
   // $ per paying customer; the cheapest channels fill up first, so heavy spending gets dearer
-  const cac = ((14 + 2.4 * p.price) / (trialLift * trialConvert)) * (1 + p.spend / 90_000);
-  const churn = 0.018 + 0.0028 * p.price - (p.trial === 30 ? 0.004 : p.trial === 7 ? 0.002 : 0);
-  const margin = 0.78;
-  const fixed = 45_000;
+  const cac = ((mk.cacBase + mk.cacPerDollar * p.price) / (trialLift * trialConvert)) * (1 + p.spend / 90_000);
+  const churn = mk.churnBase + mk.churnPerDollar * p.price - (p.trial === 30 ? 0.004 : p.trial === 7 ? 0.002 : 0);
+  const margin = mk.margin;
+  const fixed = mk.fixed;
   let subs = 0;
-  let cash = 1_500_000;
+  let cash = mk.seedCash;
   let minCash = cash;
   const mrr: number[] = [];
   const cashPath: number[] = [];
@@ -182,19 +197,19 @@ export function fintechSim(p: FintechPlan, months = 24, seed = 1) {
 }
 
 /** Score of a plan: growth that pays for itself and never runs out of money. */
-export function fintechScore(p: FintechPlan) {
-  const s = fintechSim(p);
+export function fintechScore(p: FintechPlan, mk: FintechMarket = FINTECH_DEFAULT) {
+  const s = fintechSim(p, 24, 1, mk);
   if (s.minCash < 0) return 0;
   const ratio = Math.min(1, s.ltvCac / 3);
   return ratio * s.mrr[s.mrr.length - 1];
 }
 
-export function bestFintech() {
+export function bestFintech(mk: FintechMarket = FINTECH_DEFAULT) {
   let best = { p: { price: 9, trial: 7, spend: 40_000 } as FintechPlan, v: -1 };
-  for (let price = 3; price <= 20; price++)
+  for (let price = mk.priceMin; price <= mk.priceMax; price++)
     for (const trial of [0, 7, 30] as const)
       for (let spend = 10_000; spend <= 100_000; spend += 5_000) {
-        const v = fintechScore({ price, trial, spend });
+        const v = fintechScore({ price, trial, spend }, mk);
         if (v > best.v) best = { p: { price, trial, spend }, v };
       }
   return best;
@@ -330,7 +345,7 @@ const FUND_L = chol(FUND_CORR);
 export const INFLATION = 0.025;
 
 /** Monte Carlo of a fund paying out `spend` of its value every year, in real terms. */
-export function fundSim(weights: number[], spend: number, seed = 7, paths = 300, years = 30) {
+export function fundSim(weights: number[], spend: number, seed = 7, paths = 300, years = 30, assets: FundAsset[] = FUND_ASSETS, inflation = INFLATION) {
   const rng: Rng = makeRng(seed);
   const tot = weights.reduce((a, b) => a + b, 0) || 1;
   const w = weights.map((x) => x / tot);
@@ -343,14 +358,14 @@ export function fundSim(weights: number[], spend: number, seed = 7, paths = 300,
     let low = 1;
     mids[0].push(1);
     for (let y = 1; y <= years; y++) {
-      const z = FUND_ASSETS.map(() => rng.normal());
+      const z = assets.map(() => rng.normal());
       let r = 0;
-      FUND_ASSETS.forEach((a, i) => {
+      assets.forEach((a, i) => {
         let e = 0;
         for (let k = 0; k <= i; k++) e += FUND_L[i][k] * z[k];
         r += w[i] * (a.ret + a.vol * e);
       });
-      v = (v * (1 + r)) / (1 + INFLATION);
+      v = (v * (1 + r)) / (1 + inflation);
       paid += v * spend;
       v *= 1 - spend;
       low = Math.min(low, v);
@@ -370,10 +385,10 @@ export function fundSim(weights: number[], spend: number, seed = 7, paths = 300,
 }
 
 /** A mandate score: keep real value, protect the downside, pay the country a steady dividend. */
-export function fundScore(r: ReturnType<typeof fundSim>, spend: number) {
+export function fundScore(r: ReturnType<typeof fundSim>, spend: number, minPay = 0.035, floor = 0.55) {
   const keep = Math.min(1, r.median / 1);
-  const safe = Math.min(1, r.p10 / 0.55);
-  const pay = Math.min(1, spend / 0.035);
+  const safe = Math.min(1, r.p10 / floor);
+  const pay = Math.min(1, spend / minPay);
   return Math.max(0, Math.min(1, keep * 0.4 + safe * 0.35 + pay * 0.25 - r.breach * 0.6));
 }
 

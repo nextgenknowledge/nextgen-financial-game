@@ -50,8 +50,20 @@ describe('content references', () => {
       for (const p of [a.entry, a.advanced]) {
         if (!p) continue;
         if (a.kind === 'sort') expect(sorts.sets, `${a.id}: sort set ${p.set}`).toHaveProperty([p.set as string]);
-        if (a.kind === 'allocate') expect(allocate.scenarios, `${a.id}: scenario ${p.scenario}`).toHaveProperty([p.scenario as string]);
-        if (typeof p.story === 'string') expect(stories.stories, `${a.id}: story ${p.story}`).toHaveProperty([p.story]);
+        if (a.kind === 'allocate') for (const sc of [p.scenario].flat() as string[]) expect(allocate.scenarios, `${a.id}: scenario ${sc}`).toHaveProperty([sc]);
+        for (const st of [p.story ?? []].flat() as string[]) expect(stories.stories, `${a.id}: story ${st}`).toHaveProperty([st]);
+      }
+    }
+  });
+
+  it('story and budget activities rotate between at least four scenarios', () => {
+    for (const a of ACTIVITIES) {
+      for (const p of [a.entry, a.advanced]) {
+        if (!p) continue;
+        const kind = (p.kind as string | undefined) ?? a.kind;
+        const list = kind === 'story' ? p.story : kind === 'allocate' ? p.scenario : undefined;
+        if (list === undefined) continue;
+        expect(Array.isArray(list) ? new Set(list as string[]).size : 1, `${a.id} (${kind})`).toBeGreaterThanOrEqual(4);
       }
     }
   });

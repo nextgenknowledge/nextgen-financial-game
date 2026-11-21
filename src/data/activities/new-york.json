@@ -397,6 +397,54 @@
       "replaces": "hype-check",
       "entry": null, "advanced": {},
       "stars": [45, 70, 90], "rewards": { "cash": [60, 110, 180], "xp": [80, 130, 200] }
+    },
+    {
+      "id": "meme-stock", "name": "Meme Stock Week", "kind": "memeStock", "icon": "🚀", "building": "ny-exchange", "city": "new-york",
+      "topics": ["investing", "safety"],
+      "blurb": "Live through five days of a hype cycle. Read the feed, decide how much to risk and when to get out, then see who ended up holding the bag.",
+      "entry": null,
+      "advanced": {},
+      "stars": [50, 72, 90], "rewards": { "cash": [60, 110, 180], "xp": [80, 130, 200] }
+    },
+    {
+      "id": "which-company", "name": "Which Company Would You Own?", "kind": "whichCompany", "icon": "🏢", "building": "ny-brokerage", "city": "new-york",
+      "topics": ["investing", "business"],
+      "blurb": "Two companies, their stories and a few numbers. Work out the runway, see through the spin in a results release and decide what you would actually be buying.",
+      "entry": null,
+      "advanced": {},
+      "stars": [50, 72, 90], "rewards": { "cash": [60, 110, 180], "xp": [80, 130, 200] }
+    },
+    {
+      "id": "beat-index", "name": "Beat the Index", "kind": "beatIndex", "icon": "🏆", "building": "ny-investment-club", "city": "new-york",
+      "topics": ["investing"],
+      "blurb": "Draft five stocks and race them against the whole market for 20 years, then find out why most pickers lose and what fees quietly take.",
+      "entry": null,
+      "advanced": {},
+      "stars": [50, 72, 90], "rewards": { "cash": [60, 110, 180], "xp": [80, 130, 200] }
+    },
+    {
+      "id": "crash-stories", "name": "Crash Stories", "kind": "crashStories", "icon": "📉", "building": "ny-quiz-tower", "city": "new-york",
+      "topics": ["investing", "economics"],
+      "blurb": "Make the call inside five real panics: tulips in 1637, the 1929 crash, the dot-com bust, 2008 and 2020.",
+      "entry": null,
+      "advanced": {},
+      "stars": [50, 72, 90], "rewards": { "cash": [60, 110, 180], "xp": [80, 130, 200] }
+    },
+    {
+      "id": "headline-hype", "name": "Headline or Hype?", "kind": "headlineHype", "icon": "📰", "building": "ny-newsroom", "city": "new-york",
+      "topics": ["investing", "safety"],
+      "blurb": "A morning on the markets desk. Sort real news from clickbait and paid promotion, and turn scary headlines into percentages.",
+      "entry": null,
+      "advanced": {},
+      "stars": [50, 72, 90], "rewards": { "cash": [60, 110, 180], "xp": [80, 130, 200] }
+    },
+    {
+      "id": "investor-seat", "name": "Investor's Seat", "kind": "investorSeat", "icon": "💼", "building": "ny-theater", "city": "new-york",
+      "topics": ["investing", "business"],
+      "blurb": "Three founders pitch for your money. Ask the right questions, check whether customers are worth what they cost to win and catch the red flags.",
+      "entry": null,
+      "advanced": {},
+      "stars": [50, 72, 90], "rewards": { "cash": [60, 110, 180], "xp": [80, 130, 200] }
     }
   ]
 }

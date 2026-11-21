@@ -5,18 +5,37 @@ import { makeRng } from '@/game/rng';
 import { playSfx } from '@/engine/audio';
 import { cls } from '@/ui/format';
 
-const SETS: Record<string, [string, string][]> = {
+// [card, matching card, value]. Pairs that share a value (like $1 and 100¢) are never dealt in the
+// same game, so every card has exactly one match.
+const SETS: Record<string, [string, string, number?][]> = {
   coins: [
-    ['🪙 Penny', '1¢'],
-    ['🪙 Nickel', '5¢'],
-    ['🪙 Dime', '10¢'],
-    ['🪙 Quarter', '25¢'],
-    ['💵 Dollar', '100¢'],
-    ['4 quarters', '$1'],
-    ['2 dimes + 1 nickel', '25¢ (a quarter)'],
-    ['💵 Five', '5 one-dollar bills'],
-    ['10 dimes', '$1.00'],
-    ['2 nickels', '1 dime'],
+    ['🪙 Penny', '1¢', 1],
+    ['🪙 Nickel', '5¢', 5],
+    ['🪙 Dime', '10¢', 10],
+    ['🪙 Quarter', '25¢', 25],
+    ['💵 Dollar', '100¢', 100],
+    ['4 quarters', '$1', 100],
+    ['2 dimes + 1 nickel', '25¢ (a quarter)', 25],
+    ['💵 Five', '5 one-dollar bills', 500],
+    ['10 dimes', '$1.00', 100],
+    ['2 nickels', '1 dime', 10],
+    ['3 dimes', '30¢', 30],
+    ['2 quarters', '50¢', 50],
+    ['💵 Ten', '10 one-dollar bills', 1000],
+    ['7 pennies', '7¢', 7],
+    ['3 nickels', '15¢', 15],
+    ['1 quarter + 1 dime', '35¢', 35],
+    ['4 dimes', '40¢', 40],
+    ['3 quarters', '75¢', 75],
+    ['💵 Twenty', '2 ten-dollar bills', 2000],
+    ['1 dime + 2 pennies', '12¢', 12],
+    ['2 quarters + 1 dime', '60¢', 60],
+    ['9 dimes', '90¢', 90],
+    ['8 quarters', '$2', 200],
+    ['1 quarter + 3 pennies', '28¢', 28],
+    ['5 dimes + 1 nickel', '55¢', 55],
+    ['4 nickels', '20¢', 20],
+    ['2 dollars + 1 quarter', '$2.25', 225],
   ],
   terms: [
     ['Asset', 'Something you own'],
@@ -33,6 +52,24 @@ const SETS: Record<string, [string, string][]> = {
     ['Net worth', 'Assets minus liabilities'],
     ['Index fund', 'Owns many companies at once'],
     ['Equity', 'Value you own after debts'],
+    ['Interest', 'The cost of borrowing money'],
+    ['Credit score', 'A number showing how reliably you repay'],
+    ['Gross pay', 'Pay before taxes and deductions'],
+    ['Net pay', 'Pay after taxes and deductions'],
+    ['Emergency fund', 'Savings for surprise expenses'],
+    ['Compound interest', 'Interest earned on interest'],
+    ['Diversification', 'Spreading money across many investments'],
+    ['Stock', 'A small piece of a company'],
+    ['Bond', 'A loan you make to a company or government'],
+    ['Overdraft', 'Spending more than is in your account'],
+    ['Minimum payment', 'The least you must pay on a card each month'],
+    ['Tax refund', 'Money back when too much tax was withheld'],
+    ['Credit limit', 'The most you can borrow on a card'],
+    ['Down payment', 'Cash paid upfront on a big purchase'],
+    ['Pay stub', 'A record of your pay and deductions'],
+    ['Fixed expense', 'A cost that stays the same each month'],
+    ['Variable expense', 'A cost that changes month to month'],
+    ['Opportunity cost', 'What you give up when you choose'],
   ],
   markets: [
     ['P/E ratio', 'Price ÷ earnings per share'],
@@ -51,6 +88,22 @@ const SETS: Record<string, [string, string][]> = {
     ['Short interest', 'Shares sold short ÷ float'],
     ['Yield curve', 'Yields across maturities'],
     ['Liquidity', 'How easily it trades without moving price'],
+    ['Price-to-book', 'Share price ÷ book value per share'],
+    ['Gross margin', '(Revenue − cost of goods) ÷ revenue'],
+    ['Volatility', 'How much a price swings'],
+    ['Alpha', 'Return above the benchmark'],
+    ['Bid', 'The highest price a buyer will pay'],
+    ['Ask', 'The lowest price a seller will accept'],
+    ['Yield to maturity', 'Total return if a bond is held to the end'],
+    ['Coupon', 'A bond’s yearly interest payment'],
+    ['Market order', 'Trade now at the best available price'],
+    ['Limit order', 'Trade only at your price or better'],
+    ['Bull market', 'Prices rising for a long stretch'],
+    ['Bear market', 'A fall of 20% or more from the peak'],
+    ['IPO', 'A company’s first sale of shares to the public'],
+    ['Stock split', 'More shares, each worth less'],
+    ['Expense ratio', 'A fund’s yearly fee as a % of assets'],
+    ['Working capital', 'Current assets − current liabilities'],
   ],
 };
 
@@ -64,7 +117,14 @@ interface Card {
 export default function Memory({ params, onFinish, seed }: KindProps<{ set: string; pairs: number }>) {
   const cards = useMemo<Card[]>(() => {
     const r = makeRng(seed);
-    const pairs = r.shuffle([...SETS[params.set]]).slice(0, params.pairs);
+    // Deal pairs with different values only, so no card can match two others
+    const seen = new Set<string>();
+    const pairs = r.shuffle([...SETS[params.set]]).filter(([, b, v]) => {
+      const key = String(v ?? b);
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    }).slice(0, params.pairs);
     const all = pairs.flatMap(([a, b], i) => [
       { id: i * 2, pair: i, text: a },
       { id: i * 2 + 1, pair: i, text: b },

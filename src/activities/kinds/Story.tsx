@@ -6,6 +6,7 @@ import { Button, ReadAloud } from '@/ui/common';
 import { NarwhalPortrait } from '@/ui/hud/HUD';
 import type { Mood } from '@/game/effects';
 import { playSfx } from '@/engine/audio';
+import { pickVariant } from '../variant';
 
 interface StoryNode {
   speaker: string;
@@ -23,8 +24,9 @@ interface StoryDef {
 export const STORIES = data.stories as Record<string, StoryDef>;
 
 /** Branching story with scored choices and Narwhal feedback. */
-export default function Story({ params, onFinish, addReview }: KindProps<{ story: string }>) {
-  const s = STORIES[params.story];
+export default function Story({ params, seed, onFinish, addReview }: KindProps<{ story: string | string[] }>) {
+  // A list of stories rotates, so replays tell a different story
+  const s = STORIES[pickVariant(`story:${[params.story].flat()[0]}`, params.story, seed)];
   const [node, setNode] = useState(s.start);
   const [fb, setFb] = useState<null | { text: string; good: boolean; next: string }>(null);
   const points = useRef(0);
