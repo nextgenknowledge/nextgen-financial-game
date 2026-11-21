@@ -114,6 +114,18 @@
           "label": "Offer Letter Showdown",
           "icon": "💵",
           "npc": "clerk"
+        },
+        {
+          "activity": "gig-or-job",
+          "label": "Gig or Job?",
+          "icon": "🚗",
+          "npc": "clerk"
+        },
+        {
+          "activity": "college-roi",
+          "label": "College ROI",
+          "icon": "🎓",
+          "npc": "clerk"
         }
       ],
       "interior": {
@@ -244,12 +256,6 @@
           "label": "Gadget & Collectibles Shelf",
           "icon": "🖼️",
           "npc": "clerk"
-        },
-        {
-          "activity": "gig-or-job",
-          "label": "Gig or Job?",
-          "icon": "🚗",
-          "npc": "coder"
         }
       ],
       "interior": {
@@ -304,12 +310,6 @@
           "activity": "fintech-lab",
           "label": "Fintech Product Lab",
           "icon": "🚀",
-          "npc": "grocer"
-        },
-        {
-          "activity": "college-roi",
-          "label": "College ROI",
-          "icon": "🎓",
           "npc": "grocer"
         }
       ],

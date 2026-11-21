@@ -103,12 +103,6 @@
           "label": "Business Quiz",
           "icon": "🎤",
           "npc": "host"
-        },
-        {
-          "activity": "sneaker-flip",
-          "label": "Sneaker Flip",
-          "icon": "👟",
-          "npc": "chef"
         }
       ],
       "interior": {
@@ -182,6 +176,12 @@
           "activity": "tariff-shock",
           "label": "Tariff Shock",
           "icon": "🚢",
+          "npc": "sailor"
+        },
+        {
+          "activity": "sneaker-flip",
+          "label": "Sneaker Flip",
+          "icon": "👟",
           "npc": "sailor"
         }
       ],

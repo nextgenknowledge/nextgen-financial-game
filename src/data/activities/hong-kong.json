@@ -99,7 +99,7 @@
       "stars": [45, 70, 90], "rewards": { "cash": [40, 75, 120], "xp": [60, 100, 150] }
     },
     {
-      "id": "sneaker-flip", "name": "Sneaker Flip", "kind": "sneakerFlip", "icon": "👟", "building": "night-market", "city": "hong-kong",
+      "id": "sneaker-flip", "name": "Sneaker Flip", "kind": "sneakerFlip", "icon": "👟", "building": "harbor-trading", "city": "hong-kong",
       "topics": ["business", "safety"],
       "blurb": "Resell limited drops. Find the real profit after fees, spot a fake listing, sell into the hype and never borrow to buy stock.",
       "entry": null,

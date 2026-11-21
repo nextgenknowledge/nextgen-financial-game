@@ -102,12 +102,6 @@
           "label": "Open a CD (Money Tree)",
           "icon": "🔒",
           "npc": "banker"
-        },
-        {
-          "activity": "start-early",
-          "label": "Start at 18 or 28?",
-          "icon": "🌱",
-          "npc": "gardener"
         }
       ],
       "interior": {
@@ -192,6 +186,12 @@
           "activity": "summer-job",
           "label": "Summer Job $2,000",
           "icon": "💰",
+          "npc": "banker"
+        },
+        {
+          "activity": "start-early",
+          "label": "Start at 18 or 28?",
+          "icon": "🌱",
           "npc": "banker"
         }
       ],

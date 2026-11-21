@@ -381,7 +381,7 @@
       "stars": [50, 72, 90], "rewards": { "cash": [60, 110, 180], "xp": [80, 130, 200] }
     },
     {
-      "id": "subscription-purge", "name": "Subscription Purge", "kind": "subscriptionPurge", "icon": "✂️", "building": "corner-shop", "city": "london",
+      "id": "subscription-purge", "name": "Subscription Purge", "kind": "subscriptionPurge", "icon": "✂️", "building": "budget-hall", "city": "london",
       "topics": ["budgeting", "shopping"],
       "blurb": "A statement full of small monthly charges. Find the ones not earning their keep, add up the year and get past the cancel page.",
       "entry": null,

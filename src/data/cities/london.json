@@ -226,12 +226,6 @@
           "label": "FX Dealing Desk",
           "icon": "💱",
           "npc": "clerk"
-        },
-        {
-          "activity": "subscription-purge",
-          "label": "Subscription Purge",
-          "icon": "✂️",
-          "npc": "clerk"
         }
       ],
       "interior": {
@@ -423,6 +417,12 @@
           "activity": "first-year-out",
           "label": "First Year Out",
           "icon": "📋",
+          "npc": "teacher"
+        },
+        {
+          "activity": "subscription-purge",
+          "label": "Subscription Purge",
+          "icon": "✂️",
           "npc": "teacher"
         }
       ],

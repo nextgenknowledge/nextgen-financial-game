@@ -419,6 +419,26 @@
           "label": "Outfit Shop",
           "icon": "🛍️",
           "npc": "stylist"
+        },
+        {
+          "activity": "loot-box-lab",
+          "label": "Loot Box Lab",
+          "icon": "🎁",
+          "npc": "stylist"
+        }
+      ],
+      "entryStations": [
+        {
+          "service": "style",
+          "label": "Mirror: Change Look",
+          "icon": "🪞",
+          "npc": "stylist"
+        },
+        {
+          "service": "shop:outfits",
+          "label": "Outfit Shop",
+          "icon": "🛍️",
+          "npc": "stylist"
         }
       ],
       "interior": {
@@ -584,12 +604,6 @@
           "service": "arcade-prizes",
           "label": "Prize Counter",
           "icon": "🎟️",
-          "npc": "clerk"
-        },
-        {
-          "activity": "loot-box-lab",
-          "label": "Loot Box Lab",
-          "icon": "🎁",
           "npc": "clerk"
         }
       ],

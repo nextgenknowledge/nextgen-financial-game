@@ -501,7 +501,7 @@
       "stars": [50, 72, 90], "rewards": { "cash": [60, 110, 180], "xp": [80, 130, 200] }
     },
     {
-      "id": "gig-or-job", "name": "Gig or Job?", "kind": "gigOrJob", "icon": "🚗", "building": "coding-cafe", "city": "san-francisco",
+      "id": "gig-or-job", "name": "Gig or Job?", "kind": "gigOrJob", "icon": "🚗", "building": "sf-job-center", "city": "san-francisco",
       "topics": ["earning", "taxes"],
       "blurb": "A week driving for a delivery app against a steady café job. Find the real hourly pay once waiting, car costs and taxes count.",
       "entry": null,
@@ -509,7 +509,7 @@
       "stars": [50, 72, 90], "rewards": { "cash": [60, 110, 180], "xp": [80, 130, 200] }
     },
     {
-      "id": "college-roi", "name": "College ROI", "kind": "collegeRoi", "icon": "🎓", "building": "sorting-center", "city": "san-francisco",
+      "id": "college-roi", "name": "College ROI", "kind": "collegeRoi", "icon": "🎓", "building": "sf-job-center", "city": "san-francisco",
       "topics": ["debt", "earning"],
       "blurb": "Decode a financial aid letter, find the real price, compare schools and connect what you borrow to what your first job pays.",
       "entry": null,

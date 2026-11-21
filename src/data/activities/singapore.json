@@ -325,7 +325,7 @@
       "stars": [45, 70, 90], "rewards": { "cash": [40, 75, 120], "xp": [60, 100, 150] }
     },
     {
-      "id": "start-early", "name": "Start at 18 or 28?", "kind": "startEarly", "icon": "🌱", "building": "savings-garden", "city": "singapore",
+      "id": "start-early", "name": "Start at 18 or 28?", "kind": "startEarly", "icon": "🌱", "building": "retirement-tower", "city": "singapore",
       "topics": ["saving", "investing", "interest"],
       "blurb": "Twins race to 65: one invests for ten years and stops, the other starts later and never stops. Predict the winner and find out why.",
       "entry": null,

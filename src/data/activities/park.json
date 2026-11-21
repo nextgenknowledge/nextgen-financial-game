@@ -214,7 +214,7 @@
       "stars": [50, 72, 90], "rewards": { "cash": [60, 110, 180], "xp": [80, 130, 200] }
     },
     {
-      "id": "loot-box-lab", "name": "Loot Box Lab", "kind": "lootBoxLab", "icon": "🎁", "building": "arcade", "city": "park",
+      "id": "loot-box-lab", "name": "Loot Box Lab", "kind": "lootBoxLab", "icon": "🎁", "building": "style-studio", "city": "park",
       "topics": ["economics", "safety", "needs-wants"],
       "blurb": "Open crates with real published odds, find the true price of the rare skin and spot the store tricks built to keep you spending.",
       "entry": null,
