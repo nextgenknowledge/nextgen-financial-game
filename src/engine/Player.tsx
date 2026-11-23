@@ -6,7 +6,7 @@ import { Avatar, type AnimState } from '@/world/Avatar';
 import { useGame } from '@/store/game';
 import { useSettings } from '@/store/settings';
 import { isPaused, useUI } from '@/store/ui';
-import { isDown, virtual } from './input';
+import { isDown, onAction, virtual } from './input';
 import { rt } from './runtime';
 import { playSfx } from './audio';
 import { VehicleModel } from '@/world/Vehicles';
@@ -20,6 +20,37 @@ const WALK = 5;
 const RUN = 8.5;
 const GRAVITY = 30;
 const JUMP = 10.5;
+const FLY = 16;
+const FLY_CLIMB = 9;
+const FLY_CEILING = 160;
+
+let lastJumpTap = 0;
+let lastJumpEvent = -1;
+let flyKeys = false;
+/** Listen for Space presses once for the whole app (effects can run twice in development). */
+function installFlyKeys() {
+  if (flyKeys) return;
+  flyKeys = true;
+  onAction((action, e) => {
+    if (action !== 'jump' || isPaused() || e.timeStamp === lastJumpEvent) return;
+    lastJumpEvent = e.timeStamp;
+    // When the key went down, not when the (possibly busy) page got round to it
+    jumpTapped(e.timeStamp);
+  });
+}
+
+/** A jump press: two within a third of a second start or stop flying (admin only). */
+function jumpTapped(at?: number) {
+  const t = at ?? performance.now();
+  if (rt.canFly && t - lastJumpTap < 350) {
+    rt.flying = !rt.flying;
+    lastJumpTap = 0;
+    if (rt.flying) {
+      rt.playerVel.y = Math.max(rt.playerVel.y, 4);
+      rt.grounded = false;
+    }
+  } else lastJumpTap = t;
+}
 
 const tmp = new THREE.Vector3();
 const camTarget = new THREE.Vector3();
@@ -33,6 +64,7 @@ export function PlayerController() {
   const riding = useRide((s) => s.riding);
   const group = useRef<THREE.Group>(null);
   const anim = useRef<AnimState>({ speed: 0, grounded: true });
+  const jumpWas = useRef(false);
   const { camera, gl } = useThree();
   const drag = useRef<{ x: number; y: number; moved: number; id: number } | null>(null);
   /** When the player last turned the camera by hand; auto-follow waits a moment after that. */
@@ -40,6 +72,10 @@ export function PlayerController() {
   /** Seconds a click-to-walk has made no progress. */
   const stuck = useRef(0);
   const smoothedDist = useRef(rt.camDist);
+
+  // Admin: double-tap Space to fly, timed on the key presses themselves so a quick double tap
+  // still counts on a slow device
+  useEffect(installFlyKeys, []);
 
   // Any key, click or scroll skips the arrival flyover
   useEffect(() => {
@@ -222,28 +258,46 @@ export function PlayerController() {
       const len = Math.min(1, dir.length());
       if (len > 0.01) dir.normalize();
       const sprint = isDown('sprint') || virtual.sprint;
-      const speed = (sprint ? RUN : WALK) * len;
-      const accel = rt.grounded ? 14 : 4;
+      // Admin: a quick double tap of Space (or the jump button) starts or stops flying. Key
+      // presses are timed as they happen (see jumpTapped); the touch jump button is caught here.
+      const jumpNow = isDown('jump') || virtual.jump || virtual.jumpTap;
+      if ((virtual.jump || virtual.jumpTap) && !jumpWas.current) jumpTapped();
+      jumpWas.current = virtual.jump || virtual.jumpTap;
+      if (!rt.canFly) rt.flying = false;
+      // Flying (admin): quick and smooth, Space climbs and Shift sinks like in Minecraft
+      const flying = rt.flying && rt.canFly;
+      const speed = (flying ? FLY : sprint ? RUN : WALK) * len * rt.speedBoost;
+      const accel = rt.grounded || flying ? 14 : 4;
       v.x += (dir.x * speed - v.x) * Math.min(1, accel * dt);
       v.z += (dir.z * speed - v.z) * Math.min(1, accel * dt);
-      if ((isDown('jump') || virtual.jump || virtual.jumpTap) && rt.grounded) {
+      const jumpHeld = jumpNow;
+      if (flying) {
+        const climb = (jumpHeld ? 1 : 0) - (sprint ? 1 : 0);
+        v.y += (climb * FLY_CLIMB - v.y) * Math.min(1, 10 * dt);
+      } else if (jumpHeld && rt.grounded) {
         v.y = JUMP;
         rt.grounded = false;
         rt.jumped = true;
         playSfx('jump');
       }
       virtual.jumpTap = false;
-      v.y -= GRAVITY * dt;
+      if (!flying) v.y -= GRAVITY * dt;
       p.x += v.x * dt;
       p.z += v.z * dt;
       p.y += v.y * dt;
       rt.collision.resolve(p, RADIUS, HEIGHT);
       rt.collision.resolveWater(p, RADIUS);
       const ground = rt.collision.groundAt(p.x, p.z, RADIUS, p.y);
+      if (p.y > FLY_CEILING) {
+        p.y = FLY_CEILING;
+        v.y = Math.min(0, v.y);
+      }
       if (p.y <= ground) {
         p.y = ground;
         v.y = 0;
         rt.grounded = true;
+        // Touching down ends a flight, as in Minecraft
+        if (flying && !jumpHeld) rt.flying = false;
       } else if (p.y > ground + 0.05) rt.grounded = false;
       const hs = Math.hypot(v.x, v.z);
       rt.playerSpeed = hs;

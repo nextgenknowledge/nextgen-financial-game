@@ -70,7 +70,8 @@ export function scoreEntry(w: WorldState): ScoreEntry {
 
 /** Every world is on the leaderboard by its nickname unless the player turned sharing off. */
 export function sharesScore(w: WorldState): boolean {
-  return w.progress.flags.leaderboardShare !== false;
+  // Admin worlds (infinite money and the like) never go on the board
+  return w.progress.flags.leaderboardShare !== false && w.progress.flags.admin !== true;
 }
 
 /** How often a score can go out during play, and when the player is leaving. */

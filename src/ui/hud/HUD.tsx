@@ -22,6 +22,7 @@ import { useRide, getOff } from '@/world/ParkedVehicles';
 import { Minimap } from './Minimap';
 import { RatingPrompt, openRating } from './RatingPrompt';
 import { StreakWatcher, openStreakCalendar } from './Streak';
+import { AdminWatcher } from '../phone/apps/AdminApp';
 import { questWayOn, setQuestWay, updateGoalMarker, wayAsked } from '../goal';
 import { worldRun } from '@/activities/world/delivery';
 import { dayKey, liveStreak } from '@/game/progress/streak';
@@ -76,6 +77,7 @@ export function HUD() {
       <NavTips />
       <RatingPrompt />
       <StreakWatcher />
+      <AdminWatcher />
       <QuestSpot />
       <TouchControls />
     </div>
