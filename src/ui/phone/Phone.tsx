@@ -18,6 +18,7 @@ import { TaxesApp } from './apps/TaxesApp';
 import { NewsApp } from './apps/NewsApp';
 import { CalculatorApp } from './apps/CalculatorApp';
 import { LeaderboardApp } from './apps/LeaderboardApp';
+import { AdminApp } from './apps/AdminApp';
 import { LEADERBOARD_URL } from '../leaderboard';
 import { xpForLevel } from '@/game/progress/xp';
 import { netWorth } from '@/game/finance/netWorth';
@@ -51,6 +52,8 @@ export const APPS: AppDef[] = [
   { id: 'learn', name: 'Learn', icon: '📚', color: '#8a3f2e' },
   { id: 'map', name: 'Map', icon: '🗺️', color: '#2f9a6a' },
   { id: 'settings', name: 'Settings', icon: '⚙️', color: '#7a7f8f' },
+  // Team only: asks for the admin code (src/ui/phone/apps/AdminApp.tsx)
+  { id: 'admin', name: 'Admin', icon: '🔑', color: '#1b2030' },
 ];
 
 export function Phone({ app, arg }: { app?: string; arg?: string }) {
@@ -140,6 +143,7 @@ export function Phone({ app, arg }: { app?: string; arg?: string }) {
         {app === 'news' && <NewsApp />}
         {app === 'calc' && <CalculatorApp />}
         {app === 'leaderboard' && <LeaderboardApp />}
+        {app === 'admin' && <AdminApp />}
       </div>
         <button className="fp-home" onClick={() => (playSfx('click'), app ? open({ type: 'phone' }) : close())} aria-label={app ? 'Home' : 'Close FinPhone'} />
       </div>

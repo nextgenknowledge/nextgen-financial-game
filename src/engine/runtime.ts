@@ -36,6 +36,10 @@ export const rt = {
   grounded: true,
   /** Set when the player leaves the ground in a jump (keyboard or touch button); quests read and clear it. */
   jumped: false,
+  /** Admin: double-tap Space to fly (Space up, Shift down), and a walking speed boost. */
+  flying: false,
+  canFly: false,
+  speedBoost: 1,
   camYaw: Math.PI,
   camPitch: 0.42,
   camDist: 8,

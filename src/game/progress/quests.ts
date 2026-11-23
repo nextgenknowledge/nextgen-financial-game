@@ -133,6 +133,18 @@ export function unlockLocation(w: WorldState, fx: Fx, loc: LocationId) {
   fx.push({ type: 'toast', text: `New portal unlocked!`, icon: '🌀', tone: 'gold' });
 }
 
+/** Admin: finish the tutorial chain (or every story and side quest), with their rewards. */
+export function finishQuestsForAdmin(w: WorldState, fx: Fx, all: boolean) {
+  for (let guard = 0; guard < 200; guard++) {
+    const a = w.progress.quests.active.find((x) => {
+      const q = QUEST_BY_ID.get(x.id);
+      return q && !q.epic && (all || q.onboarding);
+    });
+    if (!a) break;
+    completeQuest(w, fx, QUEST_BY_ID.get(a.id)!);
+  }
+}
+
 function completeQuest(w: WorldState, fx: Fx, q: QuestDef) {
   w.progress.quests.active = w.progress.quests.active.filter((a) => a.id !== q.id);
   w.progress.quests.completed.push(q.id);
