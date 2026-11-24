@@ -235,3 +235,144 @@ export function audioBus(): { ctx: AudioContext; out: GainNode } | null {
   if (!c || !sfxGain) return null;
   return { ctx: c, out: sfxGain };
 }
+
+/* ───────── Track-car engine (the Kestrel Apex TR) ─────────
+ * A high-revving six-cylinder howl, made from detuned saw and square oscillators through a
+ * distortion curve and a filter that opens as the revs climb. Revs rise through six gears with a
+ * quick drop at each shift, a throttle blip greets you when you get in, and lifting off at high
+ * revs sets off pops and crackles from the exhaust. It goes through the sound-effects volume, so
+ * the slider still controls it, but it is the loudest thing in the game.
+ */
+interface Engine {
+  oscs: OscillatorNode[];
+  filter: BiquadFilterNode;
+  gain: GainNode;
+  rpm: number;
+  throttleWas: number;
+  crackleUntil: number;
+  startedAt: number;
+}
+let engine: Engine | null = null;
+const IDLE_RPM = 1100;
+const MAX_RPM = 9000;
+const GEARS = 6;
+
+function driveCurve(amount: number) {
+  const n = 1024;
+  const curve = new Float32Array(n);
+  for (let i = 0; i < n; i++) {
+    const x = (i / (n - 1)) * 2 - 1;
+    curve[i] = ((1 + amount) * x) / (1 + amount * Math.abs(x));
+  }
+  return curve;
+}
+
+function startEngine() {
+  const c = ensure();
+  if (!c || !sfxGain) return null;
+  const gain = c.createGain();
+  gain.gain.value = 0.0001;
+  const filter = c.createBiquadFilter();
+  filter.type = 'lowpass';
+  filter.Q.value = 4;
+  filter.frequency.value = 600;
+  const shaper = c.createWaveShaper();
+  shaper.curve = driveCurve(18);
+  shaper.oversample = '2x';
+  const mix = c.createGain();
+  mix.gain.value = 0.5;
+  const oscs: OscillatorNode[] = [];
+  // Firing note, a detuned twin for the rasp, the octave for the howl, a sub for the rumble
+  for (const [type, mult, detune, vol] of [
+    ['sawtooth', 1, 0, 0.5],
+    ['sawtooth', 1, 12, 0.4],
+    ['square', 2, -6, 0.22],
+    ['square', 0.5, 0, 0.35],
+  ] as const) {
+    const o = c.createOscillator();
+    o.type = type;
+    o.detune.value = detune;
+    (o as OscillatorNode & { mult?: number }).mult = mult;
+    const g = c.createGain();
+    g.gain.value = vol;
+    o.connect(g).connect(mix);
+    o.start();
+    oscs.push(o);
+  }
+  mix.connect(shaper).connect(filter).connect(gain).connect(sfxGain);
+  return { oscs, filter, gain, rpm: IDLE_RPM, throttleWas: 0, crackleUntil: 0, startedAt: c.currentTime } as Engine;
+}
+
+/** Engine revs for a road speed (0..1 of top speed) through six gears. */
+export function engineRpm(speedFrac: number): number {
+  const f = Math.max(0, Math.min(1, speedFrac));
+  if (f < 0.02) return IDLE_RPM;
+  const g = Math.min(GEARS - 1, Math.floor(f * GEARS));
+  const inGear = f * GEARS - g;
+  // First gear starts from idle; higher gears drop back to ~5,500 after each shift
+  const low = g === 0 ? IDLE_RPM : 5500;
+  return low + (MAX_RPM - low) * inGear;
+}
+
+/**
+ * Call every frame while riding: `speedFrac` 0..1 of top speed, `throttle` -1..1. Pass on=false
+ * (paused, off the car) to fade it out.
+ */
+export function updateEngine(on: boolean, speedFrac = 0, throttle = 0) {
+  if (!on) {
+    if (engine && ctx) {
+      const e = engine;
+      engine = null;
+      e.gain.gain.setTargetAtTime(0.0001, ctx.currentTime, 0.08);
+      for (const o of e.oscs) o.stop(ctx.currentTime + 0.5);
+    }
+    return;
+  }
+  if (sfxVol <= 0) return updateEngine(false);
+  if (!engine) {
+    engine = startEngine();
+    if (!engine || !ctx) return;
+    // Startup: a throttle blip to 7,000 and back
+    const t = ctx.currentTime;
+    for (const o of engine.oscs) {
+      const m = (o as OscillatorNode & { mult?: number }).mult ?? 1;
+      o.frequency.setValueAtTime((IDLE_RPM / 20) * m, t);
+      o.frequency.linearRampToValueAtTime((7000 / 20) * m, t + 0.25);
+      o.frequency.exponentialRampToValueAtTime((IDLE_RPM / 20) * m, t + 1.1);
+    }
+    engine.gain.gain.setValueAtTime(0.0001, t);
+    engine.gain.gain.exponentialRampToValueAtTime(0.9, t + 0.2);
+    engine.gain.gain.exponentialRampToValueAtTime(0.45, t + 1.1);
+    engine.filter.frequency.setValueAtTime(900, t);
+    engine.filter.frequency.linearRampToValueAtTime(3800, t + 0.25);
+    engine.filter.frequency.exponentialRampToValueAtTime(700, t + 1.1);
+    for (let i = 0; i < 4; i++) crackle(t + 1.0 + i * 0.09 + Math.random() * 0.05);
+    return;
+  }
+  const c = ctx!;
+  const e = engine;
+  const t = c.currentTime;
+  if (t - e.startedAt < 1.15) return; // let the startup blip play out
+  const target = Math.max(engineRpm(speedFrac), throttle > 0.1 ? IDLE_RPM + 1800 : IDLE_RPM);
+  // Revs follow the road speed quickly, and snap down on a shift
+  e.rpm += (target - e.rpm) * (target < e.rpm - 1500 ? 0.6 : 0.25);
+  const hz = e.rpm / 20;
+  for (const o of e.oscs) o.frequency.setTargetAtTime(hz * ((o as OscillatorNode & { mult?: number }).mult ?? 1), t, 0.02);
+  const load = Math.max(0, throttle);
+  e.filter.frequency.setTargetAtTime(500 + (e.rpm / MAX_RPM) * 4200 * (0.55 + load * 0.45), t, 0.03);
+  e.gain.gain.setTargetAtTime(0.32 + (e.rpm / MAX_RPM) * 0.45 + load * 0.25, t, 0.05);
+  // Lift off at high revs: pops and crackles for a moment
+  if (e.throttleWas > 0.5 && throttle < 0.2 && e.rpm > 4500) e.crackleUntil = t + 0.9;
+  e.throttleWas = throttle;
+  if (t < e.crackleUntil && Math.random() < 0.35) crackle(t + Math.random() * 0.05);
+}
+
+/** One exhaust pop: a short, bright burst of noise with a thump under it. */
+function crackle(at: number) {
+  if (!ctx || !sfxGain) return;
+  noise(sfxGain, at, 0.03 + Math.random() * 0.03, 0.5 + Math.random() * 0.3, 900 + Math.random() * 1400);
+  tone(sfxGain, 70 + Math.random() * 40, at, 0.04, { type: 'square', vol: 0.25, release: 0.04, filter: 400 });
+}
+
+// A hidden tab stops drawing frames, so silence the engine instead of leaving it droning
+if (typeof document !== 'undefined') document.addEventListener('visibilitychange', () => document.hidden && updateEngine(false));

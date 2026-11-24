@@ -13,6 +13,8 @@ import { buildLandmark, DYNAMIC_LANDMARKS } from './landmarks';
 import { kitFor, roadMarkings } from './cityKit';
 import { portalKind } from '../portalKinds';
 import { arrivalLayout, buildArrival } from './gates';
+import { buildSpeedway } from './speedway';
+import { onTrack } from '@/game/speedway';
 import { buildStreetscape, buildLots, buildBackdrop, buildParkscape, onParterre, type SignalHead, type ParkedCar, type Site } from './streetscape';
 import type { Trigger } from '@/engine/runtime';
 
@@ -209,6 +211,9 @@ export function buildOutdoor(def: CityDef, difficulty: Difficulty): SceneBuild {
     }
   }
   if (isCity) roadMarkings(def, b, makeRng(def.filler.seed * 17 + 5), inWater);
+  // Fin City Speedway (park): drawn here, and on the map with the other roads
+  const speedway = def.landmarks.some((l) => l.type === 'speedway');
+  if (speedway) roadSegs.push(...buildSpeedway(b));
 
   // ── Sidewalk blocks (cities): raised curbs between roads ──
   const blocks: Rect[] = [];
@@ -450,14 +455,14 @@ export function buildOutdoor(def: CityDef, difficulty: Difficulty): SceneBuild {
         }
         // Outer sidewalk with a low wall where the playable area ends
         const side = alongX ? Math.sign(cz) : Math.sign(cx);
-        const off = RING + side * (roadW / 2 + 2);
+        const off = side * (RING + roadW / 2 + 2);
         const sw = alongX ? len + roadW + 4 : 4;
         const sd = alongX ? 4 : len + roadW + 4;
         const sx = alongX ? cx : off;
         const sz = alongX ? off : cz;
         b.solid.box(sx, 0.08, sz, sw, 0.16, sd, kit.paveColor, { ao: false, tex: kit.pave });
         lowColliders.push({ cx: sx, cz: sz, w: sw, d: sd, maxY: 0.16 });
-        const wallOff = RING + side * (roadW / 2 + 4.2);
+        const wallOff = side * (RING + roadW / 2 + 4.2);
         b.solid.box(alongX ? cx : wallOff, 0.45, alongX ? wallOff : cz, alongX ? len + roadW + 4 : 0.5, 0.9, alongX ? 0.5 : len + roadW + 4, '#a7a294', { tex: 'stone' });
         b.colliders.push({ cx: alongX ? cx : wallOff, cz: alongX ? wallOff : cz, w: alongX ? len + roadW + 4 : 0.5, d: alongX ? 0.5 : len + roadW + 4, minY: 0, maxY: 1.2, rotY: 0 });
       }
@@ -495,6 +500,7 @@ export function buildOutdoor(def: CityDef, difficulty: Difficulty): SceneBuild {
   const okTree = (x: number, z: number) => {
     if (Math.abs(x) > H - 2 || Math.abs(z) > H - 2) return false;
     if (inWater(x, z, 2)) return false;
+    if (speedway && onTrack(x, z, 4)) return false;
     if (nearRoad(x, z, 1.5)) return false;
     if (reserved.some((rv) => x > rv.minX - 2.5 && x < rv.maxX + 2.5 && z > rv.minZ - 2.5 && z < rv.maxZ + 2.5)) return false;
     if ((def.paths ?? []).some((p) => segmentDist(x, z, p.from, p.to) < p.width / 2 + 1.5)) return false;
@@ -534,7 +540,7 @@ export function buildOutdoor(def: CityDef, difficulty: Difficulty): SceneBuild {
   // Park landscaping (before tree colliders so its avenue trees collide too)
   if (!isCity) {
     const clear = (x: number, z: number, m: number) =>
-      !reserved.some((rv) => x > rv.minX - m && x < rv.maxX + m && z > rv.minZ - m && z < rv.maxZ + m) && !inWater(x, z, 1) && !doors.some((dr) => Math.hypot(dr.x - x, dr.z - z) < m + 3) && !trees.some((t) => Math.hypot(t.x - x, t.z - z) < 2.5);
+      !reserved.some((rv) => x > rv.minX - m && x < rv.maxX + m && z > rv.minZ - m && z < rv.maxZ + m) && !inWater(x, z, 1) && !(speedway && onTrack(x, z, m + 3)) && !doors.some((dr) => Math.hypot(dr.x - x, dr.z - z) < m + 3) && !trees.some((t) => Math.hypot(t.x - x, t.z - z) < 2.5);
     buildParkscape(def, b, makeRng(77), trees, streetLamps, clear);
   }
   // Tree trunks collide

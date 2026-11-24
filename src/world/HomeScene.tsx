@@ -73,7 +73,26 @@ export function HomeScene({ propUid }: { propUid: string }) {
   const shell = useMemo(() => {
     const b = new VoxelBuilder();
     const g = new VoxelBuilder();
-    if (look) buildShell(b, g, look, L, false);
+    if (look) {
+      buildShell(b, g, look, L, false);
+      // Finishing touches that never get in the way of furniture: skirting boards, ceiling lamps,
+      // two pictures high on the back wall and a doormat inside the front door
+      const { w, d, h } = L;
+      const skirt = look.floor === 'marble' ? '#cfcac0' : '#5a3e2b';
+      b.box(0, 0.07, -d / 2 + 0.03, w, 0.14, 0.04, skirt, { ao: false });
+      for (const sx of [-1, 1]) {
+        b.box(sx * (w / 2 - 0.03), 0.07, 0, 0.04, 0.14, d, skirt, { ao: false });
+        b.box(sx * (w / 4 + 0.6), 0.07, d / 2 - 0.03, w / 2 - 1.2, 0.14, 0.04, skirt, { ao: false });
+        b.box(sx * (w / 4), h - 0.45, 0, 0.02, 0.9, 0.02, '#2a2a2a');
+        b.box(sx * (w / 4), h - 0.95, 0, 0.5, 0.12, 0.5, '#e9e4da');
+        g.box(sx * (w / 4), h - 1.04, 0, 0.42, 0.04, 0.42, '#ffe9c4');
+        const px = sx * Math.min(2.2, w / 4);
+        b.box(px, 2.45, -d / 2 + 0.06, 1.2, 0.85, 0.05, sx < 0 ? '#5a3e2b' : '#2a2a2a');
+        b.box(px, 2.5, -d / 2 + 0.09, 1.0, 0.4, 0.02, sx < 0 ? '#9cc8e8' : '#e8b48a');
+        b.box(px, 2.25, -d / 2 + 0.09, 1.0, 0.25, 0.02, sx < 0 ? '#5a8a4a' : '#3a6a8a');
+      }
+      b.box(0, 0.012, d / 2 - 0.9, 1.4, 0.02, 0.8, '#6b4a2a', { ao: false, tex: 'concrete' });
+    }
     return { geo: b.build(), glass: g.build() };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [L, look?.wall, look?.floor]);

@@ -444,19 +444,47 @@ export function houseGeometry(houseId: string): THREE.BufferGeometry {
     b.block(1.5, 6.6, -0.5, 9.4, 0.3, 7.4, '#3a3f4a');
     b.block(-4.5, 3.4, 2, 3, 0.15, 5, '#a8774a');
     b.block(-6, 0, 6, 4, 0.2, 3, '#5ab0e8');
+    // Glass balcony rail, wood slat screen, a front door with a canopy, uplights and planters
+    b.block(1.5, 3.4, 3.1, 9, 0.9, 0.05, '#bcd6e2');
+    b.block(1.5, 4.28, 3.1, 9, 0.06, 0.08, '#3a3f4a');
+    for (let x = -5.6; x < -3.4; x += 0.3) b.block(x, 0, 4.56, 0.12, 3.3, 0.1, '#a8774a');
+    b.block(3.5, 0, 4.58, 1.3, 2.4, 0.08, '#2a2f3d');
+    b.block(3.5, 2.6, 5.0, 2.2, 0.12, 1.0, '#3a3f4a');
+    for (const x of [-2, 1, 5.5]) b.block(x, 0, 5.2, 1.2, 0.5, 0.6, '#9a958a');
+    for (const x of [-2, 1, 5.5]) b.block(x, 0.5, 5.2, 1.0, 0.35, 0.45, '#3f6e34', { topTint: 1.1 });
   } else {
     const [w, d, h] = houseId === 'tiny-house' ? [6, 5, 3.2] : houseId === 'cottage' ? [9, 7, 3.6] : [12, 9, 6.4];
     b.block(0, 0, 0, w, h, d, wall);
     for (let k = 0; k < 4; k++) b.block(0, h + k * 0.7, 0, w + 0.8 - (k * (w + 0.8)) / 4.2, 0.7, d + 0.8, k % 2 ? roof : '#' + new THREE.Color(roof).multiplyScalar(0.9).getHexString(), { topTint: 1.06 });
     b.block(0, 0, d / 2 + 0.05, 1.4, 2.3, 0.12, '#6b4a2a');
+    // Door frame, step, a porch lamp and a little canopy over the door
+    b.block(0, 0, d / 2 + 0.08, 1.7, 2.5, 0.06, '#f4f1ea');
+    b.block(0, 0, d / 2 + 0.5, 2.0, 0.16, 0.8, '#bdb3a0');
+    b.block(0.95, 1.9, d / 2 + 0.15, 0.18, 0.28, 0.14, '#ffd98a');
+    b.block(0, 2.55, d / 2 + 0.45, 2.2, 0.1, 0.9, roof);
+    // Windows: white frames, a cross bar, shutters on the cottage and flower boxes underneath
+    const win = (x: number, y: number) => {
+      b.block(x, y - 0.1, d / 2 + 0.06, 1.6, 1.5, 0.08, '#f4f1ea');
+      b.block(x, y, d / 2 + 0.05, 1.4, 1.3, 0.1, glass);
+      b.block(x, y + 0.6, d / 2 + 0.12, 1.4, 0.06, 0.02, '#f4f1ea');
+      b.block(x, y, d / 2 + 0.12, 0.06, 1.3, 0.02, '#f4f1ea');
+      if (houseId === 'cottage') for (const sx of [-1, 1]) b.block(x + sx * 0.95, y - 0.05, d / 2 + 0.08, 0.4, 1.4, 0.06, '#3f6e5a');
+      b.block(x, y - 0.35, d / 2 + 0.25, 1.4, 0.25, 0.35, '#8a5a44');
+      for (let k = -2; k <= 2; k++) b.block(x + k * 0.27, y - 0.1, d / 2 + 0.25, 0.22, 0.2, 0.22, ['#e5533d', '#f2c94c', '#f28ab0'][(k + 2) % 3]);
+    };
     for (const x of [-w / 3, w / 3]) {
-      b.block(x, 1.2, d / 2 + 0.05, 1.4, 1.3, 0.1, glass);
-      if (h > 4) b.block(x, 4.0, d / 2 + 0.05, 1.4, 1.3, 0.1, glass);
+      win(x, 1.2);
+      if (h > 4) win(x, 4.0);
     }
+    // Side windows and a gutter along the eaves (the street already has each plot's mailbox)
+    for (const sx of [-1, 1]) b.block(sx * (w / 2 + 0.05), 1.2, 0, 0.1, 1.2, 1.4, glass);
+    b.block(0, h - 0.1, d / 2 + 0.4, w + 0.8, 0.12, 0.12, '#8d939c');
     b.block(w / 2 - 1.2, h, -d / 4, 0.8, 2.2, 0.8, '#8a5a44');
     if (houseId === 'family-home') {
       b.block(w / 2 + 2.2, 0, 0, 4, 3, 6, wall);
       b.block(w / 2 + 2.2, 0, 3.05, 3.2, 2.4, 0.1, '#c0c4cc');
+      for (let k = 1; k < 5; k++) b.block(w / 2 + 2.2, k * 0.48, 3.11, 3.2, 0.04, 0.02, '#8d939c'); // garage door panels
+      b.block(w / 2 + 2.2, 0, 5.0, 3.2, 0.05, 4.0, '#9a958a'); // driveway
       b.block(w / 2 + 2.2, 3, 0, 4.4, 0.4, 6.4, roof);
     }
   }

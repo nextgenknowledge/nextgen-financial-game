@@ -2397,3 +2397,12 @@ button.item-card { cursor: pointer; }
 .lb-box.legend { background: #d99a12; box-shadow: 0 0 14px #ffd25a; }
 @keyframes lb-pop { from { transform: scale(0.4) rotate(-12deg); opacity: 0; } to { transform: none; opacity: 1; } }
 .lb-odds { font-size: 0.78rem; color: #8ea0c2; font-weight: 700; }
+
+/* Fin City Speedway lap timer (src/ui/hud/Speedway.tsx) */
+.speedway-hud {
+  display: flex; flex-direction: column; gap: 2px; margin-top: 8px; padding: 8px 12px; width: max-content; max-width: 100%;
+  background: #1f2a44; color: #fff; border: 3px solid #0b1533; box-shadow: 3px 3px 0 #060d22; pointer-events: none;
+}
+.speedway-hud .sw-title { font-size: 0.72rem; font-weight: 900; color: #ffcf3f; letter-spacing: 0.04em; }
+.speedway-hud .sw-time { font-family: var(--font-pixel); font-size: 1.5rem; line-height: 1.1; }
+.speedway-hud .sw-meta { font-size: 0.75rem; font-weight: 700; color: #d7e3ff; }
