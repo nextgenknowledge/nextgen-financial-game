@@ -8,6 +8,7 @@ import { vehicleDef, mountVehicle, dismountVehicle } from '@/engine/vehicles';
 import { VehicleModel } from './Vehicles';
 import { playSfx } from '@/engine/audio';
 import { useUI } from '@/store/ui';
+import { AIRPORT } from '@/game/airport';
 
 /** Small reactive flag so the scene re-renders when the player gets on/off a vehicle. */
 export const useRide = create<{ riding: string | null; parkedRev: number; set: (r: string | null) => void; bump: () => void }>((set, get) => ({
@@ -51,10 +52,10 @@ export function waterSpot(dock: { x: number; z: number; rot: number }): { x: num
   return dock;
 }
 
-function spotFor(type: string) {
+function spotFor(type: string): { x: number; z: number; rot: number; bank?: { x: number; z: number } } | null {
   // The seaplane takes off from the water: its wings don't fit between the cars at the garage
   if (type === 'boat') return rt.dock && waterSpot(rt.dock);
-  if (type === 'plane') return rt.dock ? waterSpot(rt.dock) : rt.garage;
+  if (type === 'plane') return rt.airport ? { ...rt.airport, bank: { ...AIRPORT.stand } } : rt.dock ? waterSpot(rt.dock) : rt.garage;
   return rt.garage;
 }
 
@@ -110,7 +111,10 @@ export function summonVehicle(uid: string, itemId: string) {
   const def = vehicleDef(itemId);
   if (!useGame.getState().world?.assets.vehicles.some((v) => v.uid === uid)) return false;
   if (!def) return false;
-  if ((def.type === 'plane' || def.type === 'boat') && rt.dock) {
+  if (def.type === 'plane' && rt.airport) {
+    // The seaplane waits at the airfield past the west edge, ready on the runway
+    rt.parked = { uid, itemId, x: rt.airport.x, z: rt.airport.z, rot: rt.airport.rot, scene: rt.sceneKey, bank: { ...AIRPORT.stand } };
+  } else if ((def.type === 'plane' || def.type === 'boat') && rt.dock) {
     // Seaplanes and boats wait on the water at the dock
     const s = waterSpot(rt.dock);
     rt.parked = { uid, itemId, x: s.x, z: s.z, rot: s.rot, scene: rt.sceneKey, bank: s.bank };
@@ -139,7 +143,7 @@ export function ParkedVehicles() {
     } else if (!rt.parked || rt.parked.scene !== rt.sceneKey || rt.parked.uid !== active.uid) {
       const def = vehicleDef(active.itemId);
       const spot = def ? spotFor(def.type) : null;
-      rt.parked = spot ? { uid: active.uid, itemId: active.itemId, x: spot.x, z: spot.z, rot: spot.rot, scene: rt.sceneKey } : null;
+      rt.parked = spot ? { uid: active.uid, itemId: active.itemId, x: spot.x, z: spot.z, rot: spot.rot, scene: rt.sceneKey, bank: spot.bank } : null;
     }
     useRide.getState().bump();
   }, [active]);

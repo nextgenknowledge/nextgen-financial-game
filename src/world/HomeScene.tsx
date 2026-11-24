@@ -6,6 +6,7 @@ import * as THREE from 'three';
 import { useGame } from '@/store/game';
 import { useUI } from '@/store/ui';
 import { rt } from '@/engine/runtime';
+import { playSfx } from '@/engine/audio';
 import { CollisionWorld } from '@/engine/collision';
 import { VoxelBuilder } from '@/engine/voxel';
 import { worldUniforms } from '@/engine/atlas';
@@ -13,34 +14,47 @@ import { FURNITURE_SIZE, homeInfo, isFlat, layoutOf, placementProblem, type Home
 import type { PlacedFurniture } from '@/game/types';
 import { M } from './materials';
 import { buildShell, GLASS_MAT } from './InteriorScene';
+import { decorAction } from '@/ui/hud/DecorPanel';
+import { buildHomeInterior, homeStyle, type Collider } from './homeInterior';
+import { STOREY } from '@/game/homePlan';
 import { furnitureGeometry, fishbowlGeometry } from './Furniture';
 import type { Layout } from './interiors/plan';
 
 /** Where the piece you are carrying would land, read by the decorating panel. */
 export const decorTarget = { x: 0, z: 0, problem: null as string | null };
 
-/** Wall and floor finish for each kind of home. */
-function lookFor(home: HomeInfo) {
-  const id = home.prop.houseId ?? home.prop.itemId;
-  switch (id) {
-    case 'ny-loft':
-      return { wall: '#b5654a', wallTex: 'brick', floor: 'wood', floorColor: '#8a5a34', windows: true };
-    case 'modern-villa':
-      return { wall: '#f4f6fa', wallTex: 'concrete', floor: 'marble', floorColor: '#e6e8ea', windows: true };
-    case 'sg-condo':
-    case 'hk-apartment':
-      return { wall: '#eef3ec', wallTex: 'stucco', floor: 'marble', floorColor: '#ddd8cc', windows: true };
-    case 'london-flat':
-      return { wall: '#e9e2d0', wallTex: 'stucco', floor: 'wood', floorColor: '#9a6a40', windows: true };
-    default:
-      return { wall: '#f1e7d6', wallTex: 'stucco', floor: 'wood', floorColor: '#b07a4a', windows: true };
+/**
+ * Arranging furniture from above: where the pointer is over the floor, the grab offset so a piece
+ * doesn't jump to the pointer, and whether a piece is being dragged (rather than placed with a tap).
+ */
+export const planner = { x: 0, z: 0, offX: 0, offZ: 0, dragging: false };
+const snap = (v: number) => Math.round(v * 4) / 4;
+
+/** Let go of the piece being carried: put it down if it fits; a dragged piece that doesn't fit goes back. */
+export function finishPlacing() {
+  const d = useUI.getState().decor;
+  if (!d?.carrying) return;
+  const dragged = planner.dragging;
+  planner.dragging = false;
+  if (dragged && decorTarget.problem) {
+    useUI.getState().pushToast({ text: `${decorTarget.problem} It went back where it was.`, tone: 'info' });
+    decorAction('cancel');
+    return;
   }
+  decorAction('place');
+}
+
+/** Wall and floor finish for each kind of home (from its style in homeInterior.ts). */
+function lookFor(home: HomeInfo) {
+  const st = homeStyle(home.prop.houseId ?? home.prop.itemId);
+  return { wall: st.wall, wallTex: st.wallTex, floor: st.floor, floorColor: st.floorColor, windows: true };
 }
 
 /** Colliders for the room walls plus every piece of furniture that isn't flat. */
-function roomCollision(L: Layout, layout: PlacedFurniture[], itemsById: Map<string, string>) {
+function roomCollision(L: Layout, layout: PlacedFurniture[], itemsById: Map<string, string>, builtIn: Collider[]) {
   const { w, d } = L;
   const c = new CollisionWorld();
+  for (const k of builtIn) c.addBox(k.x, k.z, k.w, k.d, k.minY, k.maxY, 'built-in');
   c.bounds = { minX: -w / 2, maxX: w / 2, minZ: -d / 2, maxZ: d / 2 + 2 };
   c.addBox(0, -d / 2 - 0.25, w + 1, 0.5, 0, 10);
   c.addBox(-w / 2 - 0.25, 0, 0.5, d, 0, 10);
@@ -75,27 +89,26 @@ export function HomeScene({ propUid }: { propUid: string }) {
     const g = new VoxelBuilder();
     if (look) {
       buildShell(b, g, look, L, false);
-      // Finishing touches that never get in the way of furniture: skirting boards, ceiling lamps,
-      // two pictures high on the back wall and a doormat inside the front door
-      const { w, d, h } = L;
+      // Skirting boards and a doormat inside the front door
+      const { w, d } = L;
       const skirt = look.floor === 'marble' ? '#cfcac0' : '#5a3e2b';
       b.box(0, 0.07, -d / 2 + 0.03, w, 0.14, 0.04, skirt, { ao: false });
       for (const sx of [-1, 1]) {
         b.box(sx * (w / 2 - 0.03), 0.07, 0, 0.04, 0.14, d, skirt, { ao: false });
         b.box(sx * (w / 4 + 0.6), 0.07, d / 2 - 0.03, w / 2 - 1.2, 0.14, 0.04, skirt, { ao: false });
-        b.box(sx * (w / 4), h - 0.45, 0, 0.02, 0.9, 0.02, '#2a2a2a');
-        b.box(sx * (w / 4), h - 0.95, 0, 0.5, 0.12, 0.5, '#e9e4da');
-        g.box(sx * (w / 4), h - 1.04, 0, 0.42, 0.04, 0.42, '#ffe9c4');
-        const px = sx * Math.min(2.2, w / 4);
-        b.box(px, 2.45, -d / 2 + 0.06, 1.2, 0.85, 0.05, sx < 0 ? '#5a3e2b' : '#2a2a2a');
-        b.box(px, 2.5, -d / 2 + 0.09, 1.0, 0.4, 0.02, sx < 0 ? '#9cc8e8' : '#e8b48a');
-        b.box(px, 2.25, -d / 2 + 0.09, 1.0, 0.25, 0.02, sx < 0 ? '#5a8a4a' : '#3a6a8a');
       }
       b.box(0, 0.012, d / 2 - 0.9, 1.4, 0.02, 0.8, '#6b4a2a', { ao: false, tex: 'concrete' });
     }
-    return { geo: b.build(), glass: g.build() };
+    // The built-in rooms: kitchen, dining, living room, stairs and the bedroom upstairs
+    const glow = new VoxelBuilder();
+    const inside = home ? buildHomeInterior(home.prop.houseId ?? home.prop.itemId, L, b, glow, g) : null;
+    if (inside) {
+      // Upstairs is built at floor level and lifted onto the mezzanine
+      for (const geo of [inside.upper.solid, inside.upper.glow, inside.upper.glass]) geo.translate(0, STOREY, 0);
+    }
+    return { geo: b.build(), glass: g.build(), glow: glow.build(), upper: inside?.upper ?? null, colliders: inside?.colliders ?? [] };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [L, look?.wall, look?.floor]);
+  }, [L, look?.wall, look?.floor, home?.prop.houseId, home?.prop.itemId]);
 
   // New scene, exit door and starting spot, once per visit
   useMemo(() => {
@@ -104,9 +117,9 @@ export function HomeScene({ propUid }: { propUid: string }) {
   }, [propUid, L]);
   // Colliders follow the furniture as you arrange it
   useMemo(() => {
-    rt.collision = roomCollision(L, layout, itemsById);
+    rt.collision = roomCollision(L, layout, itemsById, shell.colliders);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [L, layoutKey, itemsById]);
+  }, [L, layoutKey, itemsById, shell]);
 
   useEffect(() => {
     if (!rt.restoreSpot()) rt.teleport(0, L.d / 2 - 3.2, Math.PI);
@@ -120,6 +133,28 @@ export function HomeScene({ propUid }: { propUid: string }) {
     };
   }, [L]);
 
+  // Arranging: a piece picked from storage starts in the middle of the free floor, and letting go
+  // of a dragged piece anywhere (even over the panel) puts it down or sends it back
+  const carrying = decor?.carrying ?? null;
+  useEffect(() => {
+    if (carrying && !planner.dragging) {
+      planner.x = 0;
+      planner.z = snap(L.d * 0.1);
+      planner.offX = 0;
+      planner.offZ = 0;
+    }
+  }, [carrying, L.d]);
+  useEffect(() => {
+    if (!decor) {
+      planner.dragging = false;
+      document.body.style.cursor = '';
+      return;
+    }
+    const up = () => planner.dragging && finishPlacing();
+    window.addEventListener('pointerup', up);
+    return () => window.removeEventListener('pointerup', up);
+  }, [decor]);
+
   useFrame(() => {
     worldUniforms.uGrime.value = 0.2;
     worldUniforms.uWet.value = 0;
@@ -127,7 +162,7 @@ export function HomeScene({ propUid }: { propUid: string }) {
   });
 
   const onClick = (e: ThreeEvent<MouseEvent>) => {
-    if (e.delta > 6) return;
+    if (e.delta > 6 || useUI.getState().decor) return;
     e.stopPropagation();
     walkTo(e.point.x, e.point.z);
   };
@@ -137,11 +172,67 @@ export function HomeScene({ propUid }: { propUid: string }) {
     <group>
       <mesh geometry={shell.geo} material={M.vc} onClick={onClick} receiveShadow />
       <mesh geometry={shell.glass} material={GLASS_MAT} renderOrder={2} />
+      <mesh geometry={shell.glow} material={M.neon} />
+      {shell.upper && !decor && (
+        <>
+          <mesh geometry={shell.upper.solid} material={M.vc} onClick={onClick} castShadow receiveShadow />
+          <mesh geometry={shell.upper.glow} material={M.neon} />
+          <mesh geometry={shell.upper.glass} material={GLASS_MAT} renderOrder={2} />
+        </>
+      )}
+      {/* Light upstairs, in the tall living room and under the mezzanine */}
       {[-L.w / 4, L.w / 4].map((x) => (
         <pointLight key={x} position={[x, L.h - 0.8, 0]} intensity={8} distance={L.w} color="#ffe9c4" decay={1.4} />
       ))}
+      {[-L.w / 4, L.w / 4].map((x) => (
+        <pointLight key={`u${x}`} position={[x, STOREY - 0.6, -L.d / 4]} intensity={5} distance={L.w * 0.7} color="#ffe9c4" decay={1.4} />
+      ))}
       {layout.map((f) =>
-        f.item === decor?.carrying ? null : <Piece key={f.item} itemId={itemsById.get(f.item) ?? ''} x={f.x} z={f.z} rot={f.rot} />,
+        f.item === decor?.carrying ? null : (
+          <Piece
+            key={f.item}
+            itemId={itemsById.get(f.item) ?? ''}
+            x={f.x}
+            z={f.z}
+            rot={f.rot}
+            onGrab={
+              decor && !decor.carrying
+                ? (e) => {
+                    // Press on a piece and drag it somewhere else
+                    e.stopPropagation();
+                    planner.dragging = true;
+                    planner.x = snap(e.point.x);
+                    planner.z = snap(e.point.z);
+                    planner.offX = f.x - planner.x;
+                    planner.offZ = f.z - planner.z;
+                    playSfx('pop');
+                    useUI.getState().setDecor({ ...decor, carrying: f.item, rot: f.rot });
+                  }
+                : undefined
+            }
+          />
+        ),
+      )}
+      {decor && decor.home === propUid && (
+        // An invisible floor that follows the pointer while arranging
+        <mesh
+          rotation={[-Math.PI / 2, 0, 0]}
+          position={[0, 0.03, 0]}
+          onPointerMove={(e) => {
+            planner.x = snap(e.point.x);
+            planner.z = snap(e.point.z);
+          }}
+          onPointerUp={(e) => {
+            if (!useUI.getState().decor?.carrying) return;
+            e.stopPropagation();
+            planner.x = snap(e.point.x);
+            planner.z = snap(e.point.z);
+            finishPlacing();
+          }}
+        >
+          <planeGeometry args={[L.w, L.d]} />
+          <meshBasicMaterial transparent opacity={0} depthWrite={false} />
+        </mesh>
       )}
       {hasFish && <FishBowl x={L.w / 2 - 0.6} z={-L.d / 2 + 0.6} />}
       {decor?.carrying && decor.home === propUid && <Ghost itemId={itemsById.get(decor.carrying) ?? ''} home={home} layout={layout} itemsById={itemsById} />}
@@ -149,10 +240,16 @@ export function HomeScene({ propUid }: { propUid: string }) {
   );
 }
 
-function Piece({ itemId, x, z, rot }: { itemId: string; x: number; z: number; rot: number }) {
+function Piece({ itemId, x, z, rot, onGrab }: { itemId: string; x: number; z: number; rot: number; onGrab?: (e: ThreeEvent<PointerEvent>) => void }) {
   const geo = useMemo(() => furnitureGeometry(itemId), [itemId]);
   return (
-    <group position={[x, 0, z]} rotation={[0, rot, 0]}>
+    <group
+      position={[x, 0, z]}
+      rotation={[0, rot, 0]}
+      onPointerDown={onGrab}
+      onPointerOver={onGrab ? () => (document.body.style.cursor = 'grab') : undefined}
+      onPointerOut={onGrab ? () => (document.body.style.cursor = '') : undefined}
+    >
       <mesh geometry={geo.solid} material={M.vc} castShadow receiveShadow />
       {geo.glow && <mesh geometry={geo.glow} material={M.neon} />}
     </group>
@@ -177,14 +274,12 @@ function Ghost({ itemId, home, layout, itemsById }: { itemId: string; home: Home
   const g = useRef<THREE.Group>(null);
   const mesh = useRef<THREE.Mesh>(null);
   const geo = useMemo(() => furnitureGeometry(itemId), [itemId]);
-  const size = FURNITURE_SIZE[itemId] ?? { w: 1, d: 1, h: 1 };
   useFrame(() => {
     const d = useUI.getState().decor;
     if (!g.current || !d) return;
-    const ahead = Math.max(size.w, size.d) / 2 + 0.9;
-    const snap = (v: number) => Math.round(v * 4) / 4;
-    const x = snap(rt.player.x + Math.sin(rt.playerRotY) * ahead);
-    const z = snap(rt.player.z + Math.cos(rt.playerRotY) * ahead);
+    // Follows the pointer over the floor (keeping where you grabbed it)
+    const x = snap(planner.x + planner.offX);
+    const z = snap(planner.z + planner.offZ);
     const problem = placementProblem(home.room, layout, itemsById, itemId, x, z, d.rot, d.carrying ?? undefined);
     decorTarget.x = x;
     decorTarget.z = z;

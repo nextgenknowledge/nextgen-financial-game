@@ -24,6 +24,7 @@ import { RatingPrompt, openRating } from './RatingPrompt';
 import { StreakWatcher, openStreakCalendar } from './Streak';
 import { AdminWatcher } from '../phone/apps/AdminApp';
 import { SpeedwayHud } from './Speedway';
+import { FlightPanel, Speedometer } from './Speedometer';
 import { questWayOn, setQuestWay, updateGoalMarker, wayAsked } from '../goal';
 import { worldRun } from '@/activities/world/delivery';
 import { dayKey, liveStreak } from '@/game/progress/streak';
@@ -56,6 +57,7 @@ export function HUD() {
         </div>
         <WorldActivityHud />
         <SpeedwayHud />
+        <FlightPanel />
         <ResumeRun />
       </div>
       <div className="hud-region r-tr">
@@ -65,6 +67,7 @@ export function HUD() {
         <Toasts inline />
       </div>
       <div className="hud-region r-bc">
+        <Speedometer />
         <DecorPanel />
         {!panel && !talking && !decor?.carrying && <InteractPrompt />}
       </div>

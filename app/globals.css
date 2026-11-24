@@ -2406,3 +2406,38 @@ button.item-card { cursor: pointer; }
 .speedway-hud .sw-title { font-size: 0.72rem; font-weight: 900; color: #ffcf3f; letter-spacing: 0.04em; }
 .speedway-hud .sw-time { font-family: var(--font-pixel); font-size: 1.5rem; line-height: 1.1; }
 .speedway-hud .sw-meta { font-size: 0.75rem; font-weight: 700; color: #d7e3ff; }
+
+/* Speedometer while riding (src/ui/hud/Speedometer.tsx) */
+.speedo {
+  display: flex; align-items: center; gap: 10px; padding: 6px 12px 6px 6px; margin-bottom: 8px; pointer-events: none;
+  background: #14181f; color: #fff; border: 3px solid #0b1533; box-shadow: 3px 3px 0 #060d22; flex-wrap: wrap; max-width: 280px;
+}
+.speedo-dial { position: relative; width: 72px; height: 72px; border-radius: 50%; background: #1f2a44; border: 3px solid #3a4560; flex: none; }
+.speedo-tick { position: absolute; left: 50%; top: 50%; width: 3px; height: 8px; margin: -4px 0 0 -1.5px; background: #d7e3ff; transform-origin: 50% 50%; }
+.speedo-tick.red { background: #e5533d; }
+.speedo-needle { position: absolute; left: 50%; top: 50%; width: 3px; height: 30px; margin: -30px 0 0 -1.5px; background: #ffcf3f; transform-origin: 50% 100%; transition: transform 0.08s linear; }
+.speedo-hub { position: absolute; left: 50%; top: 50%; width: 10px; height: 10px; margin: -5px 0 0 -5px; background: #ffcf3f; border: 2px solid #0b1533; }
+.speedo-read { display: flex; flex-direction: column; line-height: 1.05; }
+.speedo-num { font-family: var(--font-pixel); font-size: 1.9rem; }
+.speedo-unit { font-size: 0.7rem; font-weight: 900; color: #9fb4e0; letter-spacing: 0.08em; }
+.speedo-gear { font-size: 0.78rem; font-weight: 900; color: #ffcf3f; margin-top: 2px; }
+.speedo-rpm { display: flex; gap: 2px; flex-basis: 100%; }
+.speedo-rpm span { flex: 1; height: 7px; background: #2a3248; }
+.speedo-rpm span.on { background: #3cc45a; }
+.speedo-rpm span.on.gold { background: #ffcf3f; }
+.speedo-rpm span.on.red { background: #e5533d; }
+@media (max-width: 760px) { .speedo { transform: scale(0.85); transform-origin: bottom center; } }
+.flight-panel {
+  display: flex; flex-direction: column; gap: 6px; padding: 8px 10px; margin-top: 8px; pointer-events: auto; max-width: min(420px, 70vw);
+  background: #1f2a44; color: #fff; border: 3px solid #0b1533; box-shadow: 3px 3px 0 #060d22;
+}
+.flight-title { font-size: 0.8rem; font-weight: 900; color: #ffcf3f; }
+.flight-list { display: flex; flex-wrap: wrap; gap: 6px; }
+.flight-btn {
+  padding: 6px 10px; font-family: var(--font-body); font-size: 0.85rem; font-weight: 800; color: var(--px-ink); cursor: pointer;
+  background: var(--px-white); border: 2px solid var(--px-ink); box-shadow: 2px 2px 0 var(--px-ink);
+}
+.flight-btn:disabled { opacity: 0.45; cursor: default; }
+.flight-btn:not(:disabled):active { transform: translate(2px, 2px); box-shadow: none; }
+/* Arranging furniture: Narwhal's quest bubble steps aside for the panel */
+.hud:has(.decor-panel) .narwhal-bubble.idle { display: none; }
