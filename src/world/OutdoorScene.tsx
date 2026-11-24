@@ -1,4 +1,5 @@
 'use client';
+import { AIRPORT_WEST } from '@/game/airport';
 import { useEffect, useMemo, useRef } from 'react';
 import { walkTo } from '@/engine/walk';
 import { useFrame, type ThreeEvent } from '@react-three/fiber';
@@ -37,13 +38,15 @@ export function OutdoorScene({ def, difficulty }: { def: CityDef; difficulty: Di
     const c = rt.collision;
     // Cities end at the low wall beyond the edge boulevard; the park keeps its open meadow
     const edge = def.id === 'park' ? def.half + 20 : def.half + 16;
-    c.bounds = { minX: -edge, maxX: edge, minZ: -edge, maxZ: edge };
+    // The airfield past the west edge is part of the walkable world (fenced in)
+    c.bounds = { minX: AIRPORT_WEST, maxX: edge, minZ: -edge, maxZ: edge };
     for (const k of build.colliders) c.addBox(k.cx, k.cz, k.w, k.d, k.minY, k.maxY, undefined, k.rotY);
     for (const k of build.lowColliders) c.addBox(k.cx, k.cz, k.w, k.d, -1, k.maxY);
     c.water = build.water;
     rt.triggers.push(...build.triggers);
     rt.garage = build.garage;
     rt.dock = build.dock;
+    rt.airport = build.airport;
   }, [build, def]);
 
   // Place the player

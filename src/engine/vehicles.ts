@@ -1,11 +1,19 @@
 /** Arcade vehicle physics on top of the same collision world as walking. */
 import { isDown, virtual } from './input';
 import { rt } from './runtime';
+import { inAirport } from '@/game/airport';
 import * as THREE from 'three';
 
 import { vehicleDef, VEHICLES, RENTAL_SCOOTER, type VehicleDef, type VehicleType } from '@/game/sim/vehicleCatalog';
 export { vehicleDef, VEHICLES, RENTAL_SCOOTER };
 export type { VehicleDef, VehicleType };
+
+let lastLandNag = 0;
+let landNag: (() => void) | null = null;
+/** What to say when the plane can't land here (set by the UI). */
+export function onLandNag(fn: () => void) {
+  landNag = fn;
+}
 
 const RADIUS: Record<VehicleType, number> = { bike: 0.5, scooter: 0.5, kart: 0.9, car: 1.2, boat: 1.4, plane: 2.2 };
 
@@ -73,6 +81,16 @@ export function updateVehicle(dt: number) {
     if (isDown('sprint') && v.alt > 0) v.alt -= 9 * dt;
     if (!lift) v.alt -= 6 * dt;
     v.alt = Math.max(0, Math.min(70, v.alt));
+    // Touch down only at an airfield or on the water: over the city the plane holds a little height
+    const canLand = inAirport(v.pos.x, v.pos.z) || rt.collision.inWater(v.pos.x, v.pos.z, 2);
+    if (!canLand && v.alt < 5 && (v.alt > 0.5 || v.speed > 1)) {
+      v.alt = Math.max(v.alt, 5);
+      const now = performance.now();
+      if (now - lastLandNag > 6000) {
+        lastLandNag = now;
+        landNag?.();
+      }
+    }
   } else {
     const braking = isDown('jump') || virtual.jump;
     if (braking) v.speed -= Math.sign(v.speed) * Math.min(Math.abs(v.speed), def.accel * 2.2 * dt);
@@ -108,6 +126,12 @@ export function updateVehicle(dt: number) {
     }
     v.pos.y = -0.15;
   } else {
+    // On the ground the plane taxis only on the airfield or the water
+    if (v.type === 'plane' && v.alt < 0.5 && !inAirport(v.pos.x, v.pos.z) && !rt.collision.inWater(v.pos.x, v.pos.z, 2) && (inAirport(prevX, prevZ) || rt.collision.inWater(prevX, prevZ, 2))) {
+      v.pos.x = prevX;
+      v.pos.z = prevZ;
+      v.speed *= -0.2;
+    }
     const p = { x: v.pos.x, y: v.type === 'plane' ? v.alt : 0, z: v.pos.z };
     const want = Math.hypot(p.x - prevX, p.z - prevZ);
     const hit = rt.collision.resolve(p, RADIUS[v.type], 1.6, 0.3);

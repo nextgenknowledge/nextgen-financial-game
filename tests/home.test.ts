@@ -51,10 +51,12 @@ describe('homes and furniture', () => {
     expect(placeFurniture(w, prop.uid, bed, 0, 3.6, 0)).toMatch(/doorway/);
     // A rug can go under the sofa
     expect(placeFurniture(w, prop.uid, rug, 0, -3, 0)).toBeNull();
-    // Turning the bed a quarter turn lets it fit along the side wall
-    expect(placeFurniture(w, prop.uid, bed, -4.5, 0, Math.PI / 2)).toBeNull();
-    expect(moveFurniture(w, prop.uid, sofa, 3, -3.5, Math.PI)).toBeNull();
-    expect(prop.layout!.find((f) => f.item === sofa)).toMatchObject({ x: 3, z: -3.5 });
+    // The stairs and the kitchen, dining and living room pieces are built in
+    expect(placeFurniture(w, prop.uid, bed, -4.5, 0, Math.PI / 2)).toMatch(/already there/);
+    // Turning the bed a quarter turn lets it fit in the free floor by the stairs
+    expect(placeFurniture(w, prop.uid, bed, -1, 1.4, Math.PI / 2)).toBeNull();
+    expect(moveFurniture(w, prop.uid, sofa, 1.5, 0, Math.PI)).toBeNull();
+    expect(prop.layout!.find((f) => f.item === sofa)).toMatchObject({ x: 1.5, z: 0 });
     expect(prop.layout!.find((f) => f.item === sofa)!.rot).toBeCloseTo(Math.PI);
     storeFurniture(w, sofa);
     expect(placedIn(w, sofa)).toBeNull();
@@ -64,7 +66,7 @@ describe('homes and furniture', () => {
   it('frees furniture when an item, the home, or tenants change things', () => {
     const { w, prop, sofa, bed, rug } = withHouse();
     placeFurniture(w, prop.uid, sofa, 0, -3, 0);
-    placeFurniture(w, prop.uid, bed, -4.5, 0, Math.PI / 2);
+    placeFurniture(w, prop.uid, bed, -1, 1.4, Math.PI / 2);
     sellItem(w, fx(), sofa);
     expect(prop.layout!.map((f) => f.item)).toEqual([bed]);
     setRented(w, fx(), prop.uid, true);
