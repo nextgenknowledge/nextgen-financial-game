@@ -29,11 +29,26 @@ export function dismountVehicle() {
   const side = RADIUS[v.type] + 0.8;
   // Try the right-hand side, then the left (boats moored beside a pier step onto it)
   const sides = [1, -1].map((s) => [v.pos.x + Math.cos(v.yaw) * side * s, v.pos.z - Math.sin(v.yaw) * side * s] as const);
-  const dry = sides.find(([x, z]) => !rt.collision.inWater(x, z));
+  const dry = sides.find(([x, z]) => !rt.collision.inWater(x, z) || rt.collision.onPlatform(x, z));
   rt.vehicle = null;
-  // Out on open water: back to the garage spot on land
-  rt.player.set(dry ? dry[0] : rt.garage.x, 0, dry ? dry[1] : rt.garage.z);
+  // Out on open water: onto the nearest bank (or the garage spot)
+  const bank = dry ? null : nearestBank(v.pos.x, v.pos.z);
+  const land = dry ?? (bank ? [bank.x, bank.z] : [rt.garage.x, rt.garage.z]);
+  rt.player.set(land[0], 0, land[1]);
   rt.playerVel.set(0, 0, 0);
+}
+
+/** The nearest dry ground just off the water from a point (the shore of the water it's in). */
+function nearestBank(x: number, z: number) {
+  const w = (rt.collision.water ?? []).find((r) => x >= r.minX - 8 && x <= r.maxX + 8 && z >= r.minZ - 8 && z <= r.maxZ + 8);
+  if (!w) return null;
+  const opts = [
+    { d: Math.abs(x - w.minX), x: w.minX - 1.2, z },
+    { d: Math.abs(w.maxX - x), x: w.maxX + 1.2, z },
+    { d: Math.abs(z - w.minZ), x, z: w.minZ - 1.2 },
+    { d: Math.abs(w.maxZ - z), x, z: w.maxZ + 1.2 },
+  ].sort((a, b) => a.d - b.d);
+  return opts[0];
 }
 
 export function updateVehicle(dt: number) {
@@ -44,6 +59,7 @@ export function updateVehicle(dt: number) {
   let throttle = (isDown('forward') ? 1 : 0) - (isDown('back') ? 1 : 0) + virtual.y;
   let steer = (isDown('left') ? 1 : 0) - (isDown('right') ? 1 : 0) - virtual.x;
   throttle = Math.max(-1, Math.min(1, throttle));
+  v.throttle = throttle;
   steer = Math.max(-1, Math.min(1, steer));
   const boost = isDown('sprint') ? 1.15 : 1;
   const max = def.topSpeed * boost;

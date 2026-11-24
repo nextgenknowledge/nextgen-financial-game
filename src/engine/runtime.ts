@@ -59,12 +59,14 @@ export const rt = {
     yaw: number;
     alt: number;
     pos: THREE.Vector3;
+    /** -1..1 from the pedals this frame (engine sound). */
+    throttle?: number;
   },
   /** Where parked vehicles spawn in the current scene. */
   garage: { x: 0, z: 0, rot: 0 },
   dock: null as null | { x: number; z: number; rot: number },
   /** The player's vehicle parked in the current scene (not being ridden). */
-  parked: null as null | { uid: string; itemId: string; x: number; z: number; rot: number; scene: string },
+  parked: null as null | { uid: string; itemId: string; x: number; z: number; rot: number; scene: string; bank?: { x: number; z: number } },
   weather: 'clear' as 'clear' | 'cloudy' | 'rain' | 'snow' | 'fog' | 'haze',
   /** Strength of the current weather at this hour (0 … 1). */
   weatherAmt: 0,

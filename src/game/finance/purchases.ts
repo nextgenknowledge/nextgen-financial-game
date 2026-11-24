@@ -346,7 +346,7 @@ export function setRented(w: WorldState, fx: Fx, propUid: string, rented: boolea
   if (rented && w.player.residence === propUid) w.player.residence = 'narwhal';
   // Tenants move into an empty home; your furniture goes back into storage
   if (rented) clearHome(w, propUid);
-  fx.push({ type: 'toast', text: rented ? 'Listed for rent! Tenants pay you each month.' : 'No longer rented.', icon: '🔑', tone: 'info' });
+  fx.push({ type: 'toast', text: rented ? 'Listed for rent! Tenants pay you each month.' : 'Your tenants moved out. The home is yours to use again, and the rent stops.', icon: '🔑', tone: 'info' });
 }
 
 export function moveIn(w: WorldState, fx: Fx, propUid: string) {

@@ -8,11 +8,12 @@ import { money } from '../../format';
 import { vehicleDef } from '@/game/sim/vehicleCatalog';
 import { itemDef, outfitDef, petDef, houseDef, condoDef, plotDef, businessType } from '@/game/sim/catalog';
 import { equipOutfit, sellItem, sellVehicle, rehomePet, setRented, moveIn, sellProperty } from '@/game/finance/purchases';
-import { summonVehicle } from '@/world/ParkedVehicles';
+import { getOff, summonVehicle } from '@/world/ParkedVehicles';
 import { businessValue } from '@/game/finance/netWorth';
 import type { LocationId, OutfitSlot } from '@/game/types';
 import { showTheWay } from '../../goal';
 import { forDevice } from '../../touch';
+import { rt } from '@/engine/runtime';
 
 type Tab = 'vehicles' | 'outfits' | 'stuff' | 'pets' | 'property' | 'business';
 
@@ -42,12 +43,13 @@ export function BagApp({ tab: initial }: { tab?: string }) {
           {w.assets.vehicles.length === 0 && <Empty icon="🚲">No vehicles yet. The Auto Dealer in the park sells bikes, scooters, cars, boats and even a seaplane.</Empty>}
           {w.assets.vehicles.length > 0 && (
             <p className="small muted" style={{ marginTop: 0 }}>
-              {forDevice('Tap Bring it here, then walk up to your ride and press E to hop on. Drive with W A S D or the arrow keys, and press E again to get off. Boats and planes wait at the dock.')}
+              {forDevice('Tap Bring it here, then walk up to your ride and press E to hop on. Drive with W A S D or the arrow keys, and press E again to get off. Boats and the seaplane stay on the water: tap Take me to it and you both go to the dock.')}
             </p>
           )}
           {w.assets.vehicles.map((v) => {
             const d = vehicleDef(v.itemId)!;
             const active = w.assets.activeVehicle === v.uid;
+            const atDock = d.type === 'plane' || d.type === 'boat';
             return (
               <div key={v.uid} className={`card ${active ? 'tint-gold' : 'flat'} row between wrap`} style={{ marginBottom: 6 }}>
                 <span>
@@ -63,11 +65,26 @@ export function BagApp({ tab: initial }: { tab?: string }) {
                     onClick={() => {
                       act((d2) => void (d2.assets.activeVehicle = v.uid));
                       setTimeout(() => {
-                        if (summonVehicle(v.uid, v.itemId)) useUI.getState().closeAll();
+                        if (!summonVehicle(v.uid, v.itemId)) return;
+                        useUI.getState().closeAll();
+                        // Boats and the seaplane can't go on the road: they wait on the water by the
+                        // dock, and you're taken to the bank right beside them
+                        const p = rt.parked;
+                        if (atDock && p) {
+                          const bank = p.bank ?? { x: p.x, z: p.z };
+                          if (rt.vehicle) getOff();
+                          if (rt.vehicle) return;
+                          rt.player.set(bank.x, 0, bank.z);
+                          rt.playerVel.set(0, 0, 0);
+                          rt.walkTarget = null;
+                          rt.playerRotY = Math.atan2(p.x - bank.x, p.z - bank.z);
+                          rt.camYaw = rt.playerRotY + Math.PI;
+                          useUI.getState().pushToast({ text: forDevice(`Your ${d.name} is on the water right in front of you. Press E to hop on!`), icon: d.icon, tone: 'gold' });
+                        }
                       }, 30);
                     }}
                   >
-                    📍 Bring it here
+                    📍 {atDock ? 'Take me to it' : 'Bring it here'}
                   </Button>
                   {!v.leased && (
                     <Button size="small" variant="danger" onClick={() => setConfirm({ text: `Sell your ${d.name} for about ${money(v.value * 0.9, { cents: false })}?`, go: () => act((d2, fx) => sellVehicle(d2, fx, v.uid)) })}>
@@ -175,6 +192,11 @@ export function BagApp({ tab: initial }: { tab?: string }) {
                   {canRent && !p.rented && !c && !p.starter && (
                     <Button size="small" onClick={() => act((d2, fx) => setRented(d2, fx, p.uid, true))}>
                       Rent it out
+                    </Button>
+                  )}
+                  {p.rented && (
+                    <Button size="small" onClick={() => setConfirm({ text: `Stop renting out ${name}? Your tenants move out and the monthly rent stops. You can rent it out again any time.`, go: () => act((d2, fx) => setRented(d2, fx, p.uid, false)) })}>
+                      Stop renting it out
                     </Button>
                   )}
                   {canRent && p.rented && !c && (

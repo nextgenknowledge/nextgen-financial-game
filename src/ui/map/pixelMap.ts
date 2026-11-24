@@ -555,6 +555,7 @@ const LANDMARK_POI: Record<string, { name: string; glyph: IconName; color: strin
   playground: { name: 'Playground', glyph: 'star', color: '#c96a2a' },
   garden: { name: 'Flower Garden', glyph: 'flower', color: '#3f7a3a' },
   'ferris-wheel': { name: 'Ferris Wheel', glyph: 'star', color: '#c93b8a' },
+  speedway: { name: 'Fin City Speedway', glyph: 'car', color: '#e5533d' },
   dock: { name: 'Boat Dock', glyph: 'pin', color: '#2b5ba8' },
   neighborhood: { name: 'Maple Lane & Oak Street Homes', glyph: 'house', color: '#7a5a3a' },
   'liberty-torch': { name: 'Harbor Torch Statue', glyph: 'trophy', color: '#2f8a6a' },

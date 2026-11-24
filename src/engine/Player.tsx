@@ -8,10 +8,13 @@ import { useSettings } from '@/store/settings';
 import { isPaused, useUI } from '@/store/ui';
 import { isDown, onAction, virtual } from './input';
 import { rt } from './runtime';
-import { playSfx } from './audio';
+import { playSfx, updateEngine } from './audio';
 import { VehicleModel } from '@/world/Vehicles';
 import { ContactShadow } from '@/world/ContactShadow';
-import { updateVehicle, CHASE_DIST } from './vehicles';
+import { updateVehicle, vehicleDef, CHASE_DIST } from './vehicles';
+
+/** Cars with the loud track engine. */
+const LOUD = new Set(['sports']);
 import { useRide } from '@/world/ParkedVehicles';
 
 const RADIUS = 0.38;
@@ -214,6 +217,10 @@ export function PlayerController() {
     const p = rt.player;
     const v = rt.playerVel;
 
+    // The Kestrel Apex TR's engine roars while you drive it
+    const loud = rt.vehicle && LOUD.has(rt.vehicle.itemId) && !paused;
+    if (loud) updateEngine(true, Math.abs(rt.vehicle!.speed) / (vehicleDef(rt.vehicle!.itemId)?.topSpeed ?? 30), rt.vehicle!.throttle ?? 0);
+    else updateEngine(false);
     if (rt.vehicle) {
       if (!paused) updateVehicle(dt);
       p.copy(rt.vehicle.pos);
@@ -282,12 +289,17 @@ export function PlayerController() {
       }
       virtual.jumpTap = false;
       if (!flying) v.y -= GRAVITY * dt;
+      const from = { x: p.x, z: p.z };
+      const fromY = p.y;
       p.x += v.x * dt;
       p.z += v.z * dt;
       p.y += v.y * dt;
-      rt.collision.resolve(p, RADIUS, HEIGHT);
-      rt.collision.resolveWater(p, RADIUS);
-      const ground = rt.collision.groundAt(p.x, p.z, RADIUS, p.y);
+      // Steps are measured from where you stood: on a slow frame gravity has already pulled you a
+      // little below the ground, which used to turn a pier deck or a low step into a wall
+      const step = 0.45 + Math.max(0, fromY - p.y);
+      rt.collision.resolve(p, RADIUS, HEIGHT, step);
+      rt.collision.resolveWater(p, RADIUS, from);
+      const ground = rt.collision.groundAt(p.x, p.z, RADIUS, p.y, step);
       if (p.y > FLY_CEILING) {
         p.y = FLY_CEILING;
         v.y = Math.min(0, v.y);

@@ -147,8 +147,22 @@ export class CollisionWorld {
     return this.water.some((w) => x > w.minX + margin && x < w.maxX - margin && z > w.minZ + margin && z < w.maxZ - margin);
   }
 
-  /** Keep a walker out of water rectangles (treated like a low wall). */
-  resolveWater(p: Vec3Like, r: number) {
+  /** Over a low deck on the water (a pier or jetty), which walkers may stand on. */
+  onPlatform(x: number, z: number): boolean {
+    return this.query(x - 0.05, x + 0.05, z - 0.05, z + 0.05).some((b) => b.minY < 0 && b.maxY >= 0.1 && b.maxY <= 1 && x >= b.minX && x <= b.maxX && z >= b.minZ && z <= b.maxZ);
+  }
+
+  /**
+   * Keep a walker out of water rectangles (treated like a low wall). Piers are walkable: standing
+   * on one is fine, and stepping off its edge just stops you there (`from` is where you were).
+   */
+  resolveWater(p: Vec3Like, r: number, from?: { x: number; z: number }) {
+    if (this.onPlatform(p.x, p.z)) return;
+    if (from && this.inWater(p.x, p.z, -r) && this.onPlatform(from.x, from.z)) {
+      p.x = from.x;
+      p.z = from.z;
+      return;
+    }
     for (const w of this.water) {
       if (p.x > w.minX - r && p.x < w.maxX + r && p.z > w.minZ - r && p.z < w.maxZ + r) {
         const left = p.x - (w.minX - r);
