@@ -14,6 +14,8 @@ import { kitFor, roadMarkings } from './cityKit';
 import { portalKind } from '../portalKinds';
 import { arrivalLayout, buildArrival } from './gates';
 import { buildSpeedway } from './speedway';
+import { buildAirport } from './airport';
+import { AIRPORT, inAirport } from '@/game/airport';
 import { onTrack } from '@/game/speedway';
 import { buildStreetscape, buildLots, buildBackdrop, buildParkscape, onParterre, type SignalHead, type ParkedCar, type Site } from './streetscape';
 import type { Trigger } from '@/engine/runtime';
@@ -58,6 +60,8 @@ export interface SceneBuild {
   spawn: { x: number; z: number; rot: number };
   garage: { x: number; z: number; rot: number };
   dock: { x: number; z: number; rot: number } | null;
+  /** Where the seaplane waits at the airfield. */
+  airport: { x: number; z: number; rot: number };
 }
 
 export interface CityMapData {
@@ -463,8 +467,17 @@ export function buildOutdoor(def: CityDef, difficulty: Difficulty): SceneBuild {
         b.solid.box(sx, 0.08, sz, sw, 0.16, sd, kit.paveColor, { ao: false, tex: kit.pave });
         lowColliders.push({ cx: sx, cz: sz, w: sw, d: sd, maxY: 0.16 });
         const wallOff = side * (RING + roadW / 2 + 4.2);
-        b.solid.box(alongX ? cx : wallOff, 0.45, alongX ? wallOff : cz, alongX ? len + roadW + 4 : 0.5, 0.9, alongX ? 0.5 : len + roadW + 4, '#a7a294', { tex: 'stone' });
-        b.colliders.push({ cx: alongX ? cx : wallOff, cz: alongX ? wallOff : cz, w: alongX ? len + roadW + 4 : 0.5, d: alongX ? 0.5 : len + roadW + 4, minY: 0, maxY: 1.2, rotY: 0 });
+        // The west wall leaves a gap for the road to the airport
+        const wallLo = (alongX ? cx : cz) - (len + roadW + 4) / 2;
+        const wallHi = (alongX ? cx : cz) + (len + roadW + 4) / 2;
+        const gap = !alongX && side < 0 ? [AIRPORT.gate.z - AIRPORT.gate.halfWidth, AIRPORT.gate.z + AIRPORT.gate.halfWidth] : null;
+        const pieces: [number, number][] = gap && gap[0] > wallLo && gap[1] < wallHi ? [[wallLo, gap[0]], [gap[1], wallHi]] : [[wallLo, wallHi]];
+        for (const [lo, hi] of pieces) {
+          const mid = (lo + hi) / 2;
+          const span = hi - lo;
+          b.solid.box(alongX ? mid : wallOff, 0.45, alongX ? wallOff : mid, alongX ? span : 0.5, 0.9, alongX ? 0.5 : span, '#a7a294', { tex: 'stone' });
+          b.colliders.push({ cx: alongX ? mid : wallOff, cz: alongX ? wallOff : mid, w: alongX ? span : 0.5, d: alongX ? 0.5 : span, minY: 0, maxY: 1.2, rotY: 0 });
+        }
       }
     }
   }
@@ -501,6 +514,7 @@ export function buildOutdoor(def: CityDef, difficulty: Difficulty): SceneBuild {
     if (Math.abs(x) > H - 2 || Math.abs(z) > H - 2) return false;
     if (inWater(x, z, 2)) return false;
     if (speedway && onTrack(x, z, 4)) return false;
+    if (x < -(H - 20) && Math.abs(z - AIRPORT.gate.z) < 9) return false; // road to the airport
     if (nearRoad(x, z, 1.5)) return false;
     if (reserved.some((rv) => x > rv.minX - 2.5 && x < rv.maxX + 2.5 && z > rv.minZ - 2.5 && z < rv.maxZ + 2.5)) return false;
     if ((def.paths ?? []).some((p) => segmentDist(x, z, p.from, p.to) < p.width / 2 + 1.5)) return false;
@@ -540,7 +554,7 @@ export function buildOutdoor(def: CityDef, difficulty: Difficulty): SceneBuild {
   // Park landscaping (before tree colliders so its avenue trees collide too)
   if (!isCity) {
     const clear = (x: number, z: number, m: number) =>
-      !reserved.some((rv) => x > rv.minX - m && x < rv.maxX + m && z > rv.minZ - m && z < rv.maxZ + m) && !inWater(x, z, 1) && !(speedway && onTrack(x, z, m + 3)) && !doors.some((dr) => Math.hypot(dr.x - x, dr.z - z) < m + 3) && !trees.some((t) => Math.hypot(t.x - x, t.z - z) < 2.5);
+      !reserved.some((rv) => x > rv.minX - m && x < rv.maxX + m && z > rv.minZ - m && z < rv.maxZ + m) && !inWater(x, z, 1) && !(speedway && onTrack(x, z, m + 3)) && !(x < -(H - 20) && Math.abs(z - AIRPORT.gate.z) < m + 6) && !doors.some((dr) => Math.hypot(dr.x - x, dr.z - z) < m + 3) && !trees.some((t) => Math.hypot(t.x - x, t.z - z) < 2.5);
     buildParkscape(def, b, makeRng(77), trees, streetLamps, clear);
   }
   // Tree trunks collide
@@ -551,7 +565,9 @@ export function buildOutdoor(def: CityDef, difficulty: Difficulty): SceneBuild {
     ? buildStreetscape({ def, b, rng: makeRng(def.filler.seed * 31 + 7), blocks, doors, lamps: streetLamps, trees, inWater })
     : { signals: [], parked: [], vents: [] };
   const lots = isCity ? buildLots(emptyLots, b, makeRng(def.filler.seed * 13 + 3), trees, street.parked, kinds) : { parks: [], carParks: [], sites: [] as Site[] };
-  buildBackdrop(def, b, makeRng(def.filler.seed * 17 + 11), (x, z, m = 0) => inWater(x, z, m));
+  // Airport past the west edge (the backdrop keeps clear of it)
+  roadSegs.push(...buildAirport(def, b, isCity ? -(H + 8 + roadW / 2 + 4.2) : -(H + 20)));
+  buildBackdrop(def, b, makeRng(def.filler.seed * 17 + 11), (x, z, m = 0) => inWater(x, z, m) || inAirport(x, z, m + 24));
 
   // ── Crowd paths ──
   const npcLoops: [number, number][][] = [];
@@ -661,6 +677,7 @@ export function buildOutdoor(def: CityDef, difficulty: Difficulty): SceneBuild {
     spawn: { x: def.spawn[0], z: def.spawn[1], rot: deg(def.spawn[2]) },
     garage: { x: def.garage[0], z: def.garage[1], rot: deg(def.garage[2]) },
     dock: def.dock ? { x: def.dock[0], z: def.dock[1], rot: deg(def.dock[2]) } : null,
+    airport: { x: AIRPORT.plane.x, z: AIRPORT.plane.z, rot: AIRPORT.plane.rot },
   };
 }
 

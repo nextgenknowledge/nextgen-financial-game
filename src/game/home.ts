@@ -6,18 +6,20 @@
  */
 import type { OwnedProperty, PlacedFurniture, WorldState } from './types';
 import { condoDef, furnitureDef, houseDef } from './sim/catalog';
+import { STOREY, hitsFixture } from './homePlan';
 
 /** Floor size of each home's main room (metres, width x depth) and ceiling height. */
 const ROOMS: Record<string, { w: number; d: number; h: number }> = {
-  'tiny-house': { w: 10, d: 8, h: 3.6 },
-  cottage: { w: 12, d: 10, h: 3.8 },
-  'family-home': { w: 16, d: 12, h: 3.8 },
-  'modern-villa': { w: 20, d: 14, h: 4.2 },
-  'sf-studio': { w: 10, d: 8, h: 3.6 },
-  'london-flat': { w: 12, d: 10, h: 3.8 },
-  'ny-loft': { w: 16, d: 12, h: 4.6 },
-  'hk-apartment': { w: 12, d: 10, h: 3.8 },
-  'sg-condo': { w: 14, d: 10, h: 3.8 },
+  // Two storeys each (see homePlan.ts): a mezzanine bedroom over the kitchen, a double-height living room
+  'tiny-house': { w: 12, d: 10, h: STOREY * 2 },
+  cottage: { w: 14, d: 11, h: STOREY * 2 },
+  'family-home': { w: 18, d: 14, h: STOREY * 2 },
+  'modern-villa': { w: 22, d: 16, h: STOREY * 2 },
+  'sf-studio': { w: 13, d: 10, h: STOREY * 2 },
+  'london-flat': { w: 14, d: 11, h: STOREY * 2 },
+  'ny-loft': { w: 18, d: 14, h: STOREY * 2 },
+  'hk-apartment': { w: 13, d: 11, h: STOREY * 2 },
+  'sg-condo': { w: 16, d: 12, h: STOREY * 2 },
 };
 
 /** Footprint of each furniture piece facing +z before rotation (w across, d deep, h tall). */
@@ -111,6 +113,7 @@ export function placementProblem(room: { w: number; d: number }, layout: PlacedF
   const dz = doorZone(room);
   if (!isFlat(itemId) && x + hx > dz.minX && x - hx < dz.maxX && z + hz > dz.minZ) return 'Keep the doorway clear.';
   if (isFlat(itemId)) return null;
+  if (hitsFixture(room, x, z, hx - 0.02, hz - 0.02)) return 'The kitchen, stairs and living room furniture are already there.';
   for (const f of layout) {
     if (f.item === ignore) continue;
     const other = itemsById.get(f.item);

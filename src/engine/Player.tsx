@@ -23,6 +23,8 @@ const WALK = 5;
 const RUN = 8.5;
 const GRAVITY = 30;
 const JUMP = 10.5;
+const plannerPos = new THREE.Vector3();
+const plannerLook = new THREE.Vector3();
 const FLY = 16;
 const FLY_CLIMB = 9;
 const FLY_CEILING = 160;
@@ -75,6 +77,8 @@ export function PlayerController() {
   /** Seconds a click-to-walk has made no progress. */
   const stuck = useRef(0);
   const smoothedDist = useRef(rt.camDist);
+  /** 0..1 how far the camera has glided into the overhead furniture-planning view. */
+  const planner = useRef(0);
 
   // Admin: double-tap Space to fly, timed on the key presses themselves so a quick double tap
   // still counts on a slow device
@@ -106,6 +110,8 @@ export function PlayerController() {
       return Math.hypot(a.x - b.x, a.y - b.y);
     };
     const onDown = (e: PointerEvent) => {
+      // Arranging furniture: pointers drag the furniture, not the camera
+      if (useUI.getState().decor) return;
       if (e.pointerType === 'touch') {
         fingers.set(e.pointerId, { x: e.clientX, y: e.clientY });
         if (fingers.size === 2) {
@@ -235,6 +241,13 @@ export function PlayerController() {
       if (isDown('right')) ix += 1;
       ix += virtual.x;
       iz += virtual.y;
+      // Arranging furniture from above: you stay put
+      if (useUI.getState().decor) {
+        ix = 0;
+        iz = 0;
+        rt.walkTarget = null;
+        rt.walkPath = null;
+      }
       const fx = -Math.sin(rt.camYaw);
       const fz = -Math.cos(rt.camYaw);
       const rx = Math.cos(rt.camYaw);
@@ -359,6 +372,23 @@ export function PlayerController() {
     if (group.current) group.current.visible = smoothedDist.current > 0.7;
     camera.position.copy(camPos);
     camera.lookAt(camTarget);
+    // Arranging furniture at home: glide up to a view straight down over the room, and back
+    const planning = !!useUI.getState().decor && rt.sceneKey.startsWith('home:');
+    planner.current = Math.max(0, Math.min(1, planner.current + (planning ? dt * 2.2 : -dt * 3)));
+    if (planner.current > 0) {
+      const bd = rt.collision.bounds;
+      const rw = bd.maxX - bd.minX;
+      const rd = bd.maxZ - 2 - bd.minZ;
+      const pc = camera as THREE.PerspectiveCamera;
+      const t = Math.tan(((pc.fov ?? 60) * Math.PI) / 360);
+      // Room framed in the upper part of the screen, clear of the arranging panel at the bottom
+      const height = Math.max((rd * 0.8) / t, (rw * 0.6) / (t * (pc.aspect || 1.6))) + 2;
+      const e = planner.current * planner.current * (3 - 2 * planner.current);
+      plannerPos.set(0, height, rd * 0.42);
+      camera.position.lerpVectors(camPos, plannerPos, e);
+      plannerLook.set(0, 0, rd * 0.26).lerp(camTarget, 1 - e);
+      camera.lookAt(plannerLook);
+    }
     // Arrival flyover: orbit the skyline, then glide down into the normal follow camera
     if (rt.flyoverPending && !useUI.getState().loading.active) {
       rt.flyover = { start: performance.now() / 1000, dur: 7.5, half: rt.flyoverPending.half };

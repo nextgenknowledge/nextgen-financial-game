@@ -65,6 +65,8 @@ export const rt = {
   /** Where parked vehicles spawn in the current scene. */
   garage: { x: 0, z: 0, rot: 0 },
   dock: null as null | { x: number; z: number; rot: number },
+  /** Where the seaplane waits at this place's airfield (outdoors). */
+  airport: null as null | { x: number; z: number; rot: number },
   /** The player's vehicle parked in the current scene (not being ridden). */
   parked: null as null | { uid: string; itemId: string; x: number; z: number; rot: number; scene: string; bank?: { x: number; z: number } },
   weather: 'clear' as 'clear' | 'cloudy' | 'rain' | 'snow' | 'fog' | 'haze',

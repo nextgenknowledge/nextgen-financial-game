@@ -9,9 +9,10 @@ import { decorTarget } from '@/world/HomeScene';
 import { playSfx } from '@/engine/audio';
 
 /*
- * Arranging furniture at home. Pick a piece from storage (or one already in the room), walk to
- * where you want it while a see-through copy shows where it will land, turn it with R and put it
- * down with E. Everything is saved with the home.
+ * Arranging furniture at home. The camera rises to a view straight down over the room: drag any
+ * piece to move it, or pick one from storage and tap the floor where it should go. A see-through
+ * copy shows green where it fits and red where it doesn't; R (or Turn) rotates it. Everything is
+ * saved with the home.
  */
 
 /** Place, turn or cancel the piece being carried (also bound to E, R and Esc). */
@@ -102,7 +103,7 @@ export function DecorPanel() {
     return (
       <div className="decor-panel" role="dialog" aria-label="Place furniture">
         <b className="decor-title">{it ? nameOf(it.itemId) : 'Furniture'}</b>
-        <p className="decor-help">Walk to where you want it. R turns it, E puts it down.</p>
+        <p className="decor-help">Move it over the floor and tap (or let go) to put it down. R or Turn rotates it.</p>
         <p className={problem ? 'decor-status bad' : 'decor-status ok'}>{problem ?? 'It fits here.'}</p>
         <div className="decor-row">
           <button type="button" className="btn small" onClick={() => decorAction('turn')}>
@@ -132,6 +133,7 @@ export function DecorPanel() {
           Done
         </button>
       </div>
+      <p className="decor-help">Drag any piece in the room to move it. Pick one from storage, then tap the floor where it should go.</p>
       {stored.length === 0 && placed.length === 0 && <p className="decor-help">Furniture you buy at the Furniture Store waits here in storage, ready to place.</p>}
       {stored.length > 0 && (
         <>

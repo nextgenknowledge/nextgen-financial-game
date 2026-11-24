@@ -9,7 +9,9 @@ import { playSfx, playMusic } from '@/engine/audio';
 import { CITIES, CITY_META, buildingById } from '@/world/cities';
 import type { LocationId } from '@/game/types';
 import { recordEvent } from '@/game/progress/events';
-import { rideParked, getOff } from '@/world/ParkedVehicles';
+import { rideParked, getOff, useRide } from '@/world/ParkedVehicles';
+import { mountVehicle } from '@/engine/vehicles';
+import { AIRPORT } from '@/game/airport';
 import { saveNow } from './startWorld';
 import { speak } from './speech';
 import { useSettings } from '@/store/settings';
@@ -41,6 +43,50 @@ export function travelTo(to: LocationId, spawn?: { x: number; z: number; rot: nu
     });
     saveNow(false);
   }, 350);
+}
+
+/**
+ * Fly the seaplane to another city: a short flight, then you land on that city's airfield runway,
+ * still in the plane, ready to taxi or take off again.
+ */
+export function flyTo(to: LocationId) {
+  const w = getWorld();
+  const v = rt.vehicle;
+  if (!w || !v || v.type !== 'plane') return;
+  if (!w.progress.unlocked.includes(to)) {
+    playSfx('error');
+    useUI.getState().sayNarwhal(lockedMessage(to), 'skeptical');
+    return;
+  }
+  const ride = { uid: v.uid, itemId: v.itemId };
+  const ui = useUI.getState();
+  ui.closeAll();
+  playSfx('whoosh');
+  ui.setLoading({ active: true, progress: 0.3, text: `Flying to ${CITY_META[to].name}…`, kind: 'city', city: to, building: undefined });
+  setTimeout(() => {
+    // Out of the plane while the next city loads, then back in on its runway
+    rt.vehicle = null;
+    rt.parked = null;
+    useRide.getState().set(null);
+    useScene.getState().go(to, null, { x: AIRPORT.stand.x, z: AIRPORT.stand.z, rot: Math.PI / 2 });
+    playMusic(CITIES[to].music);
+    act((d, fx) => {
+      d.player.location = to;
+      recordEvent(d, fx, { type: 'travel', target: to });
+      d.progress.flags[`flyover:${to}`] = true;
+    });
+    const started = Date.now();
+    const id = setInterval(() => {
+      if (Date.now() - started > 20000) return clearInterval(id);
+      if (rt.sceneKey !== to || useUI.getState().loading.active || !rt.airport) return;
+      clearInterval(id);
+      const a = rt.airport;
+      mountVehicle(ride.uid, ride.itemId, a.x, a.z, a.rot);
+      useRide.getState().set(ride.uid);
+      useUI.getState().pushToast({ text: `Welcome to ${CITY_META[to].name}! Taxi off the runway or take off again.`, icon: '🛩️', tone: 'gold' });
+      saveNow(false);
+    }, 150);
+  }, 400);
 }
 
 function lockedMessage(to: LocationId) {
