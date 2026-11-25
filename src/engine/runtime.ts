@@ -54,7 +54,7 @@ export const rt = {
   vehicle: null as null | {
     uid: string;
     itemId: string;
-    type: 'bike' | 'scooter' | 'car' | 'boat' | 'plane' | 'kart';
+    type: 'bike' | 'scooter' | 'car' | 'boat' | 'plane' | 'kart' | 'heli';
     speed: number;
     yaw: number;
     alt: number;

@@ -1,6 +1,8 @@
 import vehiclesData from '@/data/shop/vehicles.json';
 
-export type VehicleType = 'bike' | 'scooter' | 'car' | 'boat' | 'plane' | 'kart';
+export type VehicleType = 'bike' | 'scooter' | 'car' | 'boat' | 'plane' | 'kart' | 'heli';
+/** The seaplane and the helicopter: they fly, take off from airfields and fly between cities. */
+export const flies = (t: string | undefined) => t === 'plane' || t === 'heli';
 
 export interface VehicleDef {
   id: string;

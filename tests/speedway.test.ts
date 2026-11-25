@@ -24,7 +24,7 @@ describe('Fin City Speedway', () => {
   });
 
   it('times a lap through every arch in order', () => {
-    const { evs } = drive(null, [at(0, 10), [40, TRACK.southZ, 12], at(1, 18), at(2, 30), at(3, 42), at(0, 51.5)]);
+    const { evs } = drive(null, [at(0, 10), [60, TRACK.southZ, 12], at(1, 18), at(2, 30), at(3, 42), at(0, 51.5)]);
     expect(evs).toEqual(['start', 'check:1', 'check:2', 'check:3', 'lap:41.5']);
   });
 

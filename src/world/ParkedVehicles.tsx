@@ -55,6 +55,8 @@ export function waterSpot(dock: { x: number; z: number; rot: number }): { x: num
 function spotFor(type: string): { x: number; z: number; rot: number; bank?: { x: number; z: number } } | null {
   // The seaplane takes off from the water: its wings don't fit between the cars at the garage
   if (type === 'boat') return rt.dock && waterSpot(rt.dock);
+  // The helicopter waits on the airfield apron (it has no floats for the water)
+  if (type === 'heli') return rt.airport ? { ...rt.airport, bank: { ...AIRPORT.stand } } : rt.garage;
   if (type === 'plane') return rt.airport ? { ...rt.airport, bank: { ...AIRPORT.stand } } : rt.dock ? waterSpot(rt.dock) : rt.garage;
   return rt.garage;
 }
@@ -72,8 +74,8 @@ export function rideParked() {
 export function getOff() {
   const v = rt.vehicle;
   if (!v) return;
-  if (Math.abs(v.speed) > 3 || (v.type === 'plane' && v.alt > 0.5)) {
-    useUI.getState().pushToast({ text: v.type === 'plane' ? 'Land first! (hold Shift to descend)' : 'Slow down to get off (Space brakes).', icon: '🛑', tone: 'info' });
+  if (Math.abs(v.speed) > 3 || ((v.type === 'plane' || v.type === 'heli') && v.alt > 0.5)) {
+    useUI.getState().pushToast({ text: v.type === 'plane' || v.type === 'heli' ? 'Land first! (hold Shift to descend)' : 'Slow down to get off (Space brakes).', icon: '🛑', tone: 'info' });
     return;
   }
   const temp = v.itemId === 'rental-scooter';
@@ -111,13 +113,16 @@ export function summonVehicle(uid: string, itemId: string) {
   const def = vehicleDef(itemId);
   if (!useGame.getState().world?.assets.vehicles.some((v) => v.uid === uid)) return false;
   if (!def) return false;
-  if (def.type === 'plane' && rt.airport) {
-    // The seaplane waits at the airfield past the west edge, ready on the runway
+  if ((def.type === 'plane' || def.type === 'heli') && rt.airport) {
+    // The seaplane and the helicopter wait at the airfield past the west edge, ready on the runway
     rt.parked = { uid, itemId, x: rt.airport.x, z: rt.airport.z, rot: rt.airport.rot, scene: rt.sceneKey, bank: { ...AIRPORT.stand } };
   } else if ((def.type === 'plane' || def.type === 'boat') && rt.dock) {
     // Seaplanes and boats wait on the water at the dock
     const s = waterSpot(rt.dock);
     rt.parked = { uid, itemId, x: s.x, z: s.z, rot: s.rot, scene: rt.sceneKey, bank: s.bank };
+  } else if (def.type === 'heli') {
+    useUI.getState().pushToast({ text: 'The helicopter takes off from an airfield. Every city has one at its edge.', icon: '🚁', tone: 'info' });
+    return false;
   } else if (def.type === 'boat') {
     useUI.getState().pushToast({ text: 'Boats can only be launched at a dock (Fin-City Park, New York, Hong Kong, SF, Singapore).', icon: '⚓', tone: 'info' });
     return false;
@@ -160,7 +165,7 @@ export function ParkedVehicles() {
     rt.triggers = rt.triggers.filter((t) => t.kind !== 'vehicle');
     if (p && !riding) {
       const def = vehicleDef(p.itemId);
-      rt.triggers.push({ id: `vehicle:${p.uid}`, kind: 'vehicle', x: p.x, z: p.z, r: def?.type === 'boat' || def?.type === 'plane' ? 6 : 3, label: `Ride ${def?.name ?? 'vehicle'}`, icon: def?.icon });
+      rt.triggers.push({ id: `vehicle:${p.uid}`, kind: 'vehicle', x: p.x, z: p.z, r: def?.type === 'boat' || def?.type === 'plane' || def?.type === 'heli' ? 6 : 3, label: `Ride ${def?.name ?? 'vehicle'}`, icon: def?.icon });
     }
   }, [p, riding, rev]);
 

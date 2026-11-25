@@ -16,7 +16,7 @@ import { arrivalLayout, buildArrival } from './gates';
 import { buildSpeedway } from './speedway';
 import { buildAirport } from './airport';
 import { AIRPORT, inAirport } from '@/game/airport';
-import { onTrack } from '@/game/speedway';
+import { inStadium, onTrack } from '@/game/speedway';
 import { buildStreetscape, buildLots, buildBackdrop, buildParkscape, onParterre, type SignalHead, type ParkedCar, type Site } from './streetscape';
 import type { Trigger } from '@/engine/runtime';
 
@@ -215,7 +215,7 @@ export function buildOutdoor(def: CityDef, difficulty: Difficulty): SceneBuild {
     }
   }
   if (isCity) roadMarkings(def, b, makeRng(def.filler.seed * 17 + 5), inWater);
-  // Fin City Speedway (park): drawn here, and on the map with the other roads
+  // Fin City Motor Stadium (park): drawn here, and on the map with the other roads
   const speedway = def.landmarks.some((l) => l.type === 'speedway');
   if (speedway) roadSegs.push(...buildSpeedway(b));
 
@@ -567,7 +567,7 @@ export function buildOutdoor(def: CityDef, difficulty: Difficulty): SceneBuild {
   const lots = isCity ? buildLots(emptyLots, b, makeRng(def.filler.seed * 13 + 3), trees, street.parked, kinds) : { parks: [], carParks: [], sites: [] as Site[] };
   // Airport past the west edge (the backdrop keeps clear of it)
   roadSegs.push(...buildAirport(def, b, isCity ? -(H + 8 + roadW / 2 + 4.2) : -(H + 20)));
-  buildBackdrop(def, b, makeRng(def.filler.seed * 17 + 11), (x, z, m = 0) => inWater(x, z, m) || inAirport(x, z, m + 24));
+  buildBackdrop(def, b, makeRng(def.filler.seed * 17 + 11), (x, z, m = 0) => inWater(x, z, m) || inAirport(x, z, m + 24) || (speedway && inStadium(x, z, m + 30)));
 
   // ── Crowd paths ──
   const npcLoops: [number, number][][] = [];

@@ -40,16 +40,16 @@ export function BagApp({ tab: initial }: { tab?: string }) {
       />
       {tab === 'vehicles' && (
         <Section title="Your rides">
-          {w.assets.vehicles.length === 0 && <Empty icon="🚲">No vehicles yet. The Auto Dealer in the park sells bikes, scooters, cars, boats and even a seaplane.</Empty>}
+          {w.assets.vehicles.length === 0 && <Empty icon="🚲">No vehicles yet. The Auto Dealer in the park sells bikes, scooters, cars, boats and even a seaplane or a helicopter.</Empty>}
           {w.assets.vehicles.length > 0 && (
             <p className="small muted" style={{ marginTop: 0 }}>
-              {forDevice('Tap Bring it here, then walk up to your ride and press E to hop on. Drive with W A S D or the arrow keys, and press E again to get off. Boats and the seaplane stay on the water: tap Take me to it and you both go to the dock.')}
+              {forDevice('Tap Bring it here, then walk up to your ride and press E to hop on. Drive with W A S D or the arrow keys, and press E again to get off. Boats stay at the dock, and the seaplane and helicopter wait at the airfield: tap Take me to it and you both go there.')}
             </p>
           )}
           {w.assets.vehicles.map((v) => {
             const d = vehicleDef(v.itemId)!;
             const active = w.assets.activeVehicle === v.uid;
-            const atDock = d.type === 'plane' || d.type === 'boat';
+            const atDock = d.type === 'plane' || d.type === 'heli' || d.type === 'boat';
             return (
               <div key={v.uid} className={`card ${active ? 'tint-gold' : 'flat'} row between wrap`} style={{ marginBottom: 6 }}>
                 <span>

@@ -1,6 +1,6 @@
 'use client';
 /**
- * Lap timer for Fin City Speedway (src/game/speedway.ts). Drive any car, kart, bike or scooter over
+ * Lap timer for Fin City Motor Stadium (src/game/speedway.ts). Drive any car, kart, bike or scooter over
  * the start line, through the three gold arches in order and back over the line. Each lap pays a
  * little XP (a few laps a day) and a new best time pays more.
  */
@@ -27,7 +27,7 @@ export function SpeedwayHud() {
       const v = rt.vehicle;
       const sc = useScene.getState();
       const now = performance.now() / 1000;
-      if (!v || v.type === 'boat' || v.type === 'plane' || sc.location !== 'park' || sc.interior || useUI.getState().loading.active) {
+      if (!v || v.type === 'boat' || v.type === 'plane' || v.type === 'heli' || sc.location !== 'park' || sc.interior || useUI.getState().loading.active) {
         lap = null;
         setView(null);
         return;
@@ -82,7 +82,7 @@ export function SpeedwayHud() {
   const started = !!lap;
   return (
     <div className="speedway-hud" role="status">
-      <span className="sw-title">🏁 Fin City Speedway</span>
+      <span className="sw-title">🏁 Fin City Motor Stadium</span>
       <span className="sw-time mono">{started ? lapClock(view.time) : 'Cross the start line'}</span>
       <span className="sw-meta">
         {started && <>Next: {view.next === 0 ? 'Finish line' : CHECKPOINTS[view.next].name} · </>}

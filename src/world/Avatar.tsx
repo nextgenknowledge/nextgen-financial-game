@@ -20,7 +20,7 @@ export interface AnimState {
    * sits on a saddle and pedals, 'stand' stands on a deck holding a bar (scooter), 'paddle'
    * sits low and paddles (kayak).
    */
-  ride?: 'drive' | 'pedal' | 'stand' | 'paddle';
+  ride?: 'drive' | 'pedal' | 'stand' | 'paddle' | 'straddle';
   /** Riding: how far forward the arms reach (radians) and how far the upper body leans. */
   reach?: number;
   lean?: number;
@@ -966,6 +966,12 @@ export function Avatar({ config, anim, scale = 1 }: { config: AvatarConfig; anim
         L.rotation.set(-1.45, 0, -0.04);
         R.rotation.set(-1.45, 0, 0.04);
         up.rotation.x = a.lean ?? 0.06;
+        break;
+      case 'straddle':
+        // Astride a motorbike or jet ski: knees bent forward and down, leaning to the bars
+        L.rotation.set(-1.0, 0, -0.18);
+        R.rotation.set(-1.0, 0, 0.18);
+        up.rotation.x = a.lean ?? 0.32;
         break;
       case 'pedal': {
         // Thighs down toward the cranks; legs push in turn while moving

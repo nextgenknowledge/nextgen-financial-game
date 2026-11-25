@@ -1,13 +1,13 @@
 'use client';
 /**
  * Dashboard while riding: speed in mph on a pixel gauge, the gear and a rev bar for cars, and
- * altitude for the seaplane.
+ * altitude for the seaplane and the helicopter.
  */
 import { useEffect, useState } from 'react';
 import { rt } from '@/engine/runtime';
 import { vehicleDef } from '@/engine/vehicles';
 import { engineRpm } from '@/engine/audio';
-import { onLandNag } from '@/engine/vehicles';
+import { onLandNag, flies } from '@/engine/vehicles';
 import { useScene } from '@/store/scene';
 import { useGame } from '@/store/game';
 import { useUI } from '@/store/ui';
@@ -60,7 +60,7 @@ export function Speedometer() {
         <b className="speedo-num mono">{d.mph}</b>
         <span className="speedo-unit">MPH</span>
         {d.gear !== null && <span className="speedo-gear">{d.reverse ? 'R' : `Gear ${d.gear}`}</span>}
-        {d.type === 'plane' && <span className="speedo-gear">ALT {d.alt.toLocaleString()} ft</span>}
+        {flies(d.type) && <span className="speedo-gear">ALT {d.alt.toLocaleString()} ft</span>}
       </div>
       {d.gear !== null && (
         <div className="speedo-rpm" aria-hidden="true">
@@ -73,16 +73,23 @@ export function Speedometer() {
   );
 }
 
-/** In the air in the seaplane: pick another city to fly to. */
+/** In the air in the seaplane or helicopter: pick another city to fly to. */
 export function FlightPanel() {
-  const [show, setShow] = useState(false);
+  const [show, setShow] = useState<string | null>(null);
   const here = useScene((s) => s.location);
   const unlocked = useGame((s) => s.world?.progress.unlocked ?? []);
   useEffect(() => {
-    onLandNag(() => useUI.getState().pushToast({ text: 'Land at the airfield or on the water. Over the city the plane keeps a little height.', icon: '🛩️', tone: 'info' }));
+    onLandNag(() => {
+      const heli = rt.vehicle?.type === 'heli';
+      useUI.getState().pushToast({
+        text: heli ? 'The helicopter can only land at an airfield. Over the city it keeps a little height.' : 'Land at the airfield or on the water. Over the city the plane keeps a little height.',
+        icon: heli ? '🚁' : '🛩️',
+        tone: 'info',
+      });
+    });
     const id = setInterval(() => {
       const v = rt.vehicle;
-      setShow(!!v && v.type === 'plane' && v.alt > 2 && !useScene.getState().interior);
+      setShow(v && flies(v.type) && v.alt > 2 && !useScene.getState().interior ? v.type : null);
     }, 200);
     return () => clearInterval(id);
   }, []);
@@ -90,7 +97,7 @@ export function FlightPanel() {
   const places = ALL_PLACES.filter((p) => p !== here);
   return (
     <div className="flight-panel">
-      <span className="flight-title">🛩️ Fly to another city</span>
+      <span className="flight-title">{show === 'heli' ? '🚁' : '🛩️'} Fly to another city</span>
       <div className="flight-list">
         {places.map((p) => (
           <button key={p} type="button" className="flight-btn" disabled={!unlocked.includes(p)} title={unlocked.includes(p) ? `Fly to ${CITY_META[p].name}` : 'Still locked'} onClick={() => flyTo(p)}>

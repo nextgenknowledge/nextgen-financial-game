@@ -345,7 +345,7 @@ export function PlayerController() {
 
     // Camera follow with collision pull-in
     const vehicleCam = !!rt.vehicle;
-    const targetH = vehicleCam ? (rt.vehicle!.type === 'plane' ? 2 : 1.6) : 1.55;
+    const targetH = vehicleCam ? (rt.vehicle!.type === 'plane' || rt.vehicle!.type === 'heli' ? 2 : 1.6) : 1.55;
     camTarget.set(p.x, p.y + targetH, p.z);
     if (vehicleCam && !drag.current) {
       // Drift camera behind the vehicle
@@ -439,7 +439,7 @@ export function PlayerController() {
       ) : (
         <Avatar config={avatar} anim={anim} />
       )}
-      {(!riding || !rt.vehicle || (rt.vehicle.type !== 'plane' && rt.vehicle.type !== 'boat')) && (
+      {(!riding || !rt.vehicle || (rt.vehicle.type !== 'plane' && rt.vehicle.type !== 'heli' && rt.vehicle.type !== 'boat')) && (
         <ContactShadow player r={0.6} rx={riding && rt.vehicle ? (rt.vehicle.type === 'car' || rt.vehicle.type === 'kart' ? 1.25 : 0.6) : undefined} rz={riding && rt.vehicle ? (rt.vehicle.type === 'car' || rt.vehicle.type === 'kart' ? 2.5 : 1.2) : undefined} />
       )}
     </group>

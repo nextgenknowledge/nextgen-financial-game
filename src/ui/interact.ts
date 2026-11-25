@@ -10,7 +10,7 @@ import { CITIES, CITY_META, buildingById } from '@/world/cities';
 import type { LocationId } from '@/game/types';
 import { recordEvent } from '@/game/progress/events';
 import { rideParked, getOff, useRide } from '@/world/ParkedVehicles';
-import { mountVehicle } from '@/engine/vehicles';
+import { mountVehicle, flies, vehicleDef } from '@/engine/vehicles';
 import { AIRPORT } from '@/game/airport';
 import { saveNow } from './startWorld';
 import { speak } from './speech';
@@ -46,19 +46,20 @@ export function travelTo(to: LocationId, spawn?: { x: number; z: number; rot: nu
 }
 
 /**
- * Fly the seaplane to another city: a short flight, then you land on that city's airfield runway,
- * still in the plane, ready to taxi or take off again.
+ * Fly the seaplane or helicopter to another city: a short flight, then you land on that city's
+ * airfield runway, still aboard, ready to taxi or take off again.
  */
 export function flyTo(to: LocationId) {
   const w = getWorld();
   const v = rt.vehicle;
-  if (!w || !v || v.type !== 'plane') return;
+  if (!w || !v || !flies(v.type)) return;
   if (!w.progress.unlocked.includes(to)) {
     playSfx('error');
     useUI.getState().sayNarwhal(lockedMessage(to), 'skeptical');
     return;
   }
   const ride = { uid: v.uid, itemId: v.itemId };
+  const def = vehicleDef(v.itemId);
   const ui = useUI.getState();
   ui.closeAll();
   playSfx('whoosh');
@@ -83,7 +84,7 @@ export function flyTo(to: LocationId) {
       const a = rt.airport;
       mountVehicle(ride.uid, ride.itemId, a.x, a.z, a.rot);
       useRide.getState().set(ride.uid);
-      useUI.getState().pushToast({ text: `Welcome to ${CITY_META[to].name}! Taxi off the runway or take off again.`, icon: '🛩️', tone: 'gold' });
+      useUI.getState().pushToast({ text: `Welcome to ${CITY_META[to].name}! ${def?.type === 'heli' ? 'Lift off again whenever you like.' : 'Taxi off the runway or take off again.'}`, icon: def?.type === 'heli' ? '🚁' : '🛩️', tone: 'gold' });
       saveNow(false);
     }, 150);
   }, 400);

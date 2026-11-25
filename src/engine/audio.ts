@@ -241,8 +241,10 @@ export function audioBus(): { ctx: AudioContext; out: GainNode } | null {
  * distortion curve and a filter that opens as the revs climb. Revs rise through six gears with a
  * quick drop at each shift, a throttle blip greets you when you get in, and lifting off at high
  * revs sets off pops and crackles from the exhaust. It goes through the sound-effects volume, so
- * the slider still controls it, but it is the loudest thing in the game.
+ * the slider still controls it. ENGINE_LEVEL keeps it at about the level of the other sound
+ * effects: the first version drowned out everything else.
  */
+const ENGINE_LEVEL = 0.4;
 interface Engine {
   oscs: OscillatorNode[];
   filter: BiquadFilterNode;
@@ -341,8 +343,8 @@ export function updateEngine(on: boolean, speedFrac = 0, throttle = 0) {
       o.frequency.exponentialRampToValueAtTime((IDLE_RPM / 20) * m, t + 1.1);
     }
     engine.gain.gain.setValueAtTime(0.0001, t);
-    engine.gain.gain.exponentialRampToValueAtTime(0.9, t + 0.2);
-    engine.gain.gain.exponentialRampToValueAtTime(0.45, t + 1.1);
+    engine.gain.gain.exponentialRampToValueAtTime(0.9 * ENGINE_LEVEL, t + 0.2);
+    engine.gain.gain.exponentialRampToValueAtTime(0.45 * ENGINE_LEVEL, t + 1.1);
     engine.filter.frequency.setValueAtTime(900, t);
     engine.filter.frequency.linearRampToValueAtTime(3800, t + 0.25);
     engine.filter.frequency.exponentialRampToValueAtTime(700, t + 1.1);
@@ -360,7 +362,7 @@ export function updateEngine(on: boolean, speedFrac = 0, throttle = 0) {
   for (const o of e.oscs) o.frequency.setTargetAtTime(hz * ((o as OscillatorNode & { mult?: number }).mult ?? 1), t, 0.02);
   const load = Math.max(0, throttle);
   e.filter.frequency.setTargetAtTime(500 + (e.rpm / MAX_RPM) * 4200 * (0.55 + load * 0.45), t, 0.03);
-  e.gain.gain.setTargetAtTime(0.32 + (e.rpm / MAX_RPM) * 0.45 + load * 0.25, t, 0.05);
+  e.gain.gain.setTargetAtTime((0.32 + (e.rpm / MAX_RPM) * 0.45 + load * 0.25) * ENGINE_LEVEL, t, 0.05);
   // Lift off at high revs: pops and crackles for a moment
   if (e.throttleWas > 0.5 && throttle < 0.2 && e.rpm > 4500) e.crackleUntil = t + 0.9;
   e.throttleWas = throttle;
@@ -370,8 +372,8 @@ export function updateEngine(on: boolean, speedFrac = 0, throttle = 0) {
 /** One exhaust pop: a short, bright burst of noise with a thump under it. */
 function crackle(at: number) {
   if (!ctx || !sfxGain) return;
-  noise(sfxGain, at, 0.03 + Math.random() * 0.03, 0.5 + Math.random() * 0.3, 900 + Math.random() * 1400);
-  tone(sfxGain, 70 + Math.random() * 40, at, 0.04, { type: 'square', vol: 0.25, release: 0.04, filter: 400 });
+  noise(sfxGain, at, 0.03 + Math.random() * 0.03, (0.5 + Math.random() * 0.3) * ENGINE_LEVEL, 900 + Math.random() * 1400);
+  tone(sfxGain, 70 + Math.random() * 40, at, 0.04, { type: 'square', vol: 0.25 * ENGINE_LEVEL, release: 0.04, filter: 400 });
 }
 
 // A hidden tab stops drawing frames, so silence the engine instead of leaving it droning

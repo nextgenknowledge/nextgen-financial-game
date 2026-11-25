@@ -1,28 +1,47 @@
 /**
- * Fin City Speedway: a time-trial oval along the park's north edge. Drive through the start line,
- * the three gold arches in order and back over the line to set a lap time. Pure layout and lap
- * logic here (tested in tests/speedway.test.ts); the track is drawn in
+ * Fin City Motor Stadium: a time-trial oval inside a full stadium past the park's north edge. A
+ * road from the park runs through a tunnel under the south stand onto the track. Drive through the
+ * start line, the three gold arches in order and back over the line to set a lap time. Pure layout
+ * and lap logic here (tested in tests/speedway.test.ts); the stadium is drawn in
  * src/world/builders/speedway.ts and timed by src/ui/hud/Speedway.tsx.
  */
 
 /** Centre line: two straights joined by half-circle turns. */
 export const TRACK = {
-  southZ: -114,
-  northZ: -138,
-  halfLen: 96, // straights run from -halfLen to +halfLen
-  width: 9,
+  southZ: -190,
+  northZ: -250,
+  halfLen: 92, // straights run from -halfLen to +halfLen
+  width: 14,
 } as const;
 export const TURN_R = (TRACK.southZ - TRACK.northZ) / 2;
 export const TURN_Z = (TRACK.southZ + TRACK.northZ) / 2;
 
-/** Start line, then the three arches, in driving order (east along the south straight first). */
+/** Stands rise in rows outside the track wall; the tunnel cuts through the south stand at x = 0. */
+export const STAND = { rows: 9, rowDepth: 1.7, rowRise: 0.85, gap: 3 } as const;
+/** Distance from the centre line to the back of the stands (the outer facade). */
+export const STAND_OUTER = TRACK.width / 2 + STAND.gap + STAND.rows * STAND.rowDepth;
+export const TUNNEL = { x: 0, halfWidth: 7 } as const;
+
+/** Everything the stadium covers, for keeping scenery and the backdrop clear of it. */
+export const STADIUM = {
+  minX: -(TRACK.halfLen + TURN_R + STAND_OUTER + 2),
+  maxX: TRACK.halfLen + TURN_R + STAND_OUTER + 2,
+  minZ: TRACK.northZ - STAND_OUTER - 2,
+  maxZ: TRACK.southZ + STAND_OUTER + 2,
+} as const;
+
+export function inStadium(x: number, z: number, m = 0): boolean {
+  return x > STADIUM.minX - m && x < STADIUM.maxX + m && z > STADIUM.minZ - m && z < STADIUM.maxZ + m;
+}
+
+/** Start line (on the south straight, east of the tunnel), then the three arches, in driving order. */
 export const CHECKPOINTS: { x: number; z: number; name: string }[] = [
-  { x: 0, z: TRACK.southZ, name: 'Start' },
+  { x: 36, z: TRACK.southZ, name: 'Start' },
   { x: TRACK.halfLen + TURN_R, z: TURN_Z, name: 'East arch' },
   { x: 0, z: TRACK.northZ, name: 'North arch' },
   { x: -(TRACK.halfLen + TURN_R), z: TURN_Z, name: 'West arch' },
 ];
-export const CHECK_R = 8;
+export const CHECK_R = 10;
 
 /** Distance from a point to the track's centre line. */
 export function trackDist(x: number, z: number): number {

@@ -57,12 +57,12 @@ export function HUD() {
         </div>
         <WorldActivityHud />
         <SpeedwayHud />
-        <FlightPanel />
         <ResumeRun />
       </div>
       <div className="hud-region r-tr">
         <MapCorner />
         <Compass />
+        <FlightPanel />
         <ArrivalBanner />
         <Toasts inline />
       </div>

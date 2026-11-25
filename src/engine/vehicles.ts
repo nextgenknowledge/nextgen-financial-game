@@ -4,8 +4,8 @@ import { rt } from './runtime';
 import { inAirport } from '@/game/airport';
 import * as THREE from 'three';
 
-import { vehicleDef, VEHICLES, RENTAL_SCOOTER, type VehicleDef, type VehicleType } from '@/game/sim/vehicleCatalog';
-export { vehicleDef, VEHICLES, RENTAL_SCOOTER };
+import { vehicleDef, VEHICLES, RENTAL_SCOOTER, flies, type VehicleDef, type VehicleType } from '@/game/sim/vehicleCatalog';
+export { vehicleDef, VEHICLES, RENTAL_SCOOTER, flies };
 export type { VehicleDef, VehicleType };
 
 let lastLandNag = 0;
@@ -15,13 +15,13 @@ export function onLandNag(fn: () => void) {
   landNag = fn;
 }
 
-const RADIUS: Record<VehicleType, number> = { bike: 0.5, scooter: 0.5, kart: 0.9, car: 1.2, boat: 1.4, plane: 2.2 };
+const RADIUS: Record<VehicleType, number> = { bike: 0.5, scooter: 0.5, kart: 0.9, car: 1.2, boat: 1.4, plane: 2.2, heli: 2.0 };
 
 /** Closest the chase camera sits to each kind of vehicle, so small rides stay big on screen. */
 /** The kayak is much slimmer than the speedboat. */
-const boatRadius = (itemId: string) => (itemId === 'kayak' ? 0.7 : RADIUS.boat);
+const boatRadius = (itemId: string) => (itemId === 'kayak' ? 0.7 : itemId === 'jet-ski' ? 0.8 : RADIUS.boat);
 
-export const CHASE_DIST: Record<VehicleType, number> = { bike: 6, scooter: 6, kart: 7, car: 9, boat: 9, plane: 16 };
+export const CHASE_DIST: Record<VehicleType, number> = { bike: 6, scooter: 6, kart: 7, car: 9, boat: 9, plane: 16, heli: 14 };
 
 export function mountVehicle(uid: string, itemId: string, x: number, z: number, yaw: number) {
   const def = vehicleDef(itemId);
@@ -69,10 +69,29 @@ export function updateVehicle(dt: number) {
   throttle = Math.max(-1, Math.min(1, throttle));
   v.throttle = throttle;
   steer = Math.max(-1, Math.min(1, steer));
-  const boost = isDown('sprint') ? 1.15 : 1;
+  // In the helicopter Shift descends, so it doesn't double as a boost
+  const boost = isDown('sprint') && v.type !== 'heli' ? 1.15 : 1;
   const max = def.topSpeed * boost;
 
-  if (v.type === 'plane') {
+  if (v.type === 'heli') {
+    // Hovers in place: Space climbs and Shift descends at any speed, W and S fly forward and back
+    v.speed += throttle * def.accel * dt;
+    if (throttle === 0) v.speed -= v.speed * 1.2 * dt;
+    v.speed = Math.max(-max * 0.35, Math.min(max, v.speed));
+    if (isDown('jump') || virtual.jump) v.alt += 8 * dt;
+    if (isDown('sprint')) v.alt -= 8 * dt;
+    v.alt = Math.max(0, Math.min(70, v.alt));
+    // On the ground it stays put until it lifts off; it can only touch down at an airfield
+    if (v.alt < 0.5) v.speed *= Math.max(0, 1 - 4 * dt);
+    if (!inAirport(v.pos.x, v.pos.z) && v.alt < 5) {
+      v.alt = 5;
+      const now = performance.now();
+      if (now - lastLandNag > 6000) {
+        lastLandNag = now;
+        landNag?.();
+      }
+    }
+  } else if (v.type === 'plane') {
     v.speed += throttle * def.accel * dt;
     v.speed -= v.speed * 0.15 * dt;
     v.speed = Math.max(0, Math.min(max, v.speed));
@@ -104,6 +123,8 @@ export function updateVehicle(dt: number) {
   let turnScale = Math.max(-1, Math.min(1, v.speed / (def.topSpeed * 0.25)));
   // Boats can pivot on the spot under power, so you can always turn away from the shore
   if (v.type === 'boat' && throttle !== 0 && Math.abs(turnScale) < 0.45) turnScale = 0.45 * Math.sign(throttle);
+  // The helicopter turns on the spot once it's off the ground
+  if (v.type === 'heli') turnScale = v.alt > 0.5 ? 1 : 0;
   v.yaw += steer * def.turn * dt * turnScale;
 
   const prevX = v.pos.x;
@@ -132,11 +153,11 @@ export function updateVehicle(dt: number) {
       v.pos.z = prevZ;
       v.speed *= -0.2;
     }
-    const p = { x: v.pos.x, y: v.type === 'plane' ? v.alt : 0, z: v.pos.z };
+    const p = { x: v.pos.x, y: flies(v.type) ? v.alt : 0, z: v.pos.z };
     const want = Math.hypot(p.x - prevX, p.z - prevZ);
     const hit = rt.collision.resolve(p, RADIUS[v.type], 1.6, 0.3);
     // Land vehicles stay out of water (the seaplane has floats and may taxi on it)
-    if (v.type !== 'plane' && rt.collision.inWater(p.x, p.z, -RADIUS[v.type])) {
+    if (!flies(v.type) && rt.collision.inWater(p.x, p.z, -RADIUS[v.type])) {
       p.x = prevX;
       p.z = prevZ;
       v.speed *= -0.3;
@@ -148,7 +169,7 @@ export function updateVehicle(dt: number) {
     }
     v.pos.x = p.x;
     v.pos.z = p.z;
-    v.pos.y = v.type === 'plane' ? v.alt : 0;
+    v.pos.y = flies(v.type) ? v.alt : 0;
   }
   rt.playerSpeed = Math.abs(v.speed);
 }

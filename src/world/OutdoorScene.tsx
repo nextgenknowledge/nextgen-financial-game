@@ -1,4 +1,5 @@
 'use client';
+import { STADIUM } from '@/game/speedway';
 import { AIRPORT_WEST } from '@/game/airport';
 import { useEffect, useMemo, useRef } from 'react';
 import { walkTo } from '@/engine/walk';
@@ -39,7 +40,9 @@ export function OutdoorScene({ def, difficulty }: { def: CityDef; difficulty: Di
     // Cities end at the low wall beyond the edge boulevard; the park keeps its open meadow
     const edge = def.id === 'park' ? def.half + 20 : def.half + 16;
     // The airfield past the west edge is part of the walkable world (fenced in)
-    c.bounds = { minX: AIRPORT_WEST, maxX: edge, minZ: -edge, maxZ: edge };
+    // The park also reaches north to the motor stadium past its edge
+    const north = def.landmarks.some((l) => l.type === 'speedway') ? Math.min(-edge, STADIUM.minZ) : -edge;
+    c.bounds = { minX: AIRPORT_WEST, maxX: edge, minZ: north, maxZ: edge };
     for (const k of build.colliders) c.addBox(k.cx, k.cz, k.w, k.d, k.minY, k.maxY, undefined, k.rotY);
     for (const k of build.lowColliders) c.addBox(k.cx, k.cz, k.w, k.d, -1, k.maxY);
     c.water = build.water;
