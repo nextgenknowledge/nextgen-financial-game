@@ -1701,6 +1701,10 @@ button.item-card { cursor: pointer; }
 .decor-list li { display: flex; align-items: center; gap: 0.4rem; font-size: 0.9rem; font-weight: 800; }
 .decor-list li span { flex: 1; min-width: 0; }
 .decor-row { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+/* Wide screens: the panel docks on the right under the minimap, so the room plan has the middle */
+@media (min-width: 900px) and (min-aspect-ratio: 5/4) {
+  .decor-panel { position: fixed; right: 12px; top: 200px; width: 320px; max-height: calc(100vh - 200px - 180px); margin: 0; }
+}
 
 /* ═════════ Touch screens (phones, tablets) ═════════
    The joystick owns the bottom-left corner and the jump and E buttons the bottom-right.
@@ -2441,3 +2445,7 @@ button.item-card { cursor: pointer; }
 .flight-btn:not(:disabled):active { transform: translate(2px, 2px); box-shadow: none; }
 /* Arranging furniture: Narwhal's quest bubble steps aside for the panel */
 .hud:has(.decor-panel) .narwhal-bubble.idle { display: none; }
+/* You don't walk while arranging, so the touch controls step aside, and on narrow screens the
+   little FinPhone too, leaving the room plan clear */
+.hud:has(.decor-panel) .joystick, .hud:has(.decor-panel) .touch-buttons { display: none; }
+@media (max-width: 899px) { .hud:has(.decor-panel) .mini-phone, .hud:not(.talking):has(.decor-panel) .narwhal-guide { display: none; } }

@@ -155,6 +155,9 @@ export function NarwhalGuide() {
   useFrame((state, dt) => {
     const group = g.current;
     if (!group) return;
+    // Out of the way while you arrange furniture from above
+    group.visible = !useUI.getState().decor;
+    if (!group.visible) return;
     const p = rt.player;
     const target = scratch;
     const goal = hints || wayAsked() ? rt.goal : null;
@@ -168,7 +171,9 @@ export function NarwhalGuide() {
     } else {
       // Hover beside the player's shoulder (right-hand side, slightly ahead when talking)
       const yaw = rt.playerRotY;
-      const side = 1.6;
+      // Riding: keep clear of the vehicle (the seaplane's wings, the helicopter's rotor)
+      const v = rt.vehicle;
+      const side = !v ? 1.6 : v.type === 'plane' ? 6.2 : v.type === 'heli' ? 3.2 : v.type === 'car' || v.type === 'boat' ? 2.4 : v.type === 'kart' ? 2 : 1.6;
       const ahead = line ? 1.8 : -0.4;
       target.set(p.x + Math.cos(yaw) * -side + Math.sin(yaw) * ahead, 0, p.z - Math.sin(yaw) * -side + Math.cos(yaw) * ahead);
     }

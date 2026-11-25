@@ -139,7 +139,7 @@ export function baseMap(def: CityDef, data: CityMapData) {
   const hit = cache.get(key);
   if (hit) return hit;
   const st = STYLE[def.id] ?? STYLE.park;
-  const H = data.half + MARGIN;
+  const H = data.extent + MARGIN;
   const size = Math.round(H * 2 * PPM);
   const c = document.createElement('canvas');
   c.width = c.height = size;
@@ -533,8 +533,18 @@ export function baseMap(def: CityDef, data: CityMapData) {
 }
 
 /** World → base-map pixel coordinate. */
+/** The square of the base map (in map pixels) the full map shows: everything with something in it. */
+export function mapView(data: CityMapData) {
+  const c = data.content;
+  const size = Math.max(c.maxX - c.minX, c.maxZ - c.minZ) + MARGIN * 2;
+  const cx = (c.minX + c.maxX) / 2;
+  const cz = (c.minZ + c.maxZ) / 2;
+  const o = worldToMap(data, cx - size / 2, cz - size / 2);
+  return { sx: o.x, sy: o.y, size: size * PPM };
+}
+
 export function worldToMap(data: CityMapData, x: number, z: number) {
-  const H = data.half + MARGIN;
+  const H = data.extent + MARGIN;
   return { x: (x + H) * PPM, y: (z + H) * PPM };
 }
 

@@ -375,20 +375,36 @@ export function PlayerController() {
     // Arranging furniture at home: glide up to a view straight down over the room, and back
     const planning = !!useUI.getState().decor && rt.sceneKey.startsWith('home:');
     planner.current = Math.max(0, Math.min(1, planner.current + (planning ? dt * 2.2 : -dt * 3)));
+    const pc = camera as THREE.PerspectiveCamera;
     if (planner.current > 0) {
       const bd = rt.collision.bounds;
       const rw = bd.maxX - bd.minX;
       const rd = bd.maxZ - 2 - bd.minZ;
-      const pc = camera as THREE.PerspectiveCamera;
+      const rcx = (bd.minX + bd.maxX) / 2;
+      const rcz = (bd.minZ + bd.maxZ - 2) / 2;
       const t = Math.tan(((pc.fov ?? 60) * Math.PI) / 360);
-      // Room framed in the upper part of the screen, clear of the arranging panel at the bottom
-      const height = Math.max((rd * 0.8) / t, (rw * 0.6) / (t * (pc.aspect || 1.6))) + 2;
+      // Frame the room in the part of the screen the arranging panel leaves free: beside it when
+      // it docks on the right, above it when it sits at the bottom
+      const W = window.innerWidth;
+      const H = window.innerHeight;
+      const r = document.querySelector('.decor-panel')?.getBoundingClientRect();
+      const box = r && r.width > 0 && r.height > 0 ? r : undefined;
+      const side = !!box && box.left > W * 0.5 && box.top < H * 0.5;
+      const fx0 = side ? Math.min(160, W * 0.15) : 0;
+      const fx1 = side && box ? box.left - 12 : W;
+      const fy0 = 70;
+      const fy1 = !side && box ? Math.max(H * 0.4, box.top - 8) : H - 12;
+      const fw = Math.max(80, fx1 - fx0);
+      const fh = Math.max(80, fy1 - fy0);
+      const height = Math.max(rd / (2 * t * (fh / H) * 0.92), rw / (2 * t * (pc.aspect || W / H) * (fw / W) * 0.92)) + 1.5;
       const e = planner.current * planner.current * (3 - 2 * planner.current);
-      plannerPos.set(0, height, rd * 0.42);
+      plannerPos.set(rcx, height, rcz + height * 0.06);
       camera.position.lerpVectors(camPos, plannerPos, e);
-      plannerLook.set(0, 0, rd * 0.26).lerp(camTarget, 1 - e);
+      plannerLook.set(rcx, 0, rcz).lerp(camTarget, 1 - e);
       camera.lookAt(plannerLook);
-    }
+      // Shift the picture so the room's centre lands in the middle of the free area
+      pc.setViewOffset(W, H, (W / 2 - (fx0 + fx1) / 2) * e, (H / 2 - (fy0 + fy1) / 2) * e, W, H);
+    } else if (pc.view?.enabled) pc.clearViewOffset();
     // Arrival flyover: orbit the skyline, then glide down into the normal follow camera
     if (rt.flyoverPending && !useUI.getState().loading.active) {
       rt.flyover = { start: performance.now() / 1000, dur: 7.5, half: rt.flyoverPending.half };

@@ -11,7 +11,7 @@ import { showTheWay } from '../goal';
 import { CITY_IDS, type LocationId } from '@/game/types';
 import { getCityMap } from '@/world/builders/sceneBuilder';
 import { playSfx } from '@/engine/audio';
-import { baseMap, buildingsPois, drawPin, landmarkPois, worldToMap, type Poi } from '../map/pixelMap';
+import { baseMap, buildingsPois, drawPin, landmarkPois, mapView, worldToMap, type Poi } from '../map/pixelMap';
 import { mapContext, ownedHomes } from '../map/context';
 
 const ZOOM = 1; // canvas pixels per base-map pixel
@@ -54,13 +54,17 @@ export function MapPanel() {
     const c = ref.current;
     if (!c) return;
     const base = baseMap(def, data);
-    c.width = c.height = base.size * ZOOM;
+    // Cropped to the part with something in it, so the city stays as big as it can
+    const vw = mapView(data);
+    c.width = c.height = Math.round(vw.size * ZOOM);
     const g = c.getContext('2d')!;
     g.imageSmoothingEnabled = false;
-    g.drawImage(base.canvas, 0, 0, c.width, c.height);
+    g.fillStyle = '#2b3138';
+    g.fillRect(0, 0, c.width, c.height);
+    g.drawImage(base.canvas, vw.sx, vw.sy, vw.size, vw.size, 0, 0, c.width, c.height);
     const P = (x: number, z: number) => {
       const m = worldToMap(data, x, z);
-      return { x: m.x * ZOOM, y: m.y * ZOOM };
+      return { x: (m.x - vw.sx) * ZOOM, y: (m.y - vw.sy) * ZOOM };
     };
     // Portals
     for (const pt of def.portals) {
@@ -133,9 +137,10 @@ export function MapPanel() {
     const py = ((e.clientY - rect.top) / rect.height) * c.height;
     let best: Poi | null = null;
     let bd = 22;
+    const vw = mapView(data);
     for (const p of allPois) {
       const m = worldToMap(data, p.x, p.z);
-      const d = Math.hypot(m.x * ZOOM - px, m.y * ZOOM - py);
+      const d = Math.hypot((m.x - vw.sx) * ZOOM - px, (m.y - vw.sy) * ZOOM - py);
       if (d < bd) {
         bd = d;
         best = p;

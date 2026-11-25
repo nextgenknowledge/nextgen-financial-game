@@ -5,6 +5,7 @@ import { useFrame, type ThreeEvent } from '@react-three/fiber';
 import * as THREE from 'three';
 import { useGame } from '@/store/game';
 import { useUI } from '@/store/ui';
+import { useScene } from '@/store/scene';
 import { rt } from '@/engine/runtime';
 import { playSfx } from '@/engine/audio';
 import { CollisionWorld } from '@/engine/collision';
@@ -127,9 +128,12 @@ export function HomeScene({ propUid }: { propUid: string }) {
     rt.camPitch = 0.5;
     rt.camDist = 4.2;
     const t = setTimeout(() => useUI.getState().setLoading({ active: false, progress: 1 }), 80);
+    const here = useScene.getState().interior;
     return () => {
       clearTimeout(t);
-      useUI.getState().setDecor(null);
+      // Stop arranging only when you leave the home: a graphics quality change also rebuilds the
+      // scene, and arranging should carry on through that
+      if (useScene.getState().interior !== here) useUI.getState().setDecor(null);
     };
   }, [L]);
 

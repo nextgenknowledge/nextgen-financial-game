@@ -16,7 +16,7 @@ import { arrivalLayout, buildArrival } from './gates';
 import { buildSpeedway } from './speedway';
 import { buildAirport } from './airport';
 import { AIRPORT, inAirport } from '@/game/airport';
-import { inStadium, onTrack } from '@/game/speedway';
+import { inStadium, onTrack, STADIUM } from '@/game/speedway';
 import { buildStreetscape, buildLots, buildBackdrop, buildParkscape, onParterre, type SignalHead, type ParkedCar, type Site } from './streetscape';
 import type { Trigger } from '@/engine/runtime';
 
@@ -66,6 +66,10 @@ export interface SceneBuild {
 
 export interface CityMapData {
   half: number;
+  /** Half-size of the square the map covers: the city plus the airfield and the stadium past its edges. */
+  extent: number;
+  /** The area with something in it: the city, the airfield and the stadium. */
+  content: Rect;
   footprints: Builders['footprints'];
   roads: { a: [number, number]; b: [number, number]; w: number }[];
   blocks: Rect[];
@@ -661,6 +665,8 @@ export function buildOutdoor(def: CityDef, difficulty: Difficulty): SceneBuild {
     flags: b.flags,
     map: {
       half: H,
+      extent: Math.max(H, -AIRPORT.zone.minX, ...(speedway ? [-STADIUM.minZ, STADIUM.maxX] : [])),
+      content: { minX: Math.min(-H, AIRPORT.zone.minX), maxX: Math.max(H, speedway ? STADIUM.maxX : H), minZ: Math.min(-H, speedway ? STADIUM.minZ : -H, AIRPORT.zone.minZ), maxZ: Math.max(H, AIRPORT.zone.maxZ) },
       footprints: b.footprints,
       roads: roadSegs,
       blocks,
