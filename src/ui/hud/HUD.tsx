@@ -226,7 +226,7 @@ function NavTips() {
       if (near === 'portal')
         tip('tipPortal', 'This portal takes you to another city. Press E to travel. Open the Map any time to see every city, jump to any building, or pick Show the way and follow the gold trail.');
       else if (near === 'vehicle' && !on('q3b-starter'))
-        tip('tipRide', 'Your ride is here! Press E to hop on. W A S D or the arrow keys drive, and E gets you off again. Lost it? Open My Stuff in your FinPhone and tap Bring it here.');
+        tip('tipRide', 'Your ride is here! Press E to hop on. Drive with W A S D or the arrow keys, and press E again to get off. Lost it? Open My Stuff in your FinPhone and tap Bring it here.');
       else if (!on('q3b-starter') && w.assets.properties.some((pr) => (pr.houseId || condoDef(pr.itemId)) && !pr.rented))
         tip('tipHome', 'You own a home now! To get there, open My Stuff in your FinPhone, go to Property, and tap Show the way. Its front door says Go home.');
       else if (!on('q1b-portal') && scene.location !== 'park' && !scene.interior)
@@ -585,8 +585,14 @@ function TouchControls() {
       <div
         className="joystick"
         onPointerDown={(e) => {
-          (e.target as HTMLElement).setPointerCapture(e.pointerId);
           base.current = { x: e.clientX, y: e.clientY, id: e.pointerId };
+          // Capture keeps the stick working when the thumb slides off it. A touch the browser has
+          // already ended can't be captured; the stick still works without it.
+          try {
+            (e.target as HTMLElement).setPointerCapture(e.pointerId);
+          } catch {
+            /* touch already gone */
+          }
         }}
         onPointerMove={(e) => {
           const b = base.current;

@@ -59,13 +59,13 @@ export function OutdoorScene({ def, difficulty }: { def: CityDef; difficulty: Di
       ...build.map.footprints.map((f) => ({ cx: f.x, cz: f.z, w: f.w, d: f.d, rot: f.rot })),
       ...build.colliders.filter((k) => k.minY < 0.5 && k.maxY >= 1.2 && k.w * k.d >= 0.8).map((k) => ({ cx: k.cx, cz: k.cz, w: k.w, d: k.d, rot: k.rotY })),
     ];
-    setGroundAO(shapes, rt.collision.bounds);
+    setGroundAO(shapes, rt.collision.bounds, { roads: build.map.roads, gutters: build.map.isCity, seed: def.filler.seed });
     worldUniforms.uCanyon.value = 1;
     return () => {
       clearGroundAO();
       worldUniforms.uCanyon.value = 0;
     };
-  }, [build]);
+  }, [build, def]);
 
   // Place the player
   useEffect(() => {

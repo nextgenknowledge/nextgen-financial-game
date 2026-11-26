@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { useUI } from '@/store/ui';
 import { useGame, act } from '@/store/game';
-import { Button, Modal, ReadAloud, NARWHAL_SHEET, PixelMeter } from '../common';
+import { Button, Modal, ReadAloud, NARWHAL_SHEET, PixelMeter, revealOnMount } from '../common';
 import { Tabs, Section } from '../kit';
 import { LESSONS, completeLesson, type LessonDef } from '@/game/progress/lessons';
 import { QUESTS } from '@/game/progress/quests';
@@ -10,6 +10,7 @@ import { TOPIC_INFO } from '@/game/topics';
 import tips from '@/data/tips.json';
 import { playSfx } from '@/engine/audio';
 import { cls } from '../format';
+import { forDevice } from '../touch';
 import { FinBucks } from '../FinBucks';
 import { ADV_LESSONS, ADV_LESSON_BY_ID, glossaryFormulas, type AdvLesson } from '@/game/learn';
 import { AdvLessonReader, AdvancedCourse, Glossary } from '../learn/AdvancedCourse';
@@ -256,7 +257,7 @@ function LessonReader({ lesson, onDone, onNext }: { lesson: LessonDef; onDone: (
             ))}
           </div>
           {picked !== null && (
-            <div className={cls('q-feedback', ok ? 'ok' : 'no')}>
+            <div className={cls('q-feedback', ok ? 'ok' : 'no')} ref={revealOnMount}>
               <div className="q-feedback-head">
                 <b className="q-verdict grow">{ok ? (wasFirst ? 'Lesson complete!' : 'Correct!') : 'Not quite'}</b>
                 {ok && wasFirst && (
@@ -339,10 +340,10 @@ function Tutorials() {
       </Section>
       <Section title="Getting around">
         <ul className="small">
-          <li>Lost? Click the minimap (top right) to open the Map. Pick any building and choose Show the way: Narwhal and a gold trail lead you there, even in another city.</li>
-          <li>Other cities: walk into a portal and press E, or open the Map and choose Travel. Every city has a portal back to Fin-City Park.</li>
+          <li>{forDevice('Lost? Click the minimap (top right) to open the Map. Pick any building and choose Show the way: Narwhal and a gold trail lead you there, even in another city.')}</li>
+          <li>{forDevice('Other cities: walk into a portal and press E, or open the Map and choose Travel. Every city has a portal back to Fin-City Park.')}</li>
           <li>Your home: FinPhone, My Stuff, Property, then Show the way. The front door says Go home.</li>
-          <li>Your vehicle: FinPhone, My Stuff, Rides, then Bring it here. Walk up to it and press E to ride, and E again to get off.</li>
+          <li>{forDevice('Your vehicle: FinPhone, My Stuff, Rides, then Bring it here. Walk up to it and press E to ride, and press E again to get off.')}</li>
         </ul>
       </Section>
     </div>

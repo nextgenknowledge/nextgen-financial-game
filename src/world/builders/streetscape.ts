@@ -55,8 +55,8 @@ const IRON = '#1f2224';
 export const CAR_PAINTS = ['#e9e9e6', '#1f2226', '#8c9196', '#5a5f66', '#2f3d55', '#6b1f24', '#c9c3b4', '#3b4a3a', '#1d2b3f', '#a7a9ad', '#7a5a3a', '#b3261e'];
 
 const CITY_EXTRAS: Record<string, string[]> = {
-  'new-york': ['hotdog', 'newsbox', 'mailbox-us', 'hydrant'],
-  'san-francisco': ['newsbox', 'mailbox-us', 'hydrant', 'bikerack'],
+  'new-york': ['hotdog', 'newsbox', 'mailbox-us', 'hydrant', 'meter', 'meter'],
+  'san-francisco': ['newsbox', 'mailbox-us', 'hydrant', 'bikerack', 'meter', 'meter'],
   london: ['phonebox', 'pillarbox', 'bikerack'],
   'hong-kong': ['newsbox', 'planter', 'bikerack'],
   singapore: ['planter', 'bikerack', 'bench'],
@@ -161,6 +161,39 @@ function busStop(f: Frame, x: number, z: number, b: Builders, city: string, rng:
   f.block(x - 2.6, 2.48, z + 0.63, 0.3, 0.22, 0.02, '#f4f1ea');
 }
 
+/** Single-space parking meter on a post, at the kerb beside the parking lane. */
+function meter(f: Frame, x: number, z: number) {
+  f.block(x, 0.16, z, 0.06, 1.05, 0.06, '#5d636b');
+  f.block(x, 1.18, z, 0.2, 0.34, 0.15, '#7d848c');
+  f.block(x, 1.3, z + 0.076, 0.13, 0.1, 0.01, '#1b2a22');
+  f.block(x, 1.52, z, 0.22, 0.05, 0.17, '#5d636b');
+}
+
+/** Tactile paving pad on the pavement where a crossing meets the kerb. */
+const TACTILE: Record<string, string> = { 'new-york': '#b0533c', london: '#b8574a', 'hong-kong': '#d8b23a', 'san-francisco': '#d8b23a', singapore: '#d8b23a' };
+
+/** Street-tree pit: a square of soil under a cast-iron grate, sometimes with a low railing round it. */
+function treePit(f: Frame, guard: boolean) {
+  f.tb(0, 0.16, 0, 1.3, 0.012, 1.3, '#4a4d50', 'treegrate', 'treegrate');
+  if (!guard) return;
+  const iron = '#24282a';
+  for (const [px, pz] of [[-0.62, -0.62], [0.62, -0.62], [-0.62, 0.62], [0.62, 0.62]]) f.block(px, 0.16, pz, 0.05, 0.48, 0.05, iron);
+  for (const k of [-1, 1]) {
+    f.block(0, 0.6, k * 0.62, 1.28, 0.04, 0.03, iron);
+    f.block(k * 0.62, 0.6, 0, 0.03, 0.04, 1.28, iron);
+  }
+}
+
+/** New York: black and clear rubbish bags piled at the kerb for the night collection. */
+function trashBags(f: Frame, x: number, z: number, rng: Rng) {
+  const n = 2 + Math.floor(rng.next() * 4);
+  for (let i = 0; i < n; i++) {
+    const r = 0.26 + rng.next() * 0.1;
+    const col = rng.chance(0.75) ? '#1c1d20' : rng.chance(0.5) ? '#c9cdd2' : '#3b4c66';
+    f.geom(sphere(r, 7, 5), x + (i - n / 2) * 0.42 + rng.range(-0.08, 0.08), 0.16 + r * 0.8, z + rng.range(-0.15, 0.15), col, 0, rng.next() * 3, 0, 1);
+  }
+}
+
 function shadeHex(hex: string, f: number) {
   const c = new THREE.Color(hex).multiplyScalar(f);
   return '#' + c.getHexString();
@@ -226,6 +259,42 @@ export function buildStreetscape(c: Ctx): Streetscape {
         const mid = at(e.len / 2, 0);
         kerbEdge(def.id, new Frame(mid.x, mid.z, e.rot, b), e.len, rng);
       }
+      // Tactile paving where the crossings at each end of this kerb meet the pavement
+      const nearX = (t: number) => (e.nz !== 0 ? xs : zs).some((rc) => Math.abs((e.nz !== 0 ? at(t, 0).x : at(t, 0).z) - rc) < roadW / 2 + 3);
+      for (const t of [1.3, e.len - 1.3]) {
+        if (!nearX(t)) continue;
+        const { f } = frame(t, 0.7);
+        f.tb(0, 0.16, 0, 1.6, 0.012, 0.6, TACTILE[def.id] ?? '#d8b23a', 'tactile', 'tactile');
+      }
+      // Street trees stand in grated pits
+      for (const tr of c.trees) {
+        const along = (tr.x - e.x0) * e.dx + (tr.z - e.z0) * e.dz;
+        const inset = -((tr.x - e.x0) * e.nx + (tr.z - e.z0) * e.nz);
+        if (along < 0.5 || along > e.len - 0.5 || inset < 1 || inset > 2.4) continue;
+        const { f } = frame(along, inset);
+        treePit(f, (def.id === 'new-york' || def.id === 'london') && rng.chance(0.4));
+      }
+      // Utility hatches and vault covers set into the pavement
+      for (let t = 5 + rng.range(0, 8); t < e.len - 4; t += rng.range(12, 22)) {
+        const { f, p } = frame(t, rng.range(1.2, 3.2));
+        if (!free(p.x, p.z, 0.6)) continue;
+        const big = rng.chance(0.3);
+        f.block(0, 0.16, 0, big ? 1.2 : 0.6, 0.01, big ? 0.9 : 0.6, big ? '#3a3c3e' : '#55585b', 'solid', 0, 0.9);
+      }
+      // Manhole covers down the lane beside this kerb
+      for (let t = 10 + rng.range(0, 10); t < e.len - 8; t += rng.range(18, 30)) {
+        const p = at(t, -roadW / 4 + rng.range(-0.5, 0.5));
+        b.solid.geom(cylinder(0.36, 0.36, 0.02, 12), new THREE.Matrix4().makeTranslation(p.x, 0.066, p.z), '#2a2c2f');
+      }
+      // New York: rubbish bags out on the kerb
+      if (def.id === 'new-york' && e.len > 20 && rng.chance(0.55)) {
+        const t = rng.range(6, e.len - 6);
+        const { f, p } = frame(t, 0.75);
+        if (free(p.x, p.z, 1.2)) {
+          trashBags(f, 0, 0, rng);
+          taken.push({ x: p.x, z: p.z, r: 1.2 });
+        }
+      }
 
       // Bus stop near the middle of long edges
       if (e.len > 30 && rng.chance(0.55)) {
@@ -242,9 +311,9 @@ export function buildStreetscape(c: Ctx): Streetscape {
       for (let t = 6; t < e.len - 6; t += rng.range(3.5, 6.5)) {
         const kind = rng.chance(0.45) ? rng.pick(extras) : rng.pick(['bin', 'bench', 'hydrant', 'planter', 'newsbox', 'bikerack', 'none', 'none']);
         if (kind === 'none') continue;
-        const inset = kind === 'bench' ? 2.5 : kind === 'phonebox' || kind === 'hotdog' ? 1.9 : 0.75;
+        const inset = kind === 'bench' ? 2.5 : kind === 'phonebox' || kind === 'hotdog' ? 1.9 : kind === 'meter' ? 0.55 : 0.75;
         const { f, p } = frame(t, inset);
-        const r = kind === 'phonebox' || kind === 'hotdog' ? 1.2 : kind === 'bench' || kind === 'planter' || kind === 'bikerack' ? 1.1 : 0.5;
+        const r = kind === 'phonebox' || kind === 'hotdog' ? 1.2 : kind === 'bench' || kind === 'planter' || kind === 'bikerack' ? 1.1 : kind === 'meter' ? 0.25 : 0.5;
         if (!free(p.x, p.z, r)) continue;
         switch (kind) {
           case 'bench':
@@ -277,8 +346,11 @@ export function buildStreetscape(c: Ctx): Streetscape {
           case 'hotdog':
             hotdog(f, 0, 0);
             break;
+          case 'meter':
+            meter(f, 0, 0);
+            break;
         }
-        if (kind !== 'bikerack') b.colliders.push({ cx: p.x, cz: p.z, w: r * 1.4, d: r * 1.4, minY: 0, maxY: 1.6, rotY: 0 });
+        if (kind !== 'bikerack' && kind !== 'meter') b.colliders.push({ cx: p.x, cz: p.z, w: r * 1.4, d: r * 1.4, minY: 0, maxY: 1.6, rotY: 0 });
         taken.push({ x: p.x, z: p.z, r });
       }
 

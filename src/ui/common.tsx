@@ -7,6 +7,12 @@ import { cls } from './format';
 export const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
 export const asset = (p: string) => `${BASE}${p}`;
 
+/** Ref for an answer's feedback card: scrolls it into view as it appears, so on a short or narrow
+ * screen the explanation and the Next button are not left below the fold. */
+export const revealOnMount = (el: HTMLElement | null) => {
+  if (el) requestAnimationFrame(() => el.scrollIntoView({ block: 'nearest', behavior: 'smooth' }));
+};
+
 export const ORG_LOGO = asset('/brand/nextgen-knowledge-logo.jpg');
 export const FIN_LOGO = asset('/brand/fin-city-logo.webp');
 export const EMBLEM = asset('/brand/nextgen-emblem-crop.png');

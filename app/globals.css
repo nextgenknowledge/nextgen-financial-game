@@ -1742,11 +1742,16 @@ button.item-card { cursor: pointer; }
   .hud { padding-bottom: calc(16px + var(--safe-b)); }
 }
 /* Phones held upright: the FinPhone goes under the minimap so Narwhal's bubble has the width */
-@media (pointer: coarse) and (max-width: 760px) {
+@media (pointer: coarse) and (max-width: 760px) and (orientation: portrait) {
   .hud.classic .r-br, .hud.classic.talking .r-br { bottom: auto; top: calc(150px + var(--safe-t)); right: calc(12px + var(--safe-r)); }
   /* ...and below the "next place" pill when a goal is set */
   .hud.classic:has(.hud-compass) .r-br { top: calc(194px + var(--safe-t)); }
+}
+@media (pointer: coarse) and (max-width: 760px) {
   .hud .narwhal-guide .narwhal-bubble { width: min(300px, calc(100vw - 120px - var(--safe-l) - var(--safe-r))); }
+  /* Standing at a door or counter: the "Enter ..." prompt takes the quest card's spot (there is no
+     other free space between the thumbs), so the card folds down to Narwhal until you step away */
+  .hud:has(.hud-prompt) .narwhal-guide .narwhal-bubble.idle { display: none; }
 }
 /* Short landscape phones */
 @media (pointer: coarse) and (max-height: 500px) {
@@ -1757,6 +1762,10 @@ button.item-card { cursor: pointer; }
   .hud .narwhal-guide-body img { height: 64px; }
   .hud.classic .r-br, .hud.classic.talking .r-br { bottom: calc(90px + var(--safe-b)); }
   .hud.classic .r-br .mini-phone { width: 56px; height: 90px; }
+  /* A smaller minimap (and no hint line under its name) leaves room down the right edge for the
+     next-place pill and then the FinPhone above the buttons, even on a 360px-tall phone */
+  .hud.classic .minimap { width: 100px; height: 100px; }
+  .hud.classic .map-corner-hint { display: none; }
 }
 /* Phones held sideways: a slimmer profile card so the apps show without scrolling */
 @media (max-height: 460px) {
@@ -1917,6 +1926,8 @@ button.item-card { cursor: pointer; }
   .wallet-text b { font-size: 0.82rem; }
   .wallet-label { font-size: 0.5rem; }
   .quick-apps { display: flex; flex-direction: row; flex-wrap: nowrap; top: calc(54px + var(--safe-t, 0px)); left: calc(12px + var(--safe-l, 0px)); transform: none; gap: 6px; }
+  /* A narrow sideways phone wraps the last shortcuts onto a second row rather than under the minimap */
+  .hud.classic:has(.joystick) .quick-apps { flex-wrap: wrap; max-width: calc(100vw - 160px - var(--safe-l, 0px) - var(--safe-r, 0px)); }
   .qa-btn { height: 32px; min-width: 0; padding: 0 9px 0 3px; gap: 5px; }
   .qa-icon { width: 26px; height: 26px; font-size: 0.95rem; border-radius: 6px; }
   .qa-btn .qa-name { display: inline; font-size: 0.7rem; }
@@ -1967,7 +1978,8 @@ button.item-card { cursor: pointer; }
 @media (pointer: coarse) and (max-height: 500px) and (orientation: landscape) {
   .hud .narwhal-guide .narwhal-bubble, .hud .narwhal-guide .narwhal-bubble.idle { width: max(220px, min(270px, calc(100vw - 430px))); padding: 0.35rem 0.6rem; }
   .idle-text { font-size: 0.8rem; }
-  .narwhal-bubble.idle .narwhal-bubble-head { font-size: 0.72rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+  /* Tighter letters so the step count ("4/6") still fits on the slim card */
+  .narwhal-bubble.idle .narwhal-bubble-head { font-size: 0.72rem; letter-spacing: 0.03em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
   .narwhal-bubble.idle .narwhal-bubble-head img { width: 20px; height: 20px; }
   .idle-hint { display: none; }
   .hud.classic:not(.talking) .r-bl { bottom: calc(122px + var(--safe-b)); }

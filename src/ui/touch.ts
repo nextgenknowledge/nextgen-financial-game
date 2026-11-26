@@ -23,6 +23,8 @@ const RULES: [RegExp, string][] = [
   [/\bpress E\b/g, 'tap the gold E button'],
   [/\bPress E\b/g, 'Tap the gold E button'],
   [/\bPress P or tap\b/g, 'Tap'],
+  // The FinPhone sits on the right on touch screens (under the minimap when the phone is upright)
+  [/\bthe phone in the (?:bottom )?corner\b/g, 'the little phone on the right'],
 ];
 
 /** Reword keyboard and mouse instructions for touch players; unchanged on other devices. */

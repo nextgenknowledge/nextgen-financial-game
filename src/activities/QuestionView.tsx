@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { TermText } from '@/ui/learn/LearnBits';
 import type { RuntimeQuestion, Response } from '@/game/questions/engine';
 import { grade, correctAnswerText } from '@/game/questions/engine';
-import { Button, ReadAloud } from '@/ui/common';
+import { Button, ReadAloud, revealOnMount } from '@/ui/common';
 import { Calculator } from '@/ui/phone/apps/CalculatorApp';
 import { NarwhalPortrait } from '@/ui/hud/HUD';
 import { playSfx } from '@/engine/audio';
@@ -329,7 +329,7 @@ export function QuestionView({
       )}
 
       {done && (
-        <div className={cls('q-feedback', done.correct ? 'ok' : 'no')}>
+        <div className={cls('q-feedback', done.correct ? 'ok' : 'no')} ref={revealOnMount}>
           <div className="q-feedback-head">
             <div className="dialog-portrait" style={{ width: 56, height: 56 }}>
               <NarwhalPortrait mood={done.correct ? 'hyped' : 'talking'} size={52} />

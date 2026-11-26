@@ -184,6 +184,10 @@ export function NarwhalGuide() {
     const t = state.clock.elapsedTime;
     const baseY = (rt.vehicle ? rt.vehicle.pos.y : p.y) + 0.55;
     group.position.set(cur.x, baseY + Math.sin(t * 2) * 0.12, cur.z);
+    // Leading you back the way you came (indoors the camera is close behind) Narwhal can drift
+    // right up to the lens and fill the screen, worst on an upright phone. Step out of shot then.
+    const cam = state.camera.position;
+    if (Math.hypot(cam.x - cur.x, cam.z - cur.z) < 2.4 && Math.abs(cam.y - group.position.y) < 3.5) group.visible = false;
     // Face the player while talking, otherwise the direction of travel
     let faceYaw: number;
     if (line || dist < 0.4) faceYaw = Math.atan2(p.x - cur.x, p.z - cur.z);

@@ -645,6 +645,45 @@ export const LAYERS: Record<string, LayerDef> = {
       classicWindow(p, 64, 28, 38, 64, { sash: true });
     },
   },
+  /** Tactile paving at crossings: rows of raised domes (tinted per city, usually yellow or red). */
+  tactile: {
+    m: [0.6, 0.6],
+    paint: (p) => {
+      p.noise(0, 0, p.S, p.S, 0.82, 0.06);
+      for (let j = 0; j < 8; j++)
+        for (let i = 0; i < 8; i++) {
+          const cx = i * 16 + 8;
+          const cy = j * 16 + 8;
+          for (let y = -5; y <= 5; y++)
+            for (let x = -5; x <= 5; x++) {
+              const d = x * x + y * y;
+              if (d > 26) continue;
+              // Lit from the top left: bright cap, dark lower rim
+              const v = d < 8 && x + y < 0 ? 1.08 : x + y > 3 ? 0.66 : 0.96;
+              p.rect(cx + x, cy + y, 1, 1, v);
+            }
+        }
+    },
+  },
+  /** Cast-iron tree grate: rings of slots radiating round the trunk, soil showing through. */
+  treegrate: {
+    m: [1.3, 1.3],
+    paint: (p) => {
+      for (let y = 0; y < p.S; y++)
+        for (let x = 0; x < p.S; x++) {
+          const dx = x - 63.5;
+          const dy = y - 63.5;
+          const r = Math.hypot(dx, dy);
+          const a = Math.atan2(dy, dx);
+          const edge = x < 5 || y < 5 || x > 122 || y > 122;
+          const ring = r > 18 && Math.floor(r / 9) % 2 === 0;
+          const spoke = Math.abs(((a / (Math.PI * 2)) * 32 + 64) % 1 - 0.5) > 0.38;
+          if (r < 14) p.px(x, y, 0.24, 0.19, 0.14, 0.5); // soil round the trunk
+          else if (edge || ring || spoke) p.rect(x, y, 1, 1, 0.55 + p.rnd() * 0.08);
+          else p.px(x, y, 0.2, 0.16, 0.12, 0.5);
+        }
+    },
+  },
 };
 
 export const LAYER_NAMES = Object.keys(LAYERS);
@@ -818,9 +857,27 @@ diffuseColor.rgb *= 1.0 - fcVert * (1.0 - smoothstep(0.0, 1.3, vWPos.y)) * 0.24;
 // Street canyons: the lower storeys see less open sky than the top ones
 diffuseColor.rgb *= 1.0 - fcVert * uCanyon * (1.0 - smoothstep(0.0, 16.0, vWPos.y)) * 0.14;
 // The ground is shaded where buildings and walls stand close by
+// (the same ground map also carries tyre wear in green and kerb-side concrete in blue)
+vec3 fcDet = vec3(1.0);
 if (uAOOn > 0.5 && fcUp > 0.5 && vWPos.y < 0.9) {
-  float fcOcc = texture2D(uGroundAO, (vWPos.xz - uAOBox.xy) / uAOBox.zw).r;
-  diffuseColor.rgb *= 1.0 - (1.0 - fcOcc) * 0.62;
+  fcDet = texture2D(uGroundAO, (vWPos.xz - uAOBox.xy) / uAOBox.zw).rgb;
+  diffuseColor.rgb *= 1.0 - (1.0 - fcDet.r) * 0.62;
+  if (fcIs(FC_ASPHALT)) {
+    // Sunlit asphalt is a mid grey, not black
+    diffuseColor.rgb *= 1.12;
+    // Kerb-side concrete gutters and patched trenches: paler, with their own grain
+    vec3 fcConcC = vec3(0.6, 0.59, 0.56) * (0.9 + 0.12 * fcNoise(vWPos.xz * 2.3));
+    diffuseColor.rgb = mix(diffuseColor.rgb, fcConcC, smoothstep(0.2, 0.6, 1.0 - fcDet.b) * 0.8);
+    // Tyre tracks: darker down each lane where the wheels run
+    diffuseColor.rgb *= 1.0 - (1.0 - fcDet.g) * 0.6;
+  }
+}
+// Painted road lines and crossings (plain strips just above the asphalt): flaked and scuffed,
+// worst where the wheels run over them
+if (vTex.z < 0.5 && fcUp > 0.5 && vWPos.y > 0.068 && vWPos.y < 0.08 && uGrime > 0.001) {
+  float fcFlake = smoothstep(0.62, 0.82, fcNoise(vWPos.xz * 3.1) * 0.55 + fcNoise(vWPos.xz * 13.0) * 0.45 + (1.0 - fcDet.g) * 0.9);
+  diffuseColor.rgb = mix(diffuseColor.rgb, vec3(0.3, 0.31, 0.33), fcFlake * 0.6);
+  diffuseColor.rgb *= 0.9 + 0.1 * fcNoise(vWPos.xz * 0.5);
 }
 bool fcPave = fcUp > 0.5 && (fcIs(FC_ASPHALT) || fcIs(FC_SIDEWALK) || fcIsPave() || fcIs(FC_COBBLE) || fcIs(FC_PATH) || fcIs(FC_GRASS));
 #ifdef FC_GROUND
@@ -842,6 +899,8 @@ if (uGrime < 0.001) {
 } else {
   vec2 fcP = vWPos.xz;
   if (fcIs(FC_ASPHALT)) {
+    // Older, sun-greyed stretches next to fresher, darker resurfacing
+    diffuseColor.rgb *= 0.92 + 0.16 * smoothstep(0.3, 0.7, fcNoise(fcP * 0.035 + 7.0));
     // Tar patches from old roadworks, rectangular and slightly darker
     vec2 fcCell = floor(fcP / vec2(5.0, 3.0));
     vec2 fcIn = fract(fcP / vec2(5.0, 3.0));

@@ -2,7 +2,7 @@
 /** The Advanced course in the Learn hub: units of lessons, the lesson reader and the glossary. */
 import { useMemo, useState } from 'react';
 import { useGame, act } from '@/store/game';
-import { Button, ReadAloud } from '@/ui/common';
+import { Button, ReadAloud, revealOnMount } from '@/ui/common';
 import { cls } from '@/ui/format';
 import { FinBucks } from '@/ui/FinBucks';
 import { playSfx } from '@/engine/audio';
@@ -172,7 +172,7 @@ export function AdvLessonReader({ lesson, onDone, onNext }: { lesson: AdvLesson;
             ))}
           </div>
           {answered !== null && (
-            <div className={cls('q-feedback', answered === check.answer ? 'ok' : 'no')}>
+            <div className={cls('q-feedback', answered === check.answer ? 'ok' : 'no')} ref={revealOnMount}>
               <div className="q-feedback-head">
                 <b className="q-verdict grow">{answered === check.answer ? 'Correct!' : 'Not quite'}</b>
               </div>
@@ -183,7 +183,7 @@ export function AdvLessonReader({ lesson, onDone, onNext }: { lesson: AdvLesson;
             </div>
           )}
           {result !== null && (
-            <div className={cls('q-feedback', result ? 'ok' : 'no')}>
+            <div className={cls('q-feedback', result ? 'ok' : 'no')} ref={revealOnMount}>
               <div className="q-feedback-head">
                 <b className="q-verdict grow">{result ? (wasFirst ? 'Lesson complete!' : 'All correct!') : 'Almost there'}</b>
                 {result && wasFirst && (

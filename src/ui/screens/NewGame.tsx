@@ -4,6 +4,7 @@ import { DEFAULT_AVATAR } from '@/game/world';
 import type { AvatarConfig, Difficulty } from '@/game/types';
 import { playSfx } from '@/engine/audio';
 import { trackEvent } from '../analytics';
+import { isTouch } from '../touch';
 import { AvatarPreview } from '../AvatarPreview';
 import outfits from '@/data/shop/outfits.json';
 import { BODIES, BUILDS, HAIR_STYLES, bodyOf, buildOf, withBody } from '@/game/look';
@@ -42,8 +43,12 @@ export function NewGameFlow({ onCancel, onCreate }: { onCancel: () => void; onCr
   const [difficulty, setDifficulty] = useState<Difficulty>('entry');
   const [avatar, setAvatar] = useState<AvatarConfig>({ ...DEFAULT_AVATAR });
   const nameInput = useRef<HTMLInputElement>(null);
+  const overlay = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // Each step starts at its top: on a phone the overlay scrolls, and the next step would
+    // otherwise open part way down, hiding its heading
+    overlay.current?.scrollTo(0, 0);
     if (step === 'name') nameInput.current?.focus();
   }, [step]);
 
@@ -61,7 +66,7 @@ export function NewGameFlow({ onCancel, onCreate }: { onCancel: () => void; onCr
   const ready = name.trim().length > 0 && nickname.trim().length > 0;
 
   return (
-    <div className="st-overlay">
+    <div className="st-overlay" ref={overlay}>
       {step === 'name' && (
         <StartPanel title="New Game" onBack={onCancel}>
           <form
@@ -122,7 +127,7 @@ export function NewGameFlow({ onCancel, onCreate }: { onCancel: () => void; onCr
             <div className="st-note">Every shop has one starter deal, so you can try them all early.</div>
 
             <button type="submit" className="st-big gold" disabled={!ready}>
-              Next: choose your level ▶
+              Next: choose your{'\u00a0'}level{'\u00a0'}▶
             </button>
           </form>
         </StartPanel>
@@ -138,7 +143,7 @@ export function NewGameFlow({ onCancel, onCreate }: { onCancel: () => void; onCr
             setStep('look');
           }}
           onBack={() => setStep('name')}
-          goLabel="Next: make your character ▶"
+          goLabel={"Next: make your character\u00a0▶"}
         />
       )}
 
@@ -156,7 +161,7 @@ export function NewGameFlow({ onCancel, onCreate }: { onCancel: () => void; onCr
                 trackEvent('world_created', { difficulty });
                 onCreate({ name: name.trim(), nickname: nickname.trim(), difficulty, avatar });
               }}>
-                Start adventure ▶
+                Start adventure{'\u00a0'}▶
               </button>
             </div>
           </div>
@@ -274,9 +279,9 @@ export function LevelPicker({
       </div>
 
       <button type="button" className="st-big gold" onClick={() => onChoose(value)}>
-        {goLabel ?? `Play on ${LEVELS[value].label} ▶`}
+        {goLabel ?? `Play on ${LEVELS[value].label}\u00a0▶`}
       </button>
-      <div className="st-note center">← → to switch · Enter to pick</div>
+      {!isTouch() && <div className="st-note center">← → to switch · Enter to pick</div>}
     </div>
   );
 }

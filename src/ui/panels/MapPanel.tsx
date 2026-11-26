@@ -13,6 +13,7 @@ import { getCityMap } from '@/world/builders/sceneBuilder';
 import { playSfx } from '@/engine/audio';
 import { baseMap, buildingsPois, drawPin, landmarkPois, mapView, worldToMap, type Poi } from '../map/pixelMap';
 import { mapContext, ownedHomes } from '../map/context';
+import { forDevice } from '../touch';
 
 const ZOOM = 1; // canvas pixels per base-map pixel
 
@@ -221,7 +222,7 @@ export function MapPanel() {
           </h3>
           <span className="muted small">{CITY_META[view].theme}</span>
           <span className="small">
-            {canJump ? 'Click a place to jump straight there, or pick Show the way and follow the gold trail.' : 'Pick Show the way and Narwhal leads you there, through the portal.'}
+            {canJump ? forDevice('Click a place to jump straight there, or pick Show the way and follow the gold trail.') : 'Pick Show the way and Narwhal leads you there, through the portal.'}
           </span>
           {(homesHere.length > 0 || homesElsewhere.length > 0) && (
             <div className="col" style={{ gap: '0.3rem' }}>
