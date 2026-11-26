@@ -230,7 +230,7 @@ function NavTips() {
       else if (!on('q3b-starter') && w.assets.properties.some((pr) => (pr.houseId || condoDef(pr.itemId)) && !pr.rented))
         tip('tipHome', 'You own a home now! To get there, open My Stuff in your FinPhone, go to Property, and tap Show the way. Its front door says Go home.');
       else if (!on('q1b-portal') && scene.location !== 'park' && !scene.interior)
-        tip('tipCity', 'New city! The portal back to Fin-City Park is on your minimap. Tap the minimap to open the Map, then pick any building and tap Show the way.');
+        tip('tipCity', 'New city! The portal back to Fin-City Park is on your minimap. Click the minimap to open the Map, then pick any building and click Show the way.');
     }, 1000);
     return () => clearInterval(id);
   }, []);

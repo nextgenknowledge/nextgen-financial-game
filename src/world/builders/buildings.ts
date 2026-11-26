@@ -6,9 +6,10 @@ import * as THREE from 'three';
 import { VoxelBuilder, cylinder, sphere, trs, type ColorLike } from '@/engine/voxel';
 import { dressBuilding, facadeFor } from './cityKit';
 import type { Facing } from '@/game/content';
-import type { Rng } from '@/game/rng';
+import { hashString, makeRng, type Rng } from '@/game/rng';
 import { AD_COPY, type SignKind } from '../signage';
 import { CITY_STYLES } from './cityStyles';
+import { civicTop, dressMission, missionLook } from './missionLooks';
 
 export interface SignSpec {
   text: string;
@@ -247,6 +248,8 @@ function rooftopBillboard(f: Frame, w: number, d: number, top: number, rng: Rng)
 }
 
 export interface BuildingSpec {
+  /** Data id of an enterable building (picks its mission look). */
+  id?: string;
   name?: string;
   icon?: string;
   cx: number;
@@ -289,13 +292,18 @@ const SIGN_KIND: Record<string, SignKind> = {
 export function buildBuilding(b: Builders, s: BuildingSpec, rng: Rng): { doorX: number; doorZ: number; rot: number } {
   const before = b.signs.length;
   const res = buildBuildingInner(b, s, rng);
-  dressBuilding(s.city, new Frame(s.cx, s.cz, res.rot, b), b, s.w, s.d, s.h, s.style, rng);
+  const look = missionLook(s.id);
+  dressBuilding(s.city, new Frame(s.cx, s.cz, res.rot, b), b, s.w, s.d, s.h, s.style, rng, !!look?.emblem);
+  // Own random stream, so adding detail here never reshuffles the rest of the city
+  if (look) dressMission(new Frame(s.cx, s.cz, res.rot, b), s, look, makeRng(hashString(s.id ?? '')));
   // Public buildings fly a flag from a pole on the front of the roof
   if (s.style === 'bank' || s.style === 'civic' || s.style === 'library' || s.style === 'exchange') {
     const f = new Frame(s.cx, s.cz, res.rot, b);
-    f.block(0, s.h + 0.5, s.d / 2 - 1.2, 0.12, 5.5, 0.12, '#c0c4cc');
-    f.geom(sphere(0.12, 6, 4), 0, s.h + 6.05, s.d / 2 - 1.2, '#d9b95c');
-    f.flag(0.06, s.h + 5.7, s.d / 2 - 1.2, 2.4, 1.5, s.accent, s.trim);
+    // Halls with an emblem on the portico and their own rooftop fly the flag from a corner instead
+    const fx = look?.emblem ? -(s.w / 2 - 1.5) : 0;
+    f.block(fx, s.h + 0.5, s.d / 2 - 1.2, 0.12, 5.5, 0.12, '#c0c4cc');
+    f.geom(sphere(0.12, 6, 4), fx, s.h + 6.05, s.d / 2 - 1.2, '#d9b95c');
+    f.flag(fx + 0.06, s.h + 5.7, s.d / 2 - 1.2, 2.4, 1.5, s.accent, s.trim);
   }
   b.footprints.push({ x: s.cx, z: s.cz, w: s.w, d: s.d, rot: res.rot, h: s.h, color: s.roof, kind: s.enterable ? 'enterable' : 'building' });
   for (let i = before; i < b.signs.length; i++) b.signs[i].kind ??= SIGN_KIND[s.style] ?? 'fascia';
@@ -375,15 +383,8 @@ function buildBuildingInner(b: Builders, s: BuildingSpec, rng: Rng): { doorX: nu
       f.block(0, h - 1.2, d / 2 + 1.3, w * 0.7 + 1, 0.8, 2.4, '#f7f3ea');
       f.block(0, 0.3, d / 2 + 1.3, w * 0.7 + 1, 0.3, 2.6, '#e8e1d0');
       door(f, d, accent, trim);
-      if (s.style === 'civic') {
-        // Clock tower
-        f.block(0, h + 3, -d / 4, 4, 6, 4, wall);
-        f.block(0, h + 9, -d / 4, 4.6, 0.6, 4.6, roof);
-        pitchedRoof(new Frame(...f.world(0, -d / 4), rot, b), 3.6, 3.6, h + 9.6, roof, 4, 0.2);
-        f.geom(cylinder(1.3, 1.3, 0.2, 16), 0, h + 6.5, -d / 4 + 2.05, '#fffaf0', Math.PI / 2);
-        f.block(0, h + 6.2, -d / 4 + 2.2, 0.12, 1.1, 0.06, '#1e2840');
-        f.block(0.3, h + 6.45, -d / 4 + 2.2, 0.7, 0.12, 0.06, '#1e2840');
-      }
+      // Each civic hall has its own rooftop: clock tower, dome, cupola, beacon or glass lantern
+      if (s.style === 'civic') civicTop(f, missionLook(s.id)?.top ?? 'clock', s, -d / 4, pitchedRoof);
       f.sign(s.name ?? '', s.icon, 0, h - 0.6, d / 2 + 2.55, Math.min(w * 0.7, 11), 1.2, '#1e2840', '#ffffff');
       return doorPoint(f, d / 2 + 3.2, rot);
     }

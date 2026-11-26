@@ -281,7 +281,8 @@ export function facadeFor(style: string, city: string | undefined, fallback: str
 }
 
 /** Rooftop and facade dressing that makes a building belong to its city. */
-export function dressBuilding(city: string | undefined, f: Frame, b: Builders, w: number, d: number, h: number, style: string, rng: Rng) {
+/** `mission`: the building carries its own emblem and facade (missionLooks.ts), so the street face is left to it. */
+export function dressBuilding(city: string | undefined, f: Frame, b: Builders, w: number, d: number, h: number, style: string, rng: Rng, mission = false) {
   if (!city || city === 'park') return;
   const glassy = style === 'glass' || style === 'tower' || style === 'campus';
   switch (city) {
@@ -307,7 +308,8 @@ export function dressBuilding(city: string | undefined, f: Frame, b: Builders, w
       acUnits(f, w, d, h + 0.6, rng);
       acUnits(f, w, d, h + 0.6, rng);
       // Wall-mounted air conditioners on the street face
-      for (let y = 4; y < h - 1; y += 3) for (let x = -w / 2 + 1.5; x < w / 2 - 1; x += rng.range(2.5, 4.5)) if (rng.chance(0.55)) f.tb(x, y, d / 2 + 0.3, 0.9, 0.6, 0.6, '#d8dbde', 'metal', 'metal');
+      // (the random draws still happen on mission buildings, so the rest of the city stays the same)
+      for (let y = 4; y < h - 1; y += 3) for (let x = -w / 2 + 1.5; x < w / 2 - 1; x += rng.range(2.5, 4.5)) if (rng.chance(0.55) && !mission) f.tb(x, y, d / 2 + 0.3, 0.9, 0.6, 0.6, '#d8dbde', 'metal', 'metal');
       if (!glassy && h > 6) neonBlade(f, b, w / 2 - 0.5, h * 0.55, d / 2 + 0.8, rng);
       // Rooftop billboard frame
       if (h > 10) {
@@ -316,7 +318,7 @@ export function dressBuilding(city: string | undefined, f: Frame, b: Builders, w
       }
       break;
     case 'san-francisco':
-      if (!glassy && h < 16) {
+      if (!glassy && h < 16 && !mission) {
         // Bay windows on the upper floors
         for (const sx of w > 10 ? [-w / 4, w / 4] : [0]) {
           f.tb(sx, 3.8, d / 2 + 0.45, 2.6, h - 5, 0.9, shadeHex('#f2ead8', 0.95), 'fac-painted', 'concrete');

@@ -130,19 +130,47 @@ export function buildLandmark(b: Builders, lm: LandmarkDef, rng: Rng) {
       break;
     }
     case 'bull-bear': {
-      // Bull and bear statues: market up / market down
-      f.block(-3, 0, 0, 2.4, 0.8, 4.4, '#8a8f9c');
-      f.block(-3, 0.8, 0, 1.6, 1.4, 3.2, '#b07a3c');
-      f.block(-3, 1.4, 1.9, 1.3, 1.2, 1.0, '#b07a3c');
-      f.block(-3.6, 2.4, 2.1, 0.25, 0.25, 0.9, '#f4e6c8');
-      f.block(-2.4, 2.4, 2.1, 0.25, 0.25, 0.9, '#f4e6c8');
-      for (const [x, z] of [[-3.5, 1.2], [-2.5, 1.2], [-3.5, -1.2], [-2.5, -1.2]]) f.block(x, 0.8, z, 0.4, 0.5, 0.4, '#8a5a2c');
-      f.block(3, 0, 0, 2.4, 0.8, 4.4, '#8a8f9c');
-      f.block(3, 0.8, 0, 1.8, 1.6, 3.0, '#6b4a2a');
-      f.block(3, 1.6, 1.8, 1.4, 1.3, 1.2, '#6b4a2a');
-      f.block(2.5, 2.9, 1.7, 0.4, 0.4, 0.3, '#6b4a2a');
-      f.block(3.5, 2.9, 1.7, 0.4, 0.4, 0.3, '#6b4a2a');
-      f.collider(0, 0, 9, 4.4, 0, 3);
+      // Bull and bear statues: market up / market down. Cast bronze on granite plinths with brass plates.
+      const S = (rx: number, ry: number, rz: number, seg = 10) => new THREE.SphereGeometry(1, seg, Math.max(6, seg - 2)).scale(rx, ry, rz);
+      const B = (w: number, h: number, d: number) => new THREE.BoxGeometry(w, h, d);
+      for (const x of [-3, 3]) {
+        f.tb(x, 0, 0, 2.7, 0.75, 4.7, '#6d6f74', 'stone', 'stone');
+        f.tb(x, 0.75, 0, 2.5, 0.12, 4.5, '#7d8085', 'stone', 'stone');
+        f.block(x, 0.25, 2.37, 1.2, 0.32, 0.04, '#c9a24a');
+      }
+      // The bull charges: rump high, head low, horns forward, tail whipping up
+      const bull = '#a0703a';
+      const bx = -3;
+      const top = 0.87;
+      f.geom(B(1.35, 1.15, 2.4), bx, top + 1.25, -0.1, bull, 0.14, 0, 0);
+      f.geom(S(0.82, 0.78, 0.95), bx, top + 1.6, 0.55, bull);
+      f.geom(S(0.72, 0.7, 0.7), bx, top + 1.55, -1.15, bull);
+      f.geom(B(0.78, 0.72, 0.9), bx, top + 0.95, 1.5, bull, 0.55, 0, 0);
+      f.geom(B(0.6, 0.44, 0.38), bx, top + 0.6, 1.92, shade(bull, 0.9), 0.3, 0, 0);
+      for (const side of [-1, 1]) {
+        f.geom(new THREE.CylinderGeometry(0.06, 0.15, 0.85, 6), bx + side * 0.55, top + 1.35, 1.6, '#e6d3a6', 0.75, 0, -side * 1.05);
+        f.geom(S(0.12, 0.2, 0.08, 6), bx + side * 0.42, top + 1.32, 1.3, bull);
+      }
+      for (const [lx, lz, a] of [[-0.42, 0.85, -0.45], [0.42, 0.85, -0.3], [-0.42, -1.05, 0.4], [0.42, -1.05, 0.55]] as const) {
+        f.geom(B(0.3, 1.0, 0.32), bx + lx, top + 0.5, lz, shade(bull, 0.95), a, 0, 0);
+        f.block(bx + lx, top, lz + Math.sin(-a) * 0.5, 0.34, 0.14, 0.36, shade(bull, 0.7));
+      }
+      f.geom(new THREE.CylinderGeometry(0.05, 0.07, 1.1, 5), bx, top + 2.0, -1.65, bull, -0.75, 0, 0);
+      f.geom(S(0.13, 0.2, 0.13, 6), bx, top + 2.4, -2.05, shade(bull, 0.8));
+      // The bear lumbers: heavy body, shoulder hump, head low and turned, round ears
+      const bear = '#5e4433';
+      const ex = 3;
+      f.geom(S(0.9, 0.82, 1.4, 12), ex, top + 1.45, -0.15, bear);
+      f.geom(S(0.78, 0.66, 0.72), ex, top + 1.85, 0.55, bear);
+      f.geom(S(0.5, 0.46, 0.56), ex + 0.12, top + 1.3, 1.45, bear, 0, 0.25, 0);
+      f.geom(B(0.34, 0.3, 0.42), ex + 0.2, top + 1.15, 1.9, shade(bear, 1.15), 0.15, 0.25, 0);
+      f.geom(S(0.1, 0.08, 0.08, 6), ex + 0.25, top + 1.22, 2.12, '#1e1a18');
+      for (const side of [-1, 1]) f.geom(S(0.15, 0.15, 0.08, 6), ex + 0.12 + side * 0.33, top + 1.7, 1.3, bear);
+      for (const [lx, lz] of [[-0.48, 0.75], [0.48, 0.85], [-0.48, -1.0], [0.48, -0.95]] as const) {
+        f.geom(new THREE.CylinderGeometry(0.24, 0.28, 0.95, 8), ex + lx, top + 0.48, lz, bear);
+        f.geom(S(0.3, 0.14, 0.36, 8), ex + lx, top + 0.06, lz + 0.08, shade(bear, 0.8));
+      }
+      f.collider(0, 0, 9, 4.7, 0, 3.4);
       break;
     }
     case 'bridge': {

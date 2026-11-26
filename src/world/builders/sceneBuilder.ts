@@ -292,6 +292,7 @@ export function buildOutdoor(def: CityDef, difficulty: Difficulty): SceneBuild {
     const res = buildBuilding(
       b,
       {
+        id: bd.id,
         name: bd.name,
         icon: bd.icon,
         cx: bd.pos[0],
