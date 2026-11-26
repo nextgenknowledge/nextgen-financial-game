@@ -26,6 +26,7 @@ import { CondoEntrances } from './CondoEntrance';
 import { Weather } from './Weather';
 import { Sites, Steam, Pigeons, Flags } from './Ambient';
 import { worldUniforms } from '@/engine/atlas';
+import { setGroundAO, clearGroundAO } from '@/engine/groundAO';
 import { MeshSunShadow, updateSunShadows } from './SunShadows';
 import { ContactShadow } from './ContactShadow';
 
@@ -51,6 +52,20 @@ export function OutdoorScene({ def, difficulty }: { def: CityDef; difficulty: Di
     rt.dock = build.dock;
     rt.airport = build.airport;
   }, [build, def]);
+
+  // Soft shade on the ground around every building, wall and big prop
+  useEffect(() => {
+    const shapes = [
+      ...build.map.footprints.map((f) => ({ cx: f.x, cz: f.z, w: f.w, d: f.d, rot: f.rot })),
+      ...build.colliders.filter((k) => k.minY < 0.5 && k.maxY >= 1.2 && k.w * k.d >= 0.8).map((k) => ({ cx: k.cx, cz: k.cz, w: k.w, d: k.d, rot: k.rotY })),
+    ];
+    setGroundAO(shapes, rt.collision.bounds);
+    worldUniforms.uCanyon.value = 1;
+    return () => {
+      clearGroundAO();
+      worldUniforms.uCanyon.value = 0;
+    };
+  }, [build]);
 
   // Place the player
   useEffect(() => {

@@ -705,7 +705,21 @@ export const worldUniforms = {
   uWind: { value: 1 },
   /** Sky colour reflected in puddles. */
   uSkyRefl: { value: new THREE.Color('#9fb8d0') },
+  /** Soft shade on the ground around buildings (engine/groundAO.ts); white = open sky. */
+  uGroundAO: { value: whiteTex() as THREE.Texture },
+  /** Where that texture lies in the world: minX, minZ, width, depth (metres). */
+  uAOBox: { value: new THREE.Vector4(0, 0, 1, 1) },
+  /** 1 outdoors, 0 indoors. */
+  uAOOn: { value: 0 },
+  /** Street canyons: walls get a little darker toward the street, where less sky reaches (outdoors only). */
+  uCanyon: { value: 0 },
 };
+
+function whiteTex() {
+  const t = new THREE.DataTexture(new Uint8Array([255, 255, 255, 255]), 1, 1);
+  t.needsUpdate = true;
+  return t;
+}
 
 /**
  * Patches a Lambert material so geometry with an `aTex` attribute samples the atlas.
@@ -750,6 +764,10 @@ uniform float uGrime;
 uniform float uWet;
 uniform float uSnow;
 uniform vec3 uSkyRefl;
+uniform sampler2D uGroundAO;
+uniform vec4 uAOBox;
+uniform float uAOOn;
+uniform float uCanyon;
 varying vec3 vTex;
 varying vec3 vWPos;
 varying vec3 vWNorm;
@@ -796,7 +814,14 @@ float fcUp = smoothstep(0.75, 0.95, fcN.y);
 float fcAlong = abs(fcN.x) > abs(fcN.z) ? vWPos.z : vWPos.x;
 float fcDirt = 0.0;
 // Baked-style contact shading: walls and anything upright darken a little where they meet the ground
-diffuseColor.rgb *= 1.0 - fcVert * (1.0 - smoothstep(0.0, 1.3, vWPos.y)) * 0.2;
+diffuseColor.rgb *= 1.0 - fcVert * (1.0 - smoothstep(0.0, 1.3, vWPos.y)) * 0.24;
+// Street canyons: the lower storeys see less open sky than the top ones
+diffuseColor.rgb *= 1.0 - fcVert * uCanyon * (1.0 - smoothstep(0.0, 16.0, vWPos.y)) * 0.14;
+// The ground is shaded where buildings and walls stand close by
+if (uAOOn > 0.5 && fcUp > 0.5 && vWPos.y < 0.9) {
+  float fcOcc = texture2D(uGroundAO, (vWPos.xz - uAOBox.xy) / uAOBox.zw).r;
+  diffuseColor.rgb *= 1.0 - (1.0 - fcOcc) * 0.62;
+}
 bool fcPave = fcUp > 0.5 && (fcIs(FC_ASPHALT) || fcIs(FC_SIDEWALK) || fcIsPave() || fcIs(FC_COBBLE) || fcIs(FC_PATH) || fcIs(FC_GRASS));
 #ifdef FC_GROUND
   fcPave = true;
@@ -884,7 +909,10 @@ if (uSnow > 0.001) {
   float fcS = fcUp * smoothstep(0.3, 0.55, fcNoise(vWPos.xz * 0.9) * 0.35 + uSnow * 0.75);
   // Traffic keeps roads clear apart from grey slush along the kerbs
   if (fcIs(FC_ASPHALT)) fcS *= 0.22 * smoothstep(0.55, 0.8, fcNoise(vWPos.xz * 0.7));
-  diffuseColor.rgb = mix(diffuseColor.rgb, fcIs(FC_ASPHALT) ? vec3(0.62, 0.63, 0.65) : vec3(0.93, 0.95, 0.98), fcS);
+  // Fresh snow is a little below pure white with a cool tint, and drifts unevenly, so it keeps
+  // its shape instead of burning out to a flat white sheet in sunlight
+  vec3 fcSnowC = vec3(0.8, 0.84, 0.9) * (0.93 + 0.1 * fcNoise(vWPos.xz * 0.35) + 0.04 * fcHash(floor(vWPos.xz * 6.0)));
+  diffuseColor.rgb = mix(diffuseColor.rgb, fcIs(FC_ASPHALT) ? vec3(0.58, 0.59, 0.62) : fcSnowC, fcS);
 }`,
       )
       .replace('#include <emissivemap_fragment>', '#include <emissivemap_fragment>\ntotalEmissiveRadiance += fcGlow;\n#ifdef FC_LANDMARK\ntotalEmissiveRadiance += diffuseColor.rgb * 0.32;\n#endif');

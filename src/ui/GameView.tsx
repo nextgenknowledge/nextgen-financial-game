@@ -168,8 +168,10 @@ export default function GameView() {
         onCreated={({ gl, scene }) => {
           // Dev-only handle so automated checks can read draw calls and triangle counts
           if (process.env.NODE_ENV !== 'production') (window as unknown as Record<string, unknown>).__fcGl = { gl, scene };
-          gl.toneMapping = THREE.ACESFilmicToneMapping;
-          gl.toneMappingExposure = 1.05;
+          // Khronos Neutral keeps the painted colours true (ACES dulled reds and browns toward
+          // orange-grey); a touch under 1 so pale paving doesn't glare at noon
+          gl.toneMapping = THREE.NeutralToneMapping;
+          gl.toneMappingExposure = 0.96;
         }}
         style={{ position: 'fixed', inset: 0 }}
       >

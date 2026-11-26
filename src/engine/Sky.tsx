@@ -27,8 +27,8 @@ const KEYS: SkyKey[] = [
   // Blue hour, then a warm, low sunrise
   { h: 5.9, top: '#2c3c78', hor: '#c98a8a', sun: '#ff9a6a', sunI: 0.8, hemi: 0.5 },
   { h: 6.8, top: '#6a94c9', hor: '#f6c08c', sun: '#ffbb7a', sunI: 2.2, hemi: 0.58 },
-  { h: 9, top: '#4f86cc', hor: '#cfdeec', sun: '#ffeed2', sunI: 3.3, hemi: 0.64 },
-  { h: 15, top: '#4f86cc', hor: '#d4e1ed', sun: '#ffeed2', sunI: 3.3, hemi: 0.64 },
+  { h: 9, top: '#4f86cc', hor: '#cfdeec', sun: '#ffe3bd', sunI: 3.3, hemi: 0.64 },
+  { h: 15, top: '#4f86cc', hor: '#d4e1ed', sun: '#ffe3bd', sunI: 3.3, hemi: 0.64 },
   // Golden hour: long amber light
   { h: 16.8, top: '#5f86c0', hor: '#f0cf9c', sun: '#ffc27a', sunI: 3.0, hemi: 0.68 },
   { h: 17.8, top: '#4f62a0', hor: '#f59e6a', sun: '#ff9550', sunI: 2.4, hemi: 0.6 },
@@ -205,7 +205,7 @@ export function SkyAndLights({ interior = false }: { interior?: boolean }) {
     }
     if (hemiRef.current) {
       // Outdoors the fill comes from the blue sky, so shadowed sides read cool against warm sunlight
-      hemiRef.current.color.copy(interior ? cA.set('#fff4e0') : s.top).lerp(cB.set('#ffffff'), interior ? 0.5 : 0.3);
+      hemiRef.current.color.copy(interior ? cA.set('#fff4e0') : s.top).lerp(cB.set('#ffffff'), interior ? 0.5 : 0.2);
       hemiRef.current.groundColor.set(interior ? '#c9b48a' : '#6b8f4e').lerp(cB.set('#2a2f4a'), 1 - rt.dayLight);
       hemiRef.current.intensity = interior ? 1.5 : s.hemi;
     }

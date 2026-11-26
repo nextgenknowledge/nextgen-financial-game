@@ -26,14 +26,14 @@ export default function GameRoot() {
     installInput();
     if (process.env.NODE_ENV !== 'production') {
       // Dev-only debug handle for automated checks
-      Promise.all([import('@/engine/runtime'), import('@/store/game'), import('@/store/scene'), import('@/engine/vehicles'), import('@/world/ParkedVehicles'), import('@/engine/input'), import('@/engine/walk')]).then(([r, g, sc, v, pv, inp, wk]) => {
+      Promise.all([import('@/engine/runtime'), import('@/store/game'), import('@/store/scene'), import('@/engine/vehicles'), import('@/world/ParkedVehicles'), import('@/engine/input'), import('@/engine/walk'), import('@/engine/atlas')]).then(([r, g, sc, v, pv, inp, wk, at]) => {
         // ride(itemId) / getOff() let scripted checks drive any vehicle without buying it
         const ride = (itemId: string, at?: 'dock' | 'garage') => {
           const spot = at ? r.rt[at] : null;
           v.mountVehicle('dev-' + itemId, itemId, spot?.x ?? r.rt.player.x, spot?.z ?? r.rt.player.z, spot?.rot ?? r.rt.playerRotY);
           pv.useRide.getState().set('dev-' + itemId);
         };
-        (window as unknown as Record<string, unknown>).__fc = { rt: r.rt, game: g.useGame, ui: useUI, scene: sc.useScene, act: g.act, settings: useSettings, ride, getOff: pv.getOff, stepVehicle: v.updateVehicle, virtual: inp.virtual, walkTo: wk.walkTo };
+        (window as unknown as Record<string, unknown>).__fc = { rt: r.rt, game: g.useGame, ui: useUI, scene: sc.useScene, act: g.act, settings: useSettings, ride, getOff: pv.getOff, stepVehicle: v.updateVehicle, virtual: inp.virtual, walkTo: wk.walkTo, uniforms: at.worldUniforms };
       });
     }
   }, []);
