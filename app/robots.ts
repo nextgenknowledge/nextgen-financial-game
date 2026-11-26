@@ -3,5 +3,5 @@ import type { MetadataRoute } from 'next';
 export const dynamic = 'force-static';
 
 export default function robots(): MetadataRoute.Robots {
-  return { rules: { userAgent: '*', allow: '/' }, sitemap: 'https://fincity.dev/sitemap.xml' };
+  return { rules: { userAgent: '*', allow: '/', disallow: '/cdn-cgi/' }, sitemap: 'https://fincity.dev/sitemap.xml' };
 }
