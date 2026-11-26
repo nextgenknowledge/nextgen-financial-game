@@ -2154,6 +2154,7 @@ button.item-card { cursor: pointer; }
 .about-logo { display: block; width: 160px; height: 160px; object-fit: contain; margin-bottom: 1.2rem; }
 .about-page h1 { margin: 0 0 1rem; font-size: clamp(1.9rem, 6vw, 2.6rem); line-height: 1.15; color: #fff; }
 .about-page h2 { margin: 2.2rem 0 0.6rem; font-size: 1.35rem; color: #fff; }
+.about-page h3 { margin: 1.2rem 0 0.3rem; font-size: 1.05rem; color: #fff; }
 .about-page p, .about-page ul { margin: 0 0 1rem; }
 .about-page li { margin-bottom: 0.4rem; }
 .about-page a:not(.btn) { color: #9fd0ff; }
