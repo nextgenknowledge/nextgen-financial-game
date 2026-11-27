@@ -3,6 +3,7 @@ import { useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import { rbox } from './Avatar';
+import { hairShellGeo, headGeo, limbGeo, torsoGeo } from './bodyShape';
 import { InstancedSunShadow, shadowProxy } from './SunShadows';
 import { VoxelBuilder, cylinder, trs } from '@/engine/voxel';
 import { hourOf } from '@/engine/Sky';
@@ -68,18 +69,26 @@ interface Walker {
   longHair: boolean;
 }
 
+// Soft shapes, centred where the old boxes were, with few points around so a crowd stays cheap
+const legGeo = limbGeo(0.38, 0.76, 0.3, 0.32, 0.24, 0.26, { capTop: 0.03, flare: 0.06, seg: 10, rings: 4 });
+const armGeo = limbGeo(0.33, 0.66, 0.21, 0.24, 0.18, 0.21, { capTop: 0.05, seg: 10, rings: 3 });
+const handGeoLite = limbGeo(0.07, 0.14, 0.18, 0.2, 0.16, 0.18, { capBottom: 0.04, seg: 8, rings: 1 });
+const crowdHead = headGeo(0.5, 0.49, 12).clone().translate(0, -0.25, 0);
+// The full Avatar's hair shell, shrunk to the crowd's smaller head
+const crowdHair = hairShellGeo(0.5, 0.44, 0.3, 1.07, 0.05, 12).clone().scale(0.5 / 0.62, 0.5 / 0.62, 0.49 / 0.6).translate(0, -0.25, 0);
+
 const PARTS = [
-  { key: 'legL', geo: rbox(0.28, 0.76, 0.3, 0.06), pivot: [0.16, 0.9, 0], offset: [0, -0.38, 0], color: 'pants', swing: 1 },
-  { key: 'legR', geo: rbox(0.28, 0.76, 0.3, 0.06), pivot: [-0.16, 0.9, 0], offset: [0, -0.38, 0], color: 'pants', swing: -1 },
-  { key: 'torso', geo: rbox(0.64, 0.7, 0.36, 0.08), pivot: [0, 1.24, 0], offset: [0, 0, 0], color: 'shirt', swing: 0 },
-  { key: 'armL', geo: rbox(0.2, 0.66, 0.23, 0.06), pivot: [0.43, 1.53, 0], offset: [0, -0.32, 0], color: 'shirt', swing: -0.9 },
-  { key: 'armR', geo: rbox(0.2, 0.66, 0.23, 0.06), pivot: [-0.43, 1.53, 0], offset: [0, -0.32, 0], color: 'shirt', swing: 0.9 },
-  { key: 'handL', geo: rbox(0.18, 0.15, 0.2, 0.05), pivot: [0.43, 1.53, 0], offset: [0, -0.72, 0], color: 'skin', swing: -0.9 },
-  { key: 'handR', geo: rbox(0.18, 0.15, 0.2, 0.05), pivot: [-0.43, 1.53, 0], offset: [0, -0.72, 0], color: 'skin', swing: 0.9 },
-  { key: 'neck', geo: rbox(0.2, 0.14, 0.2, 0.04), pivot: [0, 1.62, 0], offset: [0, 0, 0], color: 'skin', swing: 0 },
-  { key: 'head', geo: rbox(0.5, 0.5, 0.49, 0.08), pivot: [0, 1.93, 0], offset: [0, 0, 0], color: 'skin', swing: 0 },
-  { key: 'eyes', geo: new THREE.BoxGeometry(0.3, 0.06, 0.02).translate(0, 0, 0.25), pivot: [0, 1.96, 0], offset: [0, 0, 0], color: 'eyes', swing: 0 },
-  { key: 'hair', geo: rbox(0.54, 0.17, 0.53, 0.06), pivot: [0, 2.17, -0.02], offset: [0, 0, 0], color: 'hair', swing: 0 },
+  { key: 'legL', geo: legGeo, pivot: [0.16, 0.9, 0], offset: [0, -0.38, 0], color: 'pants', swing: 1 },
+  { key: 'legR', geo: legGeo, pivot: [-0.16, 0.9, 0], offset: [0, -0.38, 0], color: 'pants', swing: -1 },
+  { key: 'torso', geo: torsoGeo(0.64, 0.7, 0.36, false, 1, 12), pivot: [0, 1.24, 0], offset: [0, 0, 0], color: 'shirt', swing: 0 },
+  { key: 'armL', geo: armGeo, pivot: [0.43, 1.53, 0], offset: [0, -0.32, 0], color: 'shirt', swing: -0.9 },
+  { key: 'armR', geo: armGeo, pivot: [-0.43, 1.53, 0], offset: [0, -0.32, 0], color: 'shirt', swing: 0.9 },
+  { key: 'handL', geo: handGeoLite, pivot: [0.43, 1.53, 0], offset: [0, -0.72, 0], color: 'skin', swing: -0.9 },
+  { key: 'handR', geo: handGeoLite, pivot: [-0.43, 1.53, 0], offset: [0, -0.72, 0], color: 'skin', swing: 0.9 },
+  { key: 'neck', geo: limbGeo(0.07, 0.14, 0.19, 0.19, 0.2, 0.2, { seg: 8, rings: 1 }), pivot: [0, 1.62, 0], offset: [0, 0, 0], color: 'skin', swing: 0 },
+  { key: 'head', geo: crowdHead, pivot: [0, 1.93, 0], offset: [0, 0, 0], color: 'skin', swing: 0 },
+  { key: 'eyes', geo: new THREE.BoxGeometry(0.26, 0.06, 0.03).translate(0, 0, 0.24), pivot: [0, 1.96, 0], offset: [0, 0, 0], color: 'eyes', swing: 0 },
+  { key: 'hair', geo: crowdHair, pivot: [0, 1.93, 0], offset: [0, 0, 0], color: 'hair', swing: 0 },
   { key: 'hairBack', geo: rbox(0.54, 0.46, 0.1, 0.04), pivot: [0, 1.93, -0.25], offset: [0, 0, 0], color: 'hair', swing: 0 },
   { key: 'shoeL', geo: rbox(0.3, 0.15, 0.4, 0.05), pivot: [0.16, 0.9, 0], offset: [0, -0.82, 0.04], color: 'shoes', swing: 1 },
   { key: 'shoeR', geo: rbox(0.3, 0.15, 0.4, 0.05), pivot: [-0.16, 0.9, 0], offset: [0, -0.82, 0.04], color: 'shoes', swing: -1 },

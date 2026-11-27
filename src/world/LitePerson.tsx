@@ -8,7 +8,8 @@
 import { useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
-import { VoxelBuilder } from '@/engine/voxel';
+import { VoxelBuilder, trs } from '@/engine/voxel';
+import { hairShellGeo, headGeo, limbGeo, torsoGeo } from './bodyShape';
 import type { AvatarConfig } from '@/game/types';
 import type { AnimState } from './Avatar';
 import outfits from '@/data/shop/outfits.json';
@@ -61,17 +62,18 @@ function partsFor(c: AvatarConfig): Parts {
   // Body: hips, torso (with shirt-and-tie for suits), neck, head with face, hair
   const b = new VoxelBuilder();
   const tw = fit.torso;
-  b.box(0, 0.9, 0, 0.62 * tw, 0.16, 0.34 * fit.depth, pants);
-  b.box(0, 1.23, 0, 0.66 * tw, 0.68, 0.38 * fit.depth, shirt);
+  const female = c.body === 'female';
+  b.geom(limbGeo(0.08, 0.17, 0.6, 0.33, 0.62, 0.34, { n: 3.2, capBottom: 0.04, seg: 12, rings: 2 }), trs(0, 0.9, 0, 0, 0, 0, tw, 1, fit.depth), pants);
+  b.geom(torsoGeo(0.66, 0.68, 0.38, female, 1, 14), trs(0, 1.23, 0, 0, 0, 0, tw, 1, fit.depth), shirt);
   if (suit) {
     b.box(0, 1.38, 0.192, 0.16, 0.36, 0.01, '#f4f6fa');
     if (c.body !== 'female' && top?.style !== 'skirtsuit') b.box(0, 1.33, 0.2, 0.06, 0.3, 0.01, top?.color2 ?? '#8a1f2a');
   }
-  b.box(0, 1.6, 0, 0.22, 0.14, 0.22, c.skin);
+  b.geom(limbGeo(0.09, 0.18, 0.2, 0.2, 0.22, 0.22, { n: 2.6, seg: 10, rings: 1 }), trs(0, 1.6, 0), c.skin);
   const s = 0.82;
   const hy = 1.6;
   const H = (x: number, y: number, z: number, w: number, h: number, d: number, col: string) => b.box(x * s, hy + y * s, z * s, w * s, h * s, d * s, col);
-  H(0, 0.31, 0, 0.62, 0.62, 0.6, c.skin);
+  b.geom(headGeo(0.62, 0.6, 14), trs(0, hy, 0, 0, 0, 0, s, s, s), c.skin);
   H(0.32, 0.3, 0, 0.06, 0.15, 0.11, shade(c.skin, 0.9));
   H(-0.32, 0.3, 0, 0.06, 0.15, 0.11, shade(c.skin, 0.9));
   for (const x of [0.14, -0.14]) {
@@ -82,15 +84,17 @@ function partsFor(c: AvatarConfig): Parts {
   H(0, 0.26, 0.32, 0.08, 0.13, 0.07, shade(c.skin, 0.9));
   H(0, 0.13, 0.305, 0.15, 0.035, 0.02, shade(c.skin, 0.72));
   // Hair: a cap over the top and back, longer at the back for some styles
+  // Hair hugs the head (same shell as the full Avatar); a hat sits over the crown instead
+  const longBack = c.hairStyle === 1 || c.hairStyle === 10;
+  const HS = trs(0, hy, 0, 0, 0, 0, s, s, s);
+  const line: [number, number, number, number, number] =
+    c.hairStyle === 9 ? [0.49, 0.16, 0.14, 1.1, 0.06] : c.hairStyle === 3 || c.hairStyle === 7 ? [0.53, 0.47, 0.4, 1.03, 0.01] : c.hairStyle === 2 ? [0.5, 0.36, 0.26, 1.16, 0.1] : longBack || c.hairStyle === 8 ? [0.5, 0.3, 0.12, 1.07, 0.06] : [0.5, 0.44, 0.3, 1.07, 0.06];
+  b.geom(hairShellGeo(line[0], line[1], line[2], line[3], line[4], 16), HS, c.hair);
   if (hat) {
     H(0, 0.68, 0, 0.66, 0.16, 0.64, hat.color ?? '#2a2f3d');
     if (hat.style === 'cap') H(0, 0.62, 0.36, 0.5, 0.05, 0.22, hat.color ?? '#2a2f3d');
-  } else {
-    H(0, 0.66, -0.02, 0.66, 0.14, 0.64, c.hair);
   }
-  const longBack = c.hairStyle === 1 || c.hairStyle === 10;
-  H(0, longBack ? 0.31 : 0.45, -0.31, 0.64, longBack ? 0.62 : c.hairStyle === 9 ? 0.5 : 0.4, 0.06, c.hair);
-  for (const x of [0.32, -0.32]) H(x, c.hairStyle === 9 ? 0.42 : 0.52, -0.08, 0.04, c.hairStyle === 9 ? 0.4 : 0.24, 0.46, c.hair);
+  if (longBack) H(0, 0.16, -0.28, 0.62, 0.5, 0.1, c.hair);
   if (c.hairStyle === 8) H(0, 0.22, -0.4, 0.2, 0.5, 0.14, c.hair);
   if (c.hairStyle === 10) for (const x of [0.2, -0.2]) H(x, -0.04, -0.3, 0.12, 0.48, 0.12, c.hair);
   const body = b.build();
@@ -98,20 +102,25 @@ function partsFor(c: AvatarConfig): Parts {
   // Arm (pivot at the shoulder): sleeve, then skin below short sleeves, hand
   const a = new VoxelBuilder();
   const aw = fit.limb;
+  // Same shapes as the full Avatar's arm (which is scaled 1.1 tall), with fewer points around
+  const A = trs(0, 0, 0, 0, 0, 0, aw, 1.1, aw);
   if (short) {
-    a.box(0, -0.13, 0, 0.23 * aw, 0.26, 0.26 * aw, sleeve);
-    a.box(0, -0.44, 0, 0.18 * aw, 0.37, 0.2 * aw, c.skin);
-  } else a.box(0, -0.29, 0, 0.21 * aw, 0.62, 0.24 * aw, sleeve);
-  a.box(0, -0.66, 0, 0.2 * aw, 0.17, 0.22 * aw, c.skin);
+    a.geom(limbGeo(0.04, 0.27, 0.24, 0.26, 0.25, 0.27, { capTop: 0.07, flare: 0.12, seg: 10, rings: 3 }), A, sleeve);
+    a.geom(limbGeo(-0.2, 0.37, 0.18, 0.2, 0.15, 0.17, { seg: 10, rings: 3 }), A, c.skin);
+  } else a.geom(limbGeo(0.04, 0.59, 0.23, 0.25, 0.19, 0.21, { capTop: 0.07, flare: 0.06, seg: 10, rings: 5, sweep: 0.02 }), A, sleeve);
+  a.geom(limbGeo(-0.53, 0.17, 0.19, 0.2, 0.17, 0.19, { capBottom: 0.05, seg: 10, rings: 2 }), A, c.skin);
   const arm = a.build();
 
   // Leg (pivot at the hip): trouser leg and shoe
   const l = new VoxelBuilder();
   const lw = fit.limb;
+  // The full Avatar's leg shapes are 1.15 tall in leg space, so divide back out
+  const L = trs(0, 0, 0, 0, 0, 0, lw, 1.15, lw);
   if (skirt) {
-    l.box(0, -skirt / 2, 0, 0.33, skirt, 0.34, pants);
-    if (skirt < 0.76) l.box(0, -(0.76 + skirt) / 2, 0, 0.22 * lw, 0.76 - skirt, 0.24 * lw, below);
-  } else l.box(0, -0.38, 0, 0.28 * lw, 0.76, 0.3 * lw, pants);
+    const len = skirt / 1.15;
+    l.geom(limbGeo(0.02, len + 0.02, 0.3, 0.33, 0.35, 0.37, { n: 3, seg: 12, rings: 3 }), trs(0, 0, 0, 0, 0, 0, 1, 1.15, 1), pants);
+    if (skirt < 0.76) l.geom(limbGeo(-len + 0.04, 0.7 - len, 0.2, 0.22, 0.16, 0.18, { seg: 10, rings: 3 }), L, below);
+  } else l.geom(limbGeo(0.03, 0.7, 0.3, 0.32, 0.24, 0.26, { capTop: 0.04, flare: 0.07, seg: 10, rings: 6 }), L, pants);
   l.box(0, -0.83, 0.04, 0.3 * lw, 0.15, 0.4, shoe);
   l.box(0, -0.9, 0.04, 0.31 * lw, 0.03, 0.41, shade(shoe, 0.6));
   const leg = l.build();

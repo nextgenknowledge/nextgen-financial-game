@@ -7,6 +7,7 @@ import type { AvatarConfig } from '@/game/types';
 import outfits from '@/data/shop/outfits.json';
 import { fabric } from '@/engine/pixtex';
 import { armX, bodyOf, bodyScale } from '@/game/look';
+import { bandGeo, hairShellGeo, handGeo, headGeo, limbGeo, torsoBand, torsoGeo } from './bodyShape';
 
 export interface AnimState {
   speed: number; // 0..1+ (1 = run)
@@ -140,12 +141,9 @@ function Hair({ style, color }: { style: number; color: string }) {
     case 1: // long
       return (
         <group>
-          <mesh geometry={rbox(0.68, 0.18, 0.66, 0.06)} material={m} position={[0, 0.62, 0]} />
+          <mesh geometry={hairShellGeo(0.48, 0.05, 0.02)} material={m} />
           {/* Falls past the jaw to the shoulders */}
-          <mesh geometry={rbox(0.68, 0.86, 0.16, 0.05)} material={m} position={[0, 0.18, -0.29]} />
-          <mesh geometry={rbox(0.1, 0.6, 0.5, 0.04)} material={m} position={[0.33, 0.31, -0.04]} />
-          <mesh geometry={rbox(0.1, 0.6, 0.5, 0.04)} material={m} position={[-0.33, 0.31, -0.04]} />
-          <mesh geometry={rbox(0.66, 0.12, 0.14, 0.04)} material={m} position={[0, 0.54, 0.26]} />
+          <mesh geometry={limbGeo(0.4, 0.66, 0.62, 0.14, 0.66, 0.12, { n: 3, capBottom: 0.04 })} material={m} position={[0, 0, -0.27]} />
         </group>
       );
     case 2: // curly / afro
@@ -157,90 +155,70 @@ function Hair({ style, color }: { style: number; color: string }) {
         </group>
       );
     case 3: // buzz
-      return <mesh geometry={rbox(0.65, 0.1, 0.64, 0.04)} material={m} position={[0, 0.6, -0.01]} />;
+      return <mesh geometry={hairShellGeo(0.53, 0.47, 0.4, 1.025, 0.01)} material={m} />;
     case 4: // bun
       return (
         <group>
-          <mesh geometry={rbox(0.67, 0.16, 0.66, 0.06)} material={m} position={[0, 0.61, 0]} />
-          <mesh geometry={rbox(0.67, 0.4, 0.14, 0.05)} material={m} position={[0, 0.42, -0.27]} />
-          <mesh geometry={rbox(0.3, 0.26, 0.28, 0.1)} material={m} position={[0, 0.8, -0.14]} />
+          <mesh geometry={hairShellGeo(0.5, 0.4, 0.22, 1.06, 0.03)} material={m} />
+          <mesh geometry={rbox(0.3, 0.26, 0.28, 0.12)} material={m} position={[0, 0.76, -0.14]} />
         </group>
       );
     case 5: // spiky
       return (
         <group>
-          <mesh geometry={rbox(0.66, 0.14, 0.65, 0.05)} material={m} position={[0, 0.61, 0]} />
+          <mesh geometry={hairShellGeo(0.52, 0.44, 0.3, 1.06, 0.03)} material={m} />
           {[-0.2, 0, 0.2].map((x, i) => (
-            <mesh key={i} geometry={rbox(0.16, 0.22, 0.2, 0.04)} material={m} position={[x, 0.76, 0.1 - i * 0.04]} rotation={[0.3, 0, x]} />
+            <mesh key={i} geometry={rbox(0.16, 0.22, 0.2, 0.06)} material={m} position={[x, 0.71, 0.1 - i * 0.04]} rotation={[0.3, 0, x]} />
           ))}
-          <mesh geometry={rbox(0.66, 0.3, 0.14, 0.05)} material={m} position={[0, 0.46, -0.27]} />
         </group>
       );
     case 6: // side part: swept fringe and a little lift on one side
       return (
         <group>
-          <mesh geometry={rbox(0.67, 0.17, 0.66, 0.06)} material={m} position={[0, 0.61, 0]} />
-          <mesh geometry={rbox(0.36, 0.08, 0.5, 0.04)} material={m} position={[-0.13, 0.71, 0.03]} />
-          <mesh geometry={rbox(0.67, 0.3, 0.14, 0.05)} material={m} position={[0, 0.46, -0.27]} />
-          <mesh geometry={rbox(0.5, 0.11, 0.12, 0.04)} material={m} position={[-0.07, 0.56, 0.27]} rotation={[0, 0, -0.12]} />
+          <mesh geometry={hairShellGeo(0.5, 0.44, 0.3)} material={m} />
+          <mesh geometry={rbox(0.36, 0.08, 0.5, 0.04)} material={m} position={[-0.13, 0.67, 0.03]} />
+          <mesh geometry={rbox(0.44, 0.1, 0.1, 0.045)} material={m} position={[-0.08, 0.54, 0.285]} rotation={[0, 0, -0.12]} />
         </group>
       );
     case 7: // fade: short on top, close-cropped sides
       return (
         <group>
-          <mesh geometry={rbox(0.6, 0.13, 0.6, 0.05)} material={m} position={[0, 0.66, 0]} />
-          <mesh geometry={rbox(0.645, 0.18, 0.635, 0.04)} material={m} position={[0, 0.55, -0.01]} />
-          <mesh geometry={rbox(0.645, 0.2, 0.08, 0.03)} material={m} position={[0, 0.44, -0.285]} />
+          <mesh geometry={hairShellGeo(0.53, 0.47, 0.36, 1.02, 0)} material={m} />
+          <mesh geometry={hairShellGeo(0.56, 0.56, 0.54, 1.07, 0.06)} material={m} />
         </group>
       );
     case 8: // ponytail
       return (
         <group>
-          <mesh geometry={rbox(0.67, 0.17, 0.66, 0.06)} material={m} position={[0, 0.61, 0]} />
-          <mesh geometry={rbox(0.67, 0.42, 0.14, 0.05)} material={m} position={[0, 0.41, -0.27]} />
-          <mesh geometry={rbox(0.66, 0.1, 0.13, 0.04)} material={m} position={[0, 0.56, 0.26]} />
-          <mesh geometry={rbox(0.09, 0.34, 0.4, 0.04)} material={m} position={[0.33, 0.44, -0.08]} />
-          <mesh geometry={rbox(0.09, 0.34, 0.4, 0.04)} material={m} position={[-0.33, 0.44, -0.08]} />
+          <mesh geometry={hairShellGeo(0.51, 0.3, 0.2)} material={m} />
           <Ponytail m={m} />
         </group>
       );
     case 9: // bob: chin length all round
       return (
         <group>
-          <mesh geometry={rbox(0.7, 0.18, 0.68, 0.06)} material={m} position={[0, 0.62, -0.01]} />
-          <mesh geometry={rbox(0.7, 0.44, 0.16, 0.05)} material={m} position={[0, 0.38, -0.27]} />
-          <mesh geometry={rbox(0.1, 0.42, 0.52, 0.04)} material={m} position={[0.34, 0.39, -0.04]} />
-          <mesh geometry={rbox(0.1, 0.42, 0.52, 0.04)} material={m} position={[-0.34, 0.39, -0.04]} />
-          <mesh geometry={rbox(0.66, 0.11, 0.14, 0.04)} material={m} position={[0, 0.55, 0.26]} />
+          <mesh geometry={hairShellGeo(0.49, 0.16, 0.14, 1.1, 0.06)} material={m} />
         </group>
       );
     case 10: // braids
       return (
         <group>
-          <mesh geometry={rbox(0.67, 0.17, 0.66, 0.06)} material={m} position={[0, 0.61, 0]} />
-          <mesh geometry={rbox(0.67, 0.4, 0.14, 0.05)} material={m} position={[0, 0.42, -0.27]} />
-          <mesh geometry={rbox(0.62, 0.08, 0.13, 0.03)} material={m} position={[0, 0.57, 0.26]} />
-          <mesh geometry={rbox(0.09, 0.34, 0.4, 0.04)} material={m} position={[0.33, 0.44, -0.08]} />
-          <mesh geometry={rbox(0.09, 0.34, 0.4, 0.04)} material={m} position={[-0.33, 0.44, -0.08]} />
+          <mesh geometry={hairShellGeo(0.53, 0.3, 0.22, 1.05, 0.02)} material={m} />
           <Braids m={m} />
         </group>
       );
     case 11: // pixie: cropped, with a soft side fringe
       return (
         <group>
-          <mesh geometry={rbox(0.67, 0.17, 0.66, 0.06)} material={m} position={[0, 0.61, 0]} />
-          <mesh geometry={rbox(0.67, 0.26, 0.14, 0.05)} material={m} position={[0, 0.48, -0.27]} />
-          <mesh geometry={rbox(0.56, 0.13, 0.13, 0.04)} material={m} position={[-0.04, 0.54, 0.27]} rotation={[0, 0, 0.1]} />
-          <mesh geometry={rbox(0.08, 0.2, 0.3, 0.03)} material={m} position={[0.33, 0.48, 0.02]} />
-          <mesh geometry={rbox(0.08, 0.2, 0.3, 0.03)} material={m} position={[-0.33, 0.48, 0.02]} />
+          <mesh geometry={hairShellGeo(0.5, 0.38, 0.34)} material={m} />
+          <mesh geometry={rbox(0.5, 0.12, 0.1, 0.05)} material={m} position={[-0.04, 0.53, 0.29]} rotation={[0, 0, 0.1]} />
         </group>
       );
     default: // short
       return (
         <group>
-          <mesh geometry={rbox(0.67, 0.17, 0.66, 0.06)} material={m} position={[0, 0.61, 0]} />
-          <mesh geometry={rbox(0.67, 0.3, 0.14, 0.05)} material={m} position={[0, 0.46, -0.27]} />
-          <mesh geometry={rbox(0.5, 0.1, 0.12, 0.04)} material={m} position={[-0.06, 0.54, 0.27]} />
+          <mesh geometry={hairShellGeo(0.5, 0.44, 0.3)} material={m} />
+          <mesh geometry={rbox(0.44, 0.09, 0.09, 0.04)} material={m} position={[-0.06, 0.535, 0.29]} />
         </group>
       );
   }
@@ -373,7 +351,7 @@ function Jacket({ it, body, lapel, shirt = '#f4f6fa', vee = 0.17 }: { it: Outfit
       {[-0.06, -0.17].map((y) => (
         <mesh key={y} geometry={rbox(0.04, 0.04, 0.02, 0.01)} material={mat('#15161a')} position={[0, y, 0.205]} />
       ))}
-      <mesh geometry={rbox(0.68, 0.16, 0.4, 0.03)} material={body} position={[0, -0.4, 0]} />
+      <mesh geometry={limbGeo(-0.3, 0.16, 0.62, 0.37, 0.68, 0.41, { n: 3.2 })} material={body} />
       <mesh geometry={rbox(0.14, 0.03, 0.02, 0.005)} material={mat(shade(it.color ?? '#333333', 0.7))} position={[-0.18, -0.12, 0.2]} />
     </group>
   );
@@ -386,7 +364,7 @@ function TopDetails({ it, body, female }: { it: OutfitItem | undefined; body: TH
   const dark = cloth({ ...it, color: shade(c, 0.78) }, c);
   switch (it.style) {
     case 'tee':
-      return <mesh geometry={rbox(0.24, 0.04, 0.02, 0.01)} material={dark} position={[0, 0.31, 0.19]} />;
+      return <mesh geometry={bandGeo(0.382, 0.05, 0.32, 0.3, 2.4)} material={dark} />;
     case 'polo':
       return (
         <group>
@@ -410,7 +388,7 @@ function TopDetails({ it, body, female }: { it: OutfitItem | undefined; body: TH
           )}
           <mesh geometry={rbox(0.02, 0.15, 0.02, 0.005)} material={mat('#f4f6fa')} position={[0.07, 0.2, 0.2]} />
           <mesh geometry={rbox(0.02, 0.15, 0.02, 0.005)} material={mat('#f4f6fa')} position={[-0.07, 0.2, 0.2]} />
-          <mesh geometry={rbox(0.68, 0.07, 0.4, 0.02)} material={dark} position={[0, -0.31, 0]} />
+          <mesh geometry={torsoBand(-0.345, -0.27, 1.05, female)} material={dark} />
         </group>
       );
     case 'quarterzip':
@@ -420,31 +398,28 @@ function TopDetails({ it, body, female }: { it: OutfitItem | undefined; body: TH
       const zip = mat('#c0c4cc', '#202226');
       return (
         <group>
-          <mesh geometry={rbox(0.44, 0.11, 0.34, 0.04)} material={under} position={[0, 0.38, 0]} />
+          <mesh geometry={bandGeo(0.38, 0.12, 0.37, 0.33, 2.6)} material={under} />
           <mesh geometry={rbox(0.025, 0.22, 0.02, 0.005)} material={zip} position={[0, 0.25, it.style === 'qzvest' ? 0.215 : 0.198]} />
           <mesh geometry={rbox(0.04, 0.06, 0.02, 0.005)} material={zip} position={[0, 0.14, it.style === 'qzvest' ? 0.22 : 0.205]} />
           {it.style === 'quarterzip' ? (
             <>
               <mesh geometry={rbox(0.07, 0.04, 0.01, 0.005)} material={mat(c2)} position={[-0.18, 0.18, 0.196]} />
-              <mesh geometry={rbox(0.68, 0.07, 0.4, 0.02)} material={dark} position={[0, -0.31, 0]} />
+              <mesh geometry={torsoBand(-0.345, -0.27, 1.05, female)} material={dark} />
             </>
           ) : (
             <group>
               {/* Fleece vest shell: two front panels, back, sides, with a gap for the zip */}
-              <mesh geometry={rbox(0.3, 0.64, 0.04, 0.02)} material={body} position={[0.18, -0.01, 0.205]} />
-              <mesh geometry={rbox(0.3, 0.64, 0.04, 0.02)} material={body} position={[-0.18, -0.01, 0.205]} />
-              <mesh geometry={rbox(0.7, 0.64, 0.04, 0.02)} material={body} position={[0, -0.01, -0.205]} />
-              <mesh geometry={rbox(0.04, 0.5, 0.42, 0.02)} material={body} position={[0.345, -0.08, 0]} />
-              <mesh geometry={rbox(0.04, 0.5, 0.42, 0.02)} material={body} position={[-0.345, -0.08, 0]} />
-              <mesh geometry={rbox(0.025, 0.6, 0.02, 0.005)} material={zip} position={[0.035, -0.01, 0.228]} />
-              <mesh geometry={rbox(0.06, 0.035, 0.01, 0.005)} material={mat('#f4f6fa')} position={[-0.2, 0.17, 0.228]} />
+              <mesh geometry={torsoGeo(0.66, 0.6, 0.38, female, 1.07)} material={body} position={[0, -0.03, 0]} />
+              <mesh geometry={torsoBand(-0.37, -0.3, 1.1, female)} material={body} />
+              <mesh geometry={rbox(0.025, 0.6, 0.02, 0.005)} material={zip} position={[0.035, -0.01, 0.208]} />
+              <mesh geometry={rbox(0.06, 0.035, 0.01, 0.005)} material={mat('#f4f6fa')} position={[-0.2, 0.17, 0.206]} />
             </group>
           )}
         </group>
       );
     }
     case 'turtleneck':
-      return <mesh geometry={rbox(0.42, 0.16, 0.34, 0.06)} material={body} position={[0, 0.39, 0]} />;
+      return <mesh geometry={bandGeo(0.39, 0.17, 0.36, 0.33, 2.6)} material={body} />;
     case 'cardigan':
       return (
         <group>
@@ -452,7 +427,7 @@ function TopDetails({ it, body, female }: { it: OutfitItem | undefined; body: TH
           {[0.18, 0.04, -0.1, -0.24].map((y) => (
             <mesh key={y} geometry={rbox(0.035, 0.035, 0.02, 0.01)} material={mat('#3a2a1c')} position={[0.085, y, 0.205]} />
           ))}
-          <mesh geometry={rbox(0.68, 0.07, 0.4, 0.02)} material={dark} position={[0, -0.31, 0]} />
+          <mesh geometry={torsoBand(-0.345, -0.27, 1.05, female)} material={dark} />
         </group>
       );
     case 'bomber':
@@ -460,8 +435,8 @@ function TopDetails({ it, body, female }: { it: OutfitItem | undefined; body: TH
       const rib = fabric('knit', it.style === 'varsity' ? c2 : '#2a2a30', '#ffffff');
       return (
         <group>
-          <mesh geometry={rbox(0.7, 0.08, 0.42, 0.02)} material={rib} position={[0, -0.31, 0]} />
-          <mesh geometry={rbox(0.44, 0.08, 0.34, 0.03)} material={rib} position={[0, 0.36, 0]} />
+          <mesh geometry={torsoBand(-0.35, -0.27, 1.06, female)} material={rib} />
+          <mesh geometry={bandGeo(0.36, 0.08, 0.37, 0.33, 2.6)} material={rib} />
           <mesh geometry={rbox(0.025, 0.6, 0.02, 0.005)} material={mat('#c0c4cc', '#202226')} position={[0, 0, 0.198]} />
           {it.style === 'varsity' && (
             <group position={[-0.17, 0.12, 0.2]}>
@@ -477,9 +452,12 @@ function TopDetails({ it, body, female }: { it: OutfitItem | undefined; body: TH
     case 'puffer':
       return (
         <group>
-          <mesh geometry={rbox(0.74, 0.66, 0.46, 0.12)} material={body} />
+          <mesh geometry={torsoGeo(0.66, 0.68, 0.38, female, 1.1)} material={body} />
+          {[-0.2, -0.02, 0.16].map((y) => (
+            <mesh key={y} geometry={torsoBand(y - 0.05, y + 0.05, 1.135, female)} material={body} />
+          ))}
           <mesh geometry={rbox(0.48, 0.16, 0.4, 0.06)} material={body} position={[0, 0.38, 0]} />
-          <mesh geometry={rbox(0.025, 0.66, 0.02, 0.005)} material={mat(c2)} position={[0, 0, 0.235]} />
+          <mesh geometry={rbox(0.025, 0.66, 0.02, 0.005)} material={mat(c2)} position={[0, 0, 0.222]} />
         </group>
       );
     case 'blazer':
@@ -526,8 +504,8 @@ function TopDetails({ it, body, female }: { it: OutfitItem | undefined; body: TH
         <group>
           <Jacket it={it} body={body} lapel={dark} shirt="#f4f1ea" vee={0.15} />
           {/* Longer skirt of the coat, a belt and the double row of buttons */}
-          <mesh geometry={rbox(0.7, 0.34, 0.42, 0.03)} material={body} position={[0, -0.5, 0]} />
-          <mesh geometry={rbox(0.69, 0.06, 0.41, 0.02)} material={belt} position={[0, -0.2, 0]} />
+          <mesh geometry={limbGeo(-0.32, 0.36, 0.64, 0.38, 0.72, 0.44, { n: 3.2 })} material={body} />
+          <mesh geometry={torsoBand(-0.23, -0.17, 1.05, female)} material={belt} />
           <mesh geometry={rbox(0.07, 0.07, 0.02, 0.01)} material={mat(shade(c2, 0.7))} position={[0.12, -0.2, 0.212]} />
           {[0.04, -0.08].map((y) =>
             [0.09, -0.09].map((x) => <mesh key={`${x}${y}`} geometry={rbox(0.035, 0.035, 0.02, 0.01)} material={mat(c2)} position={[x, y, 0.21]} />),
@@ -550,7 +528,7 @@ function TopDetails({ it, body, female }: { it: OutfitItem | undefined; body: TH
       return (
         <group>
           <mesh geometry={rbox(0.26, 0.04, 0.02, 0.01)} material={dark} position={[0, 0.31, 0.19]} />
-          <mesh geometry={rbox(0.67, 0.06, 0.39, 0.02)} material={fabric('leather', c2)} position={[0, -0.24, 0]} />
+          <mesh geometry={torsoBand(-0.27, -0.21, 1.04, female)} material={fabric('leather', c2)} />
           <mesh geometry={rbox(0.06, 0.05, 0.02, 0.01)} material={mat('#c8ccd4', '#202226')} position={[0, -0.24, 0.2]} />
         </group>
       );
@@ -558,14 +536,14 @@ function TopDetails({ it, body, female }: { it: OutfitItem | undefined; body: TH
       return (
         <group>
           <mesh geometry={rbox(0.3, 0.05, 0.02, 0.01)} material={dark} position={[0, 0.31, 0.19]} />
-          <mesh geometry={rbox(0.67, 0.07, 0.39, 0.02)} material={fabric('satin', c2)} position={[0, -0.24, 0]} />
+          <mesh geometry={torsoBand(-0.275, -0.205, 1.04, female)} material={fabric('satin', c2)} />
         </group>
       );
     case 'stripes':
       return (
         <group>
           {[-0.2, 0, 0.2].map((y) => (
-            <mesh key={y} geometry={rbox(0.67, 0.07, 0.39, 0.01)} material={mat(c2)} position={[0, y, 0]} />
+            <mesh key={y} geometry={torsoBand(y - 0.035, y + 0.035, 1.012, female)} material={fabric('cotton', c2)} />
           ))}
         </group>
       );
@@ -573,7 +551,7 @@ function TopDetails({ it, body, female }: { it: OutfitItem | undefined; body: TH
       return (
         <group>
           <mesh geometry={rbox(0.24, 0.24, 0.02, 0.01)} material={mat(c2)} position={[0, 0.04, 0.2]} />
-          <mesh geometry={rbox(0.3, 0.05, 0.02, 0.01)} material={mat(c2)} position={[0, 0.31, 0.19]} />
+          <mesh geometry={bandGeo(0.382, 0.05, 0.32, 0.3, 2.4)} material={fabric('knit', c2)} />
         </group>
       );
     case 'apron':
@@ -793,24 +771,27 @@ export interface Skirt {
 /** One leg: trousers (or shorts + bare shin, or a skirt over the leg), an optional cuff, and the shoe. */
 function Leg({ pants, skin, bottom, feet, shoeColor, skirt }: { pants: THREE.Material; skin: THREE.Material; bottom?: OutfitItem; feet?: OutfitItem; shoeColor: string; skirt?: Skirt }) {
   const shorts = bottom?.style === 'shorts';
+  const wide = bottom?.style === 'widetrousers';
+  const joggers = bottom?.style === 'joggers';
   return (
     <group>
       {skirt ? (
         <>
-          <mesh geometry={rbox(skirt.width, skirt.len, 0.34, 0.05)} material={pants} position={[0, -skirt.len / 2, 0]} castShadow />
-          {skirt.len < 0.64 && <mesh geometry={rbox(0.22, 0.68 - skirt.len, 0.24, 0.05)} material={skirt.below} position={[0, -(0.66 + skirt.len) / 2, 0]} />}
+          <mesh geometry={limbGeo(0.02, skirt.len + 0.02, skirt.width * 0.92, 0.33, skirt.width * 1.04, 0.37, { n: 3, folds: [{ t: 0.97, amp: 0.025 }] })} material={pants} castShadow />
+          {skirt.len < 0.64 && <mesh geometry={limbGeo(-skirt.len + 0.04, 0.7 - skirt.len, 0.2, 0.22, 0.16, 0.18, { folds: [{ t: 0.1, amp: 0.04 }] })} material={skirt.below} />}
         </>
       ) : shorts ? (
         <>
-          <mesh geometry={rbox(0.3, 0.34, 0.32, 0.06)} material={pants} position={[0, -0.17, 0]} castShadow />
-          <mesh geometry={rbox(0.22, 0.34, 0.24, 0.05)} material={skin} position={[0, -0.47, 0]} />
+          <mesh geometry={limbGeo(0.03, 0.37, 0.31, 0.33, 0.3, 0.32, { flare: 0.08, folds: [{ t: 0.9, amp: 0.03 }], capTop: 0.03 })} material={pants} castShadow />
+          <mesh geometry={limbGeo(-0.3, 0.37, 0.21, 0.23, 0.16, 0.18, { folds: [{ t: 0.12, amp: 0.05 }] })} material={skin} />
         </>
+      ) : wide ? (
+        <mesh geometry={limbGeo(0.03, 0.7, 0.3, 0.32, 0.34, 0.35, { capTop: 0.04, folds: [{ t: 0.82, amp: 0.025 }] })} material={pants} castShadow />
       ) : (
-        <mesh geometry={rbox(0.28, 0.66, 0.3, 0.06)} material={pants} position={[0, -0.33, 0]} castShadow />
+        <mesh geometry={limbGeo(0.03, 0.7, 0.3, 0.32, 0.24, 0.26, { capTop: 0.04, flare: joggers ? 0 : 0.07, folds: [{ t: 0.48, amp: 0.045 }, { t: 0.86, amp: 0.035 }] })} material={pants} castShadow />
       )}
-      {bottom?.style === 'joggers' && <mesh geometry={rbox(0.27, 0.07, 0.29, 0.02)} material={fabric('knit', bottom.color2 ?? '#9aa0aa')} position={[0, -0.6, 0]} />}
+      {joggers && <mesh geometry={bandGeo(-0.61, 0.08, 0.25, 0.27, 2.6)} material={fabric('knit', bottom!.color2 ?? '#9aa0aa')} />}
       {bottom?.style === 'cargo' && <mesh geometry={rbox(0.05, 0.16, 0.18, 0.02)} material={pants} position={[0.15, -0.36, 0]} />}
-      {bottom?.style === 'widetrousers' && !skirt && <mesh geometry={rbox(0.33, 0.3, 0.34, 0.04)} material={pants} position={[0, -0.5, 0]} />}
       {bottom?.style === 'trousers' && <mesh geometry={rbox(0.02, 0.6, 0.02, 0.005)} material={mat(shade(bottom.color ?? '#333333', 0.75))} position={[0, -0.33, 0.152]} />}
       <Shoe it={feet} color={shoeColor} />
     </group>
@@ -818,8 +799,9 @@ function Leg({ pants, skin, bottom, feet, shoeColor, skirt }: { pants: THREE.Mat
 }
 
 /**
- * Blocky player/NPC character. Feet at y=0, faces +Z.
- * Original design: cube head, chunky rounded limbs, simple pixel-free face.
+ * Player/NPC character. Feet at y=0, faces +Z.
+ * Original design: a softened-cube head, shaped torso and tapered limbs (see bodyShape.ts), with
+ * clothes that have some body to them: flared sleeves, folds at the elbow and knee, collars and hems.
  */
 export function Avatar({ config, anim, scale = 1 }: { config: AvatarConfig; anim?: React.RefObject<AnimState>; scale?: number }) {
   const lLeg = useRef<THREE.Group>(null);
@@ -882,6 +864,9 @@ export function Avatar({ config, anim, scale = 1 }: { config: AvatarConfig; anim
   const hatCovers = !!hatStyle && COVERING_HATS.has(hatStyle);
   const bodyAcc = acc && ['backpack', 'scarf', 'chain', 'lanyard', 'pearls'].includes(acc.style) ? acc : undefined;
   const handAcc = acc && ['watch', 'briefcase', 'tote'].includes(acc.style) ? acc : undefined;
+  const crew = !top;
+  const puffy = top?.style === 'puffer';
+  const hemLip = !top || ['tee', 'polo', 'jersey', 'stripes', 'blouse', 'turtleneck', 'apron', 'cape'].includes(top.style);
   const shoulder = armX(fit.torso, fit.limb);
   const hipX = 0.16 * fit.torso;
 
@@ -889,15 +874,23 @@ export function Avatar({ config, anim, scale = 1 }: { config: AvatarConfig; anim
     <>
       {short ? (
         <>
-          <mesh geometry={rbox(0.23, 0.24, 0.26, 0.06)} material={m.sleeve} position={[0, -0.11, 0]} castShadow />
-          <mesh geometry={rbox(0.18, 0.34, 0.2, 0.05)} material={m.skin} position={[0, -0.4, 0]} />
+          <mesh geometry={limbGeo(0.04, 0.27, 0.24, 0.26, 0.25, 0.27, { capTop: 0.07, flare: 0.12 })} material={m.sleeve} castShadow />
+          <mesh geometry={limbGeo(-0.2, 0.37, 0.18, 0.2, 0.15, 0.17, { folds: [{ t: 0.15, amp: 0.05 }], sweep: 0.02 })} material={m.skin} />
         </>
       ) : (
-        <mesh geometry={rbox(0.21, 0.56, 0.24, 0.06)} material={m.sleeve} position={[0, -0.26, 0]} castShadow />
+        <mesh
+          geometry={
+            puffy
+              ? limbGeo(0.05, 0.58, 0.28, 0.3, 0.24, 0.26, { capTop: 0.08, folds: [{ t: 0.22, amp: 0.07 }, { t: 0.5, amp: 0.07 }, { t: 0.78, amp: 0.07 }] })
+              : limbGeo(0.04, 0.59, 0.23, 0.25, 0.19, 0.21, { capTop: 0.07, flare: ribCuff ? 0 : 0.06, folds: [{ t: 0.5, amp: 0.055 }], sweep: 0.02 })
+          }
+          material={m.sleeve}
+          castShadow
+        />
       )}
-      {jacket && <mesh geometry={rbox(0.19, 0.05, 0.22, 0.02)} material={m.cuff} position={[0, -0.53, 0]} />}
-      {ribCuff && <mesh geometry={rbox(0.22, 0.07, 0.25, 0.02)} material={ribCuff} position={[0, -0.51, 0]} />}
-      <mesh geometry={rbox(0.2, 0.16, 0.22, 0.06)} material={m.skin} position={[0, -0.6, 0]} />
+      {jacket && <mesh geometry={bandGeo(-0.555, 0.05, 0.17, 0.19, 2.6)} material={m.cuff} />}
+      {ribCuff && <mesh geometry={bandGeo(-0.52, 0.08, 0.205, 0.225, 2.6)} material={ribCuff} />}
+      <mesh geometry={handGeo(0.19, 0.17, 0.21, side === 'left' ? 1 : -1)} material={m.skin} position={[0, -0.61, 0.01]} />
       <HandAccessory it={handAcc} side={side} />
     </>
   );
@@ -1019,13 +1012,16 @@ export function Avatar({ config, anim, scale = 1 }: { config: AvatarConfig; anim
           </group>
         </group>
         {/* Hips join the legs to the body */}
-        <mesh geometry={rbox(0.62, 0.16, 0.34, 0.05)} material={m.pants} position={[0, 0.9, 0]} scale={[fit.torso * (skirt ? 1.06 : 1), 1, fit.depth]} />
+        <mesh geometry={limbGeo(0.08, 0.17, 0.6, 0.33, 0.62, 0.34, { n: 3.2, capBottom: 0.04 })} material={m.pants} position={[0, 0.9, 0]} scale={[fit.torso * (skirt ? 1.06 : 1), 1, fit.depth]} />
         {/* Upper body pivots at the hips so riders can lean and twist */}
         <group ref={upper} position={[0, 0.9, 0]}>
           <group position={[0, -0.9, 0]}>
             {/* Torso */}
             <group position={[0, 1.23, 0]} scale={[fit.torso, 1, fit.depth]}>
-              <mesh geometry={rbox(0.66, 0.68, 0.38, 0.08)} material={m.torso} castShadow />
+              <mesh geometry={torsoGeo(0.66, 0.68, 0.38, female)} material={m.torso} castShadow />
+              {/* Plain shirts: a crew collar and a hem that sits proud of the waist */}
+              {crew && <mesh geometry={bandGeo(0.382, 0.05, 0.32, 0.3, 2.4)} material={m.torso} />}
+              {hemLip && <mesh geometry={torsoBand(-0.345, -0.295, 1.03, female)} material={m.torso} />}
               <TopDetails it={top} body={m.torso} female={female} />
               <BodyAccessory it={bodyAcc} />
             </group>
@@ -1037,10 +1033,10 @@ export function Avatar({ config, anim, scale = 1 }: { config: AvatarConfig; anim
               <group scale={[fit.limb, 1.1, fit.limb]}>{arm('right')}</group>
             </group>
             {/* Neck */}
-            <mesh geometry={rbox(0.22, 0.14, 0.22, 0.04)} material={m.skin} position={[0, 1.6, 0]} />
+            <mesh geometry={limbGeo(0.09, 0.18, 0.2, 0.2, 0.22, 0.22, { n: 2.6 })} material={m.skin} position={[0, 1.6, 0]} />
             {/* Head: smaller in proportion to the body, with a proper face */}
             <group ref={head} position={[0, 1.6, 0]} scale={0.82}>
-              <mesh geometry={rbox(0.62, 0.62, 0.6, 0.09)} material={m.skin} position={[0, 0.31, 0]} castShadow />
+              <mesh geometry={headGeo(0.62, 0.6)} material={m.skin} castShadow />
               {/* Ears */}
               <mesh geometry={rbox(0.06, 0.15, 0.11, 0.025)} material={m.nose} position={[0.32, 0.3, 0]} />
               <mesh geometry={rbox(0.06, 0.15, 0.11, 0.025)} material={m.nose} position={[-0.32, 0.3, 0]} />
