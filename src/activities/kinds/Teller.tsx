@@ -8,6 +8,7 @@ import { money } from '@/ui/format';
 import { playSfx } from '@/engine/audio';
 import { act } from '@/store/game';
 import { recordAnswer } from '@/game/progress/activities';
+import { isTouch } from '@/ui/touch';
 
 const VAL: Record<string, number> = { '20': 20, '10': 10, '5': 5, '1': 1, q: 0.25, d: 0.1, n: 0.05, p: 0.01 };
 
@@ -74,7 +75,7 @@ function Count({ rounds, seed, onFinish, addReview }: { rounds: number; seed: nu
       ) : (
         <form className="row" onSubmit={(e) => (e.preventDefault(), submit())}>
           <span className="big">$</span>
-          <input className="input mono numeric-input" autoFocus inputMode="decimal" value={val} onChange={(e) => setVal(e.target.value)} placeholder="0.00" />
+          <input className="input mono numeric-input" autoFocus={!isTouch()} inputMode="decimal" value={val} onChange={(e) => setVal(e.target.value)} placeholder="0.00" />
           <Button variant="green" type="submit" disabled={!val}>
             Deposit
           </Button>
@@ -186,7 +187,7 @@ function Reconcile({ rounds, seed, onFinish, addReview }: { rounds: number; seed
       ) : (
         <form className="row" onSubmit={(e) => (e.preventDefault(), submit())}>
           <span className="big">$</span>
-          <input className="input mono numeric-input" autoFocus inputMode="decimal" value={val} onChange={(e) => setVal(e.target.value)} />
+          <input className="input mono numeric-input" autoFocus={!isTouch()} inputMode="decimal" value={val} onChange={(e) => setVal(e.target.value)} />
           <Button variant="green" type="submit" disabled={!val}>
             Submit balance
           </Button>

@@ -476,6 +476,8 @@ button.item-card { cursor: pointer; }
 .memory-card.up { background: #fff; color: var(--ink); }
 .memory-card.matched { background: var(--good-bg); color: var(--ink); }
 .alloc-row { display: grid; grid-template-columns: minmax(150px, 1.2fr) 2fr auto; gap: 10px; align-items: center; background: #fff; border: 2px solid var(--line); border-radius: 12px; padding: 0.4rem 0.6rem; }
+.activity-modal.adv .alloc-row { background: #0f1a2d; border-color: #2a3b5e; color: #dbe5f5; }
+.activity-modal.adv .item-card .muted { color: #4a5260; }
 @media (max-width: 700px) { .alloc-row { grid-template-columns: 1fr; } }
 .price-tag { display: flex; flex-direction: column; align-items: center; gap: 4px; background: #fff; border: 4px solid var(--ink); border-radius: 18px; padding: 1rem 1.4rem; min-width: 190px; cursor: pointer; box-shadow: 0 6px 0 var(--ink); color: var(--ink); }
 .price-tag:active { transform: translateY(4px); box-shadow: 0 2px 0 var(--ink); }
@@ -493,7 +495,7 @@ button.item-card { cursor: pointer; }
 .shop-opt:hover { border-color: var(--blue, #2f6bdb); }
 .shop-opt.on { border-color: var(--green, #3cc45a); background: #eefbf1; box-shadow: 0 0 0 2px var(--green, #3cc45a) inset; }
 .shop-opt:focus-visible { outline: 3px solid var(--gold, #ffcf3f); outline-offset: 2px; }
-.price-sign { background: #fffbe8; border: 2px dashed #d9b84a; border-radius: 10px; padding: 0.45rem 0.7rem; font-weight: 700; }
+.price-sign { background: #fffbe8; border: 2px dashed #d9b84a; border-radius: 10px; padding: 0.45rem 0.7rem; font-weight: 700; color: #14181f; }
 
 /* Outfit shop */
 .outfit-preview { width: 250px; position: sticky; top: 0; }
@@ -1047,7 +1049,7 @@ button.item-card { cursor: pointer; }
 .q-progress-track span { height: 12px; border-radius: 0; background: var(--px-paper-2); border: 2px solid var(--px-ink); }
 .q-progress-track span.past { background: var(--px-teal); }
 .q-progress-track span.now { background: var(--px-gold); box-shadow: none; }
-.q-card { background: var(--px-white); border: 3px solid var(--px-ink); border-radius: 0; box-shadow: var(--px-shadow); }
+.q-card { background: var(--px-white); border: 3px solid var(--px-ink); border-radius: 0; box-shadow: var(--px-shadow); overflow: visible; }
 .q-card::before { display: none; }
 .question .q-prompt { font-family: var(--font-body); font-weight: 800; font-size: 1.3rem; }
 .question .q-icon { border-radius: 0; border: 2px solid var(--px-ink); background: var(--px-paper); }
@@ -2177,7 +2179,7 @@ button.item-card { cursor: pointer; }
 @keyframes qa-flicker { 0%, 100% { transform: scale(1) rotate(0); } 50% { transform: scale(1.12) rotate(-6deg); } }
 
 .modal.streak-modal { max-width: 440px; }
-.streak-card { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px; overflow: hidden; }
+.streak-card { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px; overflow: hidden; flex-shrink: 0; }
 .streak-hero { position: relative; width: 200px; height: 150px; display: flex; align-items: center; justify-content: center; }
 .streak-rays { position: absolute; inset: -20px; animation: streak-spin 9s linear infinite, streak-fade-in 0.6s 0.3s both; }
 .streak-rays span {
@@ -2309,6 +2311,11 @@ button.item-card { cursor: pointer; }
   margin-left: 4px; width: 22px; height: 22px; padding: 0; line-height: 1; font-size: 0.75rem; font-weight: 900; cursor: pointer;
   color: #fff; background: var(--px-red); border: 2px solid var(--px-ink);
 }
+
+/* Desks and case files are drawn for a dark screen. On Entry the modal is cream, so the play area
+   gets its own dark desk background; otherwise their light text is unreadable. */
+.activity-modal.entry-mode .activity-play:has(> .pro) { background: #0b1120; border: 3px solid var(--px-ink); padding: 0.7rem; color: #dbe5f5; }
+.activity-modal.entry-mode .activity-play:has(> .pro) .muted { color: #8ea0c2; }
 
 /* ───────── Case files (Advanced real-life activities) ───────── */
 .cs-dots { display: flex; gap: 5px; margin-top: 6px; }
@@ -2462,3 +2469,748 @@ button.item-card { cursor: pointer; }
    little FinPhone too, leaving the room plan clear */
 .hud:has(.decor-panel) .joystick, .hud:has(.decor-panel) .touch-buttons { display: none; }
 @media (max-width: 899px) { .hud:has(.decor-panel) .mini-phone, .hud:not(.talking):has(.decor-panel) .narwhal-guide { display: none; } }
+
+/* ═════════ Phones: played sideways ═════════
+   Held upright in game (or while a world loads), a card asks the player to turn the phone.
+   Tablets play either way, so this only covers small touch screens. */
+.rotate-hint { display: none; }
+@media (pointer: coarse) and (orientation: portrait) and (max-width: 600px) {
+  .rotate-hint {
+    position: fixed; inset: 0; z-index: 200; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1rem;
+    padding: calc(24px + var(--safe-t)) calc(28px + var(--safe-r)) calc(24px + var(--safe-b)) calc(28px + var(--safe-l));
+    background: radial-gradient(ellipse at 50% 120%, #2e5fb8 0%, var(--navy-800, #0b1a3a) 62%); color: #fff; text-align: center;
+  }
+  .rotate-phone {
+    position: relative; width: 64px; height: 108px; margin-bottom: 0.6rem; padding: 10px 6px; box-sizing: border-box;
+    background: #0b1a3a; border: 4px solid #ffd23f; border-radius: 12px; box-shadow: 4px 4px 0 #061233;
+    animation: rotate-hint-turn 2.4s ease-in-out infinite;
+  }
+  .rotate-screen { display: block; width: 100%; height: 100%; background: linear-gradient(180deg, #7ee8ff, #3d8bff); border-radius: 3px; }
+  .rotate-title { font-family: var(--font-pixel, inherit); font-size: 1.35rem; letter-spacing: 0.02em; color: #ffd23f; }
+  .rotate-text { max-width: 300px; margin: 0; font-size: 1rem; font-weight: 700; line-height: 1.45; color: #dbe5f5; }
+  /* Nothing behind the card needs to run its touch controls meanwhile */
+  body:has(.rotate-hint) .hud { visibility: hidden; }
+}
+@keyframes rotate-hint-turn {
+  0%, 20% { transform: rotate(0deg); }
+  50%, 80% { transform: rotate(-90deg); }
+  100% { transform: rotate(0deg); }
+}
+@media (prefers-reduced-motion: reduce) { .rotate-phone { animation: none; transform: rotate(-90deg); } }
+
+/* Phones held sideways. One slim bar across the top (settings, save, money and the app
+   shortcuts as icons), the minimap and FinPhone down the right edge, the joystick and buttons in
+   the bottom corners, and Narwhal's card in the top left, so the middle of the screen, where the
+   player stands, stays clear. */
+@media (pointer: coarse) and (max-height: 500px) and (orientation: landscape) {
+  html body .hud.classic { padding: calc(8px + var(--safe-t)) calc(10px + var(--safe-r)) calc(8px + var(--safe-b)) calc(10px + var(--safe-l)); }
+
+  /* Top bar: fixed sizes, so the shortcuts can sit right after it on the same line */
+  html body .hud.classic .tl-row { gap: 6px; flex-wrap: nowrap; align-items: center; }
+  html body .hud.classic .tl-buttons { gap: 6px; }
+  html body .hud.classic .corner-btn { height: 34px; min-width: 34px; padding: 0 8px; font-size: 1rem; }
+  html body .hud.classic .corner-btn.square { width: 34px; padding: 0; }
+  html body .hud.classic .corner-btn .cb-label { display: none; }
+  html body .hud.classic .hud-wallet { gap: 6px; }
+  html body .hud.classic .wallet-pill { width: 78px; height: 34px; padding: 0 6px 0 4px; gap: 4px; overflow: hidden; }
+  html body .hud.classic .wallet-label { display: none; }
+  html body .hud.classic .wallet-text b { font-size: 0.82rem; white-space: nowrap; }
+
+  html body .hud.classic .quick-apps,
+  html body .hud.classic:has(.joystick) .quick-apps,
+  html body .hud.classic:has(.resume-run) .quick-apps {
+    display: flex; flex-direction: row; flex-wrap: nowrap; gap: 5px; max-width: none; transform: none;
+    top: calc(8px + var(--safe-t)); left: calc(10px + var(--safe-l) + 252px);
+  }
+  html body .hud.classic .qa-btn { width: 34px; height: 34px; min-width: 0; padding: 0; justify-content: center; }
+  html body .hud.classic .qa-btn .qa-name { display: none; }
+  html body .hud.classic .qa-icon { width: 28px; height: 28px; font-size: 1rem; border-radius: 6px; }
+  html body .hud.classic .qa-btn .dock-badge { top: -6px; right: -6px; }
+
+  /* Right edge: minimap at the top, the FinPhone above the buttons */
+  html body .hud.classic .minimap { width: 84px; height: 84px; }
+  html body .hud.classic .map-corner-hint { display: none; }
+  html body .hud.classic .map-corner-name { font-size: 0.62rem; padding: 1px 6px; }
+  html body .hud.classic .r-br, html body .hud.classic.talking .r-br { bottom: calc(84px + var(--safe-b)); right: calc(12px + var(--safe-r)); }
+  html body .hud.classic .r-br .mini-phone { width: 58px; height: 94px; padding: 12px 4px 5px; gap: 3px; }
+  html body .hud.classic .r-br .mini-phone .mp-time { font-size: 0.9rem; }
+  html body .hud.classic .r-br .mini-phone .mp-ampm { font-size: 0.55rem; }
+  html body .hud.classic .r-br .mini-phone .mp-cash { font-size: 0.6rem; }
+  html body .hud.classic .r-br .mini-phone .mp-level { font-size: 0.58rem; }
+
+  /* Thumbs: joystick bottom left, jump and E bottom right */
+  html body .hud .joystick { width: 100px; height: 100px; left: calc(14px + var(--safe-l)); bottom: calc(12px + var(--safe-b)); }
+  html body .hud .joystick .knob { width: 46px; height: 46px; }
+  html body .hud .touch-buttons { right: calc(14px + var(--safe-r)); bottom: calc(14px + var(--safe-b)); gap: 10px; }
+  html body .hud .touch-btn { width: 54px; height: 54px; font-size: 1.3rem; }
+
+  /* Narwhal and his card: top left under the bar, never over the middle of the screen */
+  html body .hud.classic .r-bl, html body .hud.classic.talking .r-bl, html body .hud.classic:not(.talking) .r-bl {
+    position: absolute; grid-area: auto; top: calc(50px + var(--safe-t)); bottom: auto; left: calc(8px + var(--safe-l));
+  }
+  html body .hud.classic:has(.resume-run) .r-bl { top: calc(90px + var(--safe-t)); }
+  html body .hud .narwhal-guide { align-items: flex-start; }
+  html body .hud .narwhal-guide-body img { height: 48px; animation: none; }
+  html body .hud .narwhal-guide .narwhal-bubble,
+  html body .hud .narwhal-guide .narwhal-bubble.idle,
+  html body .hud.talking .narwhal-guide .narwhal-bubble {
+    left: calc(100% + 8px); top: 0; bottom: auto;
+    width: min(320px, calc(100vw - 72px - 120px - var(--safe-l) - var(--safe-r)));
+    max-height: calc(100dvh - 50px - 132px - var(--safe-t) - var(--safe-b)); overflow-y: auto;
+    padding: 0.35rem 0.6rem;
+  }
+  html body .hud .narwhal-guide .narwhal-bubble .dialog-text,
+  html body .hud.entry-mode .narwhal-guide .narwhal-bubble .dialog-text { margin: 0.2rem 0 0.3rem; font-size: 0.84rem; line-height: 1.35; }
+  html body .hud .narwhal-bubble-head { font-size: 0.72rem; white-space: nowrap; gap: 6px; }
+  html body .hud .narwhal-bubble-head img { width: 24px; height: 24px; }
+  html body .hud .narwhal-bubble .btn.small { padding: 0.2rem 0.55rem; font-size: 0.78rem; min-height: 30px; white-space: nowrap; }
+  html body .hud .idle-text { font-size: 0.8rem; }
+  html body .hud .idle-hint { display: none; }
+
+  /* The door or counter prompt sits low in the middle, between the thumbs */
+  html body .hud .hud-prompt, html body .hud:has(.narwhal-bubble) .hud-prompt { bottom: calc(14px + var(--safe-b)); margin-bottom: 0; }
+  html body .hud .prompt-btn { padding: 0.35rem 0.8rem; font-size: 0.85rem; }
+}
+
+/* The city map on a phone held sideways: the city buttons scroll along one row */
+@media (max-height: 500px) and (orientation: landscape) {
+  .row.wrap.map-cities { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 6px; -webkit-overflow-scrolling: touch; }
+  .row.wrap.map-cities > * { flex: none; }
+}
+/* The smallest phones held sideways: the review shortcut makes way for the minimap */
+@media (pointer: coarse) and (max-height: 500px) and (orientation: landscape) and (max-width: 620px) {
+  html body .hud.classic .qa-btn.qa-review { display: none; }
+}
+
+/* Daily streak on a short (sideways phone) screen: a smaller flame so Collect fits without scrolling */
+@media (max-height: 500px) and (orientation: landscape) {
+  .modal.streak-modal { max-width: min(640px, calc(100vw - 32px)); }
+  .streak-actions { flex-wrap: nowrap; margin-top: 0; }
+  .streak-card { display: grid; grid-template-columns: auto 1fr; column-gap: 14px; row-gap: 3px; justify-items: center; align-items: center; }
+  .streak-card > * { grid-column: 2; }
+  .streak-card > .streak-hero { grid-column: 1; grid-row: 1 / span 6; width: 110px; height: 110px; }
+  .streak-rays { inset: -10px; }
+  .streak-flame { font-size: 3.4rem; }
+  .streak-count b { font-size: 2.2rem; }
+  .streak-pip { width: 36px; height: 40px; }
+  .streak-chip { padding: 3px 10px; font-size: 1rem; }
+}
+
+/* ═════════ Activities on a phone held sideways ═════════
+   The whole game screen is about 360px tall, so an activity takes all of it and lays out like a
+   small desktop: a one-line title bar, the question on the left and the answers on the right,
+   so the question never scrolls out of sight while you pick. */
+@media (max-height: 500px) and (orientation: landscape) {
+  .modal-backdrop:has(> .activity-modal) { padding: 0; }
+  .modal.activity-modal {
+    width: 100vw; max-width: none; height: 100dvh; max-height: none; position: relative;
+    border: 0; box-shadow: none; padding-left: var(--safe-l); padding-right: var(--safe-r);
+  }
+  /* Title bar: one slim line, with Help beside the close button */
+  .modal.activity-modal .modal-head { padding: 4px 10px; gap: 8px; border-bottom-width: 3px; }
+  .modal.activity-modal .modal-icon { width: 26px; height: 26px; font-size: 1rem; }
+  .modal.activity-modal .modal-titles { display: flex; align-items: baseline; gap: 10px; min-width: 0; }
+  .modal.activity-modal .modal-titles h2 { font-size: 1.05rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .modal.activity-modal .modal-sub { margin-top: 0; font-size: 0.72rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .modal.activity-modal .modal-close { width: 30px; height: 30px; font-size: 0.9rem; }
+  .modal.activity-modal .concept-help-btn { position: absolute; top: 4px; right: calc(50px + var(--safe-r)); margin: 0; min-height: 0; height: 30px; padding: 0 10px; z-index: 2; }
+  .modal.activity-modal .modal-body { padding: 6px 10px 6px; }
+  .modal.activity-modal .activity-play, .modal.activity-modal .activity-intro, .modal.activity-modal .activity-results { padding: 2px 4px 4px; }
+  /* Read-aloud buttons stay but stop stretching their row */
+  .modal.activity-modal .btn.icon.small { width: 30px; height: 30px; min-height: 0; }
+  .modal.activity-modal .btn.big { padding: 0.4rem 1rem; font-size: 1rem; min-height: 40px; }
+  .modal.activity-modal .btn.huge { padding: 0.45rem 1.4rem; font-size: 1.2rem; min-height: 44px; }
+  .modal.activity-modal .btn { min-height: 38px; }
+
+  /* Intro card */
+  .modal.activity-modal .ai-hero { padding: 8px 10px; gap: 12px; flex-wrap: nowrap; }
+  .modal.activity-modal .ai-art { width: 48px; height: 48px; font-size: 1.6rem; align-self: flex-start; }
+  .modal.activity-modal .ai-art > * { transform: scale(0.45); }
+  .modal.activity-modal .ai-hero .row:has(> .dialog-portrait) { display: none; }
+  .modal.activity-modal .ai-hero > .col { gap: 4px; }
+  .modal.activity-modal .ai-blurb { font-size: 0.98rem; line-height: 1.3; }
+  .modal.activity-modal .ai-hero .dialog-portrait { width: 34px; height: 34px; }
+  .modal.activity-modal .ai-stats { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; margin-top: 6px; }
+  .modal.activity-modal .ai-stat { flex-direction: row; align-items: center; justify-content: space-between; padding: 3px 8px; gap: 6px; }
+  .modal.activity-modal .ai-stat-value { font-size: 0.9rem; }
+  .modal.activity-modal .desk-briefing { padding: 6px 10px; margin-top: 6px; }
+  .modal.activity-modal .briefing-ideas { margin: 2px 0 0; }
+  .modal.activity-modal .briefing-ideas li { font-size: 0.85rem; }
+  .modal.activity-modal .activity-intro > .row { margin-top: 6px; gap: 8px; }
+
+  /* Intro: what you will do on the left, your stats and the Start button on the right */
+  .modal.activity-modal .activity-intro { display: grid; align-content: start; grid-auto-rows: min-content; grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr); column-gap: 10px; row-gap: 6px; align-content: start; }
+  .modal.activity-modal .activity-intro > * { grid-column: 1; margin-top: 0; }
+  .modal.activity-modal .activity-intro > .ai-stats { grid-column: 2; grid-row: 1; grid-template-columns: 1fr; margin-top: 0; align-self: start; }
+  .modal.activity-modal .activity-intro > .row:last-child { grid-column: 2; grid-row: 2 / span 4; flex-direction: column; align-items: stretch; align-self: end; margin-top: 0; }
+  .modal.activity-modal .activity-intro > .row:last-child .btn { width: 100%; justify-content: center; }
+  /* The intro fills the screen: the hero takes only the height it needs, the briefing the rest, and on the
+     right the stats sit at the top with Start at the bottom */
+  .modal.activity-modal .activity-intro { grid-template-rows: min-content minmax(0, 1fr); grid-auto-rows: min-content; align-content: stretch; }
+  .modal.activity-modal .activity-intro > .ai-stats { grid-row: 1 / span 2; }
+  .modal.activity-modal .activity-intro > .row:last-child { grid-row: 2; }
+  .modal.activity-modal .activity-intro > .ai-hero { align-self: start; }
+  .modal.activity-modal .activity-intro > .desk-briefing { align-self: start; max-height: 100%; min-height: 0; overflow-y: auto; overscroll-behavior: contain; font-size: 0.8rem; line-height: 1.3; padding: 6px 8px 0; }
+  .modal.activity-modal .activity-intro > .desk-briefing > .briefing-lessons { position: sticky; bottom: 0; background: inherit; background-color: var(--play-bg, var(--px-paper, #f4ecd8)); padding: 4px 0 6px; margin: 0; }
+  .modal.activity-modal.adv .activity-intro > .desk-briefing > .briefing-lessons { background-color: #111a2c; }
+  .modal.activity-modal .activity-intro .briefing-lessons > :not(.row) { display: none; }
+  .modal.activity-modal .activity-intro .briefing-lessons > .row { flex-wrap: nowrap; overflow-x: auto; gap: 4px; scrollbar-width: none; }
+  .modal.activity-modal .activity-intro .briefing-lessons .chip { flex-shrink: 0; white-space: nowrap; }
+  .modal.activity-modal .activity-intro .briefing-ideas { margin: 2px 0; padding-left: 1.1rem; }
+  .modal.activity-modal .activity-intro .briefing-lessons .chip { font-size: 0.72rem; padding: 2px 6px; min-height: 26px; }
+  .modal.activity-modal .activity-intro > .row:last-child .btn.huge { order: -1; }
+  .modal.activity-modal .ai-stat-label { white-space: nowrap; }
+  .modal.activity-modal .ai-hero .row > .dialog-portrait { width: 34px; height: 34px; }
+
+  /* Questions: prompt left, answers right */
+  .modal.activity-modal .question { gap: 6px; max-width: none; }
+  .modal.activity-modal .question:has(> .choices) { display: grid; align-content: start; grid-auto-rows: min-content; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); column-gap: 12px; row-gap: 0; align-items: start; }
+  .modal.activity-modal .question:has(> .choices) > * { grid-column: 1; margin: 0 0 6px; }
+  .modal.activity-modal .question:has(> .choices) > .q-top { grid-column: 1 / -1; }
+  .modal.activity-modal .question:has(> .choices) > .choices { grid-column: 2; grid-row: 2 / span 8; grid-template-columns: 1fr; }
+  .modal.activity-modal .q-top { gap: 4px 8px; flex-wrap: wrap; }
+  .modal.activity-modal .q-top .q-progress { flex: 1 1 120px; min-width: 0; }
+  .modal.activity-modal .q-top .btn { min-height: 28px; height: 28px; padding: 0 8px; font-size: 0.8rem; flex-direction: row; gap: 4px; }
+  .modal.activity-modal .q-top .btn > * { display: inline; }
+  .modal.activity-modal .q-topic { font-size: 0.72rem; padding: 2px 8px 2px 3px; }
+  .modal.activity-modal .q-topic-icon { width: 1.2rem; height: 1.2rem; font-size: 0.75rem; }
+  .modal.activity-modal .q-card { padding: 8px 10px; }
+  .modal.activity-modal .question .q-prompt, .modal.activity-modal .question.entry .q-prompt, .modal.activity-modal .q-prompt { font-size: 1.05rem; line-height: 1.3; gap: 6px; }
+  .modal.activity-modal .question .q-icon { width: 2rem; height: 2rem; font-size: 1.2rem; }
+  .modal.activity-modal .choices { gap: 6px; }
+  .modal.activity-modal .choice, .modal.activity-modal .question .choice, .modal.activity-modal .question.entry .choice { min-height: 40px; padding: 5px 10px; font-size: 0.95rem; gap: 8px; }
+  .modal.activity-modal .choice-letter, .modal.activity-modal .question .choice-letter { width: 1.6rem; height: 1.6rem; }
+  .modal.activity-modal .question .numeric-input { font-size: 1.15rem; width: 9rem; }
+  .modal.activity-modal .question .card.small { padding: 6px 10px; font-size: 0.88rem; }
+
+  /* After answering: a slim verdict bar and tight explanation rows */
+  .modal.activity-modal .q-feedback-head { padding: 4px 8px; gap: 8px; }
+  .modal.activity-modal .q-feedback-head .dialog-portrait, .modal.activity-modal .dialog-portrait { width: 36px; height: 36px; border-width: 2px; border-radius: 8px; }
+  .modal.activity-modal .dialog-portrait img { max-width: 100%; max-height: 100%; }
+  .modal.activity-modal .q-why { padding: 4px 8px; gap: 8px; font-size: 0.86rem; line-height: 1.3; }
+  .modal.activity-modal .q-why-label { padding: 1px 5px; font-size: 0.62rem; }
+  .modal.activity-modal .q-verdict { font-size: 1rem; }
+  /* The intro's "take your time" note sits on one short line */
+  .modal.activity-modal .ai-hero .row:has(> .dialog-portrait) { gap: 6px; }
+
+  /* A receipt, paystub or picture above a question: picture on the left, question on the right */
+  .modal.activity-modal .activity-play > .col:has(> .question):has(> * .doc-media, > .doc-media, > * .paystub, > .paystub, > .q-context svg, > .q-context canvas, > .q-context table, > .q-context img) {
+    display: grid; align-content: start; grid-auto-rows: min-content; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 10px; row-gap: 0; align-items: start;
+  }
+  .modal.activity-modal .activity-play > .col:has(> .question):has(> * .doc-media, > .doc-media, > * .paystub, > .paystub, > .q-context svg, > .q-context canvas, > .q-context table, > .q-context img) > * { grid-column: 1; margin: 0 0 6px; }
+  .modal.activity-modal .activity-play > .col:has(> * .doc-media, > .doc-media, > * .paystub, > .paystub, > .q-context svg, > .q-context canvas, > .q-context table, > .q-context img) > .question {
+    grid-column: 2; grid-row: 1 / span 10; position: sticky; top: 0; display: flex; flex-direction: column;
+  }
+  .modal.activity-modal .activity-play > .col > .question > .choices { grid-template-columns: 1fr; }
+  /* Once answered, only the right (and the picked) answer stays so the explanation fits beside the picture */
+  .modal.activity-modal .activity-play > .col:has(> * .doc-media, > .doc-media, > * .paystub, > .paystub, > .q-context svg, > .q-context canvas, > .q-context table, > .q-context img) > .question:has(> .q-feedback) > .choices > .choice:not(.right, .wrong) { display: none; }
+  .modal.activity-modal .activity-play > .col:has(> * .doc-media, > .doc-media, > * .paystub, > .paystub, > .q-context svg, > .q-context canvas, > .q-context table, > .q-context img) > .question { max-height: calc(100dvh - 82px); overflow-y: auto; overscroll-behavior: contain; }
+
+  /* Desks and case files: evidence on the left, the question pinned on the right. If the evidence
+     is long it scrolls past while the question and its answers stay in view. */
+  .modal.activity-modal .pro:has(> .question), .modal.activity-modal .cs-step:has(> .cs-answer) {
+    display: grid; align-content: start; grid-auto-rows: min-content; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); column-gap: 10px; row-gap: 0; align-items: start;
+  }
+  .modal.activity-modal .pro:has(> .question) > *, .modal.activity-modal .cs-step:has(> .cs-answer) > *,
+  .modal.activity-modal .cs-step > .cs-answer:has(> .cs-doc) > * { grid-column: 1; margin: 0 0 6px; }
+  .modal.activity-modal .pro:has(> .question) > .pro-head { grid-column: 1; }
+  .modal.activity-modal .pro:has(> .question) > .question, .modal.activity-modal .cs-step > .cs-answer {
+    grid-column: 2; grid-row: 1 / span 30; position: sticky; top: 0; max-height: calc(100dvh - 70px); overflow-y: auto; overscroll-behavior: contain; margin: 0;
+  }
+  .modal.activity-modal .pro:has(> .question) > .question { grid-row: 1 / span 30; max-height: calc(100dvh - 70px); }
+  /* Only a header beside the question (placement test): give the question most of the width */
+  .modal.activity-modal .pro:has(> .question):not(:has(> :not(.pro-head, .question))) { grid-template-columns: minmax(0, 0.7fr) minmax(0, 1.3fr); }
+  .modal.activity-modal .pro > .question > *, .modal.activity-modal .cs-step > .cs-answer > *, .modal.activity-modal .activity-play > .col > .question > * { flex-shrink: 0; }
+  /* In a half-width question panel the top line keeps to one row: topic, count and tools */
+  .modal.activity-modal .pro > .question .q-progress-track, .modal.activity-modal .activity-play > .col > .question .q-progress-track { display: none; }
+  .modal.activity-modal .pro > .question .q-top, .modal.activity-modal .activity-play > .col > .question .q-top { flex-wrap: nowrap; }
+  .modal.activity-modal .pro > .question .q-top .q-progress { flex: 0 0 auto; }
+  .modal.activity-modal .pro > .question .choice { font-size: 0.86rem; min-height: 34px; padding: 3px 8px; line-height: 1.2; }
+  .modal.activity-modal .pro > .question .q-card { padding: 5px 8px; }
+  .modal.activity-modal .pro > .question .q-prompt { font-size: 0.95rem; }
+  /* Answered: the explanation takes the evidence panel's place on the left; the question and answers stay right */
+  .modal.activity-modal .pro:has(> .question > .q-feedback) > :not(.question) { display: none; }
+  .modal.activity-modal .pro > .question:has(> .q-feedback) {
+    grid-column: 1 / -1; grid-row: 1; max-height: none; overflow: visible; position: static;
+    display: grid !important; align-content: start; grid-auto-rows: min-content; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 10px; row-gap: 0;
+  }
+  .modal.activity-modal .pro > .question:has(> .q-feedback) > * { grid-column: 2; grid-row: auto; margin: 0 0 6px; }
+  .modal.activity-modal .pro > .question > .q-feedback { grid-column: 1; grid-row: 1 / span 10; max-height: calc(100dvh - 70px); overflow-y: auto; }
+  .modal.activity-modal .pro-head { margin-bottom: 4px !important; }
+  .modal.activity-modal .pro-panel svg { max-height: calc(100dvh - 150px); }
+  .modal.activity-modal .pro:has(> .question) > .question:has(> .choices) { display: flex; flex-direction: column; }
+  .modal.activity-modal .pro:has(> .question) > .question > .choices { grid-template-columns: 1fr; align-self: stretch; gap: 4px; }
+  /* Steps where you tap lines in a document: the instructions and Check stay left, the document scrolls on the right */
+  .modal.activity-modal .cs-step:has(> .cs-answer > .cs-doc) { grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr); }
+  .modal.activity-modal .cs-step > .cs-answer:has(> .cs-doc) { display: contents; }
+  .modal.activity-modal .cs-step > .cs-answer > .cs-doc { grid-column: 2; grid-row: 1 / span 30; max-height: calc(100dvh - 112px); overflow-y: auto; overscroll-behavior: contain; margin: 0; }
+  /* Long evidence scrolls inside its own box; the screen and the pinned question stay still */
+  .modal.activity-modal .cs-step > .cs-evidence { max-height: calc(100dvh - 140px); overflow-y: auto; overscroll-behavior: contain; }
+  /* After answering, the brief is done with: the explanation takes its place, its Next button always in view */
+  .modal.activity-modal .cs-step:has(.cs-reveal) > .cs-brief { display: none; }
+  .modal.activity-modal .cs-reveal { display: flex; flex-direction: column; gap: 4px; max-height: calc(100dvh - 120px); padding: 6px 8px; }
+  .modal.activity-modal .cs-reveal > .cs-why { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; margin: 0; font-size: 0.85rem; }
+  .modal.activity-modal .cs-reveal > .row { flex-shrink: 0; }
+  /* Reveals without a separate explanation box: the text scrolls inside, the Next button stays pinned at the bottom */
+  .modal.activity-modal .cs-reveal:not(:has(> .cs-why)) { overflow-y: auto; overscroll-behavior: contain; }
+  .modal.activity-modal .cs-reveal:not(:has(> .cs-why)) > span { font-size: 0.84rem; line-height: 1.35; }
+  .modal.activity-modal .cs-reveal:not(:has(> .cs-why)) > .row:last-child { position: sticky; bottom: -6px; margin: 0 -8px -6px; padding: 4px 8px 6px; background: inherit; }
+  .modal.activity-modal .cs-option { padding: 0.45rem 0.6rem; font-size: 0.86rem; line-height: 1.25; }
+  .modal.activity-modal .cs-options { gap: 6px; }
+  /* Three answers: one per row, so long answers do not wrap into a tall narrow column */
+  .modal.activity-modal .cs-options:has(> :nth-child(3)):not(:has(> :nth-child(4))) { grid-template-columns: 1fr; gap: 4px; }
+  .modal.activity-modal .cs-options:has(> :nth-child(3)):not(:has(> :nth-child(4))) > .cs-option { font-size: 0.82rem; line-height: 1.25; padding: 0.35rem 0.55rem; }
+  .modal.activity-modal .cs-options:has(> :nth-child(5)) { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; }
+  .modal.activity-modal .cs-options:has(> :nth-child(7)) { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; }
+  .modal.activity-modal .cs-options:has(> :nth-child(9)) { grid-template-columns: repeat(5, minmax(0, 1fr)) !important; }
+  .modal.activity-modal .cs-options:has(> :nth-child(5)) > .cs-option * { font-size: inherit !important; line-height: inherit; }
+  .modal.activity-modal .cs-step:has(> .cs-options > :nth-child(5)) > .cs-brief { font-size: 0.8rem; margin-bottom: 4px; }
+  .modal.activity-modal .cs-options:has(> :nth-child(5)) > .cs-option { font-size: 0.72rem; padding: 0.3rem 0.4rem; line-height: 1.2; box-shadow: 2px 2px 0 #000; }
+  /* Once answered: your options on the left, the explanation and Next on the right (brief and evidence step aside) */
+  .modal.activity-modal .cs-step:has(> .cs-answer > .cs-reveal):not(:has(> .cs-answer > .cs-doc)) > :not(.cs-answer) { display: none; }
+  .modal.activity-modal .cs-step > .cs-answer:not(:has(> .cs-doc)):has(> .cs-reveal) {
+    grid-column: 1 / -1; grid-row: 1; position: static; max-height: none; overflow: visible;
+    display: grid; align-content: start; grid-auto-rows: min-content; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 10px; row-gap: 0;
+  }
+  .modal.activity-modal .cs-step > .cs-answer:not(:has(> .cs-doc)):has(> .cs-reveal) > * { grid-column: 1; margin: 0 0 6px; }
+  .modal.activity-modal .cs-step > .cs-answer:has(> .cs-doc):has(> .cs-reveal) > .cs-reveal { max-height: calc(100dvh - 176px); }
+  .modal.activity-modal .cs-step > .cs-answer:has(> .cs-doc):has(> .cs-reveal) > .cs-prompt { font-size: 0.88rem; }
+  .modal.activity-modal .cs-step > .cs-answer:not(:has(> .cs-doc)) > .cs-reveal { grid-column: 2; grid-row: 1 / span 10; max-height: calc(100dvh - 110px); }
+  /* Desk header: one compact block */
+  .modal.activity-modal .pro-head { align-items: center; }
+  .modal.activity-modal .pro-title { font-size: 1.05rem; line-height: 1.2; }
+  .modal.activity-modal .pro-price b { font-size: 1.05rem; }
+  .modal.activity-modal .pro-panel h4 { margin-bottom: 3px; font-size: 0.68rem; }
+  .modal.activity-modal .pro-table td, .modal.activity-modal .pro-table th { padding: 1px 4px; font-size: 0.76rem; }
+  .modal.activity-modal .pro-slider { grid-template-columns: 7rem 1fr 3.4rem; gap: 6px; margin: 2px 0; font-size: 0.8rem; }
+  .modal.activity-modal .pro-stats { margin-top: 4px; gap: 4px; }
+  .modal.activity-modal .pro-stats > div { padding: 2px 6px; }
+  .modal.activity-modal .pro-stats b { font-size: 0.95rem; }
+  /* Desk panels side by side fill the screen under the header; a tall panel scrolls inside itself
+     and keeps its action buttons pinned to its bottom edge */
+  .modal.activity-modal .pro > .pro-grid { grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr)); gap: 8px; align-items: start; }
+  .modal.activity-modal .pro > .pro-grid > .pro-panel { max-height: calc(100dvh - 120px); overflow-y: auto; overscroll-behavior: contain; }
+  .modal.activity-modal .pro-panel > .btn, .modal.activity-modal .pro-panel > .row:has(> .btn) {
+    position: sticky; bottom: -6px; z-index: 1; background: inherit; box-shadow: 0 -6px 8px -6px rgba(0, 0, 0, 0.6);
+  }
+  .modal.activity-modal .pro { gap: 6px; }
+  .modal.activity-modal .pro-head { gap: 8px; }
+  .modal.activity-modal .pro-sub { font-size: 0.85rem; line-height: 1.3; }
+  .modal.activity-modal .pro-panel { padding: 6px 8px; }
+  .modal.activity-modal .pro-head { flex-wrap: nowrap; }
+  .modal.activity-modal .pro-head > div:first-child { flex: 1 1 auto; min-width: 0; display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 10px; }
+  .modal.activity-modal .pro-head > div:first-child > .pro-title { order: -1; }
+  .modal.activity-modal .pro-head > div:first-child > .pro-sub { flex-basis: 100%; }
+  .modal.activity-modal .pro-table.compact { line-height: 1.05; }
+  .modal.activity-modal .pro-slider > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .modal.activity-modal .pro-head > .pro-price { flex-shrink: 0; }
+  .modal.activity-modal .pro-sub { font-size: 0.8rem; }
+  /* Desks without a question: the desk fills the screen, its panels share what the header leaves */
+  .modal.activity-modal .pro:not(:has(> .question, > .pro-answer, > .pro-panel > .sc-list)):has(> .pro-grid) { height: calc(100dvh - 82px); }
+  .modal.activity-modal .pro:not(:has(> .question, > .pro-answer, > .pro-panel > .sc-list)) > .pro-grid { flex: 1 1 auto; min-height: 0; grid-auto-rows: minmax(0, 1fr); align-items: stretch; }
+  .modal.activity-modal .pro:not(:has(> .question, > .pro-answer, > .pro-panel > .sc-list)) > .pro-grid > .pro-panel { max-height: none; min-height: 0; }
+  .modal.activity-modal .pro:not(:has(> .question, > .pro-answer, > .pro-panel > .sc-list)) > :not(.pro-grid) { flex-shrink: 0; }
+  .modal.activity-modal .pro-pill { padding: 0.3rem 0.6rem; font-size: 0.78rem; box-shadow: 2px 2px 0 #000; }
+  .modal.activity-modal .pro-table { line-height: 1.15; }
+  .modal.activity-modal .pro-slider { margin: 0; min-height: 0; line-height: 1.15; }
+  .modal.activity-modal .pro-slider input[type='range'] { height: 22px; margin: 0; }
+  .modal.activity-modal .pro-panel h4:not(:first-child) { margin-top: 4px; }
+  .modal.activity-modal .pro-table td, .modal.activity-modal .pro-table th { padding: 0 4px; font-size: 0.72rem; }
+  .modal.activity-modal .pro-panel > .row:has(> .pro-pill) { gap: 6px; margin: 2px 0; }
+  .modal.activity-modal .pro-panel > .btn.big { min-height: 32px; padding: 3px 12px; font-size: 0.85rem; }
+  .modal.activity-modal .pro-panel > p, .modal.activity-modal .pro-panel > .small { font-size: 0.75rem; margin: 3px 0 0; line-height: 1.25; }
+  .modal.activity-modal .cs-brief { font-size: 0.88rem; line-height: 1.3; }
+  .modal.activity-modal .cs-prompt { font-size: 0.98rem; }
+
+  /* Supply chain desk: the orders list on the right, the price table and button on the left */
+  .modal.activity-modal .pro:has(> .pro-panel > .sc-list) {
+    display: grid; align-content: start; grid-auto-rows: min-content; grid-template-columns: minmax(0, 0.75fr) minmax(0, 1.25fr); column-gap: 10px; row-gap: 0;
+  }
+  .modal.activity-modal .pro:has(> .pro-panel > .sc-list) > * { grid-column: 1; margin: 0 0 6px; }
+  .modal.activity-modal .pro > .pro-panel:has(> .sc-list) { grid-column: 2; grid-row: 1 / span 10; max-height: calc(100dvh - 72px); overflow-y: auto; overscroll-behavior: contain; }
+  .modal.activity-modal .pro:has(> .pro-panel > .sc-list) > .pro-head { flex-direction: column; align-items: flex-start; gap: 2px; }
+  .modal.activity-modal .pro:has(> .pro-panel > .sc-list) > .pro-head .pro-price { text-align: left; flex-direction: row; gap: 8px; align-items: baseline; }
+  .modal.activity-modal .pro:has(> .pro-panel > .sc-list) > .pro-panel .pro-table :is(td, th) { white-space: normal; font-size: 0.68rem; }
+  .modal.activity-modal .sc-list { gap: 4px; }
+  .modal.activity-modal .sc-row { flex-wrap: nowrap; gap: 6px; padding-bottom: 4px; }
+  .modal.activity-modal .sc-row > .col { flex: 1 1 auto; min-width: 0; font-size: 0.8rem; line-height: 1.2; }
+  .modal.activity-modal .sc-row > .col .tiny { font-size: 0.66rem; }
+  .modal.activity-modal .sc-row > .row { flex-shrink: 0; gap: 4px !important; }
+  .modal.activity-modal .sc-row .pro-pill { padding: 0.25rem 0.45rem; font-size: 0.72rem; }
+  .modal.activity-modal .pro:has(> .pro-panel > .sc-list):has(> .pro-panel .verdict, > .pro-panel > .row .btn.primary) > .pro-panel:has(> div > .pro-table) { display: none; }
+  .modal.activity-modal .pro:has(> .pro-panel > .sc-list) > .pro-panel:not(:has(> .sc-list)):has(> .row > .btn) { max-height: calc(100dvh - 160px); overflow-y: auto; overscroll-behavior: contain; }
+
+  /* Research desks with an answer sheet (Equity Research): the data on the left, the answer sheet
+     and its button on the right, so the questions never scroll away from the numbers */
+  .modal.activity-modal .pro:has(> .pro-answer) {
+    display: grid; align-content: start; grid-template-rows: min-content 1fr min-content; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 10px; row-gap: 6px;
+    height: calc(100dvh - 82px);
+  }
+  .modal.activity-modal .pro:has(> .pro-answer) > * { margin: 0; min-height: 0; }
+  .modal.activity-modal .pro:has(> .pro-answer) > .pro-head { grid-column: 1; grid-row: 1; }
+  .modal.activity-modal .pro:has(> .pro-answer) > .pro-grid { grid-column: 1; grid-row: 2 / span 2; grid-template-columns: 1fr; overflow-y: auto; overscroll-behavior: contain; align-content: start; }
+  .modal.activity-modal .pro:has(> .pro-answer) > .pro-grid > .pro-panel { max-height: none; overflow: visible; }
+  .modal.activity-modal .pro:has(> .pro-answer) > .pro-answer { grid-column: 2; grid-row: 1 / span 2; overflow-y: auto; overscroll-behavior: contain; gap: 6px; padding: 6px 8px; }
+  .modal.activity-modal .pro:has(> .pro-answer) > :not(.pro-head, .pro-grid, .pro-answer) { grid-column: 2; grid-row: 3; position: static; box-shadow: none; }
+  .modal.activity-modal .pro-q { gap: 6px; font-size: 0.8rem; line-height: 1.25; }
+  .modal.activity-modal .pro-qn { width: 1.35rem; height: 1.35rem; font-size: 0.72rem; }
+  .modal.activity-modal .pro-input .input { width: 6.5rem; padding: 3px 6px; min-height: 30px; }
+  .modal.activity-modal .pro-choices { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 5px; }
+  .modal.activity-modal .pro-choices > * { padding: 0.3rem 0.5rem; font-size: 0.76rem; min-height: 30px; }
+
+  /* Memory: all the cards in two rows, sized to the screen */
+  .modal.activity-modal .memory-grid { grid-template-columns: repeat(6, minmax(0, 1fr)) !important; gap: 6px; margin-top: 6px; }
+  .modal.activity-modal .memory-grid:has(> .memory-card:nth-child(13)) { grid-template-columns: repeat(8, minmax(0, 1fr)) !important; }
+  .modal.activity-modal .memory-card { min-height: 0; height: calc((100dvh - 150px) / 2); font-size: 0.76rem; line-height: 1.2; padding: 0.25rem; overflow-wrap: anywhere; box-shadow: 0 3px 0 var(--ink); }
+
+  /* Candlestick game: the chart big on the left, the call buttons and result on the right */
+  .modal.activity-modal .activity-play > .col:has(> svg.kit-chart[aria-label="Candlestick chart"]) {
+    display: grid; align-content: start; grid-auto-rows: min-content; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); column-gap: 10px; row-gap: 0;
+  }
+  .modal.activity-modal .activity-play > .col:has(> svg.kit-chart[aria-label="Candlestick chart"]) > * { grid-column: 2; margin: 0 0 6px; }
+  .modal.activity-modal .activity-play > .col > svg.kit-chart[aria-label="Candlestick chart"] { grid-column: 1; grid-row: 1 / span 10; width: 100%; max-height: calc(100dvh - 80px); }
+  .modal.activity-modal .activity-play > .col:has(> svg.kit-chart[aria-label="Candlestick chart"]) > .row:has(> .btn.huge) { gap: 8px !important; }
+  .modal.activity-modal .activity-play > .col:has(> svg.kit-chart[aria-label="Candlestick chart"]) .btn.huge { flex: 1; padding: 6px 8px; }
+  .modal.activity-modal .activity-play > .col:has(> svg.kit-chart[aria-label="Candlestick chart"]) > .card { padding: 6px 8px; font-size: 0.85rem; }
+
+  /* Personal stress test: budget and cuts on the left; the funding order with its button, and the
+     live chart with its numbers, side by side on the right */
+  .modal.activity-modal .pro-panel:has(> .col > .st-src) > svg { display: none; }
+  .modal.activity-modal .pro-panel:has(> .col > .st-src) { display: flex; flex-direction: column; gap: 4px; }
+  .modal.activity-modal .pro-panel:has(> .col > .st-src) > * { margin: 0 !important; }
+  .modal.activity-modal .pro-panel:has(> .col > .st-src) > .row:has(> .btn) { order: 1; position: static; box-shadow: none; }
+  .modal.activity-modal .pro-panel:has(> .col > .st-src) > :is(.pro-stats, .verdict) { order: 2; }
+  .modal.activity-modal .pro-panel:has(> .col > label > input[type='checkbox']) > h4 { margin: 0 0 2px; }
+  .modal.activity-modal .pro-panel:has(> .col > .st-src) > .pro-stats { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .modal.activity-modal .pro-panel:has(> .col > .st-src) > .pro-stats > div { padding: 2px 4px; font-size: 0.62rem; line-height: 1.15; }
+  .modal.activity-modal .pro-panel:has(> .col > .st-src) > .pro-stats b { font-size: 0.82rem; }
+  .modal.activity-modal .pro:has(.st-src) .pro-sub { font-size: 0.72rem; line-height: 1.2; }
+  .modal.activity-modal .pro-panel > .col > .st-src { gap: 4px; padding: 3px 5px; font-size: 0.78rem; line-height: 1.15; }
+  .modal.activity-modal .pro-panel > .col > .st-src .tiny { font-size: 0.64rem; }
+  .modal.activity-modal .pro-panel > .col > .st-src .pro-pill { padding: 0.1rem 0.35rem; min-height: 26px; }
+  .modal.activity-modal .pro-panel:has(> .col > label > input[type='checkbox']) > .col { gap: 1px !important; margin-top: 3px !important; font-size: 0.72rem; line-height: 1.1; }
+  .modal.activity-modal .pro-panel > .col > label > input[type='checkbox'] { width: 16px; height: 16px; margin: 0; flex-shrink: 0; }
+  .modal.activity-modal .pro-panel:has(> .col > label > input[type='checkbox']) .pro-table thead { display: none; }
+  .modal.activity-modal .pro-panel:has(> .col > label > input[type='checkbox']) .pro-table tbody { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 8px; }
+  .modal.activity-modal .pro-panel:has(> .col > label > input[type='checkbox']) .pro-table tr { display: flex; justify-content: space-between; gap: 4px; }
+  .modal.activity-modal .pro-panel:has(> .col > label > input[type='checkbox']) .pro-table td { padding: 0; font-size: 0.64rem; line-height: 1.1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+  /* Order book: the trade buttons first in their panel, then the numbers, then a short chart */
+  .modal.activity-modal .pro-panel:has(> .ob-actions) { display: flex; flex-direction: column; gap: 4px; }
+  .modal.activity-modal .pro-panel:has(> .ob-actions) > * { margin: 0 !important; }
+  .modal.activity-modal .pro-panel > .ob-actions { order: 1; gap: 4px; }
+  .modal.activity-modal .pro-panel > .ob-actions .btn { min-height: 30px; padding: 3px 6px; font-size: 0.76rem; }
+  .modal.activity-modal .pro-panel:has(> .ob-actions) > .pro-stats { order: 2; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .modal.activity-modal .pro-panel:has(> .ob-actions) > .pro-stats > div { padding: 2px 4px; font-size: 0.62rem; }
+  .modal.activity-modal .pro-panel:has(> .ob-actions) > .pro-stats b { font-size: 0.8rem; }
+  .modal.activity-modal .pro-panel:has(> .ob-actions) > h4 { order: 3; }
+  .modal.activity-modal .pro-panel:has(> .ob-actions) > svg { order: 3; flex: 1 1 60px; min-height: 50px; max-height: 110px; }
+  .modal.activity-modal .pro-panel:has(> .ob-actions) > .small { order: 4; font-size: 0.68rem; }
+  .modal.activity-modal .ob-ladder { font-size: 0.72rem; }
+  .modal.activity-modal .ob-row { padding: 0; line-height: 1.25; }
+
+  /* Job centre and other pick-a-card lists: up to five small cards a row, icon beside the name */
+  .modal.activity-modal .item-grid:has(> .item-card > .btn.small) { grid-template-columns: repeat(auto-fill, minmax(124px, 1fr)) !important; gap: 4px; }
+  .modal.activity-modal .item-grid > .item-card:has(> .btn.small) {
+    display: grid; grid-template-columns: auto minmax(0, 1fr); align-content: start; align-items: center; column-gap: 5px; row-gap: 1px; padding: 3px 6px; text-align: left; line-height: 1.15;
+  }
+  .modal.activity-modal .item-grid > .item-card:has(> .btn.small) > * { grid-column: 1 / -1; }
+  .modal.activity-modal .item-grid > .item-card:has(> .btn.small) > span:first-child { grid-column: 1; font-size: 1.3rem !important; line-height: 1; }
+  .modal.activity-modal .item-grid > .item-card:has(> .btn.small) > span:first-child + b { grid-column: 2; font-size: 0.8rem; }
+  .modal.activity-modal .item-grid > .item-card:has(> .btn.small) > .tiny { font-size: 0.62rem; line-height: 1.15; }
+  .modal.activity-modal .activity-play > .col:has(> .item-grid > .item-card > .btn.small) > p { font-size: 0.76rem; line-height: 1.2; }
+  .modal.activity-modal .item-grid > .item-card:has(> .btn.small) > .small { font-size: 0.66rem; line-height: 1.15; }
+  .modal.activity-modal .item-grid > .item-card:has(> .btn.small) > .chip { font-size: 0.6rem; padding: 0 4px; min-height: 0; line-height: 1.4; justify-self: start; }
+  .modal.activity-modal .activity-play > .col:has(> .item-grid > .item-card > .btn.small) > p { margin: 0; }
+  .modal.activity-modal .item-grid > .item-card:has(> .btn.small) { grid-auto-rows: min-content; align-content: space-between; }
+  .modal.activity-modal .item-grid > .item-card:has(> .btn.small) > .btn { min-height: 24px; padding: 1px 6px; font-size: 0.72rem; align-self: end; }
+
+  /* Startup pitches: every company side by side, with its − / + stake control at the bottom */
+  .modal.activity-modal .item-grid:has(> .item-card > .row:last-child > .btn.small) { grid-template-columns: repeat(auto-fit, minmax(0, 1fr)) !important; grid-auto-flow: column; gap: 6px; }
+  .modal.activity-modal .item-grid > .item-card:has(> .row:last-child > .btn.small) { padding: 4px 6px; gap: 2px; font-size: 0.74rem; line-height: 1.2; }
+  .modal.activity-modal .item-grid > .item-card:has(> .row:last-child > .btn.small) > .row:first-child { gap: 4px; font-size: 0.78rem; }
+  .modal.activity-modal .item-grid > .item-card:has(> .row:last-child > .btn.small) > .small { font-size: 0.7rem; }
+  .modal.activity-modal .item-grid > .item-card:has(> .row:last-child > .btn.small) > ul { font-size: 0.64rem; }
+  .modal.activity-modal .item-grid > .item-card:has(> .row:last-child > .btn.small) > .row:last-child { margin-top: auto; }
+  .modal.activity-modal .item-grid > .item-card:has(> .row:last-child > .btn.small) .btn.small { min-height: 28px; min-width: 32px; padding: 2px 8px; }
+
+  /* Choice games built from cards (Car Deal...): the story and feedback on the left, the choices on the right */
+  .modal.activity-modal .activity-play > .col:has(> .col > .choice:nth-child(2)):not(:has(> .question)) {
+    display: grid; align-content: start; grid-auto-rows: min-content; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 10px; row-gap: 0;
+  }
+  .modal.activity-modal .activity-play > .col:has(> .col > .choice:nth-child(2)):not(:has(> .question)) > * { grid-column: 1; margin: 0 0 6px; }
+  .modal.activity-modal .activity-play > .col:not(:has(> .question)) > .col:has(> .choice:nth-child(2)) { grid-column: 2; grid-row: 1 / span 10; gap: 6px !important; }
+  .modal.activity-modal .activity-play > .col:has(> .col > .choice:nth-child(2)):not(:has(> .question)) > .card { padding: 5px 8px; font-size: 0.8rem; line-height: 1.3; }
+  .modal.activity-modal .activity-play > .col:has(> .col > .choice:nth-child(2)):not(:has(> .question)) > .card > .row:has(> .btn):last-child { position: sticky; bottom: 0; margin-top: 2px; }
+  .modal.activity-modal .activity-play > .col:has(> .col > .choice:nth-child(2)):not(:has(> .question)) > .card > .row .btn { min-height: 32px; padding: 3px 12px; }
+  .modal.activity-modal .activity-play > .col:not(:has(> .question)) > .col > .choice { padding: 5px 8px; font-size: 0.8rem; line-height: 1.25; }
+  /* Desks with sliders: drop the table headings and shrink the story line so every slider fits */
+  .modal.activity-modal .pro-panel:has(> .pro-slider) .pro-table.compact thead { display: none; }
+  .modal.activity-modal .pro:has(.pro-slider) .pro-sub { font-size: 0.74rem; line-height: 1.2; }
+
+  /* A desk panel with many sliders lays them out two to a row: name above, slider and value below */
+  .modal.activity-modal .pro-panel:has(> .pro-slider:nth-of-type(5)) { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 10px; align-content: start; }
+  .modal.activity-modal .pro-panel:has(> .pro-slider:nth-of-type(5)) > :not(.pro-slider) { grid-column: 1 / -1; }
+  .modal.activity-modal .pro-panel:has(> .pro-slider:nth-of-type(5)) > .pro-slider { grid-template-columns: minmax(0, 1fr) auto; row-gap: 0; column-gap: 4px; }
+  .modal.activity-modal .pro-panel:has(> .pro-slider:nth-of-type(5)) > .pro-slider > :first-child { grid-column: 1 / -1; font-size: 0.7rem; }
+  .modal.activity-modal .pro-panel:has(> .pro-slider:nth-of-type(5)) > .pro-slider > b { font-size: 0.72rem; }
+
+  /* Case files with a scoreboard above them: one slim line of numbers, and the step below shrinks to fit */
+  .modal.activity-modal .pro.cs > .pro-stats { margin: 0; }
+  .modal.activity-modal .pro.cs > .pro-stats > div { flex-direction: row; align-items: baseline; justify-content: space-between; gap: 6px; padding: 1px 8px; }
+  .modal.activity-modal .pro.cs:has(> .pro-stats) .cs-answer:has(> .cs-doc):has(> .cs-reveal) > .cs-reveal { max-height: calc(100dvh - 206px); }
+  .modal.activity-modal .pro.cs:has(> .pro-stats) .cs-step > .cs-answer > .cs-doc { max-height: calc(100dvh - 142px); }
+  .modal.activity-modal .pro.cs:has(> .pro-stats) .cs-step > .cs-answer:not(:has(> .cs-doc)) > .cs-reveal { max-height: calc(100dvh - 130px); }
+
+  /* A result chart with its numbers (Portfolio Challenge...): chart on the left, numbers and the lesson on the right */
+  .modal.activity-modal .activity-play > .col:has(> svg.kit-chart):has(> .kit-stat-grid):not(:has(> svg.kit-chart[aria-label="Candlestick chart"])) {
+    display: grid; align-content: start; grid-auto-rows: min-content; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); column-gap: 10px; row-gap: 0;
+  }
+  .modal.activity-modal .activity-play > .col:has(> svg.kit-chart):has(> .kit-stat-grid):not(:has(> svg.kit-chart[aria-label="Candlestick chart"])) > * { grid-column: 2; margin: 0 0 6px; }
+  .modal.activity-modal .activity-play > .col:has(> svg.kit-chart):has(> .kit-stat-grid):not(:has(> svg.kit-chart[aria-label="Candlestick chart"])) > svg.kit-chart { grid-column: 1; grid-row: 1 / span 10; width: 100%; max-height: calc(100dvh - 90px); }
+  .modal.activity-modal .activity-play > .col:has(> svg.kit-chart):has(> .kit-stat-grid) > .kit-stat-grid { grid-template-columns: 1fr; }
+  .modal.activity-modal .activity-play > .col:has(> svg.kit-chart):has(> .kit-stat-grid) > .kit-stat-grid .kit-stat { font-size: 0.74rem; line-height: 1.15; }
+  .modal.activity-modal .activity-play > .col:has(> svg.kit-chart):has(> .kit-stat-grid) > .card { padding: 5px 8px; font-size: 0.8rem; line-height: 1.25; }
+
+  /* Calculator open on a multiple-choice desk question: the answers go two to a row so all of them fit */
+  .modal.activity-modal .pro:has(> .question .calc) > .question > .choices { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 4px; }
+  .modal.activity-modal .pro:has(> .question .calc) > .question > .choices > .choice { font-size: 0.74rem; padding: 3px 6px; min-height: 0; line-height: 1.2; }
+  .modal.activity-modal .pro:has(> .question .calc) > .question > .choices > .choice .choice-letter { width: 20px; height: 20px; min-width: 20px; font-size: 0.7rem; }
+  .modal.activity-modal .pro:has(> .question .calc) > .question > .choices > .choice { gap: 5px; }
+  .modal.activity-modal .pro:has(> .question .calc) > .question > .q-card { padding: 4px 8px; }
+  .modal.activity-modal .pro:has(> .question .calc) > .question > .q-card .q-prompt { font-size: 0.86rem; }
+
+  /* Calculator opened beside a receipt or statement: the calculator sits under the document on the left
+     (the document scrolls above it), so the question and every answer stay in view on the right */
+  .modal.activity-modal .activity-play > .col:has(> * .doc-media, > .doc-media, > * .paystub, > .paystub, > .q-context svg, > .q-context canvas, > .q-context table, > .q-context img):has(> .question .calc) { position: relative; min-height: calc(100dvh - 82px); }
+  .modal.activity-modal .activity-play > .col:has(> * .doc-media, > .doc-media, > * .paystub, > .paystub, > .q-context svg, > .q-context canvas, > .q-context table, > .q-context img):has(> .question .calc) > .question { position: static; }
+  .modal.activity-modal .activity-play > .col:has(> * .doc-media, > .doc-media, > * .paystub, > .paystub, > .q-context svg, > .q-context canvas, > .q-context table, > .q-context img):has(> .question .calc) > .question > .card.flat:has(.calc) { position: absolute; left: 0; bottom: 0; width: calc(50% - 5px); margin: 0; z-index: 2; }
+  .modal.activity-modal .activity-play > .col:has(> * .doc-media, > .doc-media, > * .paystub, > .paystub, > .q-context svg, > .q-context canvas, > .q-context table, > .q-context img):has(> .question .calc) > :not(.question, .row) { max-height: calc(100dvh - 214px); overflow-y: auto; overscroll-behavior: contain; }
+  .modal.activity-modal .activity-play > .col:has(> * .doc-media, > .doc-media, > * .paystub, > .paystub, > .q-context svg, > .q-context canvas, > .q-context table, > .q-context img):has(> .question .calc) .calc-keys { grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 2px; }
+  .modal.activity-modal .activity-play > .col:has(> * .doc-media, > .doc-media, > * .paystub, > .paystub, > .q-context svg, > .q-context canvas, > .q-context table, > .q-context img):has(> .question .calc) .calc-keys > :nth-last-child(2) { grid-column: span 1 !important; }
+  .modal.activity-modal .activity-play > .col:has(> * .doc-media, > .doc-media, > * .paystub, > .paystub, > .q-context svg, > .q-context canvas, > .q-context table, > .q-context img):has(> .question .calc) .calc-keys > :last-child { font-size: 0.62rem; white-space: nowrap; line-height: 1; }
+
+  .modal.activity-modal .activity-play > .col:has(> * .doc-media, > .doc-media, > * .paystub, > .paystub, > .q-context svg, > .q-context canvas, > .q-context table, > .q-context img):has(> .question .calc) .calc { position: relative; }
+  .modal.activity-modal .activity-play > .col:has(> * .doc-media, > .doc-media, > * .paystub, > .paystub, > .q-context svg, > .q-context canvas, > .q-context table, > .q-context img):has(> .question .calc) > .question > .choices { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 4px; }
+  .modal.activity-modal .activity-play > .col:has(> * .doc-media, > .doc-media, > * .paystub, > .paystub, > .q-context svg, > .q-context canvas, > .q-context table, > .q-context img):has(> .question .calc) > .question > .choices > .choice { font-size: 0.76rem; padding: 4px 6px; min-height: 0; line-height: 1.2; }
+  .modal.activity-modal .activity-play > .col:has(> * .doc-media, > .doc-media, > * .paystub, > .paystub, > .q-context svg, > .q-context canvas, > .q-context table, > .q-context img):has(> .question .calc) .calc-result { position: absolute; right: 8px; top: 4px; min-height: 0; pointer-events: none; }
+  .modal.activity-modal .activity-play > .col:has(> * .doc-media, > .doc-media, > * .paystub, > .paystub, > .q-context svg, > .q-context canvas, > .q-context table, > .q-context img):has(> .question .calc) .calc-display { padding-right: 40%; }
+  .modal.activity-modal .activity-play > .col:has(> * .doc-media, > .doc-media, > * .paystub, > .paystub, > .q-context svg, > .q-context canvas, > .q-context table, > .q-context img):has(> .question .calc) .calc-keys .btn { height: 24px; min-height: 24px; font-size: 0.8rem; }
+
+  /* Calculator opened on an ordinary question: question and answers on the left, calculator on the right */
+  .modal.activity-modal .activity-play > .col:not(:has(> * .doc-media, > .doc-media, > * .paystub, > .paystub, > .q-context svg, > .q-context canvas, > .q-context table, > .q-context img)) > .question:has(> .card.flat .calc) {
+    display: grid !important; align-content: start; grid-auto-rows: min-content; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 10px; row-gap: 0;
+  }
+  .modal.activity-modal .activity-play > .col:not(:has(> * .doc-media, > .doc-media, > * .paystub, > .paystub, > .q-context svg, > .q-context canvas, > .q-context table, > .q-context img)) > .question:has(> .card.flat .calc) > * { grid-column: 1 !important; grid-row: auto !important; margin: 0 0 6px; }
+  .modal.activity-modal .activity-play > .col:not(:has(> * .doc-media, > .doc-media, > * .paystub, > .paystub, > .q-context svg, > .q-context canvas, > .q-context table, > .q-context img)) > .question > .card.flat:has(.calc) { grid-column: 2 !important; grid-row: 1 / span 10 !important; }
+  .modal.activity-modal .activity-play > .col:not(:has(> * .doc-media, > .doc-media, > * .paystub, > .paystub, > .q-context svg, > .q-context canvas, > .q-context table, > .q-context img)) > .question:has(> .card.flat .calc) > .choices { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 4px; }
+  .modal.activity-modal .activity-play > .col:not(:has(> * .doc-media, > .doc-media, > * .paystub, > .paystub, > .q-context svg, > .q-context canvas, > .q-context table, > .q-context img)) > .question:has(> .card.flat .calc) > .choices > .choice { font-size: 0.78rem; padding: 4px 6px; min-height: 0; }
+  .modal.activity-modal .activity-play > .col:not(:has(> * .doc-media, > .doc-media, > * .paystub, > .paystub, > .q-context svg, > .q-context canvas, > .q-context table, > .q-context img)) > .question:has(> .card.flat .calc) > form .tiny { flex-basis: 100%; }
+
+  /* A picture beside the question (the money tree): while the calculator is open it steps aside so the question, answer box and keys all fit */
+  .modal.activity-modal .activity-play > .row:has(> .col > .question > .card.flat .calc) > svg { display: none; }
+  .modal.activity-modal .activity-play > .row > .col > .question:has(> .card.flat .calc) {
+    display: grid !important; align-content: start; grid-auto-rows: min-content; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 10px; row-gap: 0;
+  }
+  .modal.activity-modal .activity-play > .row > .col > .question:has(> .card.flat .calc) > * { grid-column: 1 !important; grid-row: auto !important; margin: 0 0 6px; }
+  .modal.activity-modal .activity-play > .row > .col > .question > .card.flat:has(.calc) { grid-column: 2 !important; grid-row: 1 / span 10 !important; }
+  .modal.activity-modal .activity-play > .row > .col > .question:has(> .card.flat .calc) > form .tiny { flex-basis: 100%; }
+  .modal.activity-modal .activity-play > .row > .col > .question:has(> .card.flat .calc) .calc-keys { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+
+  /* Price signs and offer cards above a question: one slim line each */
+  .modal.activity-modal .price-sign { padding: 2px 8px; font-size: 0.84rem; line-height: 1.3; border-radius: 8px; }
+  .modal.activity-modal .q-context > .col:has(> .price-sign) { gap: 4px !important; }
+  .modal.activity-modal .q-context > .col:has(> .price-sign) > b { font-size: 0.88rem; }
+  .modal.activity-modal .question > form .tiny { line-height: 1.2; }
+
+  /* Sorting games: a smaller card and shorter bins so both fit with the hint */
+  .modal.activity-modal .sort-game { gap: 6px; }
+  .modal.activity-modal .sort-card-wrap { min-height: 0; }
+  .modal.activity-modal .sort-card { padding: 0.5rem 1.2rem; font-size: 1.05rem; min-width: 200px; gap: 2px; }
+  .modal.activity-modal .sort-bins { gap: 6px; }
+  .modal.activity-modal .sort-bin { min-height: 58px; padding: 0.4rem; font-size: 0.92rem; border-width: 3px; }
+
+  /* The calculator inside a question: wide and short, keys in two rows */
+  .modal.activity-modal .calc { max-width: none; gap: 4px; }
+  .modal.activity-modal .calc-display { font-size: 1rem; min-height: 30px; height: 30px; padding: 2px 8px; }
+  .modal.activity-modal .calc-result { font-size: 1.05rem; min-height: 1.3em; }
+  .modal.activity-modal .calc-keys { grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 3px; }
+  .modal.activity-modal .calc-keys .btn { min-height: 25px; height: 25px; padding: 0; font-size: 0.82rem; }
+  .modal.activity-modal .calc { position: relative; }
+  .modal.activity-modal .calc-result { position: absolute; right: 8px; top: 5px; min-height: 0; pointer-events: none; }
+  .modal.activity-modal .calc-display { padding-right: 40%; }
+  .modal.activity-modal .calc > .tiny { display: none; }
+  .modal.activity-modal .calc-result:empty { display: none; }
+  .modal.activity-modal .question > .card.flat:has(.calc) { margin-top: 0 !important; padding: 6px; }
+  .modal.activity-modal .q-feedback-head .dialog-portrait { width: 36px !important; height: 36px !important; }
+
+  /* On a desk, an open calculator takes the chart's place: question on the left, keys on the right */
+  .modal.activity-modal .pro:has(> .question .calc) > .pro-panel { display: none; }
+  .modal.activity-modal .pro:has(> .question .calc) > .pro-head { grid-column: 1 / -1; }
+  .modal.activity-modal .pro:has(> .question .calc) > .question {
+    grid-column: 1 / -1; grid-row: 2; max-height: calc(100dvh - 130px); display: grid !important; align-content: start; grid-auto-rows: min-content; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 10px; row-gap: 0; align-items: start;
+  }
+  .modal.activity-modal .pro > .question:has(.calc) > * { grid-column: 1; grid-row: auto; margin: 0 0 6px; }
+  .modal.activity-modal .pro > .question:has(.calc) > .card.flat:has(.calc) { grid-column: 2; grid-row: 1 / span 10; max-height: calc(100dvh - 72px - var(--pro-head-h, 50px)); overflow-y: auto; }
+
+  /* A long intro scrolls on the left while your stats and Start stay put on the right */
+  .modal.activity-modal .activity-intro > .ai-stats { position: sticky; top: 0; z-index: 1; }
+  .modal.activity-modal .activity-intro > .row:last-child { position: sticky; bottom: 0; z-index: 1; }
+  .modal.activity-modal .ai-blurb { font-size: 0.92rem; }
+  .modal.activity-modal .briefing-ideas li { font-size: 0.82rem; line-height: 1.25; margin: 0; }
+  .modal.activity-modal .briefing-ideas { gap: 2px; padding-left: 1.1rem; }
+  .modal.activity-modal .desk-briefing > .row .btn.icon.small { width: 24px; height: 24px; }
+  .modal.activity-modal .ai-hero { padding: 6px 8px; }
+  .modal.activity-modal .ai-hero .chip { padding-top: 1px; padding-bottom: 1px; font-size: 0.75rem; }
+
+  /* Shopping lists (Grocery and friends): products three across, the two choices side by side */
+  .modal.activity-modal .col:has(> .card.flat > .row > .shop-opt) { display: grid; align-content: start; grid-auto-rows: min-content; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px !important; }
+  .modal.activity-modal .card.flat:has(> .row > .shop-opt) { padding: 5px 6px; }
+  .modal.activity-modal .card.flat:has(> .row > .shop-opt) > b { font-size: 0.85rem; }
+  .modal.activity-modal .card.flat > .row:has(> .shop-opt) { flex-wrap: nowrap; gap: 4px !important; margin-top: 2px !important; }
+  .modal.activity-modal .shop-opt { min-width: 0; flex: 1 1 0; padding: 3px 5px; gap: 0; font-size: 0.78rem; line-height: 1.2; }
+  .modal.activity-modal .shop-opt .small { font-size: 0.72rem; }
+  .modal.activity-modal .shop-opt .chip { font-size: 0.62rem; padding: 0 3px; }
+  /* A spec table above a slider (futures pit): one line per row so the controls fit under it */
+  .modal.activity-modal .pro-panel:has(> .pro-slider) > div > table td:first-child { white-space: nowrap; }
+  .modal.activity-modal .pro-panel:has(> .pro-slider) > div > table td, .modal.activity-modal .pro-panel:has(> .pro-slider) > div > table th { font-size: 0.66rem; padding-top: 0; padding-bottom: 0; line-height: 1.3; }
+  .modal.activity-modal .pro-panel:has(> .pro-slider) > .row > .pro-pill { min-height: 0; padding: 4px 6px; font-size: 0.76rem; line-height: 1.2; }
+  .modal.activity-modal .pro-panel:has(> .pro-slider) > div > table thead { display: none; }
+  /* Insurance: the note and the go button on the left, each category one slim row on the right */
+  .modal.activity-modal .col:has(> .card.tint-teal + .card.flat > .row > .shop-opt) { grid-template-columns: 168px minmax(0, 1fr); grid-template-rows: repeat(4, auto); gap: 4px 6px !important; }
+  .modal.activity-modal .col:has(> .card.tint-teal + .card.flat > .row > .shop-opt) > .card.tint-teal { grid-column: 1; grid-row: 1 / 3; font-size: 0.72rem; line-height: 1.25; padding: 5px 7px; align-self: start; }
+  .modal.activity-modal .col:has(> .card.tint-teal + .card.flat > .row > .shop-opt) > .card.flat { grid-column: 2; }
+  .modal.activity-modal .col:has(> .card.tint-teal + .card.flat > .row > .shop-opt) > .btn { grid-column: 1; grid-row: 3 / 5; align-self: end; min-height: 44px; font-size: 0.9rem; }
+  .modal.activity-modal .col:has(> .card.tint-teal + .card.flat > .row > .shop-opt) .shop-opt { font-size: 0.68rem; line-height: 1.15; padding: 2px 5px; }
+  .modal.activity-modal .col:has(> .card.tint-teal + .card.flat > .row > .shop-opt) .shop-opt .small { font-size: 0.66rem; }
+  .modal.activity-modal .col:has(> .card.tint-teal + .card.flat > .row > .shop-opt) .shop-opt .tiny { font-size: 0.6rem; }
+  .modal.activity-modal .col:has(> .card.tint-teal + .card.flat > .row > .shop-opt) > .card.flat > b { font-size: 0.78rem; }
+  .modal.activity-modal .col:has(> .card.tint-teal + .card.flat > .row > .shop-opt) > .card.flat > .tiny { font-size: 0.6rem; line-height: 1.15; margin-top: 2px; }
+  /* Five or more aisles: four to a row, each product on two short lines (name and price, then size) */
+  .modal.activity-modal .col:has(> .card.flat:nth-child(5) > .row > .shop-opt) { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .modal.activity-modal .col:has(> .card.flat:nth-child(5) > .row > .shop-opt) > .card > .row { flex-direction: column; gap: 4px !important; }
+  .modal.activity-modal .col:has(> .card.flat:nth-child(5) > .row > .shop-opt) .shop-opt {
+    display: grid; grid-template-columns: minmax(0, 1fr) auto auto; column-gap: 4px; align-items: baseline; padding: 1px 5px; font-size: 0.68rem; line-height: 1.25; flex: none; width: 100%; min-height: 21px; align-content: center; position: relative;
+  }
+  .modal.activity-modal .col:has(> .card.flat:nth-child(5) > .row > .shop-opt) .shop-opt > b { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .modal.activity-modal .col:has(> .card.flat:nth-child(5) > .row > .shop-opt) .shop-opt > .mono { grid-column: 3; grid-row: 1; }
+  .modal.activity-modal .col:has(> .card.flat:nth-child(5) > .row > .shop-opt) .shop-opt > .small { grid-column: 2; grid-row: 1; white-space: nowrap; }
+  .modal.activity-modal .col:has(> .card.flat:nth-child(5) > .row > .shop-opt) .shop-opt > .small { font-size: 0.64rem; }
+  .modal.activity-modal .col:has(> .card.flat:nth-child(5) > .row > .shop-opt) .shop-opt > .chip { position: absolute; top: -10px; right: 4px; font-size: 0.55rem; line-height: 1.2; padding: 0 3px; z-index: 1; }
+  .modal.activity-modal .col:has(> .card.flat:nth-child(5) > .row > .shop-opt) > .card.flat { padding: 3px 5px; }
+  .modal.activity-modal .col:has(> .card.flat:nth-child(5) > .row > .shop-opt) > .card.flat > b { font-size: 0.78rem; }
+  /* Pick-a-card grids (jobs, items): more across, less padding */
+  .modal.activity-modal .item-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 6px; }
+  .modal.activity-modal .item-card { padding: 0.35rem; gap: 2px; font-size: 0.85rem; }
+
+  /* Shared kit pieces: stat tiles in one slim row, tighter tables and cards */
+  .modal.activity-modal .activity-play > .col, .modal.activity-modal .activity-play > * > .col { gap: 6px !important; }
+  .modal.activity-modal .kit-stat-grid { grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 4px; margin: 0; }
+  .modal.activity-modal .kit-stat { padding: 2px 8px; display: flex; align-items: baseline; justify-content: space-between; gap: 6px; }
+  .modal.activity-modal .kit-stat-label { font-size: 0.68rem; white-space: nowrap; }
+  .modal.activity-modal .kit-stat-value { font-size: 0.95rem; white-space: nowrap; }
+  .modal.activity-modal .kit-table td, .modal.activity-modal .kit-table th { padding: 2px 6px; font-size: 0.8rem; }
+  .modal.activity-modal .activity-play .card { padding: 6px 10px; }
+  .modal.activity-modal .alloc-row { gap: 0 6px; margin: 0; padding: 2px 6px; grid-template-columns: minmax(0, 1fr) auto; font-size: 0.82rem; }
+  .modal.activity-modal .alloc-row > :first-child { grid-column: 1 / -1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .modal.activity-modal .col:has(> .alloc-row) { display: grid; align-content: start; grid-auto-rows: min-content; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px !important; }
+  .modal.activity-modal .alloc-row .btn { min-height: 28px; height: 28px; }
+  .modal.activity-modal .col:has(> .alloc-row:nth-child(5)) { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  /* Plan checked: your sliders on the left, Narwhal's verdict and See my stars on the right */
+  .modal.activity-modal .activity-play > .col:has(> .col > .alloc-row):has(> .card:last-child:not(.tint-teal)) {
+    display: grid; align-content: start; grid-auto-rows: min-content; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 10px; row-gap: 0;
+  }
+  .modal.activity-modal .activity-play > .col:has(> .col > .alloc-row):has(> .card:last-child:not(.tint-teal)) > * { grid-column: 1; margin: 0 0 6px; }
+  .modal.activity-modal .activity-play > .col:has(> .col > .alloc-row) > .card:last-child:not(.tint-teal) { grid-column: 2; grid-row: 1 / span 10; }
+  .modal.activity-modal .activity-play > .col:has(> .col > .alloc-row):has(> .card:last-child:not(.tint-teal)) > .card.tint-teal { display: none; }
+  .modal.activity-modal .activity-play > .col:has(> .card:last-child:not(.tint-teal)) > .col:has(> .alloc-row) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .modal.activity-modal .activity-play > .col:has(> .card:last-child:not(.tint-teal)) > .col > .alloc-row .btn { display: none; }
+  .modal.activity-modal .alloc-row input[type='range'] { height: 22px; margin: 0; }
+  .modal.activity-modal .alloc-row { padding: 1px 6px; row-gap: 0; }
+  .modal.activity-modal .alloc-row > :first-child { font-size: 0.78rem; line-height: 1.25; }
+  .modal.activity-modal .col:has(> .alloc-row) { gap: 5px !important; }
+  .modal.activity-modal .activity-play > .col:has(> .col > .alloc-row) > .card.tint-teal { padding: 4px 8px; font-size: 0.84rem; line-height: 1.3; }
+  .modal.activity-modal .activity-play > .col:has(> .col > .alloc-row) > .card.tint-teal .btn.icon { width: 24px; height: 24px; min-height: 24px; }
+  .modal.activity-modal .alloc-row > :first-child .chip, .modal.activity-modal .alloc-row > :first-child .btn { font-size: 0.66rem; padding: 0 5px; min-height: 0; height: auto; line-height: 1.4; }
+  /* Narwhal's plan check: its list scrolls inside the card and the button stays at the bottom */
+  .modal.activity-modal .activity-play > .col:has(> .col > .alloc-row) > .card:last-child:not(.tint-teal) { display: flex; flex-direction: column; gap: 4px; max-height: calc(100dvh - 82px); padding: 6px 8px; }
+  .modal.activity-modal .activity-play > .col:has(> .col > .alloc-row) > .card:last-child:not(.tint-teal) > ul { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; margin: 0; font-size: 0.78rem; line-height: 1.3; }
+  .modal.activity-modal .activity-play > .col:has(> .col > .alloc-row) > .card:last-child:not(.tint-teal) > :not(ul) { flex-shrink: 0; }
+  .modal.activity-modal .activity-play .btn.big, .modal.activity-modal .activity-play .btn.huge { min-height: 38px; padding-top: 0.3rem; padding-bottom: 0.3rem; }
+
+  /* A trading table with controls around it (Harbor Trading): table on the right, everything else left */
+  .modal.activity-modal .activity-play > .col:has(> .kit-table):has(> .kit-stat-grid) {
+    display: grid; align-content: start; grid-auto-rows: min-content; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); column-gap: 10px; row-gap: 0;
+  }
+  .modal.activity-modal .activity-play > .col:has(> .kit-table):has(> .kit-stat-grid) > * { grid-column: 1; margin: 0 0 6px; }
+  .modal.activity-modal .activity-play > .col:has(> .kit-stat-grid) > .kit-table { grid-column: 2; grid-row: 1 / span 10; font-size: 0.78rem; }
+  /* A table with trade buttons in every row (Harbor Trading) needs the full width: stats in one line above it */
+  .modal.activity-modal .activity-play > .col:has(> .kit-table .btn.small):has(> .kit-stat-grid) { display: flex; gap: 5px !important; }
+  .modal.activity-modal .activity-play > .col:has(> .kit-table .btn.small) > .kit-stat-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .modal.activity-modal .activity-play > .col:has(> .kit-table .btn.small) > * { margin: 0; }
+  .modal.activity-modal .activity-play > .col:has(> .kit-table .btn.small) > .card { padding: 3px 8px; font-size: 0.8rem; }
+  .modal.activity-modal .activity-play > .col:has(> .kit-table .btn.small) > .kit-table td { padding: 2px 5px; }
+  .modal.activity-modal .activity-play > .col:has(> .kit-table .btn.small) > .kit-table :is(th, td:first-child) { white-space: nowrap; }
+  .modal.activity-modal .activity-play > .col:has(> .kit-table .btn.small) > .kit-table th { font-size: 0.68rem; padding: 2px 5px; line-height: 1.1; }
+  .modal.activity-modal .activity-play > .col:has(> .kit-table .btn.small) > .card { padding: 2px 8px; font-size: 0.74rem; line-height: 1.2; }
+  .modal.activity-modal .activity-play > .col:has(> .kit-table .btn.small) > .card .btn.icon { width: 24px; height: 24px; min-height: 24px; }
+  .modal.activity-modal .activity-play > .col:has(> .kit-table .btn.small) > .row .btn { min-height: 28px; padding: 2px 8px; font-size: 0.76rem; }
+  .modal.activity-modal .activity-play > .col:has(> .kit-table .btn.small) > .tiny { font-size: 0.64rem; line-height: 1.15; }
+  .modal.activity-modal .kit-table .row:has(> .btn.small) { flex-wrap: nowrap; }
+  .modal.activity-modal .kit-table th, .modal.activity-modal .kit-table td { padding: 3px 5px; }
+  .modal.activity-modal .kit-table .row:has(> .btn.small) { gap: 3px !important; }
+  .modal.activity-modal .kit-table .btn.small { min-height: 26px; padding: 2px 7px; font-size: 0.74rem; white-space: nowrap; }
+  .modal.activity-modal .activity-play > .col:has(> .kit-table):has(> .kit-stat-grid) .btn:not(.small) { min-height: 34px; padding: 4px 10px; font-size: 0.85rem; }
+
+  /* Every game's main button (Done planning, See my stars, Next month...) stays pinned to the bottom
+     of the screen when the game above it is taller than the phone */
+  .modal.activity-modal .activity-play > :is(.col, .pro, .sort-game) > .row:has(> .btn):last-child,
+  .modal.activity-modal .activity-play > * > .col > .row:has(> .btn):last-child,
+  .modal.activity-modal .activity-play .cs-step > .row:has(> .btn):last-child {
+    position: sticky; bottom: -2px; z-index: 2; background: var(--play-bg, var(--px-paper, #f4ecd8)); padding-top: 4px; padding-bottom: 2px;
+    box-shadow: 0 -8px 8px -6px rgba(0, 0, 0, 0.25);
+  }
+  /* A lone button keeps its own colours; a ring of the page colour separates it from what scrolls under it */
+  .modal.activity-modal .activity-play > :is(.col, .pro, .sort-game) > .btn:last-child,
+  .modal.activity-modal .activity-play > * > .col > .btn:last-child {
+    position: sticky; bottom: 2px; z-index: 2; outline: 4px solid var(--play-bg, var(--px-paper, #f4ecd8));
+  }
+  .modal.activity-modal.adv, .modal.activity-modal .activity-play:has(> .pro) { --play-bg: #0b1120; }
+
+  /* Results */
+  .modal.activity-modal .ar-hero { padding: 8px 10px; gap: 12px; flex-wrap: nowrap; }
+  .modal.activity-modal .ar-msg { font-size: 1rem; }
+  .modal.activity-modal .ar-rewards { gap: 6px; margin-top: 6px; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); }
+  .modal.activity-modal .ar-reward { padding: 4px 8px; }
+  .modal.activity-modal .ar-hero .dialog-portrait { display: none; }
+  .modal.activity-modal .ar-hero .stars { font-size: 1.4rem; line-height: 1; }
+  .modal.activity-modal .ar-hero .ar-msg { font-size: 0.92rem; line-height: 1.25; }
+  .modal.activity-modal .ar-hero .pixel-meter { transform: scale(0.8); transform-origin: left center; margin-right: -20px; }
+  .modal.activity-modal .activity-results > .card { margin-top: 6px !important; padding: 6px 10px; }
+  .modal.activity-modal .activity-results > .row:last-child { margin-top: 8px !important; position: sticky; bottom: 0; }
+  /* With a review list: your score and buttons on the left, the answers to look back over on the right */
+  .modal.activity-modal .activity-results:has(> .col > .review-item) { display: grid; align-content: start; grid-auto-rows: min-content; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 10px; align-content: start; }
+  .modal.activity-modal .activity-results:has(> .col > .review-item) > * { grid-column: 1; }
+  .modal.activity-modal .activity-results > .col:has(> .review-item) {
+    grid-column: 2; grid-row: auto; margin-top: 0 !important; max-height: calc(100dvh - 64px); overflow-y: auto; overscroll-behavior: contain; gap: 6px !important;
+  }
+  /* The lesson card sits above the review list on the right; score, rewards and buttons stay left */
+  .modal.activity-modal .activity-results:has(> .col > .review-item) > .card { grid-column: 2; grid-row: 1; margin: 0 0 6px !important; }
+  .modal.activity-modal .activity-results:has(> .card):has(> .col > .review-item) > .col:has(> .review-item) { grid-row: 2 / span 10; max-height: calc(100dvh - 150px); }
+  .modal.activity-modal .activity-results:has(> .col > .review-item) > .ar-hero { grid-row: 1; }
+  .modal.activity-modal .activity-results:has(> .col > .review-item) > .ar-rewards { grid-row: 2; }
+  .modal.activity-modal .review-item summary { padding: 6px 8px; font-size: 0.9rem; }
+  /* Results: rewards on one line, the lesson card as a single row */
+  .modal.activity-modal .ar-rewards { grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); }
+  .modal.activity-modal .ar-reward { flex-direction: row; align-items: center; justify-content: space-between; gap: 6px; }
+  .modal.activity-modal .ar-reward .finbucks, .modal.activity-modal .ar-reward b { font-size: 0.95rem; }
+  .modal.activity-modal .activity-results > .card.row { flex-wrap: nowrap; align-items: center; gap: 8px !important; }
+  .modal.activity-modal .activity-results > .card.row .small.muted { display: none; }
+  .modal.activity-modal .activity-results > .card.row > span:first-child { font-size: 1.2rem !important; }
+  .modal.activity-modal .activity-results > .card .btn { min-height: 34px; padding: 0.2rem 0.7rem; font-size: 0.85rem; }
+  .modal.activity-modal .activity-results > .card.col > b { font-size: 0.85rem; }
+  .modal.activity-modal .ar-hero .row.wrap { gap: 4px !important; }
+  .modal.activity-modal .ar-hero .chip { font-size: 0.72rem; padding: 1px 6px; }
+  .modal.activity-modal .ar-hero p.small { font-size: 0.8rem; line-height: 1.25; }
+  .modal.activity-modal .review-body { padding: 4px 8px 8px; font-size: 0.85rem; }
+}

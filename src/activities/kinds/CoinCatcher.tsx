@@ -158,7 +158,7 @@ export default function CoinCatcher({ params, onFinish, seed }: KindProps<{ time
         <span className="small">Move with the mouse, a finger, or ← → keys. Dodge the red FEE bills!</span>
         <b className="pixel">⏱️ {hud.left}s</b>
       </div>
-      <canvas ref={ref} style={{ width: '100%', maxWidth: 720, alignSelf: 'center', borderRadius: 14, border: '4px solid var(--ink)', touchAction: 'none' }} />
+      <canvas ref={ref} style={{ width: '100%', maxWidth: 'min(720px, calc((100dvh - 178px) * 720 / 440))', alignSelf: 'center', borderRadius: 14, border: '4px solid var(--ink)', touchAction: 'none' }} />
     </div>
   );
 }

@@ -191,7 +191,7 @@ export function MapPanel() {
 
   return (
     <Modal onClose={close} title="🗺️ City Map" size="full">
-      <div className="row wrap" style={{ gap: '0.4rem', marginBottom: '0.6rem' }}>
+      <div className="row wrap map-cities" style={{ gap: '0.4rem', marginBottom: '0.6rem' }}>
         {(['park', ...CITY_IDS] as LocationId[]).map((id) => {
           const ok = unlocked.includes(id);
           return (

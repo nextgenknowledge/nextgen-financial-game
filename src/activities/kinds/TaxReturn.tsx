@@ -11,6 +11,7 @@ import { recordAnswer } from '@/game/progress/activities';
 import { recordEvent } from '@/game/progress/events';
 import { receive, payBill } from '@/game/finance/accounts';
 import { Explain } from '@/ui/kit';
+import { isTouch } from '@/ui/touch';
 
 interface Case {
   wages: number;
@@ -152,7 +153,7 @@ export default function TaxReturn({ params, onFinish, addReview, seed }: KindPro
             }}
           >
             <span className="big">$</span>
-            <input className="input mono numeric-input" autoFocus inputMode="decimal" value={val} onChange={(e) => setVal(e.target.value)} placeholder="Use − for owed" />
+            <input className="input mono numeric-input" autoFocus={!isTouch()} inputMode="decimal" value={val} onChange={(e) => setVal(e.target.value)} placeholder="Use − for owed" />
             <Button variant="primary" type="submit" disabled={!val}>
               Enter
             </Button>

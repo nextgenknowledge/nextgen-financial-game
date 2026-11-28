@@ -61,7 +61,7 @@ export function QuestionRounds({
           Question {q + 1}/{round.questions.length}
         </span>
       </div>
-      <div>{round.context}</div>
+      <div className="q-context">{round.context}</div>
       <QuestionView
         key={`${r}-${q}`}
         q={question}

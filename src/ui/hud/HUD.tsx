@@ -109,8 +109,9 @@ function TopLeftButtons() {
           await quitToWorlds();
         }}
         title="Save your game and go back to your worlds"
+        aria-label={saving ? 'Saving' : 'Save and exit'}
       >
-        💾 {saving ? 'Saving…' : 'Save & Exit'}
+        💾 <span className="cb-label">{saving ? 'Saving…' : 'Save & Exit'}</span>
       </button>
     </div>
   );

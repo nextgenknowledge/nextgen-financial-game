@@ -7,6 +7,7 @@ import { Button } from '@/ui/common';
 import { CoinIcon } from './QuestionView';
 import { playSfx } from '@/engine/audio';
 import { money, cls } from '@/ui/format';
+import { isTouch } from '@/ui/touch';
 
 export interface SkillProps {
   entry: boolean;
@@ -280,7 +281,7 @@ export function ReceiptSums({ entry, tier, seed, onDone }: SkillProps) {
       ) : (
         <form className="row" onSubmit={(e) => (e.preventDefault(), submit())}>
           <span className="big">$</span>
-          <input className="input mono numeric-input" autoFocus inputMode="decimal" value={val} onChange={(e) => setVal(e.target.value)} />
+          <input className="input mono numeric-input" autoFocus={!isTouch()} inputMode="decimal" value={val} onChange={(e) => setVal(e.target.value)} />
           <Button variant="primary" type="submit" disabled={!val}>
             Enter
           </Button>
@@ -327,7 +328,7 @@ export function Typing({ entry, tier, seed, onDone }: SkillProps) {
         {code}
       </div>
       <form className="row" onSubmit={(e) => (e.preventDefault(), submit())}>
-        <input className="input mono grow" autoFocus value={val} onChange={(e) => setVal(e.target.value)} style={{ fontSize: '1.4rem', letterSpacing: '0.1em' }} />
+        <input className="input mono grow" autoFocus={!isTouch()} value={val} onChange={(e) => setVal(e.target.value)} style={{ fontSize: '1.4rem', letterSpacing: '0.1em' }} />
         <Button variant="primary" type="submit">
           Save
         </Button>

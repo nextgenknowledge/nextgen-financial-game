@@ -15,6 +15,7 @@ import { cls } from '@/ui/format';
 import type { QuestionMedia } from '@/game/content';
 import { LineChart } from '@/ui/kit';
 import { LESSONS } from '@/game/progress/lessons';
+import { isTouch } from '@/ui/touch';
 
 export interface AnswerOutcome {
   correct: boolean;
@@ -301,7 +302,7 @@ export function QuestionView({
             inputMode="decimal"
             value={numeric}
             disabled={!!done}
-            autoFocus
+            autoFocus={!isTouch()}
             onChange={(e) => setNumeric(e.target.value)}
             placeholder={q.format === 'money' ? '0.00' : '0'}
             aria-label="Your answer"

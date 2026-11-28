@@ -13,10 +13,12 @@ import { LoadingScreen } from './loading/LoadingScreen';
 import { ORG_LOGO } from './common';
 import GameView from './GameView';
 import { Confetti } from './Confetti';
+import { RotateHint } from './RotateHint';
 
 export default function GameRoot() {
   const screen = useUI((s) => s.screen);
   const loaded = useSettings((s) => s.loaded);
+  const loadingActive = useUI((s) => s.loading.active);
   const music = useSettings((s) => s.music);
   const sfx = useSettings((s) => s.sfx);
 
@@ -48,6 +50,7 @@ export default function GameRoot() {
       {screen === 'credits' && <CreditsScreen />}
       {screen === 'game' && <GameView />}
       <LoadingOverlay />
+      {(screen === 'game' || loadingActive) && <RotateHint />}
       {screen !== 'game' && <Toasts />}
       <Confetti />
     </>
